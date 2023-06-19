@@ -49,6 +49,17 @@ public class RoomSize : MonoBehaviour
         RoomSizeChanged?.Invoke(this, null);
         gameObject.SetActive(false);
     }
+
+    public static float GetDimension(RoomDimension dimension)
+    {
+        return dimension switch
+        {
+            RoomDimension.Width => float.Parse(Instance.InputFieldWidth.text),
+            RoomDimension.Height => float.Parse(Instance.InputFieldHeight.text),
+            RoomDimension.Depth => float.Parse(Instance.InputFieldDepth.text),
+            _ => throw new ArgumentException($"Unhandled argument {dimension}"),
+        };
+    }
 }
 
 public enum RoomDimension
