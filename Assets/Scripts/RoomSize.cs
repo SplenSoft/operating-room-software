@@ -50,6 +50,7 @@ public class RoomSize : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    /// <returns>Dimension in meters</returns>
     public static float GetDimension(RoomDimension dimension)
     {
         return dimension switch
