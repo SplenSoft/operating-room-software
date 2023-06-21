@@ -12,6 +12,7 @@ public class UnityEventSender : MonoBehaviour
     private void OnMouseDown()
     {
         Target.SendMessage("OnMouseDown");
+        Debug.Log("OnMouseDown detected");
     }
 
     private void OnMouseUp()

@@ -9,12 +9,15 @@ using UnityEngine;
 public class InputHandler : MonoBehaviour
 {
     private static InputHandler Instance { get; set; }
+    public static Vector2 MouseDeltaPixels { get; private set; }
+    public static Vector2 MouseDeltaScreenPercentage { get; private set; }
     public static EventHandler<KeyStateChangedEventArgs> KeyStateChanged;
 
     private int[] values;
     private KeyState[] keys;
     private float _timeClickHeldDown;
     private bool _isClicking;
+    private Vector2 _mousePosLastFrame;
 
     private void Awake()
     {
@@ -36,7 +39,11 @@ public class InputHandler : MonoBehaviour
 
             bool valueChanged = newValue != keys[i];
             keys[i] = newValue;
-            KeyStateChanged?.Invoke(this, new KeyStateChangedEventArgs(keyCode, newValue));
+            if (valueChanged)
+            {
+                KeyStateChanged?.Invoke(this, new KeyStateChangedEventArgs(keyCode, newValue));
+            }
+            
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -52,6 +59,15 @@ public class InputHandler : MonoBehaviour
         {
             _timeClickHeldDown += Time.deltaTime;
         }
+
+        UpdateMouseDelta();
+    }
+
+    private void UpdateMouseDelta()
+    {
+        MouseDeltaPixels = (Vector2)Input.mousePosition - _mousePosLastFrame;
+        _mousePosLastFrame = Input.mousePosition;
+        MouseDeltaScreenPercentage =  new Vector2(MouseDeltaPixels.x / Screen.width, MouseDeltaPixels.y / Screen.height);
     }
 }
 

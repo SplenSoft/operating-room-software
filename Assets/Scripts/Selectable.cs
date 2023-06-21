@@ -15,31 +15,57 @@ public class Selectable : MonoBehaviour
     
     [field: SerializeField] private HighlightEffect HighlightEffect { get; set; }
 
-    private void OnMouseDown()
+    private void Awake()
     {
-        _timeMouseDown = 0f;
+        InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
     }
 
-    private void OnMouseDrag()
+    private void OnDestroy()
+    {
+        InputHandler.KeyStateChanged -= InputHandler_KeyStateChanged;
+    }
+
+    public void OnMouseDown()
+    {
+        _timeMouseDown = 0f;
+        Debug.Log("OnMouseDown received");
+    }
+
+    public void OnMouseDrag()
     {
         _timeMouseDown += Time.deltaTime;
     }
 
-    private void OnMouseUp()
+    public void OnMouseUp()
     {
+        Debug.Log("OnMouseUp received");
         if (_timeMouseDown < _maxTimeMouseDownForSelect)
         {
             Select();
         }
     }
 
+    private void InputHandler_KeyStateChanged(object sender, KeyStateChangedEventArgs e)
+    {
+        if (e.KeyCode == KeyCode.Escape && e.KeyState == KeyState.ReleasedThisFrame)
+        {
+            Deselect();
+        }
+    }
+
     private void Deselect()
     {
+        Debug.Log("DeSelecting");
+        if (!IsSelected) return;
+        SelectedSelectable = null;
         HighlightEffect.highlighted = false;
+        Debug.Log("DeSelected");
     }
 
     private void Select()
     {
+        Debug.Log("Selecting");
+        if (IsSelected) return;
         if (SelectedSelectable != null)
         {
             SelectedSelectable.Deselect();
@@ -47,5 +73,6 @@ public class Selectable : MonoBehaviour
         SelectedSelectable = this;
         HighlightEffect.highlighted = true;
         Selected?.Invoke(this, null);
+        Debug.Log("Selected");
     }
 }
