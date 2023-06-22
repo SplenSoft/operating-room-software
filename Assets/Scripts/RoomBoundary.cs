@@ -1,14 +1,26 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RoomBoundary : MonoBehaviour
 {
+    private static List<RoomBoundary> _instances = new();
     private readonly float _defaultWallThickness = 0.375f.ToMeters(); //4.5 inches
     [field: SerializeField] private RoomBoundaryType RoomBoundaryType { get; set; }
+    [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
+    private MeshRenderer _meshRenderer;
 
     private void Awake()
     {
+        _instances.Add(this);
+
+        _meshRenderer = GetComponent<MeshRenderer>();
+
+        if (VirtualCamera != null)
+            CameraManager.Register(VirtualCamera);
+
         RoomSize.RoomSizeChanged += (obj, arg) =>
         {
             float height = RoomSize.GetDimension(RoomDimension.Height);
@@ -43,6 +55,33 @@ public class RoomBoundary : MonoBehaviour
                     break;
             }
         };
+    }
+
+    public void OnCameraLive()
+    {
+        _instances.ForEach(item => item.ToggleMeshRenderer(true));
+        ToggleMeshRenderer(false);
+        //Vector3 dimensions = transform.localScale;
+        //List<float> numbers = new List<float> { dimensions.x, dimensions.y, dimensions.z };
+        //float lowest = numbers.OrderBy(x => x).First();
+        //numbers.Remove(lowest);
+
+        if (RoomBoundaryType == RoomBoundaryType.Ceiling || RoomBoundaryType == RoomBoundaryType.Floor)
+        {
+            float dim = Mathf.Max(transform.localScale.x, transform.localScale.z);
+            VirtualCamera.m_Lens.OrthographicSize = (dim / 2f) + (dim / 10f);
+        }
+        else
+        {
+            VirtualCamera.m_Lens.OrthographicSize = (transform.localScale.y / 2f) + (transform.localScale.y / 10f);
+        }
+
+        
+    }
+
+    private void ToggleMeshRenderer(bool toggle)
+    {
+        _meshRenderer.enabled = toggle;
     }
 }
 

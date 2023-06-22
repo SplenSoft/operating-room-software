@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,9 +9,17 @@ public class FreeLookCam : MonoBehaviour
     [field: SerializeField] private float LookSensitivityX { get; set; } = 60f;
     [field: SerializeField] private float LookSensitivityY { get; set; } = 33.75f;
     [field: SerializeField] private Rigidbody Rigidbody { get; set; }
+    [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
+    private bool IsVirtualCameraActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
+
+    private void Awake()
+    {
+        CameraManager.Register(VirtualCamera);
+    }
 
     private void Update()
     {
+        if (!IsVirtualCameraActive) return;
         if (Input.GetMouseButton(0))
         {
             HandleRotation();
@@ -19,6 +28,7 @@ public class FreeLookCam : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!IsVirtualCameraActive) return;
         HandleMovement();
     }
 
