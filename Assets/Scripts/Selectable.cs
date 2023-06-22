@@ -73,6 +73,7 @@ public class Selectable : MonoBehaviour
         SelectedSelectable = this;
         HighlightEffect.highlighted = true;
         Selected?.Invoke(this, null);
+        SendMessage("SelectableSelected");
         Debug.Log("Selected");
     }
 }

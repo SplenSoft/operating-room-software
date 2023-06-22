@@ -75,8 +75,6 @@ public class RoomBoundary : MonoBehaviour
         {
             VirtualCamera.m_Lens.OrthographicSize = (transform.localScale.y / 2f) + (transform.localScale.y / 10f);
         }
-
-        
     }
 
     private void ToggleMeshRenderer(bool toggle)
