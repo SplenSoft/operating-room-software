@@ -12,6 +12,7 @@ public class Selectable : MonoBehaviour
     public bool IsSelected => SelectedSelectable == this;
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
+    private Transform _virtualParent;
 
     [field: SerializeField] private HighlightEffect HighlightEffect { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
@@ -58,13 +59,15 @@ public class Selectable : MonoBehaviour
         {
             transform.SetPositionAndRotation(raycastHit.point, Quaternion.LookRotation(raycastHit.normal));
             transform.Rotate(90, 0, 0);
+            _virtualParent = raycastHit.collider.transform;
         }
 
         if (Input.GetMouseButtonUp(0))
         {
             HighlightEffect.highlighted = false;
             _hasBeenPlaced = true;
-
+            SendMessage("SelectablePositionChanged");
+            SendMessage("VirtualParentChanged", _virtualParent);
             await Task.Yield();
             if (!Application.isPlaying) return;
 

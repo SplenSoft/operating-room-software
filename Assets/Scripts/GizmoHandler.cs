@@ -100,6 +100,7 @@ public class GizmoHandler : MonoBehaviour
 
     private async void OnGizmoPostDragEnd(Gizmo gizmo, int handleId)
     {
+        SendMessage("SelectablePositionChanged");
         GizmoBeingUsed = false;
         await Task.Yield();
         GizmoUsedLastFrame = false;
