@@ -18,6 +18,17 @@ public class GizmoHandler : MonoBehaviour
     private void Awake()
     {
         _selectable = GetComponent<Selectable>();
+        GizmoSelector.GizmoModeChanged += GizmoModeChanged;
+    }
+
+    private void GizmoModeChanged(object sender, EventArgs e)
+    {
+        EnableGizmo();
+    }
+
+    private void OnDestroy()
+    {
+        GizmoSelector.GizmoModeChanged -= GizmoModeChanged;
     }
 
     public void SelectableSelected()
@@ -28,16 +39,16 @@ public class GizmoHandler : MonoBehaviour
 
     private void EnableGizmo()
     {
-        _translateGizmo.Gizmo.SetEnabled(SceneEditorUI.CurrentGizmoMode == GizmoMode.Translate);
+        _translateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Translate);
         _translateGizmo.Gizmo.Transform.Position3D = transform.position;
 
-        _rotateGizmo.Gizmo.SetEnabled(SceneEditorUI.CurrentGizmoMode == GizmoMode.Rotate);
+        _rotateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Rotate);
         _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
 
-        _scaleGizmo.Gizmo.SetEnabled(SceneEditorUI.CurrentGizmoMode == GizmoMode.Scale);
+        _scaleGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Scale);
         _scaleGizmo.Gizmo.Transform.Position3D = transform.position;
 
-        _universalGizmo.Gizmo.SetEnabled(SceneEditorUI.CurrentGizmoMode == GizmoMode.Universal);
+        _universalGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Universal);
         _universalGizmo.Gizmo.Transform.Position3D = transform.position;
     }
 
