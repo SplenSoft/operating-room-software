@@ -55,9 +55,9 @@ public class RoomSize : MonoBehaviour
     {
         return dimension switch
         {
-            RoomDimension.Width => float.Parse(Instance.InputFieldWidth.text),
-            RoomDimension.Height => float.Parse(Instance.InputFieldHeight.text),
-            RoomDimension.Depth => float.Parse(Instance.InputFieldDepth.text),
+            RoomDimension.Width => float.Parse(Instance.InputFieldWidth.text).ToMeters(),
+            RoomDimension.Height => float.Parse(Instance.InputFieldHeight.text).ToMeters(),
+            RoomDimension.Depth => float.Parse(Instance.InputFieldDepth.text).ToMeters(),
             _ => throw new ArgumentException($"Unhandled argument {dimension}"),
         };
     }
