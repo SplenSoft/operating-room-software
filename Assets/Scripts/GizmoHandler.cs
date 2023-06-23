@@ -39,6 +39,7 @@ public class GizmoHandler : MonoBehaviour
 
     private void EnableGizmo()
     {
+        if (!_gizmosInitialized) return;
         _translateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Translate);
         _translateGizmo.Gizmo.Transform.Position3D = transform.position;
 
