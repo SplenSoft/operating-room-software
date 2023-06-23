@@ -32,6 +32,11 @@ public class FreeLookCam : MonoBehaviour
         HandleMovement();
     }
 
+    public void OnCameraLive()
+    {
+        RoomBoundary.EnableAllMeshRenderersAndColliders();
+    }
+
     private void HandleMovement()
     {
         Vector3 velVector = new Vector3(0, Rigidbody.velocity.y, 0);
@@ -58,6 +63,7 @@ public class FreeLookCam : MonoBehaviour
 
     private void HandleRotation()
     {
+        if (GizmoHandler.GizmoBeingUsed) return;
         transform.Rotate(new Vector3(0, InputHandler.MouseDeltaScreenPercentage.x * LookSensitivityX, 0));
         Head.transform.Rotate(new Vector3(-InputHandler.MouseDeltaScreenPercentage.y * LookSensitivityY, 0, 0));
         var signedAngle = Vector3.SignedAngle(transform.forward, Head.forward, transform.right);

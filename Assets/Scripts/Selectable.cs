@@ -6,12 +6,9 @@ using UnityEngine;
 
 public class Selectable : MonoBehaviour
 {
-    public static EventHandler Selected;
+    public static EventHandler SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
     public bool IsSelected => SelectedSelectable == this;
-
-    private readonly float _maxTimeMouseDownForSelect = 0.250f;
-    private float _timeMouseDown;
     
     [field: SerializeField] private HighlightEffect HighlightEffect { get; set; }
 
@@ -25,24 +22,9 @@ public class Selectable : MonoBehaviour
         InputHandler.KeyStateChanged -= InputHandler_KeyStateChanged;
     }
 
-    public void OnMouseDown()
+    public void OnMouseUpAsButton()
     {
-        _timeMouseDown = 0f;
-        Debug.Log("OnMouseDown received");
-    }
-
-    public void OnMouseDrag()
-    {
-        _timeMouseDown += Time.deltaTime;
-    }
-
-    public void OnMouseUp()
-    {
-        Debug.Log("OnMouseUp received");
-        if (_timeMouseDown < _maxTimeMouseDownForSelect)
-        {
-            Select();
-        }
+        Select();
     }
 
     private void InputHandler_KeyStateChanged(object sender, KeyStateChangedEventArgs e)
@@ -53,18 +35,26 @@ public class Selectable : MonoBehaviour
         }
     }
 
+    public static void DeselectAll()
+    {
+        if (SelectedSelectable != null)
+        {
+            if (SelectedSelectable.GetComponent<GizmoHandler>().GizmoUsedLastFrame) return;
+            SelectedSelectable.Deselect();
+            SelectionChanged?.Invoke(null, null);
+        }
+    }
+
     private void Deselect()
     {
-        Debug.Log("DeSelecting");
         if (!IsSelected) return;
         SelectedSelectable = null;
         HighlightEffect.highlighted = false;
-        Debug.Log("DeSelected");
+        SendMessage("SelectableDeselected");
     }
 
     private void Select()
     {
-        Debug.Log("Selecting");
         if (IsSelected) return;
         if (SelectedSelectable != null)
         {
@@ -72,8 +62,7 @@ public class Selectable : MonoBehaviour
         }
         SelectedSelectable = this;
         HighlightEffect.highlighted = true;
-        Selected?.Invoke(this, null);
+        SelectionChanged?.Invoke(this, null);
         SendMessage("SelectableSelected");
-        Debug.Log("Selected");
     }
 }

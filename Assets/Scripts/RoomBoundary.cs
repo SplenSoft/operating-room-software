@@ -11,12 +11,14 @@ public class RoomBoundary : MonoBehaviour
     [field: SerializeField] private RoomBoundaryType RoomBoundaryType { get; set; }
     [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
     private MeshRenderer _meshRenderer;
+    private Collider _collider;
 
     private void Awake()
     {
         _instances.Add(this);
 
         _meshRenderer = GetComponent<MeshRenderer>();
+        _collider = GetComponent<Collider>();
 
         if (VirtualCamera != null)
             CameraManager.Register(VirtualCamera);
@@ -59,12 +61,8 @@ public class RoomBoundary : MonoBehaviour
 
     public void OnCameraLive()
     {
-        _instances.ForEach(item => item.ToggleMeshRenderer(true));
-        ToggleMeshRenderer(false);
-        //Vector3 dimensions = transform.localScale;
-        //List<float> numbers = new List<float> { dimensions.x, dimensions.y, dimensions.z };
-        //float lowest = numbers.OrderBy(x => x).First();
-        //numbers.Remove(lowest);
+        EnableAllMeshRenderersAndColliders();
+        ToggleMeshRendererAndCollider(false);
 
         if (RoomBoundaryType == RoomBoundaryType.Ceiling || RoomBoundaryType == RoomBoundaryType.Floor)
         {
@@ -77,9 +75,21 @@ public class RoomBoundary : MonoBehaviour
         }
     }
 
-    private void ToggleMeshRenderer(bool toggle)
+    public static void EnableAllMeshRenderersAndColliders()
+    {
+        _instances.ForEach(item => item.ToggleMeshRendererAndCollider(true));
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        if (InputHandler.IsPointerOverUIElement()) return;
+        Selectable.DeselectAll();
+    }
+
+    private void ToggleMeshRendererAndCollider(bool toggle)
     {
         _meshRenderer.enabled = toggle;
+        _collider.enabled = toggle;
     }
 }
 

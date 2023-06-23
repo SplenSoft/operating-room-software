@@ -9,19 +9,23 @@ public class UnityEventSender : MonoBehaviour
 {
     [field: SerializeField] private GameObject Target { get; set; }
 
-    private void OnMouseDown()
-    {
-        Target.SendMessage("OnMouseDown");
-        Debug.Log("OnMouseDown detected");
-    }
+    //private void OnMouseDown()
+    //{
+    //    Target.SendMessage("OnMouseDown");
+    //}
 
-    private void OnMouseUp()
-    {
-        Target.SendMessage("OnMouseUp");
-    }
+    //private void OnMouseUp()
+    //{
+    //    Target.SendMessage("OnMouseUp");
+    //}
 
-    private void OnMouseDrag()
+    //private void OnMouseDrag()
+    //{
+    //    Target.SendMessage("OnMouseDrag");
+    //}
+
+    private void OnMouseUpAsButton()
     {
-        Target.SendMessage("OnMouseDrag");
+        Target.SendMessage("OnMouseUpAsButton");
     }
 }

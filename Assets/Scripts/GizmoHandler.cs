@@ -2,6 +2,7 @@ using RTG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 [RequireComponent(typeof(Selectable))]
@@ -12,7 +13,9 @@ public class GizmoHandler : MonoBehaviour
     private ObjectTransformGizmo _scaleGizmo;
     private ObjectTransformGizmo _universalGizmo;
     private bool _gizmosInitialized;
-
+    public static bool GizmoBeingUsed { get; private set; }
+    public bool GizmoUsedLastFrame { get; private set; }
+    
     private Selectable _selectable;
 
     private void Awake()
@@ -37,19 +40,24 @@ public class GizmoHandler : MonoBehaviour
         EnableGizmo();
     }
 
+    public void SelectableDeselected()
+    {
+        EnableGizmo();
+    }
+
     private void EnableGizmo()
     {
         if (!_gizmosInitialized) return;
-        _translateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Translate);
+        _translateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Translate && _selectable.IsSelected);
         _translateGizmo.Gizmo.Transform.Position3D = transform.position;
 
-        _rotateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Rotate);
+        _rotateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Rotate && _selectable.IsSelected);
         _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
 
-        _scaleGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Scale);
+        _scaleGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Scale && _selectable.IsSelected);
         _scaleGizmo.Gizmo.Transform.Position3D = transform.position;
 
-        _universalGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Universal);
+        _universalGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Universal && _selectable.IsSelected);
         _universalGizmo.Gizmo.Transform.Position3D = transform.position;
     }
 
@@ -90,19 +98,21 @@ public class GizmoHandler : MonoBehaviour
         _gizmosInitialized = true;
     }
 
-    private void OnGizmoPostDragEnd(Gizmo gizmo, int handleId)
+    private async void OnGizmoPostDragEnd(Gizmo gizmo, int handleId)
     {
-        throw new NotImplementedException();
+        GizmoBeingUsed = false;
+        await Task.Yield();
+        GizmoUsedLastFrame = false;
     }
 
     private void OnGizmoPostDragBegin(Gizmo gizmo, int handleId)
     {
-        throw new NotImplementedException();
+        GizmoBeingUsed = true;
     }
 
     private void OnGizmoPostDragUpdate(Gizmo gizmo, int handleId)
     {
-        throw new NotImplementedException();
+        GizmoUsedLastFrame = true;
     }
 }
 
