@@ -56,8 +56,8 @@ public class Selectable : MonoBehaviour
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 100f, 1 << LayerMask.NameToLayer("Wall"), QueryTriggerInteraction.Ignore))
         {
-            transform.position = raycastHit.point;
-            var roomBoundary = raycastHit.collider.GetComponent<RoomBoundary>();
+            transform.SetPositionAndRotation(raycastHit.point, Quaternion.LookRotation(raycastHit.normal));
+            transform.Rotate(90, 0, 0);
         }
 
         if (Input.GetMouseButtonUp(0))
