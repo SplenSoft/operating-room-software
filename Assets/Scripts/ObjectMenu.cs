@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class ObjectMenu : MonoBehaviour
 {
+    private static ObjectMenu Instance { get; set; }
+
     [field: SerializeField] private GameObject ItemTemplate { get; set; }
     [field: SerializeField] private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }
     //[field: SerializeField] private Button ItemTemplateButtonAddObject { get; set; }
@@ -13,6 +15,7 @@ public class ObjectMenu : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         InstantiateMenuItems();
         gameObject.SetActive(false);
     }
@@ -33,5 +36,10 @@ public class ObjectMenu : MonoBehaviour
             });
         });
         ItemTemplate.SetActive(false);
+    }
+
+    public static void Open()
+    {
+        Instance.gameObject.SetActive(true);
     }
 }

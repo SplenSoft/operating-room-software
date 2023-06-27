@@ -8,19 +8,20 @@ using UnityEngine;
 
 public class Selectable : MonoBehaviour
 {
+    public EventHandler MouseOverStateChanged;
     public static EventHandler SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
     public bool IsSelected => SelectedSelectable == this;
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
     private Transform _virtualParent;
+    public bool IsMouseOver { get; private set; }
 
     [field: SerializeField] private HighlightEffect HighlightEffect { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
-
 
     private void Awake()
     {
@@ -35,6 +36,18 @@ public class Selectable : MonoBehaviour
     public void OnMouseUpAsButton()
     {
         Select();
+    }
+
+    private void OnMouseEnter()
+    {
+        IsMouseOver = true;
+        MouseOverStateChanged?.Invoke(this, null);
+    }
+
+    private void OnMouseExit()
+    {
+        IsMouseOver = false;
+        MouseOverStateChanged?.Invoke(this, null);
     }
 
     public async void StartRaycastPlacementMode()

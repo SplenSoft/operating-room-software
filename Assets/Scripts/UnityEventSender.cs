@@ -24,6 +24,16 @@ public class UnityEventSender : MonoBehaviour
     //    Target.SendMessage("OnMouseDrag");
     //}
 
+    private void OnMouseEnter()
+    {
+        Target.SendMessage("OnMouseEnter");
+    }
+
+    private void OnMouseExit()
+    {
+        Target.SendMessage("OnMouseExit");
+    }
+
     private void OnMouseUpAsButton()
     {
         Target.SendMessage("OnMouseUpAsButton");
