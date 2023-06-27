@@ -23,6 +23,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
+    [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
 
     public AttachmentPoint ParentAttachmentPoint { get; set; }
 
@@ -188,4 +189,13 @@ public class Selectable : MonoBehaviour
         if (ParentAttachmentPoint == null)
             _gizmoHandler.SelectableSelected();
     }
+}
+
+public enum SelectableType
+{
+    DropTube,
+    Mount,
+    Furniture,
+    ArmSegment,
+    BoomSegment
 }

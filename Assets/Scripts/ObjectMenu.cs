@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,13 @@ public class ObjectMenu : MonoBehaviour
     //[field: SerializeField] private Button ItemTemplateButtonAddObject { get; set; }
     [field: SerializeField] private List<GameObject> BuiltInSelectablePrefabs { get; set; } = new();
     private AttachmentPoint _attachmentPoint;
+    private List<ObjectMenuItem> ObjectMenuItems { get; set; } = new();
+
+    private class ObjectMenuItem
+    {
+        public Selectable Selectable { get; set; }
+        public GameObject GameObject { get; set; }
+    }
 
     private void Awake()
     {
@@ -45,12 +53,47 @@ public class ObjectMenu : MonoBehaviour
                     selectable2.StartRaycastPlacementMode();
                 }
             });
+
+            ObjectMenuItems.Add(new ObjectMenuItem { Selectable = selectable, GameObject = newMenuItem });
         });
         ItemTemplate.SetActive(false);
     }
 
+    private void FilterMenuItems(AttachmentPoint attachmentPoint)
+    {
+        ObjectMenuItems.ForEach(item =>
+        {
+            if (attachmentPoint.AllowedSelectableTypes.Count == 0)
+            {
+                item.GameObject.SetActive(true);
+                return;
+            }
+
+            foreach (var type in item.Selectable.Types) 
+            {
+                if (attachmentPoint.AllowedSelectableTypes.Contains(type))
+                {
+                    item.GameObject.SetActive(true);
+                    return;
+                }
+            }
+            item.GameObject.SetActive(false);
+        });
+    }
+
+    private void ClearMenuFilter()
+    {
+        ObjectMenuItems.ForEach(item =>
+        {
+            bool isMount = item.Selectable.Types.Contains(SelectableType.Mount);
+            bool isFurniture = item.Selectable.Types.Contains(SelectableType.Furniture);
+            item.GameObject.SetActive(isMount || isFurniture);
+        });
+    }
+
     public void Open()
     {
+        ClearMenuFilter();
         _attachmentPoint = null;
         gameObject.SetActive(true);
     }
@@ -58,6 +101,7 @@ public class ObjectMenu : MonoBehaviour
     public static void Open(AttachmentPoint attachmentPoint)
     {
         Instance._attachmentPoint = attachmentPoint;
+        Instance.FilterMenuItems(attachmentPoint);
         Instance.gameObject.SetActive(true);
     }
 }

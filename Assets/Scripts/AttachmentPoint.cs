@@ -14,6 +14,7 @@ public class AttachmentPoint : MonoBehaviour
 
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
     [field: SerializeField] private HighlightEffect HighlightHovered { get; set; }
+    [field: SerializeField] public List<SelectableType> AllowedSelectableTypes { get; private set; } = new();
 
     private MeshRenderer _renderer;
     private Collider _collider;
