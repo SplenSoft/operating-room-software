@@ -16,6 +16,7 @@ public class Selectable : MonoBehaviour
     private bool _hasBeenPlaced;
     private Transform _virtualParent;
     public bool IsMouseOver { get; private set; }
+    private GizmoHandler _gizmoHandler;
 
     [field: SerializeField] private HighlightEffect HighlightEffect { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
@@ -23,14 +24,21 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
 
+    public AttachmentPoint ParentAttachmentPoint { get; set; }
+
     private void Awake()
     {
+        _gizmoHandler = GetComponent<GizmoHandler>();
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
     }
 
     private void OnDestroy()
     {
         InputHandler.KeyStateChanged -= InputHandler_KeyStateChanged;
+        if (ParentAttachmentPoint != null)
+        {
+            ParentAttachmentPoint.DetachSelectable();
+        }
     }
 
     public void OnMouseUpAsButton()
@@ -52,6 +60,7 @@ public class Selectable : MonoBehaviour
 
     public async void StartRaycastPlacementMode()
     {
+        if (ParentAttachmentPoint != null) return;
         DeselectAll();
         HighlightEffect.highlighted = true;
         await Task.Yield();
@@ -75,7 +84,6 @@ public class Selectable : MonoBehaviour
             void SetPosition(RaycastHit hit)
             {
                 transform.SetPositionAndRotation(hit.point, Quaternion.LookRotation(hit.normal));
-                transform.Rotate(90, 0, 0);
                 _virtualParent = hit.collider.transform;
             }
 
@@ -84,6 +92,14 @@ public class Selectable : MonoBehaviour
                 if (WallRestrictions[0] == RoomBoundaryType.Ceiling)
                 {
                     var ray2 = new Ray(Vector3.zero + Vector3.up, Vector3.up);
+                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 100f, 1 << LayerMask.NameToLayer("Wall")))
+                    {
+                        SetPosition(raycastHit2);
+                    }
+                }
+                else if (WallRestrictions[0] == RoomBoundaryType.Floor)
+                {
+                    var ray2 = new Ray(Vector3.zero + Vector3.up, -Vector3.up);
                     if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 100f, 1 << LayerMask.NameToLayer("Wall")))
                     {
                         SetPosition(raycastHit2);
@@ -168,6 +184,8 @@ public class Selectable : MonoBehaviour
         SelectedSelectable = this;
         HighlightEffect.highlighted = true;
         SelectionChanged?.Invoke(this, null);
-        SendMessage("SelectableSelected");
+
+        if (ParentAttachmentPoint == null)
+            _gizmoHandler.SelectableSelected();
     }
 }

@@ -10,42 +10,58 @@ public class AttachmentPoint : MonoBehaviour
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
+    public Selectable AttachedSelectable { get; private set; }
 
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
     [field: SerializeField] private HighlightEffect HighlightHovered { get; set; }
 
     private MeshRenderer _renderer;
+    private Collider _collider;
 
-    [field: SerializeField] private Selectable Selectable { get; set; }
+    [field: SerializeField] private Selectable ParentSelectable { get; set; }
+
+    public void SetAttachedSelectable(Selectable selectable)
+    {
+        AttachedSelectable = selectable;
+        UpdateComponentStatus();
+    }
+
+    public void DetachSelectable() 
+    {
+        AttachedSelectable = null;
+        UpdateComponentStatus();
+    }
 
     private void Awake()
     {
+        _collider = GetComponent<Collider>();
         _renderer = GetComponent<MeshRenderer>();
-        Selectable.MouseOverStateChanged += MouseOverStateChanged;
+        ParentSelectable.MouseOverStateChanged += MouseOverStateChanged;
         Selectable.SelectionChanged += SelectionChanged;
-        CheckVisibility();
+        UpdateComponentStatus();
     }
 
     private void SelectionChanged(object sender, EventArgs e)
     {
-        if (Selectable.SelectedSelectable == Selectable)
-            CheckVisibility();
+        if (Selectable.SelectedSelectable == ParentSelectable)
+            UpdateComponentStatus();
     }
 
     private void MouseOverStateChanged(object sender, EventArgs e)
     {
-        CheckVisibility();
+        UpdateComponentStatus();
     }
 
-    private void CheckVisibility()
+    private void UpdateComponentStatus()
     {
-        _renderer.enabled = (Selectable.IsMouseOver || _attachmentPointHovered) && !Selectable.IsSelected;
-        HighlightHovered.highlighted = _attachmentPointHovered && !Selectable.IsSelected;
+        _renderer.enabled = (ParentSelectable.IsMouseOver || _attachmentPointHovered) && !ParentSelectable.IsSelected && AttachedSelectable == null;
+        HighlightHovered.highlighted = _attachmentPointHovered && !ParentSelectable.IsSelected && AttachedSelectable == null;
+        _collider.enabled = AttachedSelectable == null && !ParentSelectable.IsSelected;
     }
 
     private void OnDestroy()
     {
-        Selectable.MouseOverStateChanged -= MouseOverStateChanged;
+        ParentSelectable.MouseOverStateChanged -= MouseOverStateChanged;
     }
 
     private void OnMouseEnter()
@@ -53,7 +69,7 @@ public class AttachmentPoint : MonoBehaviour
         HoveredAttachmentPoint = this;
         AttachmentPointHoverStateChanged?.Invoke(this, EventArgs.Empty);
         _attachmentPointHovered = true;
-        CheckVisibility();
+        UpdateComponentStatus();
     }
 
     private void OnMouseExit()
@@ -61,13 +77,14 @@ public class AttachmentPoint : MonoBehaviour
         HoveredAttachmentPoint = null;
         AttachmentPointHoverStateChanged?.Invoke(this, EventArgs.Empty);
         _attachmentPointHovered = false;
-        CheckVisibility();
+        UpdateComponentStatus();
     }
 
     private void OnMouseUpAsButton()
     {
         AttachmentPointClicked?.Invoke(this, EventArgs.Empty);
         SelectedAttachmentPoint = this;
-        CheckVisibility();
+        UpdateComponentStatus();
+        ObjectMenu.Open(this);
     }
 }

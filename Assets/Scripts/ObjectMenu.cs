@@ -12,6 +12,7 @@ public class ObjectMenu : MonoBehaviour
     [field: SerializeField] private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }
     //[field: SerializeField] private Button ItemTemplateButtonAddObject { get; set; }
     [field: SerializeField] private List<GameObject> BuiltInSelectablePrefabs { get; set; } = new();
+    private AttachmentPoint _attachmentPoint;
 
     private void Awake()
     {
@@ -32,14 +33,31 @@ public class ObjectMenu : MonoBehaviour
                 gameObject.SetActive(false);
                 var newSelectableGameObject = Instantiate(prefab);
                 var selectable2 = newSelectableGameObject.GetComponent<Selectable>();
-                selectable2.StartRaycastPlacementMode();
+                if (_attachmentPoint != null)
+                {
+                    _attachmentPoint.SetAttachedSelectable(selectable2);
+                    selectable2.ParentAttachmentPoint = _attachmentPoint;
+                    newSelectableGameObject.transform.SetPositionAndRotation(_attachmentPoint.transform.position, _attachmentPoint.transform.rotation);
+                    newSelectableGameObject.transform.parent = _attachmentPoint.transform;
+                }
+                else
+                {
+                    selectable2.StartRaycastPlacementMode();
+                }
             });
         });
         ItemTemplate.SetActive(false);
     }
 
-    public static void Open()
+    public void Open()
     {
+        _attachmentPoint = null;
+        gameObject.SetActive(true);
+    }
+
+    public static void Open(AttachmentPoint attachmentPoint)
+    {
+        Instance._attachmentPoint = attachmentPoint;
         Instance.gameObject.SetActive(true);
     }
 }
