@@ -2,6 +2,7 @@ using HighlightPlus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
+    [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
 
 
     private void Awake()
@@ -55,11 +57,43 @@ public class Selectable : MonoBehaviour
         if (!_isRaycastPlacementMode || _hasBeenPlaced) return;
 
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 100f, 1 << LayerMask.NameToLayer("Wall"), QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 100f, 1 << LayerMask.NameToLayer("Wall")))
         {
-            transform.SetPositionAndRotation(raycastHit.point, Quaternion.LookRotation(raycastHit.normal));
-            transform.Rotate(90, 0, 0);
-            _virtualParent = raycastHit.collider.transform;
+            void SetPosition(RaycastHit hit)
+            {
+                transform.SetPositionAndRotation(hit.point, Quaternion.LookRotation(hit.normal));
+                transform.Rotate(90, 0, 0);
+                _virtualParent = hit.collider.transform;
+            }
+
+            if (WallRestrictions.Count > 0 && _virtualParent == null)
+            {
+                if (WallRestrictions[0] == RoomBoundaryType.Ceiling)
+                {
+                    var ray2 = new Ray(Vector3.zero + Vector3.up, Vector3.up);
+                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 100f, 1 << LayerMask.NameToLayer("Wall")))
+                    {
+                        SetPosition(raycastHit2);
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+                
+            }
+            else if (WallRestrictions.Count > 0) 
+            {
+                var wall = raycastHit.collider.GetComponent<RoomBoundary>();
+                if (WallRestrictions.Contains(wall.RoomBoundaryType))
+                {
+                    SetPosition(raycastHit);
+                }
+            }
+            else
+            {
+                SetPosition(raycastHit);
+            }
         }
 
         if (Input.GetMouseButtonUp(0))

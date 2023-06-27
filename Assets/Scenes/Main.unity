@@ -269,6 +269,7 @@ GameObject:
   - component: {fileID: 525140048}
   - component: {fileID: 525140047}
   - component: {fileID: 525140049}
+  - component: {fileID: 525140050}
   m_Layer: 8
   m_Name: FreeLookCam_Body
   m_TagString: Untagged
@@ -339,6 +340,19 @@ MonoBehaviour:
   <LookSensitivityY>k__BackingField: 33.75
   <Rigidbody>k__BackingField: {fileID: 525140048}
   <VirtualCamera>k__BackingField: {fileID: 1219145057}
+--- !u!114 &525140050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525140045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d00a4aafe7c6054ca3fe80415597755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <VirtualParent>k__BackingField: {fileID: 866518813}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -5741,7 +5755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000076293945
+      value: -0.000019073486
       objectReference: {fileID: 0}
     - target: {fileID: 2949008875738580499, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_ItemImage
@@ -6044,6 +6058,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2400326843376180108, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -11.500061
+      objectReference: {fileID: 0}
+    - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 9146597555026820389, guid: 6ced0f3653094ef46a674087d015ebe0, type: 3}
     - target: {fileID: 3345374975738051746, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6067,6 +6093,10 @@ PrefabInstance:
     - target: {fileID: 3808924356805802442, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -0.00013738855
+      objectReference: {fileID: 0}
+    - target: {fileID: 4135108817545400510, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 4135108818207308526, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_Name
@@ -6167,6 +6197,10 @@ PrefabInstance:
     - target: {fileID: 4135108818207309077, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <InputFieldHeight>k__BackingField
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5176309836750235120, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 15.099976
       objectReference: {fileID: 0}
     - target: {fileID: 6746164118843962508, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchorMax.x

@@ -8,7 +8,7 @@ public class RoomBoundary : MonoBehaviour
 {
     private static List<RoomBoundary> _instances = new();
     private readonly float _defaultWallThickness = 0.375f.ToMeters(); //4.5 inches
-    [field: SerializeField] private RoomBoundaryType RoomBoundaryType { get; set; }
+    [field: SerializeField] public RoomBoundaryType RoomBoundaryType { get; private set; }
     [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
     private MeshRenderer _meshRenderer;
     private Collider _collider;
