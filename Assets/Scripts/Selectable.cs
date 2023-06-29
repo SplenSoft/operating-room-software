@@ -113,12 +113,14 @@ public class Selectable : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        if (GizmoHandler.GizmoBeingUsed) return;
         IsMouseOver = true;
         MouseOverStateChanged?.Invoke(this, null);
     }
 
     private void OnMouseExit()
     {
+        if (GizmoHandler.GizmoBeingUsed) return;
         IsMouseOver = false;
         MouseOverStateChanged?.Invoke(this, null);
     }
@@ -241,7 +243,7 @@ public class Selectable : MonoBehaviour
 
     private void Select()
     {
-        if (IsSelected || _isRaycastPlacementMode) return;
+        if (IsSelected || _isRaycastPlacementMode || GizmoHandler.GizmoBeingUsed) return;
         if (SelectedSelectable != null)
         {
             SelectedSelectable.Deselect();

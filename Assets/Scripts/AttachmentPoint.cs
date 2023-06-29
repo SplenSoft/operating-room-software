@@ -67,6 +67,7 @@ public class AttachmentPoint : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        if (GizmoHandler.GizmoBeingUsed) return;
         HoveredAttachmentPoint = this;
         AttachmentPointHoverStateChanged?.Invoke(this, EventArgs.Empty);
         _attachmentPointHovered = true;
@@ -75,6 +76,7 @@ public class AttachmentPoint : MonoBehaviour
 
     private void OnMouseExit()
     {
+        if (GizmoHandler.GizmoBeingUsed) return;
         HoveredAttachmentPoint = null;
         AttachmentPointHoverStateChanged?.Invoke(this, EventArgs.Empty);
         _attachmentPointHovered = false;
@@ -83,6 +85,7 @@ public class AttachmentPoint : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
+        if (GizmoHandler.GizmoBeingUsed) return;
         AttachmentPointClicked?.Invoke(this, EventArgs.Empty);
         SelectedAttachmentPoint = this;
         UpdateComponentStatus();
