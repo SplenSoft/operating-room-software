@@ -35,8 +35,8 @@ public class AttachmentPoint : MonoBehaviour
 
     private void Awake()
     {
-        _collider = GetComponent<Collider>();
-        _renderer = GetComponent<MeshRenderer>();
+        _collider = GetComponentInChildren<Collider>();
+        _renderer = GetComponentInChildren<MeshRenderer>();
         ParentSelectable.MouseOverStateChanged += MouseOverStateChanged;
         Selectable.SelectionChanged += SelectionChanged;
         UpdateComponentStatus();

@@ -316,8 +316,8 @@ Rigidbody:
   m_GameObject: {fileID: 525140045}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Drag: 1
+  m_AngularDrag: 50
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -5755,7 +5755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00005340576
+      value: 0.000022888184
       objectReference: {fileID: 0}
     - target: {fileID: 2949008875738580499, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_ItemImage
@@ -6064,7 +6064,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[1]
@@ -6082,6 +6082,10 @@ PrefabInstance:
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[4]
       value: 
       objectReference: {fileID: 4539726008913472782, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
+    - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[5]
+      value: 
+      objectReference: {fileID: 6240993343729519551, guid: 03c42e87e53c2d94d85d176793b7e4ae, type: 3}
     - target: {fileID: 3345374975738051746, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

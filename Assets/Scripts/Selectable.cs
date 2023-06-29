@@ -259,5 +259,6 @@ public enum SelectableType
     Mount,
     Furniture,
     ArmSegment,
-    BoomSegment
+    BoomSegment,
+    BoomHead
 }
