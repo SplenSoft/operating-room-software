@@ -127,7 +127,8 @@ public class Selectable : MonoBehaviour
     private void Start()
     {
         OriginalLocalPosition = transform.localPosition;
-        transform.localPosition += InitialLocalPositionOffset;
+        Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
+        transform.localPosition += adjustedOffsetVector;
     }
 
     private void OnDestroy()
