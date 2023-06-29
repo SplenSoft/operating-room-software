@@ -1374,7 +1374,7 @@ MonoBehaviour:
       _text: Scale gizmo
     - _tooltip: Allows you to change universal gizmo settings.
       _text: Universal gizmo
-    _activeTabIndex: 0
+    _activeTabIndex: 3
   _settings:
     _canBeDisplayed: 1
     _isExpanded: 1
@@ -1601,7 +1601,7 @@ MonoBehaviour:
       _scaleSensitivity: 1
   _moveGizmoSettings3D:
     _canBeDisplayed: 1
-    _isExpanded: 0
+    _isExpanded: 1
     _vertexSnapSettings:
       _canBeDisplayed: 1
       _isExpanded: 1
@@ -1863,7 +1863,7 @@ MonoBehaviour:
     _sglSliderCapVis: 01010000
   _moveGizmoLookAndFeel3D:
     _canBeDisplayed: 1
-    _isExpanded: 0
+    _isExpanded: 1
     _isMidCapVisible: 0
     _midCapLookAndFeel:
       _capType: 2
@@ -2293,7 +2293,7 @@ MonoBehaviour:
     _transformableLayers: -1
   _rotationGizmoSettings3D:
     _canBeDisplayed: 1
-    _isExpanded: 0
+    _isExpanded: 1
     _camRightSnapStep: 15
     _camUpSnapStep: 15
     _sliderSettings:
@@ -2365,8 +2365,8 @@ MonoBehaviour:
       _scaleSensitivity: 1
   _rotationGizmoLookAndFeel3D:
     _canBeDisplayed: 1
-    _isExpanded: 0
-    _isMidCapVisible: 1
+    _isExpanded: 1
+    _isMidCapVisible: 0
     _midCapLookAndFeel:
       _capType: 3
       _fillMode: 0
@@ -2385,7 +2385,7 @@ MonoBehaviour:
       _trPrismWidth: 1
       _trPrismHeight: 1
       _trPrismDepth: 1
-      _isSphereBorderVisible: 1
+      _isSphereBorderVisible: 0
       _sphereBorderColor: {r: 1, g: 1, b: 1, a: 1}
       _numSphereBorderPoints: 100
       _color: {r: 0.3, g: 0.3, b: 0.3, a: 0.12}
@@ -2485,7 +2485,7 @@ MonoBehaviour:
         _fillFlags: 3
         _color: {r: 0.5, g: 0.5, b: 0.5, a: 0.1}
         _borderColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.8}
-    _isCamLookSliderVisible: 1
+    _isCamLookSliderVisible: 0
     _camLookSliderRadiusOffset: 0.65
     _camLookSliderLookAndFeel:
       _fillMode: 2
@@ -5755,7 +5755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000022888184
+      value: -0.00006866455
       objectReference: {fileID: 0}
     - target: {fileID: 2949008875738580499, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_ItemImage

@@ -47,10 +47,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <OriginalLocalPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <HighlightEffect>k__BackingField: {fileID: -6565122453228016778}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 9aebd705574f9e642aef1e5f59b3e4d8, type: 3}
   <Name>k__BackingField: Unknown
   <Description>k__BackingField: Unknown
+  <WallRestrictions>k__BackingField: 
+  <Types>k__BackingField: 
+  <MaxLocalTranslation>k__BackingField: {x: 10000, y: 10000, z: 10000}
+  <MinLocalTranslation>k__BackingField: {x: -10000, y: -10000, z: -10000}
+  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <AllowMovementX>k__BackingField: 1
+  <AllowMovementY>k__BackingField: 1
+  <AllowMovementZ>k__BackingField: 1
 --- !u!114 &-6565122453228016778
 MonoBehaviour:
   m_ObjectHideFlags: 0

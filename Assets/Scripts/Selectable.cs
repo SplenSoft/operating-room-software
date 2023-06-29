@@ -18,12 +18,103 @@ public class Selectable : MonoBehaviour
     public bool IsMouseOver { get; private set; }
     private GizmoHandler _gizmoHandler;
 
+    [field: SerializeField, ReadOnly] public Vector3 OriginalLocalPosition { get; private set; }
     [field: SerializeField] private HighlightEffect HighlightEffect { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
+    [field: SerializeField] public Vector3 MaxLocalTranslation { get; private set; } = new Vector3(10000f, 10000f, 10000f);
+    [field: SerializeField] public Vector3 MinLocalTranslation { get; private set; } = new Vector3(-10000f, -10000f, -10000f);
+    [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
+    [field: SerializeField] public bool AllowMovementX { get; set; } = true;
+    [field: SerializeField] public bool AllowMovementY { get; set; } = true;
+    [field: SerializeField] public bool AllowMovementZ { get; set; } = true;
+    [field: SerializeField] public bool AllowRotationX { get; set; } = true;
+    [field: SerializeField] public bool AllowRotationY { get; set; } = true;
+    [field: SerializeField] public bool AllowRotationZ { get; set; } = true;
+
+    public bool ExeedsMaxTranslation(out Vector3 totalExcess)
+    {
+        totalExcess = new Vector3();       
+
+        bool exceedsMaxX = false; 
+        bool exceedsMinX = false;
+        bool exceedsMaxY = false;
+        bool exceedsMinY = false;
+        bool exceedsMaxZ = false;
+        bool exceedsMinZ = false;
+
+        Vector3 adjustedTransform = transform.localRotation * transform.localPosition;
+
+        if (AllowMovementX)
+        {
+            float xDiff = adjustedTransform.x - OriginalLocalPosition.x;
+            float adjustedMaxX = MaxLocalTranslation.x * transform.localScale.x;
+            float adjustedMinX = MinLocalTranslation.x * transform.localScale.x;
+            if (xDiff > adjustedMaxX)
+            {
+                totalExcess.x += xDiff - adjustedMaxX;
+                exceedsMaxX = true;
+            }
+
+            if (xDiff < adjustedMinX)
+            {
+                totalExcess.x += xDiff - adjustedMinX;
+                exceedsMinX = true;
+            }
+        }
+
+        if (AllowMovementY)
+        {
+            float yDiff = adjustedTransform.y - OriginalLocalPosition.y;
+            float adjustedMaxY = MaxLocalTranslation.y * transform.localScale.y;
+            float adjustedMinY = MinLocalTranslation.y * transform.localScale.y;
+            if (yDiff > adjustedMaxY)
+            {
+                totalExcess.y += yDiff - adjustedMaxY;
+                exceedsMaxY = true;
+            }
+
+
+            if (yDiff < adjustedMinY)
+            {
+                totalExcess.y += yDiff - adjustedMinY;
+                exceedsMinY = true;
+            }
+        }
+
+        if (AllowMovementZ)
+        {
+            float zDiff = adjustedTransform.z - OriginalLocalPosition.z;
+            float adjustedMaxZ = MaxLocalTranslation.z * transform.localScale.z;
+            float adjustedMinZ = MinLocalTranslation.z * transform.localScale.z;
+            if (zDiff > adjustedMaxZ)
+            {
+                totalExcess.z += zDiff - adjustedMaxZ;
+                exceedsMaxZ = true;
+            }
+
+
+            if (zDiff < adjustedMinZ)
+            {
+                totalExcess.z += zDiff - adjustedMinZ;
+                exceedsMinZ = true;
+            }
+        }
+
+        bool exceedsX = AllowMovementX && (exceedsMaxX || exceedsMinX);
+        bool exceedsY = AllowMovementY && (exceedsMaxY || exceedsMinY);
+        bool exceedsZ = AllowMovementZ && (exceedsMaxZ || exceedsMinZ);
+
+        if (exceedsX || exceedsY || exceedsZ)
+        {
+            Debug.Log($"exceedsX {exceedsX} | exceedsY {exceedsY} | exceedsZ {exceedsZ}");
+        }
+
+        return exceedsX || exceedsY || exceedsZ;
+    } 
 
     public AttachmentPoint ParentAttachmentPoint { get; set; }
 
@@ -31,6 +122,12 @@ public class Selectable : MonoBehaviour
     {
         _gizmoHandler = GetComponent<GizmoHandler>();
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
+    }
+
+    private void Start()
+    {
+        OriginalLocalPosition = transform.localPosition;
+        transform.localPosition += InitialLocalPositionOffset;
     }
 
     private void OnDestroy()
@@ -185,9 +282,7 @@ public class Selectable : MonoBehaviour
         SelectedSelectable = this;
         HighlightEffect.highlighted = true;
         SelectionChanged?.Invoke(this, null);
-
-        if (ParentAttachmentPoint == null)
-            _gizmoHandler.SelectableSelected();
+        _gizmoHandler.SelectableSelected();
     }
 }
 
