@@ -76,6 +76,7 @@ public class GizmoHandler : MonoBehaviour
             RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(2, _selectable.AllowRotationZ);
 
             _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
+            _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
         }
 
         //_scaleGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Scale && _selectable.IsSelected);
@@ -97,6 +98,7 @@ public class GizmoHandler : MonoBehaviour
         _translateGizmo.Gizmo.PostDragBegin += OnGizmoPostDragBegin;
         _translateGizmo.Gizmo.PostDragEnd += OnGizmoPostDragEnd;
         _translateGizmo.Gizmo.PreDragUpdate += OnGizmoPreDragUpdate;
+        _translateGizmo.SetTransformPivot(GizmoObjectTransformPivot.ObjectMeshPivot);
 
         _rotateGizmo = RTGizmosEngine.Get.CreateObjectRotationGizmo();
         _rotateGizmo.SetTargetObject(gameObject);
@@ -104,21 +106,7 @@ public class GizmoHandler : MonoBehaviour
         _rotateGizmo.Gizmo.PostDragUpdate += OnGizmoPostDragUpdate;
         _rotateGizmo.Gizmo.PostDragBegin += OnGizmoPostDragBegin;
         _rotateGizmo.Gizmo.PostDragEnd += OnGizmoPostDragEnd;
-
-        //_scaleGizmo = RTGizmosEngine.Get.CreateObjectScaleGizmo();
-        //_scaleGizmo.SetTargetObject(gameObject);
-        //_scaleGizmo.SetTransformSpace(GizmoSpace.Local);
-        //_scaleGizmo.Gizmo.PostDragUpdate += OnGizmoPostDragUpdate;
-        //_scaleGizmo.Gizmo.PostDragBegin += OnGizmoPostDragBegin;
-        //_scaleGizmo.Gizmo.PostDragEnd += OnGizmoPostDragEnd;
-
-        //_universalGizmo = RTGizmosEngine.Get.CreateObjectUniversalGizmo();
-        //_universalGizmo.SetTargetObject(gameObject);
-        //_universalGizmo.Gizmo.UniversalGizmo.SetMvVertexSnapTargetObjects(new List<GameObject> { gameObject });
-        //_universalGizmo.SetTransformSpace(GizmoSpace.Local);
-        //_universalGizmo.Gizmo.PostDragUpdate += OnGizmoPostDragUpdate;
-        //_universalGizmo.Gizmo.PostDragBegin += OnGizmoPostDragBegin;
-        //_universalGizmo.Gizmo.PostDragEnd += OnGizmoPostDragEnd;
+        _rotateGizmo.SetTransformPivot(GizmoObjectTransformPivot.ObjectMeshPivot);
 
         _gizmosInitialized = true;
     }
@@ -145,17 +133,19 @@ public class GizmoHandler : MonoBehaviour
     private void OnGizmoPostDragUpdate(Gizmo gizmo, int handleId)
     {
         GizmoUsedLastFrame = true;
-        if (_selectable.ExeedsMaxTranslation(out Vector3 totalExcess))
+
+        if (gizmo.ObjectTransformGizmo == _translateGizmo && _selectable.ExeedsMaxTranslation(out Vector3 totalExcess))
         {
             transform.localPosition -= totalExcess;
             _translateGizmo.Gizmo.Transform.Position3D = transform.position;
         }
 
-        //float finalX = _selectable.AllowMovementX ? transform.localPosition.x : _localPositionBeforeUpdate.x;
-        //float finalY = _selectable.AllowMovementY ? transform.localPosition.y : _localPositionBeforeUpdate.y;
-        //float finalZ = _selectable.AllowMovementZ ? transform.localPosition.z : _localPositionBeforeUpdate.z;
-        //transform.localPosition = new Vector3(finalX, finalY, finalZ);
-        
+        if (gizmo.ObjectTransformGizmo == _rotateGizmo && _selectable.ExceedsMaxRotation(out totalExcess))
+        {
+            transform.localRotation *= Quaternion.Euler(-totalExcess.x, -totalExcess.y, -totalExcess.z);
+            _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+        }
+
     }
 }
 

@@ -2241,9 +2241,9 @@ MonoBehaviour:
         _borderColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.8}
   _moveGizmoHotkeys:
     _canBeDisplayed: 1
-    _isExpanded: 0
+    _isExpanded: 1
     _enable2DMode:
-      _isEnabled: 1
+      _isEnabled: 0
       _key: 0
       _lCtrl: 0
       _lCmd: 0
@@ -2258,7 +2258,7 @@ MonoBehaviour:
       _staticData:
         CanHaveMouseButtons: 0
     _enableSnapping:
-      _isEnabled: 1
+      _isEnabled: 0
       _key: 0
       _lCtrl: 1
       _lCmd: 0
@@ -2273,7 +2273,7 @@ MonoBehaviour:
       _staticData:
         CanHaveMouseButtons: 0
     _enableVertexSnapping:
-      _isEnabled: 1
+      _isEnabled: 0
       _key: 118
       _lCtrl: 0
       _lCmd: 0
@@ -2510,9 +2510,9 @@ MonoBehaviour:
       _borderPolyThickness: 4
   _rotationGizmoHotkeys:
     _canBeDisplayed: 1
-    _isExpanded: 0
+    _isExpanded: 1
     _enableSnapping:
-      _isEnabled: 1
+      _isEnabled: 0
       _key: 0
       _lCtrl: 1
       _lCmd: 0
@@ -2528,7 +2528,7 @@ MonoBehaviour:
         CanHaveMouseButtons: 0
   _objectRotationGizmoSettings:
     _canBeDisplayed: 1
-    _isExpanded: 0
+    _isExpanded: 1
     _transformableLayers: -1
   _scaleGizmoSettings3D:
     _canBeDisplayed: 1
@@ -5755,7 +5755,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000022888184
+      value: -0.00005340576
       objectReference: {fileID: 0}
     - target: {fileID: 2949008875738580499, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_ItemImage

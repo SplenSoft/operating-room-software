@@ -38,7 +38,7 @@ MonoBehaviour:
   overlayTextureScale: 1
   overlayVisibility: 0
   outline: 1
-  outlineColor: {r: 1, g: 0.8741453, b: 0, a: 1}
+  outlineColor: {r: 0, g: 0, b: 0, a: 1}
   outlineColorStyle: 0
   outlineGradient:
     serializedVersion: 2
@@ -70,7 +70,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   outlineGradientInLocalSpace: 0
-  outlineWidth: 1.62
+  outlineWidth: 0.45
   outlineQuality: 1
   outlineDownsampling: 1
   outlineVisibility: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
     alpha: 0.4
     color: {r: 0.64, g: 1, b: 0, a: 1}
   glowIgnoreMask: 0
-  innerGlow: 0.7
+  innerGlow: 0
   innerGlowWidth: 1
   innerGlowColor: {r: 1, g: 1, b: 1, a: 1}
   innerGlowVisibility: 0

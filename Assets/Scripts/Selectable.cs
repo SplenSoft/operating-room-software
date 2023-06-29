@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
+[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
 public class Selectable : MonoBehaviour
 {
     public EventHandler MouseOverStateChanged;
@@ -17,16 +18,22 @@ public class Selectable : MonoBehaviour
     private Transform _virtualParent;
     public bool IsMouseOver { get; private set; }
     private GizmoHandler _gizmoHandler;
+    public bool IsDestroyed { get; private set; }
+    public AttachmentPoint ParentAttachmentPoint { get; set; }
 
     [field: SerializeField, ReadOnly] public Vector3 OriginalLocalPosition { get; private set; }
+    [field: SerializeField, ReadOnly] public Vector3 OriginalLocalRotation { get; private set; }
+
     [field: SerializeField] private HighlightEffect HighlightEffect { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
-    [field: SerializeField] public Vector3 MaxLocalTranslation { get; private set; } = new Vector3(10000f, 10000f, 10000f);
-    [field: SerializeField] public Vector3 MinLocalTranslation { get; private set; } = new Vector3(-10000f, -10000f, -10000f);
+    [field: SerializeField] public Vector3 MaxLocalTranslation { get; private set; }
+    [field: SerializeField] public Vector3 MinLocalTranslation { get; private set; }
+    [field: SerializeField] public Vector3 MaxLocalRotation { get; private set; }
+    [field: SerializeField] public Vector3 MinLocalRotation { get; private set; }
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
     [field: SerializeField] public bool AllowMovementX { get; set; } = true;
     [field: SerializeField] public bool AllowMovementY { get; set; } = true;
@@ -34,89 +41,40 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public bool AllowRotationX { get; set; } = true;
     [field: SerializeField] public bool AllowRotationY { get; set; } = true;
     [field: SerializeField] public bool AllowRotationZ { get; set; } = true;
+    [field: SerializeField] private List<Selectable> Interdependencies { get; set; } = new List<Selectable>();
+
+    private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
+    {
+        excess = 0f;
+        if (maxVal == 0 && minVal == 0) return false;
+        float diff = currentVal - originalVal;
+        excess = diff > maxVal ? diff - maxVal : diff < minVal ? diff - minVal : 0f;
+        return excess != 0;
+    }
 
     public bool ExeedsMaxTranslation(out Vector3 totalExcess)
     {
-        totalExcess = new Vector3();       
-
-        bool exceedsMaxX = false; 
-        bool exceedsMinX = false;
-        bool exceedsMaxY = false;
-        bool exceedsMinY = false;
-        bool exceedsMaxZ = false;
-        bool exceedsMinZ = false;
-
         Vector3 adjustedTransform = transform.localRotation * transform.localPosition;
-
-        if (AllowMovementX)
-        {
-            float xDiff = adjustedTransform.x - OriginalLocalPosition.x;
-            float adjustedMaxX = MaxLocalTranslation.x * transform.localScale.x;
-            float adjustedMinX = MinLocalTranslation.x * transform.localScale.x;
-            if (xDiff > adjustedMaxX)
-            {
-                totalExcess.x += xDiff - adjustedMaxX;
-                exceedsMaxX = true;
-            }
-
-            if (xDiff < adjustedMinX)
-            {
-                totalExcess.x += xDiff - adjustedMinX;
-                exceedsMinX = true;
-            }
-        }
-
-        if (AllowMovementY)
-        {
-            float yDiff = adjustedTransform.y - OriginalLocalPosition.y;
-            float adjustedMaxY = MaxLocalTranslation.y * transform.localScale.y;
-            float adjustedMinY = MinLocalTranslation.y * transform.localScale.y;
-            if (yDiff > adjustedMaxY)
-            {
-                totalExcess.y += yDiff - adjustedMaxY;
-                exceedsMaxY = true;
-            }
-
-
-            if (yDiff < adjustedMinY)
-            {
-                totalExcess.y += yDiff - adjustedMinY;
-                exceedsMinY = true;
-            }
-        }
-
-        if (AllowMovementZ)
-        {
-            float zDiff = adjustedTransform.z - OriginalLocalPosition.z;
-            float adjustedMaxZ = MaxLocalTranslation.z * transform.localScale.z;
-            float adjustedMinZ = MinLocalTranslation.z * transform.localScale.z;
-            if (zDiff > adjustedMaxZ)
-            {
-                totalExcess.z += zDiff - adjustedMaxZ;
-                exceedsMaxZ = true;
-            }
-
-
-            if (zDiff < adjustedMinZ)
-            {
-                totalExcess.z += zDiff - adjustedMinZ;
-                exceedsMinZ = true;
-            }
-        }
-
-        bool exceedsX = AllowMovementX && (exceedsMaxX || exceedsMinX);
-        bool exceedsY = AllowMovementY && (exceedsMaxY || exceedsMinY);
-        bool exceedsZ = AllowMovementZ && (exceedsMaxZ || exceedsMinZ);
-
-        if (exceedsX || exceedsY || exceedsZ)
-        {
-            Debug.Log($"exceedsX {exceedsX} | exceedsY {exceedsY} | exceedsZ {exceedsZ}");
-        }
-
+        Vector3 adjustedMaxTranslation = new Vector3(MaxLocalTranslation.x * transform.localScale.x, MaxLocalTranslation.y * transform.localScale.y, MaxLocalTranslation.z * transform.localScale.z);
+        Vector3 adjustedMinTranslation = new Vector3(MinLocalTranslation.x * transform.localScale.x, MinLocalTranslation.y * transform.localScale.y, MinLocalTranslation.z * transform.localScale.z);
+        totalExcess = default;
+        bool exceedsX = AllowMovementX && CheckConstraints(adjustedTransform.x, OriginalLocalPosition.x, adjustedMaxTranslation.x, adjustedMinTranslation.x, out totalExcess.x);
+        bool exceedsY = AllowMovementY && CheckConstraints(adjustedTransform.y, OriginalLocalPosition.y, adjustedMaxTranslation.y, adjustedMinTranslation.y, out totalExcess.y);
+        bool exceedsZ = AllowMovementZ && CheckConstraints(adjustedTransform.z, OriginalLocalPosition.z, adjustedMaxTranslation.z, adjustedMinTranslation.z, out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
-    } 
+    }
 
-    public AttachmentPoint ParentAttachmentPoint { get; set; }
+    public bool ExceedsMaxRotation(out Vector3 totalExcess)
+    {
+        float angleX = transform.localEulerAngles.x > 180 ? transform.localEulerAngles.x - 360f : transform.localEulerAngles.x;
+        float angleY = transform.localEulerAngles.y > 180 ? transform.localEulerAngles.y - 360f : transform.localEulerAngles.y;
+        float angleZ = transform.localEulerAngles.z > 180 ? transform.localEulerAngles.z - 360f : transform.localEulerAngles.z;
+        totalExcess = default;
+        bool exceedsX = AllowRotationX && CheckConstraints(angleX, OriginalLocalRotation.x, MaxLocalRotation.x, MinLocalRotation.x, out totalExcess.x);
+        bool exceedsY = AllowRotationY && CheckConstraints(angleY, OriginalLocalRotation.y, MaxLocalRotation.y, MinLocalRotation.y, out totalExcess.y);
+        bool exceedsZ = AllowRotationZ && CheckConstraints(angleZ, OriginalLocalRotation.z, MaxLocalRotation.z, MinLocalRotation.z, out totalExcess.z);
+        return exceedsX || exceedsY || exceedsZ;
+    }
 
     private void Awake()
     {
@@ -133,11 +91,19 @@ public class Selectable : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (IsDestroyed) return;
+        IsDestroyed = true;
+
         InputHandler.KeyStateChanged -= InputHandler_KeyStateChanged;
         if (ParentAttachmentPoint != null)
         {
             ParentAttachmentPoint.DetachSelectable();
         }
+
+        Interdependencies.ForEach(item =>
+        {
+            Destroy(item.gameObject);
+        });
     }
 
     public void OnMouseUpAsButton()
