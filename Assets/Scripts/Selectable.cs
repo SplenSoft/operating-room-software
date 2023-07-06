@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
@@ -41,7 +42,19 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public bool AllowRotationX { get; set; } = true;
     [field: SerializeField] public bool AllowRotationY { get; set; } = true;
     [field: SerializeField] public bool AllowRotationZ { get; set; } = true;
+    [field: SerializeField] public bool AllowScaleZ { get; set; }
+    [field: SerializeField] private List<ScaleLevel> ScaleLevels { get; set; } = new();
     [field: SerializeField] private List<Selectable> Interdependencies { get; set; } = new List<Selectable>();
+    
+    [Serializable]
+    private class ScaleLevel
+    {
+        [field: SerializeField] public float Size { get; set; }
+        [field: SerializeField] public bool Selected { get; set; }
+        public float ScaleZ { get; set; }
+    }
+
+    private ScaleLevel _currentScaleLevel;
 
     private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
     {
@@ -80,6 +93,69 @@ public class Selectable : MonoBehaviour
     {
         _gizmoHandler = GetComponent<GizmoHandler>();
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
+
+        if (AllowScaleZ)
+        {
+            _currentScaleLevel = ScaleLevels.First(item => item.Selected);
+            _currentScaleLevel.ScaleZ = transform.localScale.z;
+
+            ScaleLevels.ForEach(item =>
+            {
+                if (!item.Selected)
+                {
+                    float perc = item.Size / _currentScaleLevel.Size;
+                    item.ScaleZ = _currentScaleLevel.ScaleZ * perc;
+                }
+            });
+
+            _gizmoHandler.GizmoDragEnded.AddListener(() =>
+            {
+                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                {
+                    UpdateScaling(true);
+                }
+            });
+        }
+        
+    }
+
+    private void UpdateScaling(bool setSelected)
+    {
+        //get closest scale in list
+        ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
+        if (closest == _currentScaleLevel) return;
+
+        Vector3 parentOriginalScale = transform.localScale;
+
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, closest.ScaleZ);
+
+        Vector3 newParentScale = transform.localScale;
+
+        // Get the relative difference to the original scale
+        var diffX = newParentScale.x / parentOriginalScale.x;
+        var diffY = newParentScale.y / parentOriginalScale.y;
+        var diffZ = newParentScale.z / parentOriginalScale.z;
+
+        // This inverts the scale differences
+        var diffVector = new Vector3(1 / diffX, 1 / diffY, 1 / diffZ);
+        //diffVector = transform.tra
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+            Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
+            float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
+            float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
+            float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
+            child.transform.localScale = new Vector3(x, y, z);
+        }
+
+        if (setSelected)
+        {
+            ScaleLevels.ForEach((item) => item.Selected = false);
+            closest.Selected = true;
+            _currentScaleLevel = closest;
+        }
     }
 
     private void Start()
@@ -138,6 +214,11 @@ public class Selectable : MonoBehaviour
 
     private void Update()
     {
+        if (_gizmoHandler.IsBeingUsed && GizmoSelector.CurrentGizmoMode == GizmoMode.Scale) 
+        {
+            UpdateScaling(false);
+        }
+
         UpdateRaycastPlacementMode();
     }
 

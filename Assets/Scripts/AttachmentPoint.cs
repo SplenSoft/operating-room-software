@@ -63,6 +63,7 @@ public class AttachmentPoint : MonoBehaviour
     private void OnDestroy()
     {
         ParentSelectable.MouseOverStateChanged -= MouseOverStateChanged;
+        Selectable.SelectionChanged -= SelectionChanged;
     }
 
     private void OnMouseEnter()
