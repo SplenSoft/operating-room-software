@@ -10,22 +10,25 @@ using UnityEngine;
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
 public class Selectable : MonoBehaviour
 {
+    [Serializable]
+    private class ScaleLevel
+    {
+        [field: SerializeField] public float Size { get; set; }
+        [field: SerializeField] public bool Selected { get; set; }
+        public float ScaleZ { get; set; }
+    }
+
     public EventHandler MouseOverStateChanged;
     public static EventHandler SelectionChanged;
-    public static Selectable SelectedSelectable { get; private set; }
-    public bool IsSelected => SelectedSelectable == this;
-    private bool _isRaycastPlacementMode;
-    private bool _hasBeenPlaced;
-    private Transform _virtualParent;
+
+    #region Fields and Properties
     public bool IsMouseOver { get; private set; }
-    private GizmoHandler _gizmoHandler;
+    public static Selectable SelectedSelectable { get; private set; }
     public bool IsDestroyed { get; private set; }
     public AttachmentPoint ParentAttachmentPoint { get; set; }
+    public Vector3 OriginalLocalPosition { get; private set; }
+    public Vector3 OriginalLocalRotation { get; private set; }
 
-    [field: SerializeField, ReadOnly] public Vector3 OriginalLocalPosition { get; private set; }
-    [field: SerializeField, ReadOnly] public Vector3 OriginalLocalRotation { get; private set; }
-
-    [field: SerializeField] private HighlightEffect HighlightEffect { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
@@ -45,16 +48,28 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public bool AllowScaleZ { get; set; }
     [field: SerializeField] private List<ScaleLevel> ScaleLevels { get; set; } = new();
     [field: SerializeField] private List<Selectable> Interdependencies { get; set; } = new List<Selectable>();
-    
-    [Serializable]
-    private class ScaleLevel
+
+    private List<Vector3> _childScales = new();
+    private Transform _virtualParent;
+    private HighlightEffect _highlightEffect;
+    private GizmoHandler _gizmoHandler;
+    [SerializeField, ReadOnly] private ScaleLevel _currentScaleLevel;
+    [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;
+    private bool _isRaycastPlacementMode;
+    private bool _hasBeenPlaced;
+    #endregion
+
+    public static void DeselectAll()
     {
-        [field: SerializeField] public float Size { get; set; }
-        [field: SerializeField] public bool Selected { get; set; }
-        public float ScaleZ { get; set; }
+        if (SelectedSelectable != null)
+        {
+            if (SelectedSelectable.GetComponent<GizmoHandler>().GizmoUsedLastFrame) return;
+            SelectedSelectable.Deselect();
+            SelectionChanged?.Invoke(null, null);
+        }
     }
 
-    private ScaleLevel _currentScaleLevel;
+    public bool IsSelected => SelectedSelectable == this;
 
     private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
     {
@@ -89,15 +104,83 @@ public class Selectable : MonoBehaviour
         return exceedsX || exceedsY || exceedsZ;
     }
 
+    private void UpdateScaling(bool setSelected)
+    {
+        //get closest scale in list
+        ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
+        if (closest == _currentPreviewScaleLevel && !setSelected) return;
+        _currentPreviewScaleLevel = closest;
+
+        for (int j = 0; j < 2; j++)
+        {
+            Vector3 parentOriginalScale = transform.localScale;
+            Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, closest.ScaleZ);
+            transform.localScale = newScale;
+
+            if (closest == _currentScaleLevel)
+            {
+                Debug.Log("Using stored child scales");
+                for (int i = 0; i < transform.childCount; i++)
+                    transform.GetChild(i).transform.localScale = _childScales[i];
+            }
+            else
+            {
+                Debug.Log("Calculating child scales");
+                Vector3 newParentScale = newScale;
+                // Get the relative difference to the original scale
+                var diffX = newParentScale.x / parentOriginalScale.x;
+                var diffY = newParentScale.y / parentOriginalScale.y;
+                var diffZ = newParentScale.z / parentOriginalScale.z;
+
+                // This inverts the scale differences
+                var diffVector = new Vector3(1 / diffX, 1 / diffY, 1 / diffZ);
+
+                for (int i = 0; i < transform.childCount; i++)
+                {
+                    var child = transform.GetChild(i);
+                    Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
+                    float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
+                    float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
+                    float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
+                    child.transform.localScale = new Vector3(x, y, z);
+                }
+            }
+        }
+
+        if (setSelected)
+        {
+            ScaleLevels.ForEach((item) => item.Selected = false);
+            closest.Selected = true;
+            _currentScaleLevel = closest;
+            StoreChildScales();
+        }
+    }
+
+    private void StoreChildScales()
+    {
+        _childScales.Clear();
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            var child = transform.GetChild(i);
+            _childScales.Add(child.transform.localScale);
+        }
+    }
+
+    #region Monobehaviour
     private void Awake()
     {
+        _highlightEffect = GetComponent<HighlightEffect>();
         _gizmoHandler = GetComponent<GizmoHandler>();
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
 
         if (AllowScaleZ)
         {
             _currentScaleLevel = ScaleLevels.First(item => item.Selected);
+            _currentPreviewScaleLevel = _currentScaleLevel;
             _currentScaleLevel.ScaleZ = transform.localScale.z;
+
+            StoreChildScales();
 
             ScaleLevels.ForEach(item =>
             {
@@ -115,54 +198,15 @@ public class Selectable : MonoBehaviour
                     UpdateScaling(true);
                 }
             });
+
+            _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
+            {
+                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                {
+                    UpdateScaling(false);
+                }
+            });
         }
-        
-    }
-
-    private void UpdateScaling(bool setSelected)
-    {
-        //get closest scale in list
-        ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
-        if (closest == _currentScaleLevel) return;
-
-        Vector3 parentOriginalScale = transform.localScale;
-
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, closest.ScaleZ);
-
-        Vector3 newParentScale = transform.localScale;
-
-        // Get the relative difference to the original scale
-        var diffX = newParentScale.x / parentOriginalScale.x;
-        var diffY = newParentScale.y / parentOriginalScale.y;
-        var diffZ = newParentScale.z / parentOriginalScale.z;
-
-        // This inverts the scale differences
-        var diffVector = new Vector3(1 / diffX, 1 / diffY, 1 / diffZ);
-        //diffVector = transform.tra
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            var child = transform.GetChild(i);
-            Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
-            float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
-            float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
-            float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
-            child.transform.localScale = new Vector3(x, y, z);
-        }
-
-        if (setSelected)
-        {
-            ScaleLevels.ForEach((item) => item.Selected = false);
-            closest.Selected = true;
-            _currentScaleLevel = closest;
-        }
-    }
-
-    private void Start()
-    {
-        OriginalLocalPosition = transform.localPosition;
-        Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
-        transform.localPosition += adjustedOffsetVector;
     }
 
     private void OnDestroy()
@@ -201,25 +245,28 @@ public class Selectable : MonoBehaviour
         MouseOverStateChanged?.Invoke(this, null);
     }
 
-    public async void StartRaycastPlacementMode()
+    private void Start()
     {
-        if (ParentAttachmentPoint != null) return;
-        DeselectAll();
-        HighlightEffect.highlighted = true;
-        await Task.Yield();
-        if (!Application.isPlaying) return;
-
-        _isRaycastPlacementMode = true;
+        OriginalLocalPosition = transform.localPosition;
+        Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
+        transform.localPosition += adjustedOffsetVector;
     }
 
     private void Update()
     {
-        if (_gizmoHandler.IsBeingUsed && GizmoSelector.CurrentGizmoMode == GizmoMode.Scale) 
-        {
-            UpdateScaling(false);
-        }
-
         UpdateRaycastPlacementMode();
+    }
+    #endregion
+
+    public async void StartRaycastPlacementMode()
+    {
+        if (ParentAttachmentPoint != null) return;
+        DeselectAll();
+        _highlightEffect.highlighted = true;
+        await Task.Yield();
+        if (!Application.isPlaying) return;
+
+        _isRaycastPlacementMode = true;
     }
 
     private async void UpdateRaycastPlacementMode()
@@ -275,7 +322,7 @@ public class Selectable : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            HighlightEffect.highlighted = false;
+            _highlightEffect.highlighted = false;
             _hasBeenPlaced = true;
             SendMessage("SelectablePositionChanged");
             SendMessage("VirtualParentChanged", _virtualParent);
@@ -304,21 +351,11 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    public static void DeselectAll()
-    {
-        if (SelectedSelectable != null)
-        {
-            if (SelectedSelectable.GetComponent<GizmoHandler>().GizmoUsedLastFrame) return;
-            SelectedSelectable.Deselect();
-            SelectionChanged?.Invoke(null, null);
-        }
-    }
-
     private void Deselect()
     {
         if (!IsSelected) return;
         SelectedSelectable = null;
-        HighlightEffect.highlighted = false;
+        _highlightEffect.highlighted = false;
         SendMessage("SelectableDeselected");
     }
 
@@ -330,7 +367,7 @@ public class Selectable : MonoBehaviour
             SelectedSelectable.Deselect();
         }
         SelectedSelectable = this;
-        HighlightEffect.highlighted = true;
+        _highlightEffect.highlighted = true;
         SelectionChanged?.Invoke(this, null);
         _gizmoHandler.SelectableSelected();
     }

@@ -20,9 +20,10 @@ public class GizmoHandler : MonoBehaviour
     private Vector3 _localPositionBeforeUpdate;
     private Vector3 _localScaleBeforeStartDrag;
     public Vector3 CurrentScaleDrag { get; private set; }
-    public UnityEvent GizmoDragEnded { get; set; } = new UnityEvent();
+    public UnityEvent GizmoDragEnded { get; } = new UnityEvent();
+    public UnityEvent GizmoDragPostUpdate { get; } = new UnityEvent();
     //private static readonly Color _colorTransparent = new(0, 0, 0, 0);
-    
+
     private Selectable _selectable;
 
     private void Awake()
@@ -185,9 +186,10 @@ public class GizmoHandler : MonoBehaviour
 
         if (gizmo.ObjectTransformGizmo == _scaleGizmo)
         {
-            Debug.Log(gizmo.TotalDragScale);
             CurrentScaleDrag = new Vector3(_localScaleBeforeStartDrag.x * gizmo.TotalDragScale.x, _localScaleBeforeStartDrag.y * gizmo.TotalDragScale.y, _localScaleBeforeStartDrag.z * gizmo.TotalDragScale.z);
         }
+
+        GizmoDragPostUpdate?.Invoke();
     }
 }
 

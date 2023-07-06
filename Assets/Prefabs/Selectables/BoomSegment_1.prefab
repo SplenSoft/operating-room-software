@@ -374,7 +374,7 @@ MonoBehaviour:
   seeThroughTexture: {fileID: 0}
   seeThroughTextureUVSpace: 0
   seeThroughTextureScale: 1
-  rmsCount: 2
+  rmsCount: 3
   hitFxInitialIntensity: 0
   hitFxMode: 0
   hitFxFadeOutDuration: 0.25
@@ -489,7 +489,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 1315154919841049178, guid: 7aa393eafe077db46b1090af76678ed1, type: 3}
+  m_Mesh: {fileID: 8442200364916606080, guid: 7aa393eafe077db46b1090af76678ed1, type: 3}
 --- !u!114 &8949876842903778800
 MonoBehaviour:
   m_ObjectHideFlags: 0
