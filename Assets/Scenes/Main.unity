@@ -5729,7 +5729,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000038146973
+      value: -0.00004196167
       objectReference: {fileID: 0}
     - target: {fileID: 3998261930835656223, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -5874,7 +5874,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[1]
@@ -5896,6 +5896,10 @@ PrefabInstance:
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[5]
       value: 
       objectReference: {fileID: 6240993343729519551, guid: 03c42e87e53c2d94d85d176793b7e4ae, type: 3}
+    - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[6]
+      value: 
+      objectReference: {fileID: 1164053765823973348, guid: 6935fe97e09de22468b27e8fe6ba08a1, type: 3}
     - target: {fileID: 3345374975738051746, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

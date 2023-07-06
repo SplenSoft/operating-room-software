@@ -17,7 +17,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectableTypes>k__BackingField.Array.data[0]
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectableTypes>k__BackingField.Array.data[1]
@@ -505,9 +505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <OriginalLocalPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  <OriginalLocalRotation>k__BackingField: {x: 0, y: 0, z: 0}
-  <HighlightEffect>k__BackingField: {fileID: 919813875480930223}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
   <Name>k__BackingField: Boom Segment 2-3
   <Description>k__BackingField: 
@@ -524,8 +521,16 @@ MonoBehaviour:
   <AllowRotationX>k__BackingField: 0
   <AllowRotationY>k__BackingField: 1
   <AllowRotationZ>k__BackingField: 0
+  <AllowScaleZ>k__BackingField: 0
+  <ScaleLevels>k__BackingField: []
   <Interdependencies>k__BackingField:
   - {fileID: 5102702119798078014}
+  _currentScaleLevel:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
+  _currentPreviewScaleLevel:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
 --- !u!114 &5232814838239893113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -581,9 +586,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <OriginalLocalPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  <OriginalLocalRotation>k__BackingField: {x: 0, y: 0, z: 0}
-  <HighlightEffect>k__BackingField: {fileID: 7511422527843455098}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
   <Name>k__BackingField: Boom Segment 2-2
   <Description>k__BackingField: 
@@ -600,9 +602,17 @@ MonoBehaviour:
   <AllowRotationX>k__BackingField: 0
   <AllowRotationY>k__BackingField: 1
   <AllowRotationZ>k__BackingField: 0
+  <AllowScaleZ>k__BackingField: 0
+  <ScaleLevels>k__BackingField: []
   <Interdependencies>k__BackingField:
   - {fileID: 7545313951941142185}
   - {fileID: 1634076314307409458}
+  _currentScaleLevel:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
+  _currentPreviewScaleLevel:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
 --- !u!114 &7511422527843455098
 MonoBehaviour:
   m_ObjectHideFlags: 0
