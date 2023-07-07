@@ -47,6 +47,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public bool AllowRotationZ { get; set; } = true;
     [field: SerializeField] public bool AllowScaleZ { get; set; }
     [field: SerializeField] private List<ScaleLevel> ScaleLevels { get; set; } = new();
+    [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] private List<Selectable> Interdependencies { get; set; } = new List<Selectable>();
 
     private List<Vector3> _childScales = new();
@@ -57,6 +58,7 @@ public class Selectable : MonoBehaviour
     [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
+    private Vector3 _startingRotation;
     #endregion
 
     public static void DeselectAll()
@@ -172,6 +174,7 @@ public class Selectable : MonoBehaviour
     {
         _highlightEffect = GetComponent<HighlightEffect>();
         _gizmoHandler = GetComponent<GizmoHandler>();
+        _startingRotation = transform.eulerAngles;
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
 
         if (AllowScaleZ)
@@ -255,6 +258,15 @@ public class Selectable : MonoBehaviour
     private void Update()
     {
         UpdateRaycastPlacementMode();
+
+        if (ZAlwaysFacesGround)
+        {
+            transform.LookAt(transform.position + Vector3.down, transform.parent.forward);
+            if (!AllowRotationZ)
+            {
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, OriginalLocalRotation.z);
+            }
+        }
     }
     #endregion
 

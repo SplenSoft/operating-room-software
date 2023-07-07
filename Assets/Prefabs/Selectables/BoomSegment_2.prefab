@@ -510,8 +510,8 @@ MonoBehaviour:
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
-  <MaxLocalTranslation>k__BackingField: {x: 10000, y: 10000, z: 10000}
-  <MinLocalTranslation>k__BackingField: {x: -10000, y: -10000, z: -10000}
+  <MaxLocalTranslation>k__BackingField: {x: 0, y: 0, z: 0}
+  <MinLocalTranslation>k__BackingField: {x: 0, y: 0, z: 0}
   <MaxLocalRotation>k__BackingField: {x: 0, y: 20, z: 0}
   <MinLocalRotation>k__BackingField: {x: 0, y: -35, z: 0}
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
@@ -519,10 +519,11 @@ MonoBehaviour:
   <AllowMovementY>k__BackingField: 0
   <AllowMovementZ>k__BackingField: 0
   <AllowRotationX>k__BackingField: 0
-  <AllowRotationY>k__BackingField: 1
+  <AllowRotationY>k__BackingField: 0
   <AllowRotationZ>k__BackingField: 0
   <AllowScaleZ>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
+  <ZAlwaysFacesGround>k__BackingField: 1
   <Interdependencies>k__BackingField:
   - {fileID: 5102702119798078014}
   _currentScaleLevel:
@@ -604,6 +605,7 @@ MonoBehaviour:
   <AllowRotationZ>k__BackingField: 0
   <AllowScaleZ>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
+  <ZAlwaysFacesGround>k__BackingField: 0
   <Interdependencies>k__BackingField:
   - {fileID: 7545313951941142185}
   - {fileID: 1634076314307409458}
