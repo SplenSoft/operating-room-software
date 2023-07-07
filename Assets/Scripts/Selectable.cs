@@ -59,6 +59,7 @@ public class Selectable : MonoBehaviour
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
     private Vector3 _startingRotation;
+    [field: SerializeField] public Measurable Measurable { get; private set; }
     #endregion
 
     public static void DeselectAll()

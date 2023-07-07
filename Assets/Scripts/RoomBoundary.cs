@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class RoomBoundary : MonoBehaviour
 {
-    private static List<RoomBoundary> _instances = new();
+    public static List<RoomBoundary> Instances { get; private set; } = new();
     private readonly float _defaultWallThickness = 0.375f.ToMeters(); //4.5 inches
     [field: SerializeField] public RoomBoundaryType RoomBoundaryType { get; private set; }
     [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
@@ -15,7 +15,7 @@ public class RoomBoundary : MonoBehaviour
 
     private void Awake()
     {
-        _instances.Add(this);
+        Instances.Add(this);
 
         _meshRenderer = GetComponent<MeshRenderer>();
         _collider = GetComponent<Collider>();
@@ -77,7 +77,7 @@ public class RoomBoundary : MonoBehaviour
 
     public static void EnableAllMeshRenderersAndColliders()
     {
-        _instances.ForEach(item => item.ToggleMeshRendererAndCollider(true));
+        Instances.ForEach(item => item.ToggleMeshRendererAndCollider(true));
     }
 
     private void OnMouseUpAsButton()
