@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UI_MeasurementButton : MonoBehaviour
 {
     private Toggle _toggle;
     private Measurable _currentMeasurable;
+    public static UnityEvent Toggled = new();
 
     private void Awake()
     {
@@ -34,5 +36,7 @@ public class UI_MeasurementButton : MonoBehaviour
         {
             _currentMeasurable.SetActive(isOn);
         }
+
+        Toggled?.Invoke();
     }
 }
