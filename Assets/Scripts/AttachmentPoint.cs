@@ -10,7 +10,7 @@ public class AttachmentPoint : MonoBehaviour
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
-    public Selectable AttachedSelectable { get; private set; }
+    [field: SerializeField] public Selectable AttachedSelectable { get; private set; }
 
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
     [field: SerializeField] private HighlightEffect HighlightHovered { get; set; }

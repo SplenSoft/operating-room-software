@@ -25,7 +25,7 @@ public class Selectable : MonoBehaviour
     public bool IsMouseOver { get; private set; }
     public static Selectable SelectedSelectable { get; private set; }
     public bool IsDestroyed { get; private set; }
-    public AttachmentPoint ParentAttachmentPoint { get; set; }
+    [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
     public Vector3 OriginalLocalPosition { get; private set; }
     public Vector3 OriginalLocalRotation { get; private set; }
 
@@ -58,7 +58,6 @@ public class Selectable : MonoBehaviour
     [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
-    private Vector3 _startingRotation;
     [field: SerializeField] public Measurable Measurable { get; private set; }
     #endregion
 
@@ -77,7 +76,7 @@ public class Selectable : MonoBehaviour
     private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
     {
         excess = 0f;
-        if (maxVal == 0 && minVal == 0) return false;
+        //if (maxVal == 0 && minVal == 0) return false;
         float diff = currentVal - originalVal;
         excess = diff > maxVal ? diff - maxVal : diff < minVal ? diff - minVal : 0f;
         return excess != 0;
@@ -93,6 +92,24 @@ public class Selectable : MonoBehaviour
         bool exceedsY = AllowMovementY && CheckConstraints(adjustedTransform.y, OriginalLocalPosition.y, adjustedMaxTranslation.y, adjustedMinTranslation.y, out totalExcess.y);
         bool exceedsZ = AllowMovementZ && CheckConstraints(adjustedTransform.z, OriginalLocalPosition.z, adjustedMaxTranslation.z, adjustedMinTranslation.z, out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
+    }
+
+    /// <returns>True if any rotation happened</returns>
+    public bool TryRotateTowardVector(Vector3 directionVector)
+    {
+        if (AllowRotationZ || AllowRotationX || AllowRotationY)
+        {
+            Quaternion oldRotation = transform.localRotation;
+            transform.LookAt(transform.position + directionVector);
+            if (ExceedsMaxRotation(out Vector3 totalExcess))
+            {
+                transform.localRotation *= Quaternion.Euler(-totalExcess.x, -totalExcess.y, -totalExcess.z);
+            }
+
+            if (oldRotation != transform.localRotation) return true;
+        }
+
+        return false;
     }
 
     public bool ExceedsMaxRotation(out Vector3 totalExcess)
@@ -175,7 +192,6 @@ public class Selectable : MonoBehaviour
     {
         _highlightEffect = GetComponent<HighlightEffect>();
         _gizmoHandler = GetComponent<GizmoHandler>();
-        _startingRotation = transform.eulerAngles;
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
 
         if (AllowScaleZ)

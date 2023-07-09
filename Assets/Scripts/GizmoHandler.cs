@@ -2,9 +2,12 @@ using RTG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using Color = UnityEngine.Color;
 
 [RequireComponent(typeof(Selectable))]
 public class GizmoHandler : MonoBehaviour
@@ -17,7 +20,7 @@ public class GizmoHandler : MonoBehaviour
     public static bool GizmoBeingUsed { get; private set; }
     public bool GizmoUsedLastFrame { get; private set; }
     public bool IsBeingUsed { get; private set; }
-    private Vector3 _localPositionBeforeUpdate;
+    private Vector3 _positionBeforeStartDrag;
     private Vector3 _localScaleBeforeStartDrag;
     public Vector3 CurrentScaleDrag { get; private set; }
     public UnityEvent GizmoDragEnded { get; } = new UnityEvent();
@@ -66,7 +69,7 @@ public class GizmoHandler : MonoBehaviour
             if (_translateGizmo.Gizmo.IsEnabled)
             {
                 _translateGizmo.Gizmo.Transform.Position3D = transform.position;
-                _translateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+                //_translateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
                 RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, _selectable.AllowMovementX);
                 RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, _selectable.AllowMovementY);
@@ -114,12 +117,13 @@ public class GizmoHandler : MonoBehaviour
 
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
         _translateGizmo.SetTargetObject(gameObject);
-        _translateGizmo.Gizmo.MoveGizmo.SetVertexSnapTargetObjects(new List<GameObject> { gameObject });
-        _translateGizmo.SetTransformSpace(GizmoSpace.Local);
+        //_translateGizmo.Gizmo.MoveGizmo.SetVertexSnapTargetObjects(new List<GameObject> { gameObject });
+        _translateGizmo.SetTransformSpace(GizmoSpace.Global);
         _translateGizmo.Gizmo.PostDragUpdate += OnGizmoPostDragUpdate;
         _translateGizmo.Gizmo.PostDragBegin += OnGizmoPostDragBegin;
         _translateGizmo.Gizmo.PostDragEnd += OnGizmoPostDragEnd;
         _translateGizmo.Gizmo.PreDragUpdate += OnGizmoPreDragUpdate;
+        _translateGizmo.Gizmo.PreDragBegin += OnGizmoPreDragBegin;
         _translateGizmo.SetTransformPivot(GizmoObjectTransformPivot.ObjectMeshPivot);
 
         _rotateGizmo = RTGizmosEngine.Get.CreateObjectRotationGizmo();
@@ -144,13 +148,14 @@ public class GizmoHandler : MonoBehaviour
     private void OnGizmoPreDragBegin(Gizmo gizmo, int handleId)
     {
         _localScaleBeforeStartDrag = transform.localScale;
+        _positionBeforeStartDrag = transform.position;
         CurrentScaleDrag = transform.localScale;
         IsBeingUsed = true;
     }
 
     private void OnGizmoPreDragUpdate(Gizmo gizmo, int handleId)
     {
-        _localPositionBeforeUpdate = transform.localPosition;
+        //_positionBeforeStartDrag = transform.localPosition;
     }
 
     private async void OnGizmoPostDragEnd(Gizmo gizmo, int handleId)
@@ -168,14 +173,139 @@ public class GizmoHandler : MonoBehaviour
         GizmoBeingUsed = true;
     }
 
+    // Find the points where the two circles intersect.
+    private int FindCircleCircleIntersections(
+        float cx0, float cy0, float radius0,
+        float cx1, float cy1, float radius1,
+        out PointF intersection1, out PointF intersection2)
+    {
+        // Find the distance between the centers.
+        float dx = cx0 - cx1;
+        float dy = cy0 - cy1;
+        double dist = Math.Sqrt(dx * dx + dy * dy);
+
+        // See how many solutions there are.
+        if (dist > radius0 + radius1)
+        {
+            // No solutions, the circles are too far apart.
+            intersection1 = new PointF(float.NaN, float.NaN);
+            intersection2 = new PointF(float.NaN, float.NaN);
+            return 0;
+        }
+        else if (dist < Math.Abs(radius0 - radius1))
+        {
+            // No solutions, one circle contains the other.
+            intersection1 = new PointF(float.NaN, float.NaN);
+            intersection2 = new PointF(float.NaN, float.NaN);
+            return 0;
+        }
+        else if ((dist == 0) && (radius0 == radius1))
+        {
+            // No solutions, the circles coincide.
+            intersection1 = new PointF(float.NaN, float.NaN);
+            intersection2 = new PointF(float.NaN, float.NaN);
+            return 0;
+        }
+        else
+        {
+            // Find a and h.
+            double a = (radius0 * radius0 -
+                radius1 * radius1 + dist * dist) / (2 * dist);
+            double h = Math.Sqrt(radius0 * radius0 - a * a);
+
+            // Find P2.
+            double cx2 = cx0 + a * (cx1 - cx0) / dist;
+            double cy2 = cy0 + a * (cy1 - cy0) / dist;
+
+            // Get the points P3.
+            intersection1 = new PointF(
+                (float)(cx2 + h * (cy1 - cy0) / dist),
+                (float)(cy2 - h * (cx1 - cx0) / dist));
+            intersection2 = new PointF(
+                (float)(cx2 - h * (cy1 - cy0) / dist),
+                (float)(cy2 + h * (cx1 - cx0) / dist));
+
+            // See if we have 1 or 2 solutions.
+            if (dist == radius0 + radius1) return 1;
+            return 2;
+        }
+    }
+
     private void OnGizmoPostDragUpdate(Gizmo gizmo, int handleId)
     {
         GizmoUsedLastFrame = true;
 
         if (gizmo.ObjectTransformGizmo == _translateGizmo && _selectable.ExeedsMaxTranslation(out Vector3 totalExcess))
         {
+            bool couldCompensate = false;
+            //try a two-bone triangle movement
+            Transform closestBone = null;
+            Transform farthestBone = null;
+            Transform parent = transform.parent;
+            while (parent != null && (closestBone == null || farthestBone == null))
+            {
+                var parentSelectable = parent.GetComponent<Selectable>();
+                if (parentSelectable != null && parentSelectable.AllowRotationZ)
+                {
+                    if (closestBone == null)
+                    {
+                        closestBone = parent;
+                    }
+                    else
+                    {
+                        farthestBone = parent;
+                        break;
+                    }
+                }
+                parent = parent.parent;
+            }
+
+            if (closestBone != null && farthestBone != null)
+            {
+                Vector3 farthestBoneXZ = new Vector3(farthestBone.transform.position.x, 0, farthestBone.transform.position.z);
+                Vector3 closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
+                //Vector3 thisTransformXZ = new Vector3(transform.position.x, 0, transform.position.z);
+                Vector3 thisTransformXZ = new Vector3(_positionBeforeStartDrag.x + gizmo.TotalDragOffset.x, 0, _positionBeforeStartDrag.z + gizmo.TotalDragOffset.z);
+                Debug.Log(thisTransformXZ);
+                float circle1Radius = Vector3.Distance(farthestBoneXZ, closestBoneXZ);
+                float circle2Radius = Vector3.Distance(closestBoneXZ, new Vector3(transform.position.x, 0, transform.position.z));
+                int intersects = FindCircleCircleIntersections(farthestBoneXZ.x, farthestBoneXZ.z, circle1Radius, thisTransformXZ.x, thisTransformXZ.z, circle2Radius, out PointF intersection1, out PointF intersection2);
+
+                if (intersects > 0) 
+                {
+                    
+                    Vector3 intersect1 = new Vector3(intersection1.X, 0, intersection1.Y);
+                    Vector3 intersect = intersect1;
+                    if (intersects > 1)
+                    {
+                        // user closer intersect
+                        
+                        Vector3 intersect2 = new Vector3(intersection2.X, 0, intersection2.Y);
+                        float distance1 = Vector3.Distance(intersect1, thisTransformXZ);
+                        float distance2 = Vector3.Distance(intersect2, thisTransformXZ);
+
+                        intersect = distance1 < distance2 ? intersect1 : intersect2;
+                    }
+
+                    //Quaternion originalFacing = _translateGizmo.Gizmo.Transform.Rotation3D;
+                    Debug.DrawLine(farthestBoneXZ, intersect, Color.red);
+                    Debug.DrawLine(intersect, thisTransformXZ, Color.blue);
+                    //Debug.Break();
+                    //Debug.DrawRay(intersect1,)
+                    float angleBetween = -Vector3.SignedAngle(farthestBone.right, intersect - farthestBoneXZ, Vector3.up);
+                    farthestBone.transform.Rotate(new Vector3(0, 0, angleBetween));
+                    closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
+                    angleBetween = -Vector3.SignedAngle(closestBone.right, thisTransformXZ - closestBoneXZ, Vector3.up);
+                    closestBone.transform.Rotate(new Vector3(0, 0, angleBetween));
+                    couldCompensate = true;
+                    //transform.rotation = originalFacing;
+                    //_translateGizmo.Gizmo.Transform.Rotation3D = originalFacing;
+                }
+            }
+
             transform.localPosition -= totalExcess;
             _translateGizmo.Gizmo.Transform.Position3D = transform.position;
+            Debug.Log(gizmo.TotalDragOffset);
         }
 
         if (gizmo.ObjectTransformGizmo == _rotateGizmo && _selectable.ExceedsMaxRotation(out totalExcess))

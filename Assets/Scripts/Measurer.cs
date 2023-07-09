@@ -65,7 +65,7 @@ public class Measurer : MonoBehaviour
         transform.LookAt(Measurement.HitPoint);
         float distanceMeters = Vector3.Distance(Measurement.Origin, Measurement.HitPoint);
         float distanceFeet = Mathf.Floor(distanceMeters.ToFeet());
-        float distanceInches = Mathf.Round((distanceMeters.ToFeet() - distanceFeet) / 12f * 10f) / 10f;
+        float distanceInches = Mathf.Round((distanceMeters.ToFeet() - distanceFeet) * 12f * 10f) / 10f;
         Distance = $"{distanceFeet}' {distanceInches}\"";
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distanceMeters);
     }
