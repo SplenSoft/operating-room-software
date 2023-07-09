@@ -448,7 +448,8 @@ public enum SelectableType
     Furniture,
     ArmSegment,
     BoomSegment,
-    BoomHead
+    BoomHead,
+    Wall
 }
 
 [Serializable]

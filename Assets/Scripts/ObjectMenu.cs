@@ -87,7 +87,8 @@ public class ObjectMenu : MonoBehaviour
         {
             bool isMount = item.Selectable.Types.Contains(SelectableType.Mount);
             bool isFurniture = item.Selectable.Types.Contains(SelectableType.Furniture);
-            item.GameObject.SetActive(isMount || isFurniture);
+            bool isWall = item.Selectable.Types.Contains(SelectableType.Wall);
+            item.GameObject.SetActive(isMount || isFurniture || isWall);
         });
     }
 
