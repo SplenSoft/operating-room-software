@@ -11,7 +11,7 @@ using UnityEngine;
 public class Selectable : MonoBehaviour
 {
     [Serializable]
-    private class ScaleLevel
+    public class ScaleLevel
     {
         [field: SerializeField] public float Size { get; set; }
         [field: SerializeField] public bool Selected { get; set; }
@@ -45,8 +45,10 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public bool AllowRotationX { get; set; } = true;
     [field: SerializeField] public bool AllowRotationY { get; set; } = true;
     [field: SerializeField] public bool AllowRotationZ { get; set; } = true;
+    [field: SerializeField] public bool AllowScaleX { get; set; }
+    [field: SerializeField] public bool AllowScaleY { get; set; }
     [field: SerializeField] public bool AllowScaleZ { get; set; }
-    [field: SerializeField] private List<ScaleLevel> ScaleLevels { get; set; } = new();
+    [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] private List<Selectable> Interdependencies { get; set; } = new List<Selectable>();
 
@@ -124,8 +126,9 @@ public class Selectable : MonoBehaviour
         return exceedsX || exceedsY || exceedsZ;
     }
 
-    private void UpdateScaling(bool setSelected)
+    private void UpdateZScaling(bool setSelected)
     {
+        if (ScaleLevels.Count == 0) return;
         //get closest scale in list
         ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
         if (closest == _currentPreviewScaleLevel && !setSelected) return;
@@ -215,7 +218,8 @@ public class Selectable : MonoBehaviour
             {
                 if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
                 {
-                    UpdateScaling(true);
+                    //if (AllowScaleZ)
+                        UpdateZScaling(true);
                 }
             });
 
@@ -223,7 +227,8 @@ public class Selectable : MonoBehaviour
             {
                 if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
                 {
-                    UpdateScaling(false);
+                    //if (AllowScaleZ)
+                        UpdateZScaling(false);
                 }
             });
         }

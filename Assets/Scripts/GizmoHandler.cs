@@ -99,12 +99,12 @@ public class GizmoHandler : MonoBehaviour
                 _scaleGizmo.Gizmo.Transform.Position3D = transform.position;
                 _scaleGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, false);
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, false);
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, _selectable.AllowScaleX);
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, _selectable.AllowScaleY);
                 RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(2, AxisSign.Positive, _selectable.AllowScaleZ);
 
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, false);
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, false);
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, _selectable.AllowScaleX);
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, _selectable.AllowScaleY);
                 RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(2, AxisSign.Positive, _selectable.AllowScaleZ);
             }            
         }
@@ -371,6 +371,11 @@ public class GizmoHandler : MonoBehaviour
         if (gizmo.ObjectTransformGizmo == _scaleGizmo)
         {
             CurrentScaleDrag = new Vector3(_localScaleBeforeStartDrag.x * gizmo.TotalDragScale.x, _localScaleBeforeStartDrag.y * gizmo.TotalDragScale.y, _localScaleBeforeStartDrag.z * gizmo.TotalDragScale.z);
+
+            float xScale = _localScaleBeforeStartDrag.x * (_selectable.AllowScaleX ? gizmo.TotalDragScale.x : 1);
+            float yScale = _localScaleBeforeStartDrag.y * (_selectable.AllowScaleY ? gizmo.TotalDragScale.y : 1);
+            float zScale = _selectable.ScaleLevels.Count == 0 ? _localScaleBeforeStartDrag.z * (_selectable.AllowScaleY ? gizmo.TotalDragScale.z : 1) : _selectable.transform.localScale.z;
+            _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);    
         }
 
         GizmoDragPostUpdate?.Invoke();
