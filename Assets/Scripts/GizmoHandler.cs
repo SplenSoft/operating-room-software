@@ -25,6 +25,8 @@ public class GizmoHandler : MonoBehaviour
     public Vector3 CurrentScaleDrag { get; private set; }
     public UnityEvent GizmoDragEnded { get; } = new UnityEvent();
     public UnityEvent GizmoDragPostUpdate { get; } = new UnityEvent();
+    private Vector3 _lastCircleIntersectPoint;
+    private Vector3 _XZOffsetFromVerticalMovement;
     //private static readonly Color _colorTransparent = new(0, 0, 0, 0);
 
     private Selectable _selectable;
@@ -150,6 +152,8 @@ public class GizmoHandler : MonoBehaviour
         _localScaleBeforeStartDrag = transform.localScale;
         _positionBeforeStartDrag = transform.position;
         CurrentScaleDrag = transform.localScale;
+        //_lastCircleIntersectPoint = default;
+        _XZOffsetFromVerticalMovement = default;
         IsBeingUsed = true;
     }
 
@@ -237,11 +241,52 @@ public class GizmoHandler : MonoBehaviour
 
         if (gizmo.ObjectTransformGizmo == _translateGizmo && _selectable.ExeedsMaxTranslation(out Vector3 totalExcess))
         {
-            bool couldCompensate = false;
+            transform.localPosition -= totalExcess;
+            Transform parent = transform.parent;
+
+            //do vertical component first
+            if (gizmo.RelativeDragOffset.y != 0)
+            {
+                Selectable verticalComponent = null;
+                
+                while (parent != null && verticalComponent == null)
+                {
+                    var parentSelectable = parent.GetComponent<Selectable>();
+                    if (parentSelectable != null && parentSelectable.AllowRotationY)
+                    {
+                        verticalComponent = parentSelectable;
+                        break;
+                    }
+                    parent = parent.parent;
+                }
+
+                if (verticalComponent != null)
+                {
+                    Vector3 desiredPosition = new Vector3(_positionBeforeStartDrag.x, _positionBeforeStartDrag.y + gizmo.TotalDragOffset.y, _positionBeforeStartDrag.z);
+                    Vector3 currentPos = new Vector3(_positionBeforeStartDrag.x, transform.position.y, _positionBeforeStartDrag.z);
+                    float angle = Vector3.Angle(desiredPosition, currentPos);
+                    float distance = Vector3.Distance(desiredPosition, currentPos);
+
+                    verticalComponent.transform.Rotate(0, angle, 0);
+                    currentPos = new Vector3(_positionBeforeStartDrag.x, transform.position.y, _positionBeforeStartDrag.z);
+                    float distance2 = Vector3.Distance(desiredPosition, currentPos);
+                    if (distance2 > distance)
+                    { // we went the wrong way, flip the angle
+                        verticalComponent.transform.Rotate(0, -angle * 2f, 0);
+                    }
+
+                    if (verticalComponent.ExceedsMaxRotation(out Vector3 totalExcess1))
+                    {
+                        verticalComponent.transform.localRotation *= Quaternion.Euler(-totalExcess1.x, -totalExcess1.y, -totalExcess1.z);
+                    }
+                }
+            }
+
+
             //try a two-bone triangle movement
             Transform closestBone = null;
             Transform farthestBone = null;
-            Transform parent = transform.parent;
+            parent = transform.parent;
             while (parent != null && (closestBone == null || farthestBone == null))
             {
                 var parentSelectable = parent.GetComponent<Selectable>();
@@ -265,31 +310,42 @@ public class GizmoHandler : MonoBehaviour
                 Vector3 farthestBoneXZ = new Vector3(farthestBone.transform.position.x, 0, farthestBone.transform.position.z);
                 Vector3 closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
                 //Vector3 thisTransformXZ = new Vector3(transform.position.x, 0, transform.position.z);
-                Vector3 thisTransformXZ = new Vector3(_positionBeforeStartDrag.x + gizmo.TotalDragOffset.x, 0, _positionBeforeStartDrag.z + gizmo.TotalDragOffset.z);
+                //Vector3 thisTransformXZ = new Vector3(_positionBeforeStartDrag.x + gizmo.TotalDragOffset.x, 0, _positionBeforeStartDrag.z + gizmo.TotalDragOffset.z);
+                Vector3 thisTransformXZ = new Vector3(transform.position.x + gizmo.RelativeDragOffset.x, 0, transform.position.z + gizmo.RelativeDragOffset.z);
                 Debug.Log(thisTransformXZ);
                 float circle1Radius = Vector3.Distance(farthestBoneXZ, closestBoneXZ);
                 float circle2Radius = Vector3.Distance(closestBoneXZ, new Vector3(transform.position.x, 0, transform.position.z));
                 int intersects = FindCircleCircleIntersections(farthestBoneXZ.x, farthestBoneXZ.z, circle1Radius, thisTransformXZ.x, thisTransformXZ.z, circle2Radius, out PointF intersection1, out PointF intersection2);
 
-                if (intersects > 0) 
+                if (intersects > 0)
                 {
-                    
+
                     Vector3 intersect1 = new Vector3(intersection1.X, 0, intersection1.Y);
                     Vector3 intersect = intersect1;
                     if (intersects > 1)
                     {
-                        // user closer intersect
-                        
                         Vector3 intersect2 = new Vector3(intersection2.X, 0, intersection2.Y);
-                        float distance1 = Vector3.Distance(intersect1, thisTransformXZ);
-                        float distance2 = Vector3.Distance(intersect2, thisTransformXZ);
+                        float distance1, distance2;
+                        if (_lastCircleIntersectPoint == default)
+                        {
+                            // use intersect closest to destination
+                            distance1 = Vector3.Distance(intersect1, thisTransformXZ);
+                            distance2 = Vector3.Distance(intersect2, thisTransformXZ);
+                        }
+                        else
+                        {
+                            // get point closest to last intersect
+                            distance1 = Vector3.Distance(intersect1, _lastCircleIntersectPoint);
+                            distance2 = Vector3.Distance(intersect2, _lastCircleIntersectPoint);
+                        }
 
                         intersect = distance1 < distance2 ? intersect1 : intersect2;
+                        _lastCircleIntersectPoint = intersect;
                     }
 
                     //Quaternion originalFacing = _translateGizmo.Gizmo.Transform.Rotation3D;
-                    Debug.DrawLine(farthestBoneXZ, intersect, Color.red);
-                    Debug.DrawLine(intersect, thisTransformXZ, Color.blue);
+                    //Debug.DrawLine(farthestBoneXZ, intersect, Color.red);
+                    //Debug.DrawLine(intersect, thisTransformXZ, Color.blue);
                     //Debug.Break();
                     //Debug.DrawRay(intersect1,)
                     float angleBetween = -Vector3.SignedAngle(farthestBone.right, intersect - farthestBoneXZ, Vector3.up);
@@ -297,13 +353,11 @@ public class GizmoHandler : MonoBehaviour
                     closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
                     angleBetween = -Vector3.SignedAngle(closestBone.right, thisTransformXZ - closestBoneXZ, Vector3.up);
                     closestBone.transform.Rotate(new Vector3(0, 0, angleBetween));
-                    couldCompensate = true;
                     //transform.rotation = originalFacing;
                     //_translateGizmo.Gizmo.Transform.Rotation3D = originalFacing;
                 }
             }
 
-            transform.localPosition -= totalExcess;
             _translateGizmo.Gizmo.Transform.Position3D = transform.position;
             Debug.Log(gizmo.TotalDragOffset);
         }
