@@ -26,7 +26,6 @@ public class GizmoHandler : MonoBehaviour
     public UnityEvent GizmoDragEnded { get; } = new UnityEvent();
     public UnityEvent GizmoDragPostUpdate { get; } = new UnityEvent();
     private Vector3 _lastCircleIntersectPoint;
-    private Vector3 _XZOffsetFromVerticalMovement;
     //private static readonly Color _colorTransparent = new(0, 0, 0, 0);
 
     private Selectable _selectable;
@@ -73,39 +72,43 @@ public class GizmoHandler : MonoBehaviour
                 _translateGizmo.Gizmo.Transform.Position3D = transform.position;
                 //_translateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, _selectable.AllowMovementX);
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, _selectable.AllowMovementY);
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(2, AxisSign.Positive, _selectable.AllowMovementZ);
+                bool xMovementAllowed = _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.X);
+                bool yMovementAllowed = _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.Y);
+                bool zMovementAllowed = _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.Z);
 
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, _selectable.AllowMovementX);
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, _selectable.AllowMovementY);
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(2, AxisSign.Positive, _selectable.AllowMovementZ);
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, xMovementAllowed);
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, yMovementAllowed);
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(2, AxisSign.Positive, zMovementAllowed);
 
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.XY, _selectable.AllowMovementX && _selectable.AllowMovementY);
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.YZ, _selectable.AllowMovementY && _selectable.AllowMovementZ);
-                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.ZX, _selectable.AllowMovementZ && _selectable.AllowMovementX);
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, xMovementAllowed);
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, yMovementAllowed);
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(2, AxisSign.Positive, zMovementAllowed);
+
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.XY, xMovementAllowed && yMovementAllowed);
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.YZ, yMovementAllowed && zMovementAllowed);
+                RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.ZX, zMovementAllowed && xMovementAllowed);
             }
             else if (_rotateGizmo.Gizmo.IsEnabled)
             {
                 _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
                 _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
-                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(0, _selectable.AllowRotationX);
-                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(1, _selectable.AllowRotationY);
-                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(2, _selectable.AllowRotationZ);
+                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(0, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X));
+                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(1, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y));
+                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(2, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z));
             }
             else if (_scaleGizmo.Gizmo.IsEnabled) 
             {
                 _scaleGizmo.Gizmo.Transform.Position3D = transform.position;
                 _scaleGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, _selectable.AllowScaleX);
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, _selectable.AllowScaleY);
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(2, AxisSign.Positive, _selectable.AllowScaleZ);
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X));
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y));
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(2, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z));
 
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, _selectable.AllowScaleX);
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, _selectable.AllowScaleY);
-                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(2, AxisSign.Positive, _selectable.AllowScaleZ);
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X));
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y));
+                RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(2, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z));
             }            
         }
 
@@ -120,7 +123,7 @@ public class GizmoHandler : MonoBehaviour
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
         _translateGizmo.SetTargetObject(gameObject);
         //_translateGizmo.Gizmo.MoveGizmo.SetVertexSnapTargetObjects(new List<GameObject> { gameObject });
-        _translateGizmo.SetTransformSpace(GizmoSpace.Global);
+        _translateGizmo.SetTransformSpace(GizmoSpace.Local);
         _translateGizmo.Gizmo.PostDragUpdate += OnGizmoPostDragUpdate;
         _translateGizmo.Gizmo.PostDragBegin += OnGizmoPostDragBegin;
         _translateGizmo.Gizmo.PostDragEnd += OnGizmoPostDragEnd;
@@ -153,7 +156,6 @@ public class GizmoHandler : MonoBehaviour
         _positionBeforeStartDrag = transform.position;
         CurrentScaleDrag = transform.localScale;
         //_lastCircleIntersectPoint = default;
-        _XZOffsetFromVerticalMovement = default;
         IsBeingUsed = true;
     }
 
@@ -252,7 +254,7 @@ public class GizmoHandler : MonoBehaviour
                 while (parent != null && verticalComponent == null)
                 {
                     var parentSelectable = parent.GetComponent<Selectable>();
-                    if (parentSelectable != null && parentSelectable.AllowRotationY)
+                    if (parentSelectable != null && parentSelectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y))
                     {
                         verticalComponent = parentSelectable;
                         break;
@@ -282,7 +284,6 @@ public class GizmoHandler : MonoBehaviour
                 }
             }
 
-
             //try a two-bone triangle movement
             Transform closestBone = null;
             Transform farthestBone = null;
@@ -290,7 +291,7 @@ public class GizmoHandler : MonoBehaviour
             while (parent != null && (closestBone == null || farthestBone == null))
             {
                 var parentSelectable = parent.GetComponent<Selectable>();
-                if (parentSelectable != null && parentSelectable.AllowRotationZ)
+                if (parentSelectable != null && parentSelectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
                 {
                     if (closestBone == null)
                     {
@@ -309,8 +310,6 @@ public class GizmoHandler : MonoBehaviour
             {
                 Vector3 farthestBoneXZ = new Vector3(farthestBone.transform.position.x, 0, farthestBone.transform.position.z);
                 Vector3 closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
-                //Vector3 thisTransformXZ = new Vector3(transform.position.x, 0, transform.position.z);
-                //Vector3 thisTransformXZ = new Vector3(_positionBeforeStartDrag.x + gizmo.TotalDragOffset.x, 0, _positionBeforeStartDrag.z + gizmo.TotalDragOffset.z);
                 Vector3 thisTransformXZ = new Vector3(transform.position.x + gizmo.RelativeDragOffset.x, 0, transform.position.z + gizmo.RelativeDragOffset.z);
                 Debug.Log(thisTransformXZ);
                 float circle1Radius = Vector3.Distance(farthestBoneXZ, closestBoneXZ);
@@ -344,10 +343,6 @@ public class GizmoHandler : MonoBehaviour
                     }
 
                     //Quaternion originalFacing = _translateGizmo.Gizmo.Transform.Rotation3D;
-                    //Debug.DrawLine(farthestBoneXZ, intersect, Color.red);
-                    //Debug.DrawLine(intersect, thisTransformXZ, Color.blue);
-                    //Debug.Break();
-                    //Debug.DrawRay(intersect1,)
                     float angleBetween = -Vector3.SignedAngle(farthestBone.right, intersect - farthestBoneXZ, Vector3.up);
                     farthestBone.transform.Rotate(new Vector3(0, 0, angleBetween));
                     closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
@@ -372,9 +367,9 @@ public class GizmoHandler : MonoBehaviour
         {
             CurrentScaleDrag = new Vector3(_localScaleBeforeStartDrag.x * gizmo.TotalDragScale.x, _localScaleBeforeStartDrag.y * gizmo.TotalDragScale.y, _localScaleBeforeStartDrag.z * gizmo.TotalDragScale.z);
 
-            float xScale = _localScaleBeforeStartDrag.x * (_selectable.AllowScaleX ? gizmo.TotalDragScale.x : 1);
-            float yScale = _localScaleBeforeStartDrag.y * (_selectable.AllowScaleY ? gizmo.TotalDragScale.y : 1);
-            float zScale = _selectable.ScaleLevels.Count == 0 ? _localScaleBeforeStartDrag.z * (_selectable.AllowScaleY ? gizmo.TotalDragScale.z : 1) : _selectable.transform.localScale.z;
+            float xScale = _localScaleBeforeStartDrag.x * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X) ? gizmo.TotalDragScale.x : 1);
+            float yScale = _localScaleBeforeStartDrag.y * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y) ? gizmo.TotalDragScale.y : 1);
+            float zScale = _selectable.ScaleLevels.Count == 0 ? _localScaleBeforeStartDrag.z * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z) ? gizmo.TotalDragScale.z : 1) : _selectable.transform.localScale.z;
             _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);    
         }
 

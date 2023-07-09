@@ -34,24 +34,13 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
-    [field: SerializeField] public Vector3 MaxLocalTranslation { get; private set; }
-    [field: SerializeField] public Vector3 MinLocalTranslation { get; private set; }
-    [field: SerializeField] public Vector3 MaxLocalRotation { get; private set; }
-    [field: SerializeField] public Vector3 MinLocalRotation { get; private set; }
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
-    [field: SerializeField] public bool AllowMovementX { get; set; } = true;
-    [field: SerializeField] public bool AllowMovementY { get; set; } = true;
-    [field: SerializeField] public bool AllowMovementZ { get; set; } = true;
-    [field: SerializeField] public bool AllowRotationX { get; set; } = true;
-    [field: SerializeField] public bool AllowRotationY { get; set; } = true;
-    [field: SerializeField] public bool AllowRotationZ { get; set; } = true;
-    [field: SerializeField] public bool AllowScaleX { get; set; }
-    [field: SerializeField] public bool AllowScaleY { get; set; }
-    [field: SerializeField] public bool AllowScaleZ { get; set; }
+    [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] private List<Selectable> Interdependencies { get; set; } = new List<Selectable>();
 
+    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
     private List<Vector3> _childScales = new();
     private Transform _virtualParent;
     private HighlightEffect _highlightEffect;
@@ -87,19 +76,28 @@ public class Selectable : MonoBehaviour
     public bool ExeedsMaxTranslation(out Vector3 totalExcess)
     {
         Vector3 adjustedTransform = transform.localRotation * transform.localPosition;
-        Vector3 adjustedMaxTranslation = new Vector3(MaxLocalTranslation.x * transform.localScale.x, MaxLocalTranslation.y * transform.localScale.y, MaxLocalTranslation.z * transform.localScale.z);
-        Vector3 adjustedMinTranslation = new Vector3(MinLocalTranslation.x * transform.localScale.x, MinLocalTranslation.y * transform.localScale.y, MinLocalTranslation.z * transform.localScale.z);
+
+        float maxTranslationX = GetGizmoSettingMaxValue(GizmoType.Move, Axis.X) * transform.localScale.x;
+        float maxTranslationY = GetGizmoSettingMaxValue(GizmoType.Move, Axis.Y) * transform.localScale.y;
+        float maxTranslationZ = GetGizmoSettingMaxValue(GizmoType.Move, Axis.Z) * transform.localScale.z;
+
+        float minTranslationX = GetGizmoSettingMinValue(GizmoType.Move, Axis.X) * transform.localScale.x;
+        float minTranslationY = GetGizmoSettingMinValue(GizmoType.Move, Axis.Y) * transform.localScale.y;
+        float minTranslationZ = GetGizmoSettingMinValue(GizmoType.Move, Axis.Z) * transform.localScale.z;
+
+        Vector3 adjustedMaxTranslation = new Vector3(maxTranslationX, maxTranslationY, maxTranslationZ);
+        Vector3 adjustedMinTranslation = new Vector3(minTranslationX, minTranslationY, minTranslationZ);
         totalExcess = default;
-        bool exceedsX = AllowMovementX && CheckConstraints(adjustedTransform.x, OriginalLocalPosition.x, adjustedMaxTranslation.x, adjustedMinTranslation.x, out totalExcess.x);
-        bool exceedsY = AllowMovementY && CheckConstraints(adjustedTransform.y, OriginalLocalPosition.y, adjustedMaxTranslation.y, adjustedMinTranslation.y, out totalExcess.y);
-        bool exceedsZ = AllowMovementZ && CheckConstraints(adjustedTransform.z, OriginalLocalPosition.z, adjustedMaxTranslation.z, adjustedMinTranslation.z, out totalExcess.z);
+        bool exceedsX = IsGizmoSettingAllowed(GizmoType.Move, Axis.X) && CheckConstraints(adjustedTransform.x, OriginalLocalPosition.x, adjustedMaxTranslation.x, adjustedMinTranslation.x, out totalExcess.x);
+        bool exceedsY = IsGizmoSettingAllowed(GizmoType.Move, Axis.Y) && CheckConstraints(adjustedTransform.y, OriginalLocalPosition.y, adjustedMaxTranslation.y, adjustedMinTranslation.y, out totalExcess.y);
+        bool exceedsZ = IsGizmoSettingAllowed(GizmoType.Move, Axis.Z) && CheckConstraints(adjustedTransform.z, OriginalLocalPosition.z, adjustedMaxTranslation.z, adjustedMinTranslation.z, out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
     }
 
     /// <returns>True if any rotation happened</returns>
     public bool TryRotateTowardVector(Vector3 directionVector)
     {
-        if (AllowRotationZ || AllowRotationX || AllowRotationY)
+        if (IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) || IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) || IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
         {
             Quaternion oldRotation = transform.localRotation;
             transform.LookAt(transform.position + directionVector);
@@ -120,9 +118,9 @@ public class Selectable : MonoBehaviour
         float angleY = transform.localEulerAngles.y > 180 ? transform.localEulerAngles.y - 360f : transform.localEulerAngles.y;
         float angleZ = transform.localEulerAngles.z > 180 ? transform.localEulerAngles.z - 360f : transform.localEulerAngles.z;
         totalExcess = default;
-        bool exceedsX = AllowRotationX && CheckConstraints(angleX, OriginalLocalRotation.x, MaxLocalRotation.x, MinLocalRotation.x, out totalExcess.x);
-        bool exceedsY = AllowRotationY && CheckConstraints(angleY, OriginalLocalRotation.y, MaxLocalRotation.y, MinLocalRotation.y, out totalExcess.y);
-        bool exceedsZ = AllowRotationZ && CheckConstraints(angleZ, OriginalLocalRotation.z, MaxLocalRotation.z, MinLocalRotation.z, out totalExcess.z);
+        bool exceedsX = IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) && CheckConstraints(angleX, OriginalLocalRotation.x, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.X), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.X), out totalExcess.x);
+        bool exceedsY = TryGetGizmoSetting(GizmoType.Rotate, Axis.Y, out var gizmoSettingsRotateY) && CheckConstraints(angleY, OriginalLocalRotation.y, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Y), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Y), out totalExcess.y);
+        bool exceedsZ = TryGetGizmoSetting(GizmoType.Rotate, Axis.Z, out var gizmoSettingsRotateZ) && CheckConstraints(angleZ, OriginalLocalRotation.z, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z), out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
     }
 
@@ -190,6 +188,35 @@ public class Selectable : MonoBehaviour
         }
     }
 
+    public bool TryGetGizmoSetting(GizmoType gizmoType, Axis axis, out GizmoSetting gizmoSetting)
+    {
+        gizmoSetting = default;
+        if (!GizmoSettings.ContainsKey(gizmoType)) return false;
+        if (!GizmoSettings[gizmoType].ContainsKey(axis)) return false;
+        gizmoSetting = GizmoSettings[gizmoType][axis];
+        return true;
+    }
+
+    public bool IsGizmoSettingAllowed(GizmoType gizmoType, Axis axis) => TryGetGizmoSetting(gizmoType, axis, out _);
+
+    private float GetGizmoSettingMaxValue(GizmoType gizmoType, Axis axis)
+    {
+        if (TryGetGizmoSetting(gizmoType, axis, out GizmoSetting gizmoSetting))
+        {
+            return gizmoSetting.GetMaxValue;
+        }
+        else return 0;
+    }
+
+    private float GetGizmoSettingMinValue(GizmoType gizmoType, Axis axis)
+    {
+        if (TryGetGizmoSetting(gizmoType, axis, out GizmoSetting gizmoSetting))
+        {
+            return gizmoSetting.GetMinValue;
+        }
+        else return 0;
+    }
+
     #region Monobehaviour
     private void Awake()
     {
@@ -197,7 +224,16 @@ public class Selectable : MonoBehaviour
         _gizmoHandler = GetComponent<GizmoHandler>();
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
 
-        if (AllowScaleZ)
+        GizmoSettingsList.ForEach(item =>
+        {
+            if (!GizmoSettings.ContainsKey(item.GizmoType))
+            {
+                GizmoSettings[item.GizmoType] = new();
+            }
+            GizmoSettings[item.GizmoType][item.Axis] = item;
+        });
+
+        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
         {
             _currentScaleLevel = ScaleLevels.First(item => item.Selected);
             _currentPreviewScaleLevel = _currentScaleLevel;
@@ -218,8 +254,7 @@ public class Selectable : MonoBehaviour
             {
                 if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
                 {
-                    //if (AllowScaleZ)
-                        UpdateZScaling(true);
+                    UpdateZScaling(true);
                 }
             });
 
@@ -227,8 +262,7 @@ public class Selectable : MonoBehaviour
             {
                 if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
                 {
-                    //if (AllowScaleZ)
-                        UpdateZScaling(false);
+                    UpdateZScaling(false);
                 }
             });
         }
@@ -284,7 +318,7 @@ public class Selectable : MonoBehaviour
         if (ZAlwaysFacesGround)
         {
             transform.LookAt(transform.position + Vector3.down, transform.parent.forward);
-            if (!AllowRotationZ)
+            if (!IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
             {
                 transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, OriginalLocalRotation.z);
             }
@@ -415,4 +449,30 @@ public enum SelectableType
     ArmSegment,
     BoomSegment,
     BoomHead
+}
+
+[Serializable]
+public class GizmoSetting
+{
+    [field: SerializeField] public Axis Axis { get; private set; }
+    [field: SerializeField] public GizmoType GizmoType { get; private set; }
+    [field: SerializeField] public bool Unrestricted { get; private set; } = true;
+    [field: SerializeField] private float MaxValue { get; set; }
+    [field: SerializeField] private float MinValue { get; set; }
+    public float GetMaxValue => Unrestricted ? float.MaxValue : MaxValue;
+    public float GetMinValue => Unrestricted ? float.MinValue : MinValue;
+}
+
+public enum Axis
+{
+    X,
+    Y,
+    Z
+}
+
+public enum GizmoType
+{
+    Move,
+    Rotate,
+    Scale
 }

@@ -6073,7 +6073,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000076293945
+      value: -0.000034332275
       objectReference: {fileID: 0}
     - target: {fileID: 3998261930835656223, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -6218,7 +6218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.size
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[1]

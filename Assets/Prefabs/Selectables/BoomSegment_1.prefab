@@ -71,6 +71,22 @@ PrefabInstance:
       propertyPath: <MinLocalTranslation>k__BackingField.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<Axis>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<GizmoType>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<Unrestricted>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -426,18 +442,13 @@ MonoBehaviour:
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
-  <MaxLocalTranslation>k__BackingField: {x: 0, y: 0, z: 0}
-  <MinLocalTranslation>k__BackingField: {x: 0, y: 0, z: 0}
-  <MaxLocalRotation>k__BackingField: {x: 0, y: 0, z: 0}
-  <MinLocalRotation>k__BackingField: {x: 0, y: 0, z: 0}
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <AllowMovementX>k__BackingField: 0
-  <AllowMovementY>k__BackingField: 0
-  <AllowMovementZ>k__BackingField: 0
-  <AllowRotationX>k__BackingField: 0
-  <AllowRotationY>k__BackingField: 0
-  <AllowRotationZ>k__BackingField: 0
-  <AllowScaleZ>k__BackingField: 1
+  <GizmoSettingsList>k__BackingField:
+  - <Axis>k__BackingField: 2
+    <GizmoType>k__BackingField: 2
+    <Unrestricted>k__BackingField: 1
+    <MaxValue>k__BackingField: 0
+    <MinValue>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.6
     <Selected>k__BackingField: 0
