@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class ScaleMaterialTextureWithTransform : MonoBehaviour
@@ -8,11 +9,13 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
     [SerializeField] private bool _useX;
     [SerializeField] private bool _useY;
     [SerializeField] private bool _useZ;
+    [SerializeField] private float _multiplier;
     private void Awake()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
-        RoomSize.RoomSizeChanged += (o, e) =>
+        RoomSize.RoomSizeChanged += async (o, e) =>
         {
+            await Task.Yield();
             bool factor1Set = false;
             bool factor2Set = false;
             float factor1 = 1f;
@@ -23,21 +26,21 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
                 factor1Set = true;
             }
 
-            if (_useY) 
+            if (_useZ) 
             {
                 if (!factor1Set)
                 {
-                    factor1 = transform.localScale.y;
+                    factor1 = transform.localScale.z;
                     factor1Set = true;
                 }
                 else
                 {
-                    factor2 = transform.localScale.y;
+                    factor2 = transform.localScale.z;
                     factor2Set = true;
                 }
             }
 
-            if (_useZ) 
+            if (_useY) 
             { 
                 if (!factor2Set)
                 {
@@ -45,7 +48,7 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
                 }
             }
 
-            _meshRenderer.material.SetTextureScale("_MainTex", new Vector2(factor1, factor2));
+            _meshRenderer.material.SetTextureScale("_BaseMap", new Vector2(factor1 * _multiplier, factor2 * _multiplier));
         };
     }
 }
