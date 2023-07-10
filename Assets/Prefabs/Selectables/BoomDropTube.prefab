@@ -270,6 +270,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6e78fd763bca3c44b8bb9ab35bfb3d7, type: 2}
+    - target: {fileID: -105869022679507046, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6e78fd763bca3c44b8bb9ab35bfb3d7, type: 2}
     - target: {fileID: 919132149155446097, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}
       propertyPath: m_Name
       value: BoomDropTube
@@ -495,6 +503,7 @@ MonoBehaviour:
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
+    <Unrestricted>k__BackingField: 1
     <MaxValue>k__BackingField: 999999
     <MinValue>k__BackingField: -999999
   <ScaleLevels>k__BackingField:

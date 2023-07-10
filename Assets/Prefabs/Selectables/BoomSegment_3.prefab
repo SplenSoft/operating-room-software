@@ -51,6 +51,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7581521283447066208, guid: 73c05d71b6c331745ba4693a9f1059ee, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 78a450086b8090647b88a6fd5c216cb3, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 73c05d71b6c331745ba4693a9f1059ee, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6e78fd763bca3c44b8bb9ab35bfb3d7, type: 2}
     - target: {fileID: 919132149155446097, guid: 73c05d71b6c331745ba4693a9f1059ee, type: 3}
       propertyPath: m_Name
       value: BoomSegment_3
@@ -125,23 +133,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
   <Name>k__BackingField: Boom Segment 3_1
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
-  <MaxLocalTranslation>k__BackingField: {x: 0, y: 0, z: 0}
-  <MinLocalTranslation>k__BackingField: {x: 0, y: 0, z: 0}
-  <MaxLocalRotation>k__BackingField: {x: 0, y: 0, z: 0}
-  <MinLocalRotation>k__BackingField: {x: 0, y: 0, z: 0}
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <AllowMovementX>k__BackingField: 0
-  <AllowMovementY>k__BackingField: 0
-  <AllowMovementZ>k__BackingField: 0
-  <AllowRotationX>k__BackingField: 0
-  <AllowRotationY>k__BackingField: 0
-  <AllowRotationZ>k__BackingField: 0
-  <AllowScaleZ>k__BackingField: 1
+  <GizmoSettingsList>k__BackingField: []
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.2
     <Selected>k__BackingField: 0
@@ -153,6 +152,7 @@ MonoBehaviour:
     <Selected>k__BackingField: 0
   - <Size>k__BackingField: 1
     <Selected>k__BackingField: 0
+  <ZAlwaysFacesGround>k__BackingField: 0
   <Interdependencies>k__BackingField:
   - {fileID: 5157047544467377219}
   _currentScaleLevel:
@@ -161,6 +161,7 @@ MonoBehaviour:
   _currentPreviewScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+  <Measurable>k__BackingField: {fileID: 0}
 --- !u!114 &3577282033252816624
 MonoBehaviour:
   m_ObjectHideFlags: 0
