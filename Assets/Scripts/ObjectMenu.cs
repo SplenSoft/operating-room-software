@@ -63,11 +63,11 @@ public class ObjectMenu : MonoBehaviour
     {
         ObjectMenuItems.ForEach(item =>
         {
-            if (attachmentPoint.AllowedSelectableTypes.Count == 0)
-            {
-                item.GameObject.SetActive(true);
-                return;
-            }
+            //if (attachmentPoint.AllowedSelectableTypes.Count == 0 && attachmentPoint.AllowedSelectables.Count == 0)
+            //{
+            //    item.GameObject.SetActive(false);
+            //    return;
+            //}
 
             foreach (var type in item.Selectable.Types) 
             {
@@ -76,6 +76,12 @@ public class ObjectMenu : MonoBehaviour
                     item.GameObject.SetActive(true);
                     return;
                 }
+            }
+
+            if (attachmentPoint.AllowedSelectables.Contains(item.Selectable))
+            {
+                item.GameObject.SetActive(true);
+                return;
             }
             item.GameObject.SetActive(false);
         });

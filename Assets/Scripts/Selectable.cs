@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
@@ -18,10 +17,10 @@ public class Selectable : MonoBehaviour
         public float ScaleZ { get; set; }
     }
 
+    #region Fields and Properties
     public EventHandler MouseOverStateChanged;
     public static EventHandler SelectionChanged;
 
-    #region Fields and Properties
     public bool IsMouseOver { get; private set; }
     public static Selectable SelectedSelectable { get; private set; }
     public bool IsDestroyed { get; private set; }
@@ -58,7 +57,7 @@ public class Selectable : MonoBehaviour
         {
             if (SelectedSelectable.GetComponent<GizmoHandler>().GizmoUsedLastFrame) return;
             SelectedSelectable.Deselect();
-            SelectionChanged?.Invoke(null, null);
+            //SelectionChanged?.Invoke(null, null);
         }
     }
 
@@ -273,6 +272,11 @@ public class Selectable : MonoBehaviour
         if (IsDestroyed) return;
         IsDestroyed = true;
 
+        if (SelectedSelectable == this)
+        {
+            Deselect();
+        }
+
         InputHandler.KeyStateChanged -= InputHandler_KeyStateChanged;
         if (ParentAttachmentPoint != null)
         {
@@ -419,12 +423,15 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    private void Deselect()
+    private void Deselect(bool fireEvent = true)
     {
         if (!IsSelected) return;
         SelectedSelectable = null;
         _highlightEffect.highlighted = false;
         SendMessage("SelectableDeselected");
+
+        if (fireEvent)
+            SelectionChanged?.Invoke(this, null);
     }
 
     private void Select()
@@ -432,7 +439,7 @@ public class Selectable : MonoBehaviour
         if (IsSelected || _isRaycastPlacementMode || GizmoHandler.GizmoBeingUsed) return;
         if (SelectedSelectable != null)
         {
-            SelectedSelectable.Deselect();
+            SelectedSelectable.Deselect(false);
         }
         SelectedSelectable = this;
         _highlightEffect.highlighted = true;
