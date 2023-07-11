@@ -91,7 +91,6 @@ public class GizmoHandler : MonoBehaviour
             else if (_rotateGizmo.Gizmo.IsEnabled)
             {
                 _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
-                _rotateGizmo.Gizmo.Transform.LocalPosition3D = Vector3.zero;
                 _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
                 RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(0, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X));
@@ -100,7 +99,6 @@ public class GizmoHandler : MonoBehaviour
             }
             else if (_scaleGizmo.Gizmo.IsEnabled) 
             {
-                //_scaleGizmo.Gizmo.Transform.Position3D = transform.position;
                 _scaleGizmo.Gizmo.Transform.LocalPosition3D = transform.position;
                 _scaleGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
