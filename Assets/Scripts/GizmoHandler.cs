@@ -91,6 +91,7 @@ public class GizmoHandler : MonoBehaviour
             else if (_rotateGizmo.Gizmo.IsEnabled)
             {
                 _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
+                _rotateGizmo.Gizmo.Transform.LocalPosition3D = Vector3.zero;
                 _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
                 RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(0, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X));
@@ -99,7 +100,8 @@ public class GizmoHandler : MonoBehaviour
             }
             else if (_scaleGizmo.Gizmo.IsEnabled) 
             {
-                _scaleGizmo.Gizmo.Transform.Position3D = transform.position;
+                //_scaleGizmo.Gizmo.Transform.Position3D = transform.position;
+                _scaleGizmo.Gizmo.Transform.LocalPosition3D = transform.position;
                 _scaleGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
                 RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X));
@@ -141,6 +143,7 @@ public class GizmoHandler : MonoBehaviour
 
         _scaleGizmo = RTGizmosEngine.Get.CreateObjectScaleGizmo();
         //_scaleGizmo.SetTargetObject(gameObject);
+        _rotateGizmo.SetTransformSpace(GizmoSpace.Local);
         _scaleGizmo.Gizmo.PostDragEnd += OnGizmoPostDragEnd;
         _scaleGizmo.Gizmo.PostDragBegin += OnGizmoPostDragBegin;
         _scaleGizmo.Gizmo.PreDragUpdate += OnGizmoPreDragUpdate;

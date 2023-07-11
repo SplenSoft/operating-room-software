@@ -504,8 +504,8 @@ MonoBehaviour:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
     <Unrestricted>k__BackingField: 1
-    <MaxValue>k__BackingField: 999999
-    <MinValue>k__BackingField: -999999
+    <MaxValue>k__BackingField: 0
+    <MinValue>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.1
     <Selected>k__BackingField: 0
