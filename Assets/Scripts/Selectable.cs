@@ -27,6 +27,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
     public Vector3 OriginalLocalPosition { get; private set; }
     public Vector3 OriginalLocalRotation { get; private set; }
+    private Quaternion _originalRotation;
 
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
@@ -48,6 +49,7 @@ public class Selectable : MonoBehaviour
     [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
+    public bool IsBusyWithScaling { get; private set; }
     [field: SerializeField] public Measurable Measurable { get; private set; }
     #endregion
 
@@ -118,18 +120,24 @@ public class Selectable : MonoBehaviour
         float angleZ = transform.localEulerAngles.z > 180 ? transform.localEulerAngles.z - 360f : transform.localEulerAngles.z;
         totalExcess = default;
         bool exceedsX = IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) && CheckConstraints(angleX, OriginalLocalRotation.x, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.X), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.X), out totalExcess.x);
-        bool exceedsY = TryGetGizmoSetting(GizmoType.Rotate, Axis.Y, out var gizmoSettingsRotateY) && CheckConstraints(angleY, OriginalLocalRotation.y, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Y), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Y), out totalExcess.y);
-        bool exceedsZ = TryGetGizmoSetting(GizmoType.Rotate, Axis.Z, out var gizmoSettingsRotateZ) && CheckConstraints(angleZ, OriginalLocalRotation.z, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z), out totalExcess.z);
+        bool exceedsY = TryGetGizmoSetting(GizmoType.Rotate, Axis.Y, out _) && CheckConstraints(angleY, OriginalLocalRotation.y, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Y), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Y), out totalExcess.y);
+        bool exceedsZ = TryGetGizmoSetting(GizmoType.Rotate, Axis.Z, out _) && CheckConstraints(angleZ, OriginalLocalRotation.z, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z), out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
     }
 
     private void UpdateZScaling(bool setSelected)
     {
-        if (ScaleLevels.Count == 0) return;
+        if (ScaleLevels.Count == 0 || IsBusyWithScaling) return;
         //get closest scale in list
         ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
         if (closest == _currentPreviewScaleLevel && !setSelected) return;
+
+        IsBusyWithScaling = true;
+
         _currentPreviewScaleLevel = closest;
+
+        Quaternion storedRotation = transform.rotation;
+        transform.rotation = _originalRotation;
 
         for (int j = 0; j < 2; j++)
         {
@@ -139,13 +147,13 @@ public class Selectable : MonoBehaviour
 
             if (closest == _currentScaleLevel)
             {
-                Debug.Log("Using stored child scales");
+                //Debug.Log("Using stored child scales");
                 for (int i = 0; i < transform.childCount; i++)
                     transform.GetChild(i).transform.localScale = _childScales[i];
             }
             else
             {
-                Debug.Log("Calculating child scales");
+                //Debug.Log("Calculating child scales");
                 Vector3 newParentScale = newScale;
                 // Get the relative difference to the original scale
                 var diffX = newParentScale.x / parentOriginalScale.x;
@@ -174,6 +182,9 @@ public class Selectable : MonoBehaviour
             _currentScaleLevel = closest;
             StoreChildScales();
         }
+
+        transform.rotation = storedRotation;
+        IsBusyWithScaling = false;
     }
 
     private void StoreChildScales()
@@ -219,6 +230,8 @@ public class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
+        _originalRotation = transform.rotation;
+        //OriginalLocalRotation = transform.localEulerAngles;
         _highlightEffect = GetComponent<HighlightEffect>();
         _gizmoHandler = GetComponent<GizmoHandler>();
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
@@ -324,7 +337,7 @@ public class Selectable : MonoBehaviour
             transform.LookAt(transform.position + Vector3.down, transform.parent.forward);
             if (!IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
             {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, OriginalLocalRotation.z);
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
             }
         }
     }
