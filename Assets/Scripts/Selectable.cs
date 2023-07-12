@@ -67,7 +67,6 @@ public class Selectable : MonoBehaviour
 
     private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
     {
-        excess = 0f;
         //if (maxVal == 0 && minVal == 0) return false;
         float diff = currentVal - originalVal;
         excess = diff > maxVal ? diff - maxVal : diff < minVal ? diff - minVal : 0f;

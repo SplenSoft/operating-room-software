@@ -72,22 +72,6 @@ PrefabInstance:
       value: ArmSegment_2
       objectReference: {fileID: 0}
     - target: {fileID: 4257891933675699195, guid: f6547d73b0c4cc44182bc942137efaff, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4257891933675699195, guid: f6547d73b0c4cc44182bc942137efaff, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4257891933675699195, guid: f6547d73b0c4cc44182bc942137efaff, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4257891933675699195, guid: f6547d73b0c4cc44182bc942137efaff, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4257891933675699195, guid: f6547d73b0c4cc44182bc942137efaff, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
@@ -890,8 +874,12 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <Name>k__BackingField
+      value: Arm Segment 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.data[0]
@@ -1011,6 +999,10 @@ PrefabInstance:
       propertyPath: <AllowedSelectables>k__BackingField.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectables>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 1078374745571109936, guid: 3088a94855e29094180835380d0b93b6, type: 3}
     - target: {fileID: 4686421761804208745, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_Name
       value: AttachPoint
