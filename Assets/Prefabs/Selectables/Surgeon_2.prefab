@@ -171,12 +171,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -2845779275431937956, guid: 0152cf82eee4dbf40ab1ce080a922c80, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -2845779275431937956, guid: 0152cf82eee4dbf40ab1ce080a922c80, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 101268177706818703, guid: 0152cf82eee4dbf40ab1ce080a922c80, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0152cf82eee4dbf40ab1ce080a922c80, type: 3}
       propertyPath: m_Name
       value: 043F_01SET_16SHOT
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0152cf82eee4dbf40ab1ce080a922c80, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7028486363853193388, guid: 0152cf82eee4dbf40ab1ce080a922c80, type: 3}
       propertyPath: m_Materials.Array.data[0]

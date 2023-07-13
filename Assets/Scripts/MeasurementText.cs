@@ -25,6 +25,10 @@ public class MeasurementText : MonoBehaviour
                 {
                     newText.gameObject.SetActive(newText._measurer.gameObject.activeSelf);
                 });
+                newText._measurer.VisibilityToggled.AddListener(() =>
+                {
+                    newText._text.enabled = newText._measurer.IsRendererVisibile;
+                });
             };
 
             _master = this;

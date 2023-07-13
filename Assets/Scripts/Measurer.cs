@@ -1,3 +1,4 @@
+using RTG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,9 @@ public class Measurer : MonoBehaviour
     private static List<Measurer> _measurers = new List<Measurer>();
     public static EventHandler<Measurer> MeasurerAdded;
     public UnityEvent ActiveStateToggled = new();
+    public UnityEvent VisibilityToggled = new();
+    public bool IsRendererVisibile => _renderer.enabled;
+    private MeshRenderer _renderer;
 
     [RuntimeInitializeOnLoadMethod]
     private static void OnAppStart()
@@ -31,7 +35,7 @@ public class Measurer : MonoBehaviour
         });
     }
 
-    public Measurable.Measurement Measurement { get; set; }
+    public Measurable.Measurement Measurement { get; private set; }
 
     public string Distance { get; private set; } = string.Empty;
 
@@ -56,11 +60,32 @@ public class Measurer : MonoBehaviour
     private void Update()
     {
         if (Measurement == null) 
-        { 
+        {
+            _renderer.enabled = true;
             gameObject.SetActive(false);
             return;
         }
 
+        if (IsRendererVisibile) 
+        {
+            UpdateTransform();
+        }
+
+        UpdateVisibility();
+    }
+
+    public void SetMeasurement(Measurable.Measurement measurement)
+    {
+        Measurement = measurement;
+        if (measurement != null) 
+        {
+            UpdateTransform();
+            UpdateVisibility();
+        }
+    }
+
+    private void UpdateTransform()
+    {
         transform.position = Measurement.Origin;
         transform.LookAt(Measurement.HitPoint);
         float distanceMeters = Vector3.Distance(Measurement.Origin, Measurement.HitPoint);
@@ -70,9 +95,32 @@ public class Measurer : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distanceMeters);
     }
 
+    private void UpdateVisibility()
+    {
+        bool isEnabled;
+        if (FreeLookCam.IsActive)
+        {
+            isEnabled = true;
+        }
+        else
+        {
+            Vector3 measurerForward = transform.forward;
+            Vector3 cameraForward = Camera.main.transform.forward;
+            float angle = Vector3.Angle(cameraForward, measurerForward);
+            isEnabled = angle > 10 && angle < 170;
+        }
+        
+        if ((!_renderer.enabled && isEnabled) || (_renderer.enabled && !isEnabled))
+        {
+            _renderer.enabled = isEnabled;
+            VisibilityToggled?.Invoke();
+        }
+    }
+
     private void Awake()
     {
         _childTransform = transform.GetChild(0);
+        _renderer = GetComponentInChildren<MeshRenderer>();
     }
 
     private void Start()

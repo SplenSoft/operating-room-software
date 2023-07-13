@@ -2,11 +2,13 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CameraManager : MonoBehaviour
 {
+    public static UnityEvent CameraChanged = new();
     private static List<CinemachineVirtualCamera> _cameras = new List<CinemachineVirtualCamera>();
-
+    public static CinemachineVirtualCamera ActiveCamera { get; private set; }
     public static void Register(CinemachineVirtualCamera cam)
     {
         _cameras.Add(cam);
@@ -21,5 +23,7 @@ public class CameraManager : MonoBehaviour
 
         if (nextCam >= _cameras.Count) nextCam = 0;
         _cameras[nextCam].Priority = 11;
+        ActiveCamera = _cameras[nextCam];
+        CameraChanged?.Invoke();
     }
 }

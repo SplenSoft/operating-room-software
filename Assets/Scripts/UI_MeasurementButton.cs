@@ -15,6 +15,9 @@ public class UI_MeasurementButton : MonoBehaviour
         _toggle = GetComponent<Toggle>();
         Selectable.SelectionChanged += (o, e) =>
         {
+            if (!Application.isPlaying) return;
+            if (gameObject == null) return;
+
             bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.Measurable != null;
             gameObject.SetActive(active);
             if (active)

@@ -5,30 +5,45 @@ using UnityEngine;
 
 public class FreeLookCam : MonoBehaviour
 {
+    public static FreeLookCam Instance { get; private set; }
     [field: SerializeField] private Transform Head { get; set; }
     [field: SerializeField] private float LookSensitivityX { get; set; } = 60f;
     [field: SerializeField] private float LookSensitivityY { get; set; } = 33.75f;
     [field: SerializeField] private Rigidbody Rigidbody { get; set; }
-    [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
-    private bool IsVirtualCameraActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
+    [field: SerializeField] public CinemachineVirtualCamera VirtualCamera { get; private set; }
+    private Collider _collider;
+    public static bool IsActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == Instance.VirtualCamera;
 
     private void Awake()
     {
+        Instance = this;
+        _collider = GetComponent<Collider>();
         CameraManager.Register(VirtualCamera);
+        CameraManager.CameraChanged.AddListener(() =>
+        {
+            bool active = CameraManager.ActiveCamera == VirtualCamera;
+            _collider.enabled = active;
+            Rigidbody.isKinematic = !active;
+        });
     }
 
     private void Update()
     {
-        if (!IsVirtualCameraActive) return;
+        if (!IsActive) return;
         if (Input.GetMouseButton(0))
         {
             HandleRotation();
         }
+
+        //if (transform.position.y < 10)
+        //{
+        //    transform.position = Vector3.zero;
+        //}
     }
 
     private void FixedUpdate()
     {
-        if (!IsVirtualCameraActive) return;
+        if (!IsActive) return;
         HandleMovement();
     }
 

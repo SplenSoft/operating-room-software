@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ public class Measurable : MonoBehaviour
 
     public static List<Measurable> ActiveMeasurables { get; } = new();
     public Dictionary<RoomBoundaryType, Measurement> Measurements { get; private set; } = new();
+    [field: SerializeField] private bool ForwardOnly { get; set; }
 
     public bool IsActive { get; private set; }
 
@@ -36,7 +38,8 @@ public class Measurable : MonoBehaviour
             ActiveMeasurablesChanged?.Invoke();
             Measurements.Values.ToList().ForEach(item =>
             {
-                item.Measurer.Measurement = null;
+                item.Measurer.SetMeasurement(null);
+                //item.Measurer.Measurement = null;
                 item.Measurer = null;
             });
         }
@@ -46,54 +49,73 @@ public class Measurable : MonoBehaviour
     {
         if (IsActive) 
         {
-            RoomBoundary.Instances.ForEach(boundary =>
+            if (!ForwardOnly)
             {
-                Vector3 raycastVector;
-                switch (boundary.RoomBoundaryType)
+                RoomBoundary.Instances.ForEach(boundary =>
                 {
-                    case RoomBoundaryType.WallNorth:
-                        raycastVector = Vector3.forward;
-                        break;
-                    case RoomBoundaryType.WallSouth:
-                        raycastVector = -Vector3.forward;
-                        break;
-                    case RoomBoundaryType.WallWest:
-                        raycastVector = -Vector3.right;
-                        break;
-                    case RoomBoundaryType.WallEast:
-                        raycastVector = Vector3.right;
-                        break;
-                    default:
-                        return;
-                }
+                    Vector3 raycastVector;
+                    switch (boundary.RoomBoundaryType)
+                    {
+                        case RoomBoundaryType.WallNorth:
+                            raycastVector = Vector3.forward;
+                            break;
+                        case RoomBoundaryType.WallSouth:
+                            raycastVector = -Vector3.forward;
+                            break;
+                        case RoomBoundaryType.WallWest:
+                            raycastVector = -Vector3.right;
+                            break;
+                        case RoomBoundaryType.WallEast:
+                            raycastVector = Vector3.right;
+                            break;
+                        case RoomBoundaryType.Ceiling:
+                            raycastVector = Vector3.up;
+                            break;
+                        case RoomBoundaryType.Floor:
+                            raycastVector = Vector3.down;
+                            break;
+                        default:
+                            return;
+                    }
 
-                Ray ray = new Ray(transform.position, raycastVector);
+                    Ray ray = new Ray(transform.position, raycastVector);
+                    int layerMask = 1 << LayerMask.NameToLayer("Wall");
+
+                    if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, layerMask))
+                    {
+                        Measurement measurement;
+                        bool newMeasurement = false;
+                        if (!Measurements.ContainsKey(boundary.RoomBoundaryType))
+                        {
+                            measurement = new Measurement();
+                            Measurements.Add(boundary.RoomBoundaryType, measurement);
+                            newMeasurement = true;
+                        }
+                        else
+                        {
+                            measurement = Measurements[boundary.RoomBoundaryType];
+                        }
+
+                        measurement.Origin = ray.origin;
+                        measurement.HitPoint = raycastHit.point;
+
+                        if (newMeasurement)
+                        {
+                            ActiveMeasurablesChanged?.Invoke();
+                        }
+                    }
+                });
+            }
+            else
+            {
+                Ray ray = new Ray(transform.position, transform.forward);
                 int layerMask = 1 << LayerMask.NameToLayer("Wall");
-
-                if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, layerMask))
-                {
-                    Measurement measurement;
-                    bool newMeasurement = false;
-                    if (!Measurements.ContainsKey(boundary.RoomBoundaryType))
-                    {
-                        measurement = new Measurement();
-                        Measurements.Add(boundary.RoomBoundaryType, measurement);
-                        newMeasurement = true;
-                    }
-                    else
-                    {
-                        measurement = Measurements[boundary.RoomBoundaryType];
-                    }
-
-                    measurement.Origin = ray.origin;
-                    measurement.HitPoint = raycastHit.point;
-
-                    if (newMeasurement)
-                    {
-                        ActiveMeasurablesChanged?.Invoke();
-                    }
-                }
-            });
+                throw new NotImplementedException();
+                //if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, layerMask))
+                //{
+                    
+                //}
+            }
         }
     }
 }

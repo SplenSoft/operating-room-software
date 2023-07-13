@@ -6,12 +6,17 @@ using UnityEngine;
 
 public class RoomBoundary : MonoBehaviour
 {
+    private static readonly float _mouseMoveSensitivityX = 10f;
+    private static readonly float _mouseMoveSensitivityY = 10f;
+    private static readonly float _scrollSensitivity = 0.5f;
     public static List<RoomBoundary> Instances { get; private set; } = new();
     private readonly float _defaultWallThickness = 0.375f.ToMeters(); //4.5 inches
     [field: SerializeField] public RoomBoundaryType RoomBoundaryType { get; private set; }
     [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
+    private bool VirtualCameraActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
     private MeshRenderer _meshRenderer;
     private Collider _collider;
+    private CinemachineTransposer _transposer;
 
     private void Awake()
     {
@@ -21,7 +26,10 @@ public class RoomBoundary : MonoBehaviour
         _collider = GetComponent<Collider>();
 
         if (VirtualCamera != null)
+        {
             CameraManager.Register(VirtualCamera);
+            _transposer = VirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        }   
 
         RoomSize.RoomSizeChanged += (obj, arg) =>
         {
@@ -73,6 +81,46 @@ public class RoomBoundary : MonoBehaviour
         {
             VirtualCamera.m_Lens.OrthographicSize = (transform.localScale.y / 2f) + (transform.localScale.y / 10f);
         }
+    }
+
+    private void Update()
+    {
+        if (VirtualCamera != null && VirtualCameraActive)
+        {
+
+            HandleCameraMovement();
+        }
+    }
+
+    private void HandleCameraMovement()
+    {
+        if (GizmoHandler.GizmoBeingUsed) return;
+        float scroll = -GetScrollWheel() * _scrollSensitivity;
+        bool move = Input.GetMouseButton(0);
+        Vector2 mouseMovement = new Vector2(move ? InputHandler.MouseDeltaScreenPercentage.x * _mouseMoveSensitivityX : 0, move ? InputHandler.MouseDeltaScreenPercentage.y * _mouseMoveSensitivityY : 0);
+
+        switch (RoomBoundaryType)
+        {
+            case RoomBoundaryType.Ceiling:
+                _transposer.m_FollowOffset.x -= mouseMovement.x;
+                _transposer.m_FollowOffset.z -= mouseMovement.y;
+                break;
+            case RoomBoundaryType.WallEast:
+                _transposer.m_FollowOffset.y -= mouseMovement.y;
+                _transposer.m_FollowOffset.z -= mouseMovement.x;
+                break;
+            case RoomBoundaryType.WallSouth:
+                _transposer.m_FollowOffset.x -= mouseMovement.x;
+                _transposer.m_FollowOffset.y -= mouseMovement.y;
+                break;
+        }
+
+        VirtualCamera.m_Lens.OrthographicSize = Mathf.Max(0, VirtualCamera.m_Lens.OrthographicSize + scroll);
+    }
+
+    private float GetScrollWheel()
+    {
+        return Input.mouseScrollDelta.y;
     }
 
     public static void EnableAllMeshRenderersAndColliders()
