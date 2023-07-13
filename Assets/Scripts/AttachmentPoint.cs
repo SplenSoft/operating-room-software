@@ -2,6 +2,7 @@ using HighlightPlus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AttachmentPoint : MonoBehaviour
@@ -17,10 +18,9 @@ public class AttachmentPoint : MonoBehaviour
     [field: SerializeField] public List<SelectableType> AllowedSelectableTypes { get; private set; } = new();
     [field: SerializeField] public List<Selectable> AllowedSelectables { get; private set; } = new();
 
+    private List<Selectable> _parentSelectables = new();
     private MeshRenderer _renderer;
     private Collider _collider;
-
-    [field: SerializeField] private Selectable ParentSelectable { get; set; }
 
     public void SetAttachedSelectable(Selectable selectable)
     {
@@ -36,20 +36,33 @@ public class AttachmentPoint : MonoBehaviour
 
     private void Awake()
     {
-        if (ParentSelectable == null)
+        Transform parent = transform.parent;
+
+        while (parent.GetComponent<AttachmentPoint>() == null)
         {
-            ParentSelectable = GetComponentInParent<Selectable>();
+            var selectable = parent.GetComponent<Selectable>();
+            if (selectable != null && !_parentSelectables.Contains(selectable))
+            {
+                _parentSelectables.Add(selectable);
+            }
+            parent = parent.parent;
+            if (parent == null) break;
         }
+
         _collider = GetComponentInChildren<Collider>();
         _renderer = GetComponentInChildren<MeshRenderer>();
-        ParentSelectable.MouseOverStateChanged += MouseOverStateChanged;
+        _parentSelectables.ForEach(item =>
+        {
+            item.MouseOverStateChanged += MouseOverStateChanged;
+        });
+
         Selectable.SelectionChanged += SelectionChanged;
         UpdateComponentStatus();
     }
 
     private void SelectionChanged(object sender, EventArgs e)
     {
-        if (Selectable.SelectedSelectable == ParentSelectable)
+        if (_parentSelectables.Contains(Selectable.SelectedSelectable))
             UpdateComponentStatus();
     }
 
@@ -60,14 +73,19 @@ public class AttachmentPoint : MonoBehaviour
 
     private void UpdateComponentStatus()
     {
-        _renderer.enabled = (ParentSelectable.IsMouseOver || _attachmentPointHovered) && !ParentSelectable.IsSelected && AttachedSelectable == null;
-        HighlightHovered.highlighted = _attachmentPointHovered && !ParentSelectable.IsSelected && AttachedSelectable == null;
-        _collider.enabled = AttachedSelectable == null && !ParentSelectable.IsSelected;
+        bool isMouseOverAnyParentSelectable = _parentSelectables.FirstOrDefault(item => item.IsMouseOver) != default;
+        bool areAnyParentSelectablesSelected = _parentSelectables.Contains(Selectable.SelectedSelectable);
+        _renderer.enabled = (isMouseOverAnyParentSelectable || _attachmentPointHovered) && !areAnyParentSelectablesSelected && AttachedSelectable == null;
+        HighlightHovered.highlighted = _attachmentPointHovered && !areAnyParentSelectablesSelected && AttachedSelectable == null;
+        _collider.enabled = AttachedSelectable == null && !areAnyParentSelectablesSelected;
     }
 
     private void OnDestroy()
     {
-        ParentSelectable.MouseOverStateChanged -= MouseOverStateChanged;
+        _parentSelectables.ForEach(item =>
+        {
+            item.MouseOverStateChanged -= MouseOverStateChanged;
+        });
         Selectable.SelectionChanged -= SelectionChanged;
     }
 
