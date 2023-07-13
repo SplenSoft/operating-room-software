@@ -282,6 +282,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c6e78fd763bca3c44b8bb9ab35bfb3d7, type: 2}
+    - target: {fileID: -2762871258494585376, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: -105869022679507046, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -289,6 +293,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}
       propertyPath: m_Name
       value: BoomDropTube
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}
@@ -524,15 +532,13 @@ MonoBehaviour:
   - <Size>k__BackingField: 0.7
     <Selected>k__BackingField: 1
   <ZAlwaysFacesGround>k__BackingField: 0
-  <Interdependencies>k__BackingField:
-  - {fileID: 1229852259138092875}
+  <Measurable>k__BackingField: {fileID: 0}
   _currentScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
   _currentPreviewScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
 --- !u!4 &6875778626302832728 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5520051664907613906, guid: b900aebb6e7886f4f8d994ed09e5dbfb, type: 3}

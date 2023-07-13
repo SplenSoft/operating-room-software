@@ -302,6 +302,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CeilingMount_Single
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d68230c164524fc4a9bbedd94d0f394c, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d68230c164524fc4a9bbedd94d0f394c, type: 3}
 --- !u!1 &8803505717907629393 stripped

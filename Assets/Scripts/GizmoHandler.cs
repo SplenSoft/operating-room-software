@@ -355,7 +355,7 @@ public class GizmoHandler : MonoBehaviour
             }
 
             _translateGizmo.Gizmo.Transform.Position3D = transform.position;
-            Debug.Log(gizmo.TotalDragOffset);
+            //Debug.Log(gizmo.TotalDragOffset);
         }
 
         if (gizmo.ObjectTransformGizmo == _rotateGizmo && _selectable.ExceedsMaxRotation(out totalExcess))

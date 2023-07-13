@@ -63,9 +63,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: fe8fe446f6ef7dc44a08cc64bcf86e85, type: 2}
+    - target: {fileID: -6128321496008555920, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
       propertyPath: m_Name
       value: ArmLightMount
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1043226215405032221, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
@@ -74,19 +86,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
   m_PrefabInstance: {fileID: 1557001612651131062}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8523112873706659234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1827051214467681767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d13a952dd356a94492b01c9bd024acc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Target>k__BackingField: {fileID: 7155481321810582358}
 --- !u!64 &963760857086523827
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -101,11 +100,38 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -157164518671246543, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+--- !u!114 &8523112873706659234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1827051214467681767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d13a952dd356a94492b01c9bd024acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Target>k__BackingField: {fileID: 7155481321810582358}
 --- !u!1 &2009128803780027307 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1043226215405032221, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
   m_PrefabInstance: {fileID: 1557001612651131062}
   m_PrefabAsset: {fileID: 0}
+--- !u!64 &7017508726888515218
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009128803780027307}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 6114014788491540886, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
 --- !u!114 &1737961192254230995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +144,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3815135368326282979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009128803780027307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ParentAttachmentPoint>k__BackingField: {fileID: 0}
+  <Thumbnail>k__BackingField: {fileID: 0}
+  <Name>k__BackingField: 
+  <Description>k__BackingField: 
+  <WallRestrictions>k__BackingField: 
+  <Types>k__BackingField: 
+  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <GizmoSettingsList>k__BackingField:
+  - <Axis>k__BackingField: 0
+    <GizmoType>k__BackingField: 1
+    <Unrestricted>k__BackingField: 1
+    <MaxValue>k__BackingField: 0
+    <MinValue>k__BackingField: 0
+  <ScaleLevels>k__BackingField: []
+  <ZAlwaysFacesGround>k__BackingField: 0
+  <Measurable>k__BackingField: {fileID: 0}
+  _currentScaleLevel:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
+  _currentPreviewScaleLevel:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
 --- !u!114 &8911606991719514480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,56 +344,6 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
---- !u!114 &3815135368326282979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009128803780027307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <ParentAttachmentPoint>k__BackingField: {fileID: 0}
-  <Thumbnail>k__BackingField: {fileID: 0}
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  <WallRestrictions>k__BackingField: 
-  <Types>k__BackingField: 
-  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <GizmoSettingsList>k__BackingField:
-  - <Axis>k__BackingField: 0
-    <GizmoType>k__BackingField: 1
-    <Unrestricted>k__BackingField: 1
-    <MaxValue>k__BackingField: 0
-    <MinValue>k__BackingField: 0
-  <ScaleLevels>k__BackingField: []
-  <ZAlwaysFacesGround>k__BackingField: 0
-  <Interdependencies>k__BackingField:
-  - {fileID: 3817767745036341489}
-  _currentScaleLevel:
-    <Size>k__BackingField: 0
-    <Selected>k__BackingField: 0
-  _currentPreviewScaleLevel:
-    <Size>k__BackingField: 0
-    <Selected>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
---- !u!64 &7017508726888515218
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009128803780027307}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6114014788491540886, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
 --- !u!1 &4568972904578085574 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6128321496008555920, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
@@ -353,6 +363,40 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -4900427171475055494, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+--- !u!114 &2094651982050272948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4568972904578085574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ParentAttachmentPoint>k__BackingField: {fileID: 0}
+  <Thumbnail>k__BackingField: {fileID: 0}
+  <Name>k__BackingField: 
+  <Description>k__BackingField: 
+  <WallRestrictions>k__BackingField: 
+  <Types>k__BackingField: 
+  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <GizmoSettingsList>k__BackingField:
+  - <Axis>k__BackingField: 1
+    <GizmoType>k__BackingField: 1
+    <Unrestricted>k__BackingField: 1
+    <MaxValue>k__BackingField: 0
+    <MinValue>k__BackingField: 0
+  <ScaleLevels>k__BackingField: []
+  <ZAlwaysFacesGround>k__BackingField: 0
+  <Measurable>k__BackingField: {fileID: 0}
+  _currentScaleLevel:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
+  _currentPreviewScaleLevel:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
 --- !u!114 &6508190642330247526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -531,42 +575,6 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
---- !u!114 &2094651982050272948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4568972904578085574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <ParentAttachmentPoint>k__BackingField: {fileID: 0}
-  <Thumbnail>k__BackingField: {fileID: 0}
-  <Name>k__BackingField: 
-  <Description>k__BackingField: 
-  <WallRestrictions>k__BackingField: 
-  <Types>k__BackingField: 
-  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <GizmoSettingsList>k__BackingField:
-  - <Axis>k__BackingField: 1
-    <GizmoType>k__BackingField: 1
-    <Unrestricted>k__BackingField: 1
-    <MaxValue>k__BackingField: 0
-    <MinValue>k__BackingField: 0
-  <ScaleLevels>k__BackingField: []
-  <ZAlwaysFacesGround>k__BackingField: 0
-  <Interdependencies>k__BackingField:
-  - {fileID: 3815135368326282979}
-  _currentScaleLevel:
-    <Size>k__BackingField: 0
-    <Selected>k__BackingField: 0
-  _currentPreviewScaleLevel:
-    <Size>k__BackingField: 0
-    <Selected>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
 --- !u!1001 &4470344456755555327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -689,17 +697,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 4470344456755555327}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3817767745036341489 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-  m_PrefabInstance: {fileID: 4470344456755555327}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7155481321810582358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7155481321810582358 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}

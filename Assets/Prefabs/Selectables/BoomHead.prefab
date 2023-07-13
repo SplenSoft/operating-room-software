@@ -187,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533802ce717278149876c674f9f556b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <ForwardOnly>k__BackingField: 0
 --- !u!1001 &3934508153341532619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -269,6 +270,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3ab282a56dc7f114bb92c007610ced63, type: 3}
       propertyPath: m_Name
       value: BoomHead
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3ab282a56dc7f114bb92c007610ced63, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ab282a56dc7f114bb92c007610ced63, type: 3}

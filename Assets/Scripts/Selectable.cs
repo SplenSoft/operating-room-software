@@ -38,18 +38,19 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
-    [field: SerializeField] private List<Selectable> Interdependencies { get; set; } = new List<Selectable>();
+    [field: SerializeField] public Measurable Measurable { get; private set; }
 
     public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
     private List<Vector3> _childScales = new();
+    private Selectable _parentSelectable;
     private Transform _virtualParent;
     private HighlightEffect _highlightEffect;
     private GizmoHandler _gizmoHandler;
     [SerializeField, ReadOnly] private ScaleLevel _currentScaleLevel;
     [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;
+    
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
-    [field: SerializeField] public Measurable Measurable { get; private set; }
     #endregion
 
     public static void DeselectAll()
@@ -225,6 +226,27 @@ public class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
+        Transform parent = transform.parent;
+        while (parent != null)
+        {
+            if (parent.TryGetComponent<AttachmentPoint>(out var attachmentPoint))
+            {
+                if (attachmentPoint != ParentAttachmentPoint)
+                {
+                    ParentAttachmentPoint = attachmentPoint;
+                }
+                break;
+            }
+
+            if (parent.TryGetComponent<Selectable>(out var selectable))
+            {
+                _parentSelectable = selectable; 
+                break;
+            }
+
+            parent = parent.parent;
+        }
+
         _originalRotation = transform.rotation;
         //OriginalLocalRotation = transform.localEulerAngles;
         _highlightEffect = GetComponent<HighlightEffect>();
@@ -291,10 +313,10 @@ public class Selectable : MonoBehaviour
             ParentAttachmentPoint.DetachSelectable();
         }
 
-        Interdependencies.ForEach(item =>
+        if (_parentSelectable != null)
         {
-            Destroy(item.gameObject);
-        });
+            Destroy(_parentSelectable.gameObject);
+        }
     }
 
     public void OnMouseUpAsButton()

@@ -51,7 +51,6 @@ MonoBehaviour:
   <HighlightHovered>k__BackingField: {fileID: 7052096847261562413}
   <AllowedSelectableTypes>k__BackingField: 
   <AllowedSelectables>k__BackingField: []
-  <ParentSelectable>k__BackingField: {fileID: 0}
 --- !u!114 &7052096847261562413
 MonoBehaviour:
   m_ObjectHideFlags: 0

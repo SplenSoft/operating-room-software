@@ -35,12 +35,14 @@ public class KeepRelativePosition : MonoBehaviour
 
     private void GoToRelativePosition()
     {
+        
         transform.position = VirtualParent.position + _relativePosition;
         RecalculateRelativePosition();
     }
 
     private async void RoomSizeChanged(object sender, EventArgs e)
     {
+        if (VirtualParent == null) return;
         await Task.Yield();
         GoToRelativePosition();
     }

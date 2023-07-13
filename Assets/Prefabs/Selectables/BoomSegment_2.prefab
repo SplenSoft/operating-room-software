@@ -239,22 +239,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 533802ce717278149876c674f9f556b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <ForwardOnly>k__BackingField: 0
 --- !u!4 &5847277044198170897 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 7081033005323050407}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7545313951941142185 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-  m_PrefabInstance: {fileID: 7081033005323050407}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4539726008913472782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8431142525230486137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -350,6 +340,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomSegment_2
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 71d6cfc6ae9e1bc46b1d1198651a72c5, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5246998714712556098, guid: 71d6cfc6ae9e1bc46b1d1198651a72c5, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -369,6 +363,14 @@ PrefabInstance:
     - target: {fileID: 5246998714712556098, guid: 71d6cfc6ae9e1bc46b1d1198651a72c5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7845985771932473609, guid: 71d6cfc6ae9e1bc46b1d1198651a72c5, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8122415409681951411, guid: 71d6cfc6ae9e1bc46b1d1198651a72c5, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71d6cfc6ae9e1bc46b1d1198651a72c5, type: 3}
@@ -579,15 +581,13 @@ MonoBehaviour:
   <GizmoSettingsList>k__BackingField: []
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 1
-  <Interdependencies>k__BackingField:
-  - {fileID: 5102702119798078014}
+  <Measurable>k__BackingField: {fileID: 0}
   _currentScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
   _currentPreviewScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
 --- !u!114 &5232814838239893113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,16 +658,13 @@ MonoBehaviour:
     <MinValue>k__BackingField: -20
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 0
-  <Interdependencies>k__BackingField:
-  - {fileID: 7545313951941142185}
-  - {fileID: 1634076314307409458}
+  <Measurable>k__BackingField: {fileID: 0}
   _currentScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
   _currentPreviewScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
 --- !u!114 &7511422527843455098
 MonoBehaviour:
   m_ObjectHideFlags: 0

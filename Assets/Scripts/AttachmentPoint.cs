@@ -49,6 +49,12 @@ public class AttachmentPoint : MonoBehaviour
             if (parent == null) break;
         }
 
+        var childSelectable = GetComponentInChildren<Selectable>();
+        if (childSelectable != null && AttachedSelectable == null) 
+        { 
+            AttachedSelectable = childSelectable;
+        }
+
         _collider = GetComponentInChildren<Collider>();
         _renderer = GetComponentInChildren<MeshRenderer>();
         _parentSelectables.ForEach(item =>
