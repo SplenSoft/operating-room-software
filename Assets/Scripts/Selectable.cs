@@ -49,7 +49,6 @@ public class Selectable : MonoBehaviour
     [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
-    public bool IsBusyWithScaling { get; private set; }
     [field: SerializeField] public Measurable Measurable { get; private set; }
     #endregion
 
@@ -126,19 +125,17 @@ public class Selectable : MonoBehaviour
 
     private void UpdateZScaling(bool setSelected)
     {
-        if (ScaleLevels.Count == 0 || IsBusyWithScaling) return;
+        if (ScaleLevels.Count == 0) return;
         //get closest scale in list
         ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
         if (closest == _currentPreviewScaleLevel && !setSelected) return;
-
-        IsBusyWithScaling = true;
 
         _currentPreviewScaleLevel = closest;
 
         Quaternion storedRotation = transform.rotation;
         transform.rotation = _originalRotation;
 
-        for (int j = 0; j < 2; j++)
+        for (int j = 0; j < 2; j++) //not sure if still need to do this twice
         {
             Vector3 parentOriginalScale = transform.localScale;
             Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, closest.ScaleZ);
@@ -183,7 +180,6 @@ public class Selectable : MonoBehaviour
         }
 
         transform.rotation = storedRotation;
-        IsBusyWithScaling = false;
     }
 
     private void StoreChildScales()
@@ -358,7 +354,8 @@ public class Selectable : MonoBehaviour
         if (!_isRaycastPlacementMode || _hasBeenPlaced) return;
 
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 100f, 1 << LayerMask.NameToLayer("Wall")))
+        int mask = 1 << LayerMask.NameToLayer("Wall");
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, mask))
         {
             void SetPosition(RaycastHit hit)
             {
@@ -368,32 +365,12 @@ public class Selectable : MonoBehaviour
 
             if (WallRestrictions.Count > 0 && _virtualParent == null)
             {
-                if (WallRestrictions[0] == RoomBoundaryType.Ceiling)
+                Vector3 direction = WallRestrictions[0] == RoomBoundaryType.Ceiling ? Vector3.up : WallRestrictions[0] == RoomBoundaryType.Floor ? Vector3.down : Vector3.right;
+                var ray2 = new Ray(Vector3.zero + Vector3.up, direction);
+                if (Physics.Raycast(ray2, out RaycastHit raycastHit2, float.MaxValue, mask))
                 {
-                    var ray2 = new Ray(Vector3.zero + Vector3.up, Vector3.up);
-                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 1000f, 1 << LayerMask.NameToLayer("Wall")))
-                    {
-                        SetPosition(raycastHit2);
-                    }
+                    SetPosition(raycastHit2);
                 }
-                else if (WallRestrictions[0] == RoomBoundaryType.Floor)
-                {
-                    var ray2 = new Ray(Vector3.zero + Vector3.up, -Vector3.up);
-                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 1000f, 1 << LayerMask.NameToLayer("Wall")))
-                    {
-                        SetPosition(raycastHit2);
-                    }
-                }
-                else
-                {
-                    //throw new NotImplementedException();
-                    var ray2 = new Ray(Vector3.zero + Vector3.up, Vector3.right);
-                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 1000f, 1 << LayerMask.NameToLayer("Wall")))
-                    {
-                        SetPosition(raycastHit2);
-                    }
-                }
-                
             }
             else if (WallRestrictions.Count > 0) 
             {
@@ -415,6 +392,7 @@ public class Selectable : MonoBehaviour
             _hasBeenPlaced = true;
             SendMessage("SelectablePositionChanged");
             SendMessage("VirtualParentChanged", _virtualParent);
+
             await Task.Yield();
             if (!Application.isPlaying) return;
 
