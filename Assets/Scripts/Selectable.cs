@@ -371,7 +371,7 @@ public class Selectable : MonoBehaviour
                 if (WallRestrictions[0] == RoomBoundaryType.Ceiling)
                 {
                     var ray2 = new Ray(Vector3.zero + Vector3.up, Vector3.up);
-                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 100f, 1 << LayerMask.NameToLayer("Wall")))
+                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 1000f, 1 << LayerMask.NameToLayer("Wall")))
                     {
                         SetPosition(raycastHit2);
                     }
@@ -379,14 +379,19 @@ public class Selectable : MonoBehaviour
                 else if (WallRestrictions[0] == RoomBoundaryType.Floor)
                 {
                     var ray2 = new Ray(Vector3.zero + Vector3.up, -Vector3.up);
-                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 100f, 1 << LayerMask.NameToLayer("Wall")))
+                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 1000f, 1 << LayerMask.NameToLayer("Wall")))
                     {
                         SetPosition(raycastHit2);
                     }
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    //throw new NotImplementedException();
+                    var ray2 = new Ray(Vector3.zero + Vector3.up, Vector3.right);
+                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 1000f, 1 << LayerMask.NameToLayer("Wall")))
+                    {
+                        SetPosition(raycastHit2);
+                    }
                 }
                 
             }
