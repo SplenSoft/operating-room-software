@@ -694,7 +694,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4389404121301492505, guid: 795f2520ccac06544818cfddaf49f3b3, type: 3}
       propertyPath: m_text
-      value: "30\u200B"
+      value: "24\n\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 4389404121420096678, guid: 795f2520ccac06544818cfddaf49f3b3, type: 3}
       propertyPath: m_Name
@@ -786,7 +786,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4389404121612324504, guid: 795f2520ccac06544818cfddaf49f3b3, type: 3}
       propertyPath: m_Text
-      value: 30
+      value: '24
+
+'
       objectReference: {fileID: 0}
     - target: {fileID: 4389404121612324507, guid: 795f2520ccac06544818cfddaf49f3b3, type: 3}
       propertyPath: m_AnchorMax.y
