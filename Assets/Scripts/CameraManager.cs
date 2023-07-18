@@ -9,10 +9,17 @@ public class CameraManager : MonoBehaviour
     public static UnityEvent CameraChanged = new();
     private static List<CinemachineVirtualCamera> _cameras = new List<CinemachineVirtualCamera>();
     public static CinemachineVirtualCamera ActiveCamera { get; private set; }
+
     public static void Register(CinemachineVirtualCamera cam)
     {
         _cameras.Add(cam);
     }
+
+    //public static void SetActiveCamera(CinemachineVirtualCamera cam)
+    //{
+    //    ActiveCamera = cam;
+        
+    //}
 
     public static void CycleCam()
     {
