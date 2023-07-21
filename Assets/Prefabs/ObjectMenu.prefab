@@ -487,7 +487,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4724704607649521868}
   m_HandleRect: {fileID: 7348752177253102427}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -951,6 +951,7 @@ GameObject:
   - component: {fileID: 4135108818207309076}
   - component: {fileID: 4135108818207309075}
   - component: {fileID: 3054181751024467757}
+  - component: {fileID: 3340290244935651647}
   m_Layer: 5
   m_Name: ObjectMenu
   m_TagString: Untagged
@@ -1092,9 +1093,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ItemTemplate>k__BackingField: {fileID: 8432471266395779665}
   <ItemTemplateTextObjectName>k__BackingField: {fileID: 3158347501697319027}
-  <ItemTemplateButtonAddObject>k__BackingField: {fileID: 6457721117644149874}
   <BuiltInSelectablePrefabs>k__BackingField:
   - {fileID: 5383272167355900108, guid: 839a064b625fb724ab496f21e46986e7, type: 3}
+--- !u!114 &3340290244935651647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4135108818207308526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f99a4fde53871e4384765f3f9ae6866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4135108818803083513
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,14 +1614,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 4818363493914570995, guid: 45fa2242a5d380e4a805546ccd52db79, type: 3}
   m_PrefabInstance: {fileID: 6975703910920397467}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6457721117644149874 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4130014833015879401, guid: 45fa2242a5d380e4a805546ccd52db79, type: 3}
-  m_PrefabInstance: {fileID: 6975703910920397467}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

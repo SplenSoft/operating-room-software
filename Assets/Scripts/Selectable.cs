@@ -47,7 +47,7 @@ public class Selectable : MonoBehaviour
     private HighlightEffect _highlightEffect;
     private GizmoHandler _gizmoHandler;
     [SerializeField, ReadOnly] private ScaleLevel _currentScaleLevel;
-    [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;
+    [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;   
     
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
@@ -122,6 +122,23 @@ public class Selectable : MonoBehaviour
         bool exceedsY = TryGetGizmoSetting(GizmoType.Rotate, Axis.Y, out _) && CheckConstraints(angleY, OriginalLocalRotation.y, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Y), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Y), out totalExcess.y);
         bool exceedsZ = TryGetGizmoSetting(GizmoType.Rotate, Axis.Z, out _) && CheckConstraints(angleZ, OriginalLocalRotation.z, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z), out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
+    }
+
+    public bool IsArmAssembly()
+    {
+        var rootSelectable = transform.root.GetComponent<Selectable>();
+        return rootSelectable != null && rootSelectable.Types.Contains(SelectableType.Mount);
+    }
+
+    public bool TryGetArmAssemblyRoot(out GameObject rootObj)
+    {
+        rootObj = null;
+        if (transform.root.TryGetComponent<Selectable>(out var rootSelectable)) 
+        {
+            rootObj = rootSelectable.gameObject;
+            return rootSelectable.Types.Contains(SelectableType.Mount);
+        }
+        return false;
     }
 
     private void UpdateZScaling(bool setSelected)
@@ -321,6 +338,7 @@ public class Selectable : MonoBehaviour
 
     public void OnMouseUpAsButton()
     {
+        if (InputHandler.IsPointerOverUIElement()) return;
         Select();
     }
 

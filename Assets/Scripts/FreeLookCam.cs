@@ -29,7 +29,7 @@ public class FreeLookCam : MonoBehaviour
 
     private void Update()
     {
-        if (!IsActive) return;
+        if (!IsActive || FullScreenMenu.IsOpen) return;
         if (Input.GetMouseButton(0))
         {
             HandleRotation();
@@ -43,7 +43,7 @@ public class FreeLookCam : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsActive) return;
+        if (!IsActive || FullScreenMenu.IsOpen) return;
         HandleMovement();
     }
 

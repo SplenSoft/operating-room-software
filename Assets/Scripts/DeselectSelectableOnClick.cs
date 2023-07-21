@@ -13,6 +13,8 @@ public class DeselectSelectableOnClick : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
+        if (InputHandler.IsPointerOverUIElement()) return;
+
         if (Time.time - _timeMouseDown < 0.2f)
             Selectable.DeselectAll();
     }

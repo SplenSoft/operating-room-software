@@ -32,13 +32,14 @@ public class ScreenshotCamera : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space)) 
-        { 
-            if (!IsActive)
-                EnableCamera();
-            else
-                DisableCamera();
-        }
+        //testing
+        //if (Input.GetKeyUp(KeyCode.Space)) 
+        //{ 
+        //    if (!IsActive)
+        //        EnableCamera();
+        //    else
+        //        DisableCamera();
+        //}
 
         if (IsActive)
         {
@@ -62,14 +63,15 @@ public class ScreenshotCamera : MonoBehaviour
 
         List<MeshRenderer> allowedMeshRenderers = parentSelectable.gameObject.GetComponentsInChildren<MeshRenderer>().ToList();
         List<Collider> allowedColliders = parentSelectable.gameObject.GetComponentsInChildren<Collider>().ToList();
+        List<Transform> activeChildTransforms = parentSelectable.gameObject.GetComponentsInChildren<Transform>().ToList();
 
         var targets = new List<CinemachineTargetGroup.Target>();
 
-        allowedMeshRenderers.ForEach(item =>
+        activeChildTransforms.ForEach(item =>
         {
             targets.Add(new CinemachineTargetGroup.Target
             {
-                target = item.transform,
+                target = item,
                 weight = 1
             });
         });

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3565064673450460342}
   - component: {fileID: 3565064673450460337}
   - component: {fileID: 3565064673450460343}
+  - component: {fileID: 1368544655147036663}
   m_Layer: 5
   m_Name: RoomCreatorMenu
   m_TagString: Untagged
@@ -157,6 +158,18 @@ MonoBehaviour:
   <InputFieldWidth>k__BackingField: {fileID: 3565064673446368776}
   <InputFieldHeight>k__BackingField: {fileID: 978385735029972904}
   <InputFieldDepth>k__BackingField: {fileID: 978385734496968970}
+--- !u!114 &1368544655147036663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3565064673450459980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f99a4fde53871e4384765f3f9ae6866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3565064673581123619
 GameObject:
   m_ObjectHideFlags: 0
