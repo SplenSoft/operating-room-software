@@ -4,6 +4,9 @@ using System.Collections;
 using System.IO;
 using System.Text;
 using iDiscGolf;
+using System.Linq;
+using Unity.VisualScripting;
+using System.Collections.Generic;
 
 public class ObjExporterScript
 {
@@ -52,16 +55,17 @@ public class ObjExporterScript
             sb.Append(string.Format("vt {0} {1}\n", v.x, v.y));
         }
 
-        Material[] mats = mf.GetComponent<Renderer>().sharedMaterials;
+        //Material[] mats = mf.GetComponent<Renderer>().sharedMaterials;
+        //Material[] mats = m.sub
         Debug.Log($"GameObject {t.gameObject.name} has {m.subMeshCount} submeshes");
         for (int material = 0; material < m.subMeshCount; material++)
         {
             sb.Append("\n");
-            sb.Append("usemtl ").Append(mats[material].name).Append("\n");
-            sb.Append("usemap ").Append(mats[material].name).Append("\n");
+            //sb.Append("usemtl ").Append(mats[material].name).Append("\n");
+            //sb.Append("usemap ").Append(mats[material].name).Append("\n");
 
             int[] triangles = m.GetTriangles(material);
-            Debug.Log($"Material {mats[material].name} on obj {t.gameObject.name} has {triangles.Length} triangles");
+            //Debug.Log($"Material {mats[material].name} on obj {t.gameObject.name} has {triangles.Length} triangles");
             for (int i = 0; i < triangles.Length; i += 3)
             {
                 sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
@@ -103,6 +107,36 @@ public static class ObjExporter
             + "\n#-------"
             + "\n\n");
 
+        MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>().Where(item => item.enabled).ToList().ConvertAll(item => item.gameObject.GetComponent<MeshFilter>()).ToArray();
+        Debug.Log($"Found {meshFilters.Length} meshfilters");
+        //CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+        List<CombineInstance> combineInstances = new List<CombineInstance>();
+
+        int i = 0;
+        while (i < meshFilters.Length)
+        {
+            var filter = meshFilters[i];
+            for (int j = 0; j < filter.sharedMesh.subMeshCount; j++)
+            {
+                CombineInstance instance = new CombineInstance();
+                instance.mesh = filter.sharedMesh;
+                instance.transform = filter.transform.localToWorldMatrix;
+                instance.subMeshIndex = j;
+                combineInstances.Add(instance);
+            }
+
+            i++;
+        }
+
+        CombineInstance[] combine = combineInstances.ToArray();
+
+        Mesh mesh = new Mesh();
+        mesh.CombineMeshes(combine, mergeSubMeshes: false, useMatrices: true);
+
+        obj = new GameObject("Mesh", typeof(MeshFilter)/*, typeof(MeshRenderer)*/);
+        //obj.GetComponent<MeshRenderer>()
+        obj.GetComponent<MeshFilter>().sharedMesh = mesh;
+
         Transform t = obj.transform;
 
         Vector3 originalPosition = t.position;
@@ -128,6 +162,8 @@ public static class ObjExporter
 
         ObjExporterScript.End();
         Debug.Log("Exported Mesh: " + fileName);
+        Object.Destroy(mesh);
+        Object.Destroy(obj);
     }
 
     static string ProcessTransform(Transform t, bool makeSubmeshes)
@@ -135,9 +171,9 @@ public static class ObjExporter
         StringBuilder meshString = new StringBuilder();
 
         MeshFilter mf = t.GetComponent<MeshFilter>();
-        MeshRenderer mr = t.GetComponent<MeshRenderer>();
+        //MeshRenderer mr = t.GetComponent<MeshRenderer>();
 
-        if (mf != null && mr != null && mr.enabled)
+        if (mf != null /*&& mr != null && mr.enabled*/)
         {
             meshString.Append("#" + t.name
                           + "\n#-------"

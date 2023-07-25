@@ -18,7 +18,7 @@ public class UI_ButtonExportObj : MonoBehaviour
     {
         if (Selectable.SelectedSelectable.TryGetArmAssemblyRoot(out GameObject obj))
         {
-            ObjExporter.DoExport(true, obj);
+            ObjExporter.DoExport(false, obj);
         }
         else
         {
