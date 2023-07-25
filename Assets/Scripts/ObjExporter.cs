@@ -1,11 +1,8 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 using System.IO;
 using System.Text;
-using iDiscGolf;
 using System.Linq;
-using Unity.VisualScripting;
 using System.Collections.Generic;
 
 public class ObjExporterScript
@@ -107,6 +104,8 @@ public static class ObjExporter
             + "\n#-------"
             + "\n\n");
 
+        Vector3 oldPos = obj.transform.position;
+        obj.transform.position = Vector3.zero;
         MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>().Where(item => item.enabled).ToList().ConvertAll(item => item.gameObject.GetComponent<MeshFilter>()).ToArray();
         Debug.Log($"Found {meshFilters.Length} meshfilters");
         //CombineInstance[] combine = new CombineInstance[meshFilters.Length];
@@ -132,6 +131,7 @@ public static class ObjExporter
 
         Mesh mesh = new Mesh();
         mesh.CombineMeshes(combine, mergeSubMeshes: false, useMatrices: true);
+        obj.transform.position = oldPos;
 
         obj = new GameObject("Mesh", typeof(MeshFilter)/*, typeof(MeshRenderer)*/);
         //obj.GetComponent<MeshRenderer>()
@@ -152,6 +152,7 @@ public static class ObjExporter
         string fileName = EditorUtility.SaveFilePanel("Export .obj file", "", meshName, "obj");
         //WriteToFile(meshString.ToString(), Application.persistentDataPath + "/exportedObj.obj");
         WriteToFile(meshString.ToString(), fileName);
+        Debug.Log("Exported Mesh: " + fileName);
 #elif UNITY_WEBGL
         WebGLExtern.SaveStringToFile(meshString.ToString());
 #else
@@ -161,7 +162,7 @@ public static class ObjExporter
         t.position = originalPosition;
 
         ObjExporterScript.End();
-        Debug.Log("Exported Mesh: " + fileName);
+        
         Object.Destroy(mesh);
         Object.Destroy(obj);
     }

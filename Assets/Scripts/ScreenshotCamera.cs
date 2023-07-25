@@ -1,9 +1,7 @@
 using Cinemachine;
-using Mono.Cecil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 public class ScreenshotCamera : MonoBehaviour
