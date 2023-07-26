@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Rendering.UI;
+using static UnityEditor.Progress;
 
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
 public class Selectable : MonoBehaviour
@@ -20,15 +23,17 @@ public class Selectable : MonoBehaviour
     #region Fields and Properties
     public EventHandler MouseOverStateChanged;
     public static EventHandler SelectionChanged;
+    public UnityEvent SelectableDestroyed { get; } = new();
 
     public bool IsMouseOver { get; private set; }
     public static Selectable SelectedSelectable { get; private set; }
     public bool IsDestroyed { get; private set; }
-    [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
+
+    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
     public Vector3 OriginalLocalPosition { get; private set; }
     public Vector3 OriginalLocalRotation { get; private set; }
-    private Quaternion _originalRotation;
 
+    [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
@@ -39,13 +44,17 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] public Measurable Measurable { get; private set; }
+    [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
 
-    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
     private List<Vector3> _childScales = new();
+    private Quaternion _originalRotation;
     private Selectable _parentSelectable;
     private Transform _virtualParent;
     private HighlightEffect _highlightEffect;
     private GizmoHandler _gizmoHandler;
+    private Quaternion _localRotationBeforeElevationPhoto;
+    private Quaternion _originalRotation2;
+
     [SerializeField, ReadOnly] private ScaleLevel _currentScaleLevel;
     [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;   
     
@@ -240,6 +249,68 @@ public class Selectable : MonoBehaviour
         else return 0;
     }
 
+    private int GetParentCount()
+    {
+        Transform parent = transform.parent;
+        int count = 0;
+        while (parent != transform.root && parent != null)
+        {
+            parent = parent.parent;
+            count++;
+        }
+
+        return count;
+    }
+
+    public void SetForElevationPhoto(ElevationPhotoType elevationPhotoType)
+    {
+        if (TryGetArmAssemblyRoot(out GameObject rootObj))
+        {
+            if (rootObj == gameObject)
+            {
+                // this obj is the ceiling mount
+                //List<AttachmentPoint> topMostAttachmentPoints = GetComponentsInChildren<AttachmentPoint>().Where(item => item.ParentSelectables.Contains(this)).ToList();
+                Array.ForEach(GetComponentsInChildren<Selectable>().OrderBy(x => x.GetParentCount()).ToArray(), item =>
+                {
+                    if (item.AlignForElevationPhoto)
+                    {
+                        //AttachmentPoint topMostAttachmentPoint = null;
+                        //Transform parent = item.transform.parent;
+                        //while (parent != item.transform.root)
+                        //{
+                        //    if (parent.TryGetComponent(out AttachmentPoint attachmentPoint))
+                        //    {
+                        //        topMostAttachmentPoint = attachmentPoint;
+                        //        if (topMostAttachmentPoint.TreatAsTopMost) break;
+                        //    }
+                        //    parent = parent.parent;
+                        //}
+
+                        //if (topMostAttachmentPoint == null)
+                        //{
+                        //    throw new Exception("Could not find top most attachment point");
+                        //}
+
+                        //Vector3 directionXZ = topMostAttachmentPoint.transform.right;
+                        //directionXZ.y = 0;
+                        //Vector3 thisXZ = item.transform.right;
+                        //thisXZ.y = 0;
+                        //float signedAngle = Vector3.SignedAngle(directionXZ, thisXZ, Vector3.down);
+                        //item._localRotationBeforeElevationPhoto = item.transform.localRotation;
+                        //item.transform.Rotate(new Vector3(0, 0, signedAngle));
+                        item.transform.localRotation = item._originalRotation2;
+
+                    }
+                });
+            }
+            else
+            {
+                rootObj.GetComponent<Selectable>().SetForElevationPhoto(elevationPhotoType);
+                return;
+            }
+        }
+    }
+
     #region Monobehaviour
     private void Awake()
     {
@@ -334,6 +405,8 @@ public class Selectable : MonoBehaviour
         {
             Destroy(_parentSelectable.gameObject);
         }
+
+        SelectableDestroyed?.Invoke();
     }
 
     public void OnMouseUpAsButton()
@@ -358,6 +431,7 @@ public class Selectable : MonoBehaviour
 
     private void Start()
     {
+        _originalRotation2 = transform.localRotation;
         OriginalLocalPosition = transform.localPosition;
         Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
         transform.localPosition += adjustedOffsetVector;
@@ -374,6 +448,12 @@ public class Selectable : MonoBehaviour
             {
                 transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
             }
+        }
+
+        //testing
+        if (SelectedSelectable == this && Input.GetKeyUp(KeyCode.Space)) 
+        {
+            SetForElevationPhoto(ElevationPhotoType.Up);
         }
     }
     #endregion
@@ -518,4 +598,10 @@ public enum GizmoType
     Move,
     Rotate,
     Scale
+}
+
+public enum ElevationPhotoType
+{
+    Up,
+    Down
 }

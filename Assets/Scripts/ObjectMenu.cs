@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ObjectMenu : MonoBehaviour
 {
     private static ObjectMenu Instance { get; set; }
+    public static UnityEvent ActiveStateChanged { get; } = new();
 
     [field: SerializeField] private GameObject ItemTemplate { get; set; }
     [field: SerializeField] private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }

@@ -16,6 +16,10 @@ PrefabInstance:
       value: Arm Monitor Mount
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AlignForElevationPhoto>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -156,11 +160,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 332d91d59e26db94388a081459aa4e08, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 332d91d59e26db94388a081459aa4e08, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 332d91d59e26db94388a081459aa4e08, type: 3}
       propertyPath: m_LocalRotation.z
@@ -176,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 332d91d59e26db94388a081459aa4e08, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 332d91d59e26db94388a081459aa4e08, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -271,6 +275,7 @@ MonoBehaviour:
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 0
   <Measurable>k__BackingField: {fileID: 0}
+  <AlignForElevationPhoto>k__BackingField: 0
   _currentScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
