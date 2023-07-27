@@ -367,6 +367,7 @@ MonoBehaviour:
   <ZAlwaysFacesGround>k__BackingField: 0
   <Measurable>k__BackingField: {fileID: 0}
   <AlignForElevationPhoto>k__BackingField: 0
+  <ChangeHeightForElevationPhoto>k__BackingField: 1
   _currentScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -656,6 +657,7 @@ MonoBehaviour:
   <ZAlwaysFacesGround>k__BackingField: 0
   <Measurable>k__BackingField: {fileID: 0}
   <AlignForElevationPhoto>k__BackingField: 0
+  <ChangeHeightForElevationPhoto>k__BackingField: 0
   _currentScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -881,6 +883,7 @@ MonoBehaviour:
   <ZAlwaysFacesGround>k__BackingField: 1
   <Measurable>k__BackingField: {fileID: 0}
   <AlignForElevationPhoto>k__BackingField: 0
+  <ChangeHeightForElevationPhoto>k__BackingField: 0
   _currentScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0

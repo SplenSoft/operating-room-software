@@ -1,13 +1,18 @@
 using HighlightPlus;
+using RTG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Rendering.UI;
-using static UnityEditor.Progress;
+
+using PdfSharp;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
 
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
 public class Selectable : MonoBehaviour
@@ -21,12 +26,15 @@ public class Selectable : MonoBehaviour
     }
 
     #region Fields and Properties
-    public EventHandler MouseOverStateChanged;
+    private static List<Selectable> ActiveSelectables { get; } = new List<Selectable>();
+
     public static EventHandler SelectionChanged;
+    public static Selectable SelectedSelectable { get; private set; }
+
+    public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
 
     public bool IsMouseOver { get; private set; }
-    public static Selectable SelectedSelectable { get; private set; }
     public bool IsDestroyed { get; private set; }
 
     public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
@@ -45,6 +53,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] public Measurable Measurable { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
+    [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
 
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;
@@ -54,6 +63,11 @@ public class Selectable : MonoBehaviour
     private GizmoHandler _gizmoHandler;
     private Quaternion _localRotationBeforeElevationPhoto;
     private Quaternion _originalRotation2;
+    private Camera _cameraRenderTextureElevation;
+    /// <summary>
+    /// If true, this is probably a ceiling mount
+    /// </summary>
+    private bool IsAssemblyRoot => Types.Contains(SelectableType.Mount);
 
     [SerializeField, ReadOnly] private ScaleLevel _currentScaleLevel;
     [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;   
@@ -262,6 +276,36 @@ public class Selectable : MonoBehaviour
         return count;
     }
 
+    private Bounds GetAssemblyBounds()
+    {
+        if (!IsAssemblyRoot)
+        {
+            if (TryGetArmAssemblyRoot(out GameObject rootObj))
+            {
+                return rootObj.GetComponent<Selectable>().GetAssemblyBounds();
+            }
+            else
+            {
+                throw new Exception("Could not get assembly root");
+            }
+        }
+        
+        List<MeshRenderer> renderers = GetComponentsInChildren<MeshRenderer>().Where(r => r.enabled).ToList();
+
+        if (renderers.Count == 0)
+        {
+            throw new Exception("Arm assembly has no renderers!");
+        }
+
+        Bounds bounds = renderers[0].bounds;
+        renderers.ForEach(renderer =>
+        {
+            bounds.Encapsulate(renderer.bounds);
+        });
+
+        return bounds;
+    }
+
     public void SetForElevationPhoto(ElevationPhotoType elevationPhotoType)
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
@@ -269,39 +313,113 @@ public class Selectable : MonoBehaviour
             if (rootObj == gameObject)
             {
                 // this obj is the ceiling mount
-                //List<AttachmentPoint> topMostAttachmentPoints = GetComponentsInChildren<AttachmentPoint>().Where(item => item.ParentSelectables.Contains(this)).ToList();
-                Array.ForEach(GetComponentsInChildren<Selectable>().OrderBy(x => x.GetParentCount()).ToArray(), item =>
+                List<Selectable> assemblySelectables = GetComponentsInChildren<Selectable>().ToList();
+                assemblySelectables.Add(this);
+                Array.ForEach(assemblySelectables.OrderBy(x => x.GetParentCount()).ToArray(), item =>
                 {
                     if (item.AlignForElevationPhoto)
                     {
-                        //AttachmentPoint topMostAttachmentPoint = null;
-                        //Transform parent = item.transform.parent;
-                        //while (parent != item.transform.root)
-                        //{
-                        //    if (parent.TryGetComponent(out AttachmentPoint attachmentPoint))
-                        //    {
-                        //        topMostAttachmentPoint = attachmentPoint;
-                        //        if (topMostAttachmentPoint.TreatAsTopMost) break;
-                        //    }
-                        //    parent = parent.parent;
-                        //}
-
-                        //if (topMostAttachmentPoint == null)
-                        //{
-                        //    throw new Exception("Could not find top most attachment point");
-                        //}
-
-                        //Vector3 directionXZ = topMostAttachmentPoint.transform.right;
-                        //directionXZ.y = 0;
-                        //Vector3 thisXZ = item.transform.right;
-                        //thisXZ.y = 0;
-                        //float signedAngle = Vector3.SignedAngle(directionXZ, thisXZ, Vector3.down);
-                        //item._localRotationBeforeElevationPhoto = item.transform.localRotation;
-                        //item.transform.Rotate(new Vector3(0, 0, signedAngle));
                         item.transform.localRotation = item._originalRotation2;
-
                     }
                 });
+
+                //set up the camera
+                InGameLight.ToggleLights(false);
+                var camera = GetComponentInChildren<Camera>();
+                Light cameraLight = camera.GetComponentInChildren<Light>(true);
+                cameraLight.gameObject.SetActive(true);
+                var bounds = GetAssemblyBounds();
+                camera.enabled = true;
+                Vector3 cameraOriginalPos = camera.transform.position;
+                Vector3 outwardDirection = cameraOriginalPos - transform.position;
+                camera.orthographic = true;
+                camera.transform.position = bounds.center + (outwardDirection.normalized * bounds.extents.magnitude);
+                camera.transform.LookAt(bounds.center, Vector3.up);
+                camera.orthographicSize = bounds.extents.y;
+
+                int safetyCounter = 1000;
+                Vector2 screenPointMin = camera.WorldToScreenPoint(bounds.min);
+                Vector2 screenPointMax = camera.WorldToScreenPoint(bounds.max);
+                RenderTexture renderTexture = camera.targetTexture;
+
+                bool IsPointInShot(Vector2 screenPoint)
+                {
+                    return screenPoint.x > 0 && screenPoint.y > 0 && screenPoint.x < renderTexture.width && screenPoint.y < renderTexture.height;
+                }
+
+                while (--safetyCounter > 0)
+                {
+                    camera.orthographicSize += 1f;
+                    screenPointMax = camera.WorldToScreenPoint(bounds.max);
+                    screenPointMin = camera.WorldToScreenPoint(bounds.min);
+                    if (IsPointInShot(screenPointMin) && IsPointInShot(screenPointMax))
+                    {
+                        break;
+                    }
+                }
+
+                if (safetyCounter == 0)
+                {
+                    throw new Exception("Could not get bounds of Arm Assembly for photo");
+                }
+
+                //store visibility states of all selectables in scene for later
+                List<bool> visibilityStates = ActiveSelectables.ConvertAll(item => item.gameObject.activeSelf);
+
+                //shut off all selectables in the scene except for the ones in this arm assembly
+                ActiveSelectables.Where(item => !assemblySelectables.Contains(item)).ToList().ForEach(item => item.gameObject.SetActive(false));
+
+                //take the photo
+                camera.Render();
+                camera.enabled = false;
+
+                for (int i = 0; i < ActiveSelectables.Count; i++)
+                {
+                    ActiveSelectables[i].gameObject.SetActive(visibilityStates[i]);
+                }
+
+                RenderTexture.active = renderTexture;
+                int imageWidth = Mathf.CeilToInt(Mathf.Abs(screenPointMax.x - screenPointMin.x));
+                int imageHeight = Mathf.CeilToInt(Mathf.Abs(screenPointMax.y - screenPointMin.y));
+
+                Texture2D tex = new Texture2D(imageWidth, imageHeight, TextureFormat.RGB24, false);
+
+                float screenMinX = Mathf.Min(screenPointMin.x, screenPointMax.x);
+                float screenMinY = Mathf.Min(screenPointMin.y, screenPointMax.y);
+
+                tex.ReadPixels(new Rect(screenMinX, screenMinY, imageWidth, imageHeight), 0, 0);
+
+                byte[] pngData = tex.EncodeToPNG();
+
+                //string filenameImage = EditorUtility.SaveFilePanel("Export .png file", "", "ExportedArmAssemblyElevationShot", "png");
+                string filenameImage1 = Application.persistentDataPath + "/ExportedArmAssemblyElevationShot1.png";
+                System.IO.File.WriteAllBytes(filenameImage1, pngData);
+
+                RenderTexture.active = null;
+                camera.transform.position = cameraOriginalPos;
+                cameraLight.gameObject.SetActive(false);
+                InGameLight.ToggleLights(true);
+
+                PdfDocument document = new PdfDocument();
+                PdfPage page = document.AddPage();
+
+                // 11x17" landscape
+                page.Orientation = PageOrientation.Landscape;
+                page.Width = 17 * 72;
+                page.Height = 11 * 72;
+
+                XGraphics gfx = XGraphics.FromPdfPage(page);
+
+                XImage image = XImage.FromFile(filenameImage1);
+                double printedWidth = page.Width * 0.33;
+                double printedHeight = (printedWidth / imageWidth) * imageHeight;
+                gfx.DrawImage(image, 36, 144, printedWidth, printedHeight);
+
+#if UNITY_EDITOR
+                //const string fileNamePDF = "ExportedArmAssemblyElevation.pdf";
+                string fileNamePDF = EditorUtility.SaveFilePanel("Export .png file", "", "ExportedArmAssemblyElevation", "pdf");
+                document.Save(fileNamePDF);
+#endif
             }
             else
             {
@@ -314,6 +432,7 @@ public class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
+        ActiveSelectables.Add(this);
         Transform parent = transform.parent;
         while (parent != null)
         {
@@ -333,6 +452,12 @@ public class Selectable : MonoBehaviour
             }
 
             parent = parent.parent;
+        }
+
+        _cameraRenderTextureElevation = GetComponentInChildren<Camera>();
+        if (_cameraRenderTextureElevation != null)
+        {
+            _cameraRenderTextureElevation.enabled = false;
         }
 
         _originalRotation = transform.rotation;
@@ -389,6 +514,8 @@ public class Selectable : MonoBehaviour
     {
         if (IsDestroyed) return;
         IsDestroyed = true;
+
+        ActiveSelectables.Remove(this);
 
         if (SelectedSelectable == this)
         {

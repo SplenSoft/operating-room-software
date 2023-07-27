@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1599090158351616979}
   - component: {fileID: 5886017757515193121}
   - component: {fileID: 1448583762114242434}
+  - component: {fileID: 276927918642515267}
   m_Layer: 0
   m_Name: Area Light
   m_TagString: Untagged
@@ -115,3 +116,15 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!114 &276927918642515267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5438590910198535558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9794f62fb94912c40ace4692ba27cccf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

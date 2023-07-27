@@ -196,9 +196,7 @@ public static class ObjExporter
 
     static void WriteToFile(string s, string filename)
     {
-        using (StreamWriter sw = new StreamWriter(filename))
-        {
-            sw.Write(s);
-        }
+        using StreamWriter sw = new StreamWriter(filename);
+        sw.Write(s);
     }
 }
