@@ -361,10 +361,13 @@ MonoBehaviour:
   - <Axis>k__BackingField: 1
     <GizmoType>k__BackingField: 1
     <Unrestricted>k__BackingField: 0
-    <MaxValue>k__BackingField: 75
-    <MinValue>k__BackingField: -45
+    <MaxValue>k__BackingField: 45
+    <MinValue>k__BackingField: -75
+    <Invert>k__BackingField: 1
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 0
+  <ZAlignUpIsParentForward>k__BackingField: 0
+  <ZAlignUpIsParentRight>k__BackingField: 0
   <Measurable>k__BackingField: {fileID: 0}
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 1
@@ -621,6 +624,7 @@ MonoBehaviour:
     <Unrestricted>k__BackingField: 1
     <MaxValue>k__BackingField: 0
     <MinValue>k__BackingField: 0
+    <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.2
     <Selected>k__BackingField: 0
@@ -655,6 +659,8 @@ MonoBehaviour:
   - <Size>k__BackingField: 1.7
     <Selected>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
+  <ZAlignUpIsParentForward>k__BackingField: 0
+  <ZAlignUpIsParentRight>k__BackingField: 0
   <Measurable>k__BackingField: {fileID: 0}
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
@@ -881,6 +887,8 @@ MonoBehaviour:
   <GizmoSettingsList>k__BackingField: []
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 1
+  <ZAlignUpIsParentForward>k__BackingField: 0
+  <ZAlignUpIsParentRight>k__BackingField: 0
   <Measurable>k__BackingField: {fileID: 0}
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0

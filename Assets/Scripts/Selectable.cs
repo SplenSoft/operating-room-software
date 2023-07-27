@@ -51,6 +51,8 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
+    [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
+    [field: SerializeField] private bool ZAlignUpIsParentRight { get; set; }
     [field: SerializeField] public Measurable Measurable { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
     [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
@@ -306,127 +308,155 @@ public class Selectable : MonoBehaviour
         return bounds;
     }
 
-    public void SetForElevationPhoto(ElevationPhotoType elevationPhotoType)
+    public void SetForElevationPhoto()
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
         {
             if (rootObj == gameObject)
-            {
-                // this obj is the ceiling mount
+            {// this obj is the ceiling mount
+                var camera = GetComponentInChildren<Camera>();
                 List<Selectable> assemblySelectables = GetComponentsInChildren<Selectable>().ToList();
                 assemblySelectables.Add(this);
+                Dictionary<Selectable, Quaternion> originalRotations = new();
                 Array.ForEach(assemblySelectables.OrderBy(x => x.GetParentCount()).ToArray(), item =>
                 {
-                    if (item.AlignForElevationPhoto)
+                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto)
                     {
+                        originalRotations[item] = item.transform.localRotation;
                         item.transform.localRotation = item._originalRotation2;
                     }
                 });
 
-                //set up the camera
-                InGameLight.ToggleLights(false);
-                var camera = GetComponentInChildren<Camera>();
-                Light cameraLight = camera.GetComponentInChildren<Light>(true);
-                cameraLight.gameObject.SetActive(true);
-                var bounds = GetAssemblyBounds();
-                camera.enabled = true;
-                Vector3 cameraOriginalPos = camera.transform.position;
-                Vector3 outwardDirection = cameraOriginalPos - transform.position;
-                camera.orthographic = true;
-                camera.transform.position = bounds.center + (outwardDirection.normalized * bounds.extents.magnitude);
-                camera.transform.LookAt(bounds.center, Vector3.up);
-                camera.orthographicSize = bounds.extents.y;
-
-                int safetyCounter = 1000;
-                Vector2 screenPointMin = camera.WorldToScreenPoint(bounds.min);
-                Vector2 screenPointMax = camera.WorldToScreenPoint(bounds.max);
-                RenderTexture renderTexture = camera.targetTexture;
-
-                bool IsPointInShot(Vector2 screenPoint)
-                {
-                    return screenPoint.x > 0 && screenPoint.y > 0 && screenPoint.x < renderTexture.width && screenPoint.y < renderTexture.height;
-                }
-
-                while (--safetyCounter > 0)
-                {
-                    camera.orthographicSize += 1f;
-                    screenPointMax = camera.WorldToScreenPoint(bounds.max);
-                    screenPointMin = camera.WorldToScreenPoint(bounds.min);
-                    if (IsPointInShot(screenPointMin) && IsPointInShot(screenPointMax))
-                    {
-                        break;
-                    }
-                }
-
-                if (safetyCounter == 0)
-                {
-                    throw new Exception("Could not get bounds of Arm Assembly for photo");
-                }
-
                 //store visibility states of all selectables in scene for later
                 List<bool> visibilityStates = ActiveSelectables.ConvertAll(item => item.gameObject.activeSelf);
-
                 //shut off all selectables in the scene except for the ones in this arm assembly
                 ActiveSelectables.Where(item => !assemblySelectables.Contains(item)).ToList().ForEach(item => item.gameObject.SetActive(false));
+                List<Selectable> heightChangingSelectables = assemblySelectables.Where(x => x.ChangeHeightForElevationPhoto).ToList();
+                var imageDatas = new List<PdfExporter.PdfImageData>();
+                for (int i = 0; i < 2; i++)
+                {
+                    foreach(Selectable item in heightChangingSelectables)
+                    {
+                        var newAngles = item.transform.localEulerAngles;
+                        var gizmoSetting = item.GizmoSettings[GizmoType.Rotate][Axis.Y];
 
-                //take the photo
-                camera.Render();
-                camera.enabled = false;
+                        if (i == 0)
+                        {
+                            newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue : gizmoSetting.GetMinValue;
+                        }
+                        else
+                        {
+                            newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMinValue : gizmoSetting.GetMaxValue;
+                        }
+
+                        item.transform.localEulerAngles = newAngles;
+                    }
+
+                    assemblySelectables.Where(x => x.ZAlwaysFacesGround).ToList().ForEach(item =>
+                    {
+                        item.FaceZTowardGround();
+                    });
+
+                    var bounds = GetAssemblyBounds();
+
+                    //take the photo
+                    imageDatas.Add(new PdfExporter.PdfImageData()
+                    {
+                        Path = GetElevationPhoto(camera, bounds, out var imageWidth, out var imageHeight, i),
+                        Width = imageWidth,
+                        Height = imageHeight
+                    });
+                }
+                
+                PdfExporter.ExportElevationPdf(imageDatas);
 
                 for (int i = 0; i < ActiveSelectables.Count; i++)
                 {
                     ActiveSelectables[i].gameObject.SetActive(visibilityStates[i]);
                 }
 
-                RenderTexture.active = renderTexture;
-                int imageWidth = Mathf.CeilToInt(Mathf.Abs(screenPointMax.x - screenPointMin.x));
-                int imageHeight = Mathf.CeilToInt(Mathf.Abs(screenPointMax.y - screenPointMin.y));
+                assemblySelectables.ForEach(item =>
+                {
+                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto)
+                        item.transform.localRotation = originalRotations[item];
+                });
 
-                Texture2D tex = new Texture2D(imageWidth, imageHeight, TextureFormat.RGB24, false);
-
-                float screenMinX = Mathf.Min(screenPointMin.x, screenPointMax.x);
-                float screenMinY = Mathf.Min(screenPointMin.y, screenPointMax.y);
-
-                tex.ReadPixels(new Rect(screenMinX, screenMinY, imageWidth, imageHeight), 0, 0);
-
-                byte[] pngData = tex.EncodeToPNG();
-
-                //string filenameImage = EditorUtility.SaveFilePanel("Export .png file", "", "ExportedArmAssemblyElevationShot", "png");
-                string filenameImage1 = Application.persistentDataPath + "/ExportedArmAssemblyElevationShot1.png";
-                System.IO.File.WriteAllBytes(filenameImage1, pngData);
-
-                RenderTexture.active = null;
-                camera.transform.position = cameraOriginalPos;
-                cameraLight.gameObject.SetActive(false);
-                InGameLight.ToggleLights(true);
-
-                PdfDocument document = new PdfDocument();
-                PdfPage page = document.AddPage();
-
-                // 11x17" landscape
-                page.Orientation = PageOrientation.Landscape;
-                page.Width = 17 * 72;
-                page.Height = 11 * 72;
-
-                XGraphics gfx = XGraphics.FromPdfPage(page);
-
-                XImage image = XImage.FromFile(filenameImage1);
-                double printedWidth = page.Width * 0.33;
-                double printedHeight = (printedWidth / imageWidth) * imageHeight;
-                gfx.DrawImage(image, 36, 144, printedWidth, printedHeight);
-
-#if UNITY_EDITOR
-                //const string fileNamePDF = "ExportedArmAssemblyElevation.pdf";
-                string fileNamePDF = EditorUtility.SaveFilePanel("Export .png file", "", "ExportedArmAssemblyElevation", "pdf");
-                document.Save(fileNamePDF);
-#endif
+                assemblySelectables.Where(x => x.ZAlwaysFacesGround).ToList().ForEach(item =>
+                {
+                    item.FaceZTowardGround();
+                });
             }
             else
             {
-                rootObj.GetComponent<Selectable>().SetForElevationPhoto(elevationPhotoType);
+                rootObj.GetComponent<Selectable>().SetForElevationPhoto();
                 return;
             }
         }
+    }
+
+    private string GetElevationPhoto(Camera camera, Bounds bounds, out int imageWidth, out int imageHeight, int fileIndex)
+    {
+        camera.enabled = true;
+        camera.orthographic = true;
+        Vector3 cameraOriginalPos = camera.transform.position;
+        Vector3 outwardDirection = cameraOriginalPos - transform.position;
+        camera.transform.position = bounds.center + (outwardDirection.normalized * bounds.extents.magnitude);
+        camera.transform.LookAt(bounds.center, Vector3.up);
+        camera.orthographicSize = bounds.extents.y;
+
+        int safetyCounter = 1000;
+        Vector2 screenPointMin = camera.WorldToScreenPoint(bounds.min);
+        Vector2 screenPointMax = camera.WorldToScreenPoint(bounds.max);
+        RenderTexture renderTexture = camera.targetTexture;
+
+        bool IsPointInShot(Vector2 screenPoint)
+        {
+            return screenPoint.x > 0 && screenPoint.y > 0 && screenPoint.x < renderTexture.width && screenPoint.y < renderTexture.height;
+        }
+
+        while (--safetyCounter > 0)
+        {
+            camera.orthographicSize += 1f;
+            screenPointMax = camera.WorldToScreenPoint(bounds.max);
+            screenPointMin = camera.WorldToScreenPoint(bounds.min);
+            if (IsPointInShot(screenPointMin) && IsPointInShot(screenPointMax))
+            {
+                break;
+            }
+        }
+
+        if (safetyCounter == 0)
+        {
+            throw new Exception("Could not get bounds of Arm Assembly for photo");
+        }
+
+        imageWidth = Mathf.CeilToInt(Mathf.Abs(screenPointMax.x - screenPointMin.x));
+        imageHeight = Mathf.CeilToInt(Mathf.Abs(screenPointMax.y - screenPointMin.y));
+
+        InGameLight.ToggleLights(false);
+        Light cameraLight = camera.GetComponentInChildren<Light>(true);
+        cameraLight.gameObject.SetActive(true);
+        camera.Render();
+        camera.enabled = false;
+        camera.transform.position = cameraOriginalPos;
+        cameraLight.gameObject.SetActive(false);
+        InGameLight.ToggleLights(true);
+
+        RenderTexture.active = renderTexture;
+        
+        Texture2D tex = new Texture2D(imageWidth, imageHeight, TextureFormat.RGB24, false);
+
+        float screenMinX = Mathf.Min(screenPointMin.x, screenPointMax.x);
+        float screenMinY = Mathf.Min(screenPointMin.y, screenPointMax.y);
+
+        tex.ReadPixels(new Rect(screenMinX, screenMinY, imageWidth, imageHeight), 0, 0);
+        RenderTexture.active = null;
+
+        byte[] pngData = tex.EncodeToPNG();
+
+        string filenameImage1 = Application.persistentDataPath + $"/ExportedArmAssemblyElevationShot{fileIndex}.png";
+        System.IO.File.WriteAllBytes(filenameImage1, pngData);
+        return filenameImage1;
     }
 
     #region Monobehaviour
@@ -560,6 +590,7 @@ public class Selectable : MonoBehaviour
     {
         _originalRotation2 = transform.localRotation;
         OriginalLocalPosition = transform.localPosition;
+        //OriginalLocalRotation = transform.localEulerAngles;
         Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
         transform.localPosition += adjustedOffsetVector;
     }
@@ -567,23 +598,28 @@ public class Selectable : MonoBehaviour
     private void Update()
     {
         UpdateRaycastPlacementMode();
-
-        if (ZAlwaysFacesGround)
-        {
-            transform.LookAt(transform.position + Vector3.down, transform.parent.forward);
-            if (!IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
-            {
-                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, 0);
-            }
-        }
+        FaceZTowardGround();
 
         //testing
         if (SelectedSelectable == this && Input.GetKeyUp(KeyCode.Space)) 
         {
-            SetForElevationPhoto(ElevationPhotoType.Up);
+            SetForElevationPhoto();
         }
     }
     #endregion
+
+    private void FaceZTowardGround()
+    {
+        if (ZAlwaysFacesGround)
+        {
+            float oldX = transform.localEulerAngles.x;
+            transform.LookAt(transform.position + Vector3.down, ZAlignUpIsParentForward ? transform.parent.forward : transform.parent.right);
+            //if (!IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
+            //{
+                transform.localEulerAngles = new Vector3(oldX, transform.localEulerAngles.y, 0);
+            //}
+        }
+    }
 
     public async void StartRaycastPlacementMode()
     {
@@ -709,6 +745,12 @@ public class GizmoSetting
     [field: SerializeField] public bool Unrestricted { get; private set; } = true;
     [field: SerializeField] private float MaxValue { get; set; }
     [field: SerializeField] private float MinValue { get; set; }
+
+    /// <summary>
+    /// When calculating max and min heights for elevation photos, treats min as max and vice versa (fixes some issues with y-axis rotations)
+    /// </summary>
+    [field: SerializeField] public bool Invert { get; private set; }
+
     public float GetMaxValue => Unrestricted ? float.MaxValue : MaxValue;
     public float GetMinValue => Unrestricted ? float.MinValue : MinValue;
 }
@@ -725,10 +767,4 @@ public enum GizmoType
     Move,
     Rotate,
     Scale
-}
-
-public enum ElevationPhotoType
-{
-    Up,
-    Down
 }

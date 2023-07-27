@@ -154,7 +154,7 @@ public static class ObjExporter
         WriteToFile(meshString.ToString(), fileName);
         Debug.Log("Exported Mesh: " + fileName);
 #elif UNITY_WEBGL
-        WebGLExtern.SaveStringToFile(meshString.ToString());
+        WebGLExtern.SaveStringToFile(meshString.ToString(), "obj");
 #else
         throw new Exception("Not supported on this platform");
 #endif

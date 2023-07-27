@@ -1,12 +1,12 @@
 mergeInto(LibraryManager.library, {
 
-  SaveStringToFile: function (data) {
+  SaveStringToFile: function (data, extension) {
     // https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
         
         // Convert paramters to the correct form. See Unity WebGL Plugins page
         // for more information. It's not too important to realize why you need 
         // to do this, as long as you know THAT you need to.
-        var strFilename = "armConfiguration.obj";
+        var strFilename = "export." + extension;
         var strContent = Pointer_stringify(data);
 
         // Create the hyperlink for a user to click

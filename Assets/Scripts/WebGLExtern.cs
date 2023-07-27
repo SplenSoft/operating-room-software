@@ -13,7 +13,7 @@ public static class WebGLExtern
     //public static extern void SaveToFile(byte[] data);
 
     [DllImport("__Internal")]
-    public static extern void SaveStringToFile(string data);
+    public static extern void SaveStringToFile(string data, string extension);
 
     //[DllImport("__Internal")]
     //public static extern void OpenJSONTreeFile();
