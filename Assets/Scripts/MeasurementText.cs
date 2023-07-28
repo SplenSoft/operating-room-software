@@ -1,3 +1,4 @@
+using RTG;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -49,6 +50,33 @@ public class MeasurementText : MonoBehaviour
         }
     }
 
+    public void RotateTowardCamera(Camera camera = null)
+    {
+        if (camera == null)
+        {
+            camera = Camera.main;
+        }
+
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
+        Plane nearFrustrumPlane = planes[4];
+
+        Vector3 planePoint = nearFrustrumPlane.ClosestPointOnPlane(transform.position);
+        var vec = transform.position - planePoint;
+        vec = vec.normalized;
+
+        float angleOfMeasurer = Vector3.Angle(_measurer.transform.forward, Vector3.up);
+        float angle2 = Vector3.Angle(_measurer.transform.forward, Vector3.down);
+
+        var quat = Quaternion.LookRotation(vec);
+        transform.SetPositionAndRotation(transform.position, quat);
+
+        if (angleOfMeasurer < 10f || angle2 < 10f)
+        {
+            transform.Rotate(0, 0, 90);
+        }
+        
+    }
+
     private void Update()
     {
         if (!_measurer.gameObject.activeSelf)
@@ -59,5 +87,6 @@ public class MeasurementText : MonoBehaviour
 
         _text.text = _measurer.Distance;
         transform.position = _measurer.TextPosition;
+        RotateTowardCamera();
     }
 }

@@ -15,15 +15,17 @@ public class Measurer : MonoBehaviour
     public UnityEvent VisibilityToggled = new();
     public bool IsRendererVisibile => _renderer.enabled;
     private MeshRenderer _renderer;
+    public static bool Initialized { get; private set; }
+    public List<LineRenderer> LineRenderers { get; private set; } = new();
 
     [RuntimeInitializeOnLoadMethod]
     private static void OnAppStart()
     {
         Measurable.ActiveMeasurablesChanged.AddListener(() =>
         {
-            Measurable.ActiveMeasurables.ForEach(item =>
+            Measurable.ActiveMeasurables.ForEach(activeMeasurable =>
             {
-                item.Measurements.Values.ToList().ForEach(item => 
+                activeMeasurable.Measurements.ForEach(item => 
                 { 
                     if (item.Measurer == null)
                     {
@@ -33,6 +35,7 @@ public class Measurer : MonoBehaviour
                 });
             });
         });
+        Initialized = true;
     }
 
     public Measurable.Measurement Measurement { get; private set; }
@@ -121,6 +124,8 @@ public class Measurer : MonoBehaviour
     {
         _childTransform = transform.GetChild(0);
         _renderer = GetComponentInChildren<MeshRenderer>();
+        LineRenderers = GetComponentsInChildren<LineRenderer>(true).ToList();
+        LineRenderers.ForEach(x => x.enabled = false);
     }
 
     private void Start()

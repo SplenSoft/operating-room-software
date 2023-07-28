@@ -89,9 +89,10 @@ using UnityEditor;
         /// Rotates an object so it faces the closest point on the main camera plane
         /// </summary>
         /// <param name="obj"></param>
-        public static void RotateTowardMainCameraPlane(this GameObject obj)
+        public static void RotateTowardCameraPlane(this GameObject obj, Camera camera = null)
         {
-            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+            if (!camera) camera = Camera.main;
+            Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
             Plane nearFrustrumPlane = planes[4];
 
             Vector3 planePoint = nearFrustrumPlane.ClosestPointOnPlane(obj.transform.position);

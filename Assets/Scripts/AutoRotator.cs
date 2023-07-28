@@ -80,7 +80,7 @@ namespace Pixl3D.UI.Worldspace
             {
                 if (RotateTowardCameraPlane)
                 {
-                    gameObject.RotateTowardMainCameraPlane();
+                    gameObject.RotateTowardCameraPlane();
                 }
                 else if (RotateTowardPlayer)
                 {
