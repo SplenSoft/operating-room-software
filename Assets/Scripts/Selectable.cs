@@ -13,6 +13,8 @@ using UnityEngine.Events;
 using PdfSharp;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
+using static Measurable;
+using static UnityEditor.Progress;
 
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
 public class Selectable : MonoBehaviour
@@ -30,6 +32,7 @@ public class Selectable : MonoBehaviour
 
     public static EventHandler SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
+    public static bool IsInElevationPhotoMode { get; private set; }
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
@@ -314,6 +317,7 @@ public class Selectable : MonoBehaviour
         {
             if (rootObj == gameObject)
             {// this obj is the ceiling mount
+                IsInElevationPhotoMode = true;
                 var camera = GetComponentInChildren<Camera>();
                 List<Selectable> assemblySelectables = GetComponentsInChildren<Selectable>().ToList();
                 assemblySelectables.Add(this);
@@ -324,6 +328,17 @@ public class Selectable : MonoBehaviour
                     {
                         originalRotations[item] = item.transform.localRotation;
                         item.transform.localRotation = item._originalRotation2;
+                    }
+                });
+
+                Dictionary<Measurable, bool> measurableActiveStates = new();
+                assemblySelectables.ForEach(item =>
+                {
+                    if (item.Measurable != null)
+                    {
+                        item.Measurable.ArmAssemblyActiveInElevationPhotoMode = true;
+                        measurableActiveStates[item.Measurable] = item.Measurable.IsActive;
+                        item.Measurable.SetActive(true);
                     }
                 });
 
@@ -362,7 +377,7 @@ public class Selectable : MonoBehaviour
                     //take the photo
                     imageDatas.Add(new PdfExporter.PdfImageData()
                     {
-                        Path = GetElevationPhoto(camera, bounds, out var imageWidth, out var imageHeight, i),
+                        Path = GetElevationPhoto(camera, bounds, assemblySelectables, out var imageWidth, out var imageHeight, i),
                         Width = imageWidth,
                         Height = imageHeight
                     });
@@ -385,6 +400,22 @@ public class Selectable : MonoBehaviour
                 {
                     item.FaceZTowardGround();
                 });
+
+                IsInElevationPhotoMode = false;
+
+                measurableActiveStates.Keys.ToList().ForEach(item =>
+                {
+                    item.ArmAssemblyActiveInElevationPhotoMode = false;
+                    item.SetActive(measurableActiveStates[item]);
+                    float _ = 0;
+                    item.UpdateMeasurements(ref _);
+                });
+
+                Measurer.Measurers.ForEach(measurer =>
+                {
+                    measurer.UpdateTransform();
+                    measurer.UpdateVisibility();
+                });
             }
             else
             {
@@ -394,12 +425,35 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    private string GetElevationPhoto(Camera camera, Bounds bounds, out int imageWidth, out int imageHeight, int fileIndex)
+    private string GetElevationPhoto(Camera camera, Bounds bounds, List<Selectable> assemblySelectables, out int imageWidth, out int imageHeight, int fileIndex)
     {
         camera.enabled = true;
         camera.orthographic = true;
         Vector3 cameraOriginalPos = camera.transform.position;
         Vector3 outwardDirection = cameraOriginalPos - transform.position;
+        camera.transform.position = bounds.center + (outwardDirection.normalized * bounds.extents.magnitude);
+        camera.transform.LookAt(bounds.center, Vector3.up);
+        camera.orthographicSize = bounds.extents.y;
+
+        float addedHeight = 0.1f;
+        assemblySelectables.ForEach(item =>
+        {
+            if (item.Measurable != null)
+            {
+                item.Measurable.UpdateMeasurements(ref addedHeight, camera);
+            }
+        });
+
+        Measurer.Measurers.ForEach(measurer =>
+        {
+            measurer.UpdateTransform();
+            measurer.UpdateVisibility(camera);
+            if (measurer.IsRendererVisible) 
+            {
+                bounds.Encapsulate(measurer.Renderer.bounds);
+            }
+        });
+
         camera.transform.position = bounds.center + (outwardDirection.normalized * bounds.extents.magnitude);
         camera.transform.LookAt(bounds.center, Vector3.up);
         camera.orthographicSize = bounds.extents.y;

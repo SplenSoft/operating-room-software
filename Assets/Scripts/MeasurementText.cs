@@ -28,7 +28,7 @@ public class MeasurementText : MonoBehaviour
                 });
                 newText._measurer.VisibilityToggled.AddListener(() =>
                 {
-                    newText._text.enabled = newText._measurer.IsRendererVisibile;
+                    newText._text.enabled = newText._measurer.IsRendererVisible;
                 });
             };
 

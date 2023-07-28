@@ -12,15 +12,22 @@ public class Measurable : MonoBehaviour
 {
     public class Measurement
     {
+        public Measurement(Measurable measurable) 
+        {
+            Measurable = measurable;
+        }
+
         public Vector3 Origin { get; set; }
         public Vector3 Direction { get; set; }
         public Vector3 HitPoint { get; set; }
         public Measurer Measurer { get; set; }
+        public Measurable Measurable { get; }
         public MeasurementType MeasurementType { get; set; }
+        public RoomBoundaryType RoomBoundaryType { get; set; }
     }
 
     public static UnityEvent ActiveMeasurablesChanged { get; } = new UnityEvent();
-    private static readonly float _lineRendererSizeScalar = 0.01f;
+    private static readonly float _lineRendererSizeScalar = 0.005f;
     public static List<Measurable> ActiveMeasurables { get; } = new();
     //public Dictionary<MeasurementType, Measurement> Measurements { get; private set; } = new();
     public List<Measurement> Measurements { get; } = new();
@@ -28,6 +35,7 @@ public class Measurable : MonoBehaviour
     [field: SerializeField] private bool ForwardOnly { get; set; }
     private AttachmentPoint HighestAssemblyAttachmentPoint { get; set; }
     //[field: SerializeField] private List<LineRenderer> LineRenderers { get; set; } = new();
+    public bool ArmAssemblyActiveInElevationPhotoMode { get; set; }
 
     public bool IsActive { get; private set; }
 
@@ -45,10 +53,30 @@ public class Measurable : MonoBehaviour
         bool newMeasurement = false;
         MeasurementTypes.ForEach(item =>
         {
-            Measurements.Add(new Measurement() 
+            if (item == MeasurementType.Walls)
             {
-                MeasurementType = item
-            });
+                new List<RoomBoundaryType>()
+                {
+                    RoomBoundaryType.WallEast,
+                    RoomBoundaryType.WallWest,
+                    RoomBoundaryType.WallSouth,
+                    RoomBoundaryType.WallNorth,
+                }.ForEach(type =>
+                {
+                    Measurements.Add(new Measurement(this)
+                    {
+                        MeasurementType = item,
+                        RoomBoundaryType = type
+                    });
+                });
+            }
+            else
+            {
+                Measurements.Add(new Measurement(this)
+                {
+                    MeasurementType = item
+                });
+            }
             newMeasurement = true;
         });
 
@@ -128,25 +156,24 @@ public class Measurable : MonoBehaviour
         return count;
     }
 
-    private static List<Vector3> _wallDirectionVectors = new List<Vector3>
+    private static Dictionary<RoomBoundaryType, Vector3> _wallDirectionVectors = new ()
     {
-        Vector3.forward,
-        -Vector3.forward,
-        -Vector3.right,
-        Vector3.right
+        { RoomBoundaryType.WallNorth, Vector3.forward },
+        { RoomBoundaryType.WallSouth, -Vector3.forward },
+        { RoomBoundaryType.WallEast, Vector3.right },
+        { RoomBoundaryType.WallWest, -Vector3.forward }
     };
 
-    private void UpdateMeasurementViaRaycast(Vector3 direction, ref int measurementIndex)
+    private void UpdateMeasurementViaRaycast(Vector3 direction, Measurement measurement)
     {
         Ray ray = new Ray(transform.position, direction);
         int layerMask = 1 << LayerMask.NameToLayer("Wall");
 
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, layerMask))
         {
-            Measurements[measurementIndex].Origin = ray.origin;
-            Measurements[measurementIndex].HitPoint = raycastHit.point;
+            measurement.Origin = ray.origin;
+            measurement.HitPoint = raycastHit.point;
         }
-        measurementIndex++;
     } 
 
     private float GetCeilingYValue()
@@ -168,56 +195,68 @@ public class Measurable : MonoBehaviour
         return Vector3.Distance(point, planePoint);
     }
 
-    public void UpdateMeasurements()
+    public void UpdateMeasurements(ref float heightMod, Camera camera = null)
     {
-        int measurementIndex = 0;
-        MeasurementTypes.ForEach(item =>
+        if (camera == null)
         {
-            switch (item)
+            camera = Camera.main;
+        }
+
+        foreach (var item in Measurements)
+        {
+            switch (item.MeasurementType)
             {
                 case MeasurementType.Walls:
-                    _wallDirectionVectors.ForEach(vector => UpdateMeasurementViaRaycast(vector, ref measurementIndex));
+                    UpdateMeasurementViaRaycast(_wallDirectionVectors[item.RoomBoundaryType], item);
                     break;
                 case MeasurementType.Ceiling:
-                    UpdateMeasurementViaRaycast(Vector3.up, ref measurementIndex);
+                    UpdateMeasurementViaRaycast(Vector3.up, item);
                     break;
                 case MeasurementType.Floor:
-                    UpdateMeasurementViaRaycast(Vector3.down, ref measurementIndex);
+                    UpdateMeasurementViaRaycast(Vector3.down, item);
                     break;
                 case MeasurementType.ToArmAssemblyOrigin:
+                    Vector3 addedHeight = Vector3.up * heightMod;
                     Vector3 origin = transform.position;
-                    Measurements[measurementIndex].HitPoint = HighestAssemblyAttachmentPoint.transform.position;
+                    item.HitPoint = HighestAssemblyAttachmentPoint.transform.position + addedHeight;
                     origin.y = HighestAssemblyAttachmentPoint.transform.position.y;
-                    Measurements[measurementIndex].Origin = origin;
-                    var measurer = Measurements[measurementIndex].Measurer;
-                    if (Measurements[measurementIndex].Measurer != null)
+                    item.Origin = origin + addedHeight;
+                    
+                    var measurer = item.Measurer;
+                    if (item.Measurer != null)
                     {
-                        measurer.LineRenderers[0].enabled = true;
-                        measurer.LineRenderers[0].positionCount = 2;
-                        measurer.LineRenderers[0].SetPosition(0, origin);
-                        measurer.LineRenderers[0].SetPosition(1, transform.position);
-                        measurer.LineRenderers[0].startWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(origin);
-                        measurer.LineRenderers[0].endWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(transform.position);
+                        measurer.LineRenderers[0].enabled = measurer.IsRendererVisible;
+                        measurer.LineRenderers[1].enabled = measurer.IsRendererVisible;
+                        if (measurer.IsRendererVisible)
+                        {
+                            measurer.LineRenderers[0].positionCount = 2;
+                            Vector3 line1Start = addedHeight + origin;
+                            Vector3 line1End = transform.position;
+                            measurer.LineRenderers[0].SetPosition(0, line1Start);
+                            measurer.LineRenderers[0].SetPosition(1, line1End);
+                            measurer.LineRenderers[0].startWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line1Start, camera);
+                            measurer.LineRenderers[0].endWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line1End, camera);
 
-                        measurer.LineRenderers[1].enabled = true;
-                        measurer.LineRenderers[1].positionCount = 2;
-                        measurer.LineRenderers[1].SetPosition(0, HighestAssemblyAttachmentPoint.transform.position);
-                        measurer.LineRenderers[1].SetPosition(1, HighestAssemblyAttachmentPoint.transform.position);
-                        measurer.LineRenderers[1].startWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(HighestAssemblyAttachmentPoint.transform.position);
-                        measurer.LineRenderers[1].endWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(HighestAssemblyAttachmentPoint.transform.position);
+                            measurer.LineRenderers[1].positionCount = 2;
+                            Vector3 line2Start = addedHeight + HighestAssemblyAttachmentPoint.transform.position;
+                            Vector3 line2End = HighestAssemblyAttachmentPoint.transform.position;
+                            measurer.LineRenderers[1].SetPosition(0, line2Start);
+                            measurer.LineRenderers[1].SetPosition(1, line2End);
+                            measurer.LineRenderers[1].startWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line2Start, camera);
+                            measurer.LineRenderers[1].endWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line2End, camera);
+                            heightMod += heightMod;
+                        }
                     }
-
-                    measurementIndex++;
                     break;
             }
-        });
+        }
     }
 
     private void Update()
     {
         if (!IsActive) return;
-
-        UpdateMeasurements();
+        float _ = 0;
+        UpdateMeasurements(ref _);
     }
 }
 

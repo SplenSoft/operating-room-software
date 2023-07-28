@@ -9,14 +9,16 @@ using UnityEngine.Events;
 
 public class Measurer : MonoBehaviour
 {
-    private static List<Measurer> _measurers = new List<Measurer>();
+    public static List<Measurer> Measurers = new List<Measurer>();
     public static EventHandler<Measurer> MeasurerAdded;
     public UnityEvent ActiveStateToggled = new();
     public UnityEvent VisibilityToggled = new();
-    public bool IsRendererVisibile => _renderer.enabled;
-    private MeshRenderer _renderer;
+    public bool IsRendererVisible => Renderer.enabled;
+    public MeshRenderer Renderer { get; private set; }
     public static bool Initialized { get; private set; }
     public List<LineRenderer> LineRenderers { get; private set; } = new();
+    
+    public bool AllowInElevationPhotoMode => Measurement != null && Measurement.Measurable.ArmAssemblyActiveInElevationPhotoMode && Measurement.MeasurementType == MeasurementType.ToArmAssemblyOrigin;
 
     [RuntimeInitializeOnLoadMethod]
     private static void OnAppStart()
@@ -47,10 +49,10 @@ public class Measurer : MonoBehaviour
 
     private static Measurer GetAvailableMeasurer()
     {
-        var result = _measurers.FirstOrDefault(item => item.Measurement == null);
+        var result = Measurers.FirstOrDefault(item => item.Measurement == null);
         if (result == default)
         {
-            result = Instantiate(_measurers[0].gameObject).GetComponent<Measurer>();
+            result = Instantiate(Measurers[0].gameObject).GetComponent<Measurer>();
             result.Measurement = null;
             //_measurers.Add(result);
         }
@@ -64,12 +66,12 @@ public class Measurer : MonoBehaviour
     {
         if (Measurement == null) 
         {
-            _renderer.enabled = true;
+            Renderer.enabled = true;
             gameObject.SetActive(false);
             return;
         }
 
-        if (IsRendererVisibile) 
+        if (IsRendererVisible) 
         {
             UpdateTransform();
         }
@@ -87,8 +89,9 @@ public class Measurer : MonoBehaviour
         }
     }
 
-    private void UpdateTransform()
+    public void UpdateTransform()
     {
+        if (Measurement == null) return;
         transform.position = Measurement.Origin;
         transform.LookAt(Measurement.HitPoint);
         float distanceMeters = Vector3.Distance(Measurement.Origin, Measurement.HitPoint);
@@ -98,24 +101,33 @@ public class Measurer : MonoBehaviour
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distanceMeters);
     }
 
-    private void UpdateVisibility()
+    public void UpdateVisibility(Camera camera = null)
     {
-        bool isEnabled;
-        if (FreeLookCam.IsActive)
+        bool isEnabled = true;
+        if (Selectable.IsInElevationPhotoMode)
         {
-            isEnabled = true;
+            isEnabled = AllowInElevationPhotoMode;
         }
-        else
+        else if (FreeLookCam.IsActive)
         {
+            isEnabled = Measurement != null && Measurement.MeasurementType != MeasurementType.ToArmAssemblyOrigin;
+        }
+        
+        if (isEnabled)
+        {
+            if (camera == null)
+            {
+                camera = Camera.main;
+            }
             Vector3 measurerForward = transform.forward;
-            Vector3 cameraForward = Camera.main.transform.forward;
+            Vector3 cameraForward = camera.transform.forward;
             float angle = Vector3.Angle(cameraForward, measurerForward);
             isEnabled = angle > 10 && angle < 170;
         }
         
-        if ((!_renderer.enabled && isEnabled) || (_renderer.enabled && !isEnabled))
+        if ((!Renderer.enabled && isEnabled) || (Renderer.enabled && !isEnabled))
         {
-            _renderer.enabled = isEnabled;
+            Renderer.enabled = isEnabled;
             VisibilityToggled?.Invoke();
         }
     }
@@ -123,19 +135,19 @@ public class Measurer : MonoBehaviour
     private void Awake()
     {
         _childTransform = transform.GetChild(0);
-        _renderer = GetComponentInChildren<MeshRenderer>();
+        Renderer = GetComponentInChildren<MeshRenderer>();
         LineRenderers = GetComponentsInChildren<LineRenderer>(true).ToList();
         LineRenderers.ForEach(x => x.enabled = false);
     }
 
     private void Start()
     {
-        _measurers.Add(this);
+        Measurers.Add(this);
         MeasurerAdded?.Invoke(this, this);
     }
 
     private void OnDestroy()
     {
-        _measurers.Remove(this);
+        Measurers.Remove(this);
     }
 }
