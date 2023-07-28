@@ -17,7 +17,8 @@ public class Measurer : MonoBehaviour
     public MeshRenderer Renderer { get; private set; }
     public static bool Initialized { get; private set; }
     public List<LineRenderer> LineRenderers { get; private set; } = new();
-    
+    public MeasurementText MeasurementText;
+
     public bool AllowInElevationPhotoMode => Measurement != null && Measurement.Measurable.ArmAssemblyActiveInElevationPhotoMode && Measurement.MeasurementType == MeasurementType.ToArmAssemblyOrigin;
 
     [RuntimeInitializeOnLoadMethod]

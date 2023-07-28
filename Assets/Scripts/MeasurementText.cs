@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class MeasurementText : MonoBehaviour
 {
-    private static List<MeasurementText> _instances = new List<MeasurementText>();
+    public static List<MeasurementText> Instances { get; } = new List<MeasurementText>();
 
     private static MeasurementText _master;
 
     [SerializeField, ReadOnly] private Measurer _measurer;
-    private TextMeshProUGUI _text; 
+    public TextMeshProUGUI Text; 
 
     private void Awake()
     {
@@ -21,6 +21,7 @@ public class MeasurementText : MonoBehaviour
             {
                 var newText = Instantiate(_master.gameObject, _master.transform.parent).GetComponent<MeasurementText>();
                 newText._measurer = newMeasurer;
+                newText._measurer.MeasurementText = newText;
                 newText.gameObject.SetActive(true);
                 newText._measurer.ActiveStateToggled.AddListener(() =>
                 {
@@ -28,7 +29,7 @@ public class MeasurementText : MonoBehaviour
                 });
                 newText._measurer.VisibilityToggled.AddListener(() =>
                 {
-                    newText._text.enabled = newText._measurer.IsRendererVisible;
+                    newText.Text.enabled = newText._measurer.IsRendererVisible;
                 });
             };
 
@@ -37,16 +38,20 @@ public class MeasurementText : MonoBehaviour
         }
         else
         {
-            UI_MeasurementButton.Toggled.AddListener(() =>
-            {
-                if (_measurer != null)
-                {
-                    gameObject.SetActive(_measurer.gameObject.activeSelf);
-                }
-                
-            });
-            _text = GetComponent<TextMeshProUGUI>();
-            _instances.Add(this);
+            UI_MeasurementButton.Toggled.AddListener(CheckActiveState);
+
+            Measurable.ActiveMeasurablesChanged.AddListener(CheckActiveState);
+
+            Text = GetComponent<TextMeshProUGUI>();
+            Instances.Add(this);
+        }
+    }
+
+    public void CheckActiveState()
+    {
+        if (_measurer != null)
+        {
+            gameObject.SetActive(_measurer.IsRendererVisible);
         }
     }
 
@@ -77,7 +82,12 @@ public class MeasurementText : MonoBehaviour
         
     }
 
-    private void Update()
+    public void Update()
+    {
+        UpdateVisibilityAndPosition();
+    }
+
+    public void UpdateVisibilityAndPosition(Camera camera = null)
     {
         if (!_measurer.gameObject.activeSelf)
         {
@@ -85,8 +95,13 @@ public class MeasurementText : MonoBehaviour
             return;
         }
 
-        _text.text = _measurer.Distance;
+        if (camera == null)
+        {
+            camera = Camera.main;
+        }
+
+        Text.text = _measurer.Distance;
         transform.position = _measurer.TextPosition;
-        RotateTowardCamera();
+        RotateTowardCamera(camera);
     }
 }

@@ -1,20 +1,11 @@
 using HighlightPlus;
-using RTG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
-
-using PdfSharp;
-using PdfSharp.Pdf;
-using PdfSharp.Drawing;
-using static Measurable;
-using static UnityEditor.Progress;
 
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
 public class Selectable : MonoBehaviour
@@ -448,9 +439,12 @@ public class Selectable : MonoBehaviour
         {
             measurer.UpdateTransform();
             measurer.UpdateVisibility(camera);
+            measurer.MeasurementText.CheckActiveState();
+            measurer.MeasurementText.UpdateVisibilityAndPosition(camera);
             if (measurer.IsRendererVisible) 
             {
                 bounds.Encapsulate(measurer.Renderer.bounds);
+                bounds.Encapsulate(measurer.TextPosition + (Vector3.up * (0.3f + addedHeight)));
             }
         });
 

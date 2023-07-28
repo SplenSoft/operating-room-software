@@ -1,12 +1,16 @@
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
+
 using UnityEngine;
 using System.IO;
 using System;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp;
+#endif
 
 public class PdfExporter : MonoBehaviour
 {
@@ -19,6 +23,7 @@ public class PdfExporter : MonoBehaviour
 
     public static void ExportElevationPdf(List<PdfImageData> imageData)
     {
+#if UNITY_EDITOR
         PdfDocument document = new PdfDocument();
         PdfPage page = document.AddPage();
 
@@ -35,18 +40,17 @@ public class PdfExporter : MonoBehaviour
         {
             var item = imageData[i];
             XImage image = XImage.FromFile(item.Path);
-            
+
             double printedHeight = (printedWidth / item.Width) * item.Height;
             gfx.DrawImage(image, (i * printedWidth) + 36, 144, printedWidth, printedHeight);
         }
-        
-#if UNITY_EDITOR
         //const string fileNamePDF = "ExportedArmAssemblyElevation.pdf";
         string fileNamePDF = EditorUtility.SaveFilePanel("Export .png file", "", "ExportedArmAssemblyElevation", "pdf");
         document.Save(fileNamePDF);
+
 #elif UNITY_WEBGL
         MemoryStream stream = new MemoryStream();
-        //document.Save(stream, false);
+        document.Save(stream, false);
         byte[] bytes = stream.ToArray();
         string bitString = BitConverter.ToString(bytes);
         WebGLExtern.SaveStringToFile(bitString, "pdf");
