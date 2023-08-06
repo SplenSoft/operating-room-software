@@ -26,4 +26,7 @@ mergeInto(LibraryManager.library, {
         // Clean up our mess, now that the anchor's purpose is finished.
         document.body.removeChild(element);
   },
+  SaveElevationPDF: function (jsonData) {
+    exportPdf(jsonData);
+  },
 });

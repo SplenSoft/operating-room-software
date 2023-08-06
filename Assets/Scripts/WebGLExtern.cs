@@ -15,6 +15,9 @@ public static class WebGLExtern
     [DllImport("__Internal")]
     public static extern void SaveStringToFile(string data, string extension);
 
+    [DllImport("__Internal")]
+    public static extern void SaveElevationPDF(string jsonData);
+
     //[DllImport("__Internal")]
     //public static extern void OpenJSONTreeFile();
 

@@ -47,13 +47,34 @@ public class PdfExporter : MonoBehaviour
         //const string fileNamePDF = "ExportedArmAssemblyElevation.pdf";
         string fileNamePDF = EditorUtility.SaveFilePanel("Export .png file", "", "ExportedArmAssemblyElevation", "pdf");
         document.Save(fileNamePDF);
-
 #elif UNITY_WEBGL
-        MemoryStream stream = new MemoryStream();
-        document.Save(stream, false);
-        byte[] bytes = stream.ToArray();
-        string bitString = BitConverter.ToString(bytes);
-        WebGLExtern.SaveStringToFile(bitString, "pdf");
+        string image1 = "";
+        string image2 = "";
+        for (int i = 0; i < imageData.Count; i++)
+        {
+            var item = imageData[i];
+            byte[] imageArray = System.IO.File.ReadAllBytes(item.Path);
+            string base64ImageRepresentation = Convert.ToBase64String(imageArray);
+            if (i == 0)
+            {
+                image1 = base64ImageRepresentation;
+            }
+            else
+            {
+                image2 = base64ImageRepresentation;
+            }
+        }
+
+        //MemoryStream stream = new MemoryStream();
+        //document.Save(stream, false);
+        //byte[] bytes = stream.ToArray();
+        //string bitString = BitConverter.ToString(bytes);
+        //WebGLExtern.SaveStringToFile(bitString, "pdf");
+        SimpleJSON.JSONObject node = new();
+        node.Add("image1", image1);
+        node.Add("image2", image2);
+
+        WebGLExtern.SaveElevationPDF(node);
 #else
         throw new Exception("Not supported on this platform");
 #endif

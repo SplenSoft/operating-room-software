@@ -24,6 +24,7 @@ public class Selectable : MonoBehaviour
     public static EventHandler SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
     public static bool IsInElevationPhotoMode { get; private set; }
+    public static bool ClearanceLinesEnabled { get; private set; }
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
@@ -50,6 +51,11 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public Measurable Measurable { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
     [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
+    [field: SerializeField] public bool DrawClearanceLines { get; private set; }
+    [field: SerializeField] public bool IsDoor { get; private set; }
+    [field: SerializeField] private Transform ClearanceLineMeasuringPosition { get; set; }
+    [field: SerializeField] private LineRenderer ClearanceLinesLineRenderer { get; set; }
+    [field: SerializeField] private GameObject ClearanceLinesObject { get; set; }
 
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;
@@ -80,6 +86,32 @@ public class Selectable : MonoBehaviour
             SelectedSelectable.Deselect();
             //SelectionChanged?.Invoke(null, null);
         }
+    }
+
+    public static void ToggleClearanceLines(bool isActive)
+    {
+        ClearanceLinesEnabled = isActive;
+
+        ActiveSelectables.ForEach(item =>
+        {
+            if (item.DrawClearanceLines)
+            {
+                if (item.IsDoor)
+                {
+                    item.ClearanceLinesObject.SetActive(isActive);
+                }
+            }
+            else
+            {
+                item.ClearanceLinesLineRenderer.enabled = isActive;
+                if (isActive) 
+                {
+                    var points = item.GetClearanceLines();
+                    item.ClearanceLinesLineRenderer.positionCount = points.Count;
+                    item.ClearanceLinesLineRenderer.SetPositions(points.ToArray());
+                }
+            }
+        });
     }
 
     public bool IsSelected => SelectedSelectable == this;
@@ -230,6 +262,42 @@ public class Selectable : MonoBehaviour
         }
     }
 
+    public List<Vector3> GetClearanceLines()
+    {
+        //get highest z-rotating item on the arm hierarchy
+        
+        Selectable highestSelectable = null;
+        Transform parent = transform.parent;
+        while (parent != null) 
+        { 
+            if (parent.TryGetComponent<Selectable>(out var selectable))
+            {
+                if (selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
+                {
+                    highestSelectable = selectable;
+                }
+            }
+        }
+
+        if (highestSelectable == null)
+        {
+            throw new Exception("Could not get clearance lines - no higher z-rotation in the arm assembly found");
+        }
+
+        SetAssemblyToDefaultRotations();
+
+        List<Vector3> positions = new();
+        for (int i = 0; i < 360; i++)
+        {
+            highestSelectable.transform.Rotate(new Vector3(0, 0, 1));
+            positions.Add(ClearanceLineMeasuringPosition.transform.position);
+        }
+
+        RestoreArmAssemblyRotations();
+
+        return positions;
+    }
+
     public bool TryGetGizmoSetting(GizmoType gizmoType, Axis axis, out GizmoSetting gizmoSetting)
     {
         gizmoSetting = default;
@@ -302,6 +370,35 @@ public class Selectable : MonoBehaviour
         return bounds;
     }
 
+    List<Selectable> _assemblySelectables = new();
+    Dictionary<Selectable, Quaternion> _originalRotations = new();
+
+    private void SetAssemblyToDefaultRotations()
+    {
+        if (TryGetArmAssemblyRoot(out GameObject rootObj))
+        {
+            if (rootObj == gameObject)
+            {
+                _assemblySelectables = GetComponentsInChildren<Selectable>().ToList();
+                _assemblySelectables.Add(this);
+                _originalRotations.Clear();
+                Array.ForEach(_assemblySelectables.OrderBy(x => x.GetParentCount()).ToArray(), item =>
+                {
+                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto)
+                    {
+                        _originalRotations[item] = item.transform.localRotation;
+                        item.transform.localRotation = item._originalRotation2;
+                    }
+                });
+            }
+            else
+            {
+                rootObj.GetComponent<Selectable>().SetAssemblyToDefaultRotations();
+                return;
+            }
+        }
+    }
+
     public void SetForElevationPhoto()
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
@@ -309,21 +406,11 @@ public class Selectable : MonoBehaviour
             if (rootObj == gameObject)
             {// this obj is the ceiling mount
                 IsInElevationPhotoMode = true;
-                var camera = GetComponentInChildren<Camera>();
-                List<Selectable> assemblySelectables = GetComponentsInChildren<Selectable>().ToList();
-                assemblySelectables.Add(this);
-                Dictionary<Selectable, Quaternion> originalRotations = new();
-                Array.ForEach(assemblySelectables.OrderBy(x => x.GetParentCount()).ToArray(), item =>
-                {
-                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto)
-                    {
-                        originalRotations[item] = item.transform.localRotation;
-                        item.transform.localRotation = item._originalRotation2;
-                    }
-                });
+
+                SetAssemblyToDefaultRotations();
 
                 Dictionary<Measurable, bool> measurableActiveStates = new();
-                assemblySelectables.ForEach(item =>
+                _assemblySelectables.ForEach(item =>
                 {
                     if (item.Measurable != null)
                     {
@@ -336,8 +423,8 @@ public class Selectable : MonoBehaviour
                 //store visibility states of all selectables in scene for later
                 List<bool> visibilityStates = ActiveSelectables.ConvertAll(item => item.gameObject.activeSelf);
                 //shut off all selectables in the scene except for the ones in this arm assembly
-                ActiveSelectables.Where(item => !assemblySelectables.Contains(item)).ToList().ForEach(item => item.gameObject.SetActive(false));
-                List<Selectable> heightChangingSelectables = assemblySelectables.Where(x => x.ChangeHeightForElevationPhoto).ToList();
+                ActiveSelectables.Where(item => !_assemblySelectables.Contains(item)).ToList().ForEach(item => item.gameObject.SetActive(false));
+                List<Selectable> heightChangingSelectables = _assemblySelectables.Where(x => x.ChangeHeightForElevationPhoto).ToList();
                 var imageDatas = new List<PdfExporter.PdfImageData>();
                 for (int i = 0; i < 2; i++)
                 {
@@ -358,7 +445,7 @@ public class Selectable : MonoBehaviour
                         item.transform.localEulerAngles = newAngles;
                     }
 
-                    assemblySelectables.Where(x => x.ZAlwaysFacesGround).ToList().ForEach(item =>
+                    _assemblySelectables.Where(x => x.ZAlwaysFacesGround).ToList().ForEach(item =>
                     {
                         item.FaceZTowardGround();
                     });
@@ -366,9 +453,10 @@ public class Selectable : MonoBehaviour
                     var bounds = GetAssemblyBounds();
 
                     //take the photo
+                    var camera = GetComponentInChildren<Camera>();
                     imageDatas.Add(new PdfExporter.PdfImageData()
                     {
-                        Path = GetElevationPhoto(camera, bounds, assemblySelectables, out var imageWidth, out var imageHeight, i),
+                        Path = GetElevationPhoto(camera, bounds, _assemblySelectables, out var imageWidth, out var imageHeight, i),
                         Width = imageWidth,
                         Height = imageHeight
                     });
@@ -381,13 +469,9 @@ public class Selectable : MonoBehaviour
                     ActiveSelectables[i].gameObject.SetActive(visibilityStates[i]);
                 }
 
-                assemblySelectables.ForEach(item =>
-                {
-                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto)
-                        item.transform.localRotation = originalRotations[item];
-                });
+                RestoreArmAssemblyRotations();
 
-                assemblySelectables.Where(x => x.ZAlwaysFacesGround).ToList().ForEach(item =>
+                _assemblySelectables.Where(x => x.ZAlwaysFacesGround).ToList().ForEach(item =>
                 {
                     item.FaceZTowardGround();
                 });
@@ -411,6 +495,26 @@ public class Selectable : MonoBehaviour
             else
             {
                 rootObj.GetComponent<Selectable>().SetForElevationPhoto();
+                return;
+            }
+        }
+    }
+
+    private void RestoreArmAssemblyRotations()
+    {
+        if (TryGetArmAssemblyRoot(out GameObject rootObj))
+        {
+            if (rootObj == gameObject)
+            {
+                _assemblySelectables.ForEach(item =>
+                {
+                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto)
+                        item.transform.localRotation = _originalRotations[item];
+                });
+            }
+            else
+            {
+                rootObj.GetComponent<Selectable>().RestoreArmAssemblyRotations();
                 return;
             }
         }
