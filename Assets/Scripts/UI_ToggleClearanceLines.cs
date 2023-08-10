@@ -1,18 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class UI_ToggleClearanceLines : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public static UnityEvent ClearanceLinesToggled { get; } = new();
+    public static bool IsActive { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+    public void ToggleClearanceLines(bool isOn)
     {
-        
+        IsActive = isOn;
+        ClearanceLinesToggled?.Invoke();
+        Debug.Log($"Clearance lines enabled = {IsActive}");
     }
 }

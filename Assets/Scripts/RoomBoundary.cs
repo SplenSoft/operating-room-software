@@ -115,7 +115,7 @@ public class RoomBoundary : MonoBehaviour
                 break;
         }
 
-        VirtualCamera.m_Lens.OrthographicSize = Mathf.Max(0, VirtualCamera.m_Lens.OrthographicSize + scroll);
+        VirtualCamera.m_Lens.OrthographicSize = Mathf.Max(1f, VirtualCamera.m_Lens.OrthographicSize + scroll);
     }
 
     private float GetScrollWheel()

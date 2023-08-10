@@ -24,7 +24,6 @@ public class Selectable : MonoBehaviour
     public static EventHandler SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
     public static bool IsInElevationPhotoMode { get; private set; }
-    public static bool ClearanceLinesEnabled { get; private set; }
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
@@ -51,11 +50,10 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public Measurable Measurable { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
     [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
-    [field: SerializeField] public bool DrawClearanceLines { get; private set; }
-    [field: SerializeField] public bool IsDoor { get; private set; }
+
     [field: SerializeField] private Transform ClearanceLineMeasuringPosition { get; set; }
-    [field: SerializeField] private LineRenderer ClearanceLinesLineRenderer { get; set; }
-    [field: SerializeField] private GameObject ClearanceLinesObject { get; set; }
+    [field: SerializeField] private List<ClearanceLinesRenderer> ClearanceLinesRenderers { get; set; }
+    [field: SerializeField] private List<MeshFilter> ClearanceLinesMeshFilters { get; set; } = new();
 
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;
@@ -76,6 +74,7 @@ public class Selectable : MonoBehaviour
     
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
+    private bool _rendererMoved;
     #endregion
 
     public static void DeselectAll()
@@ -88,30 +87,34 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    public static void ToggleClearanceLines(bool isActive)
+    private void UpdateClearanceLines()
     {
-        ClearanceLinesEnabled = isActive;
-
-        ActiveSelectables.ForEach(item =>
+        Debug.Log($"Updating clearance lines on Selectable {gameObject.name}");
+        if (ClearanceLinesRenderers.Count > 0 && UI_ToggleClearanceLines.IsActive)
         {
-            if (item.DrawClearanceLines)
+            for (int i = 0; i < ClearanceLinesRenderers.Count; i++)
             {
-                if (item.IsDoor)
+                var filter = ClearanceLinesMeshFilters.Count > i ? ClearanceLinesMeshFilters[i] : null;
+                if (filter == null && !_rendererMoved) 
                 {
-                    item.ClearanceLinesObject.SetActive(isActive);
+                    if (TryGetArmAssemblyRoot(out var root))
+                    {
+                        ClearanceLinesRenderers[i].transform.parent = root.transform;
+                        ClearanceLinesRenderers[i].transform.localPosition = Vector3.zero;
+                        ClearanceLinesRenderers[i].transform.localRotation = Quaternion.identity;
+                        _rendererMoved = true;
+                    }
+                    else
+                    {
+                        throw new Exception("Could not find arm assembly root!");
+                    }
                 }
+
+                ClearanceLinesRenderers[i].SetPositions(GetClearanceLinePath(filter));
             }
-            else
-            {
-                item.ClearanceLinesLineRenderer.enabled = isActive;
-                if (isActive) 
-                {
-                    var points = item.GetClearanceLines();
-                    item.ClearanceLinesLineRenderer.positionCount = points.Count;
-                    item.ClearanceLinesLineRenderer.SetPositions(points.ToArray());
-                }
-            }
-        });
+            
+            Debug.Log($"Clearance line positions updated for Selectable {gameObject.name}");
+        }
     }
 
     public bool IsSelected => SelectedSelectable == this;
@@ -262,9 +265,30 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    public List<Vector3> GetClearanceLines()
+    public List<Vector3> GetClearanceLinePath(MeshFilter meshFilter = null)
     {
         //get highest z-rotating item on the arm hierarchy
+        List<Vector3> positions = new();
+        if (meshFilter != null)
+        {
+            var verts = meshFilter.sharedMesh.vertices;
+            for (int i = 0; i < verts.Length; i++)
+            {
+                //var point = ClearanceLinesMeshFilter.transform.TransformPoint(verts[i]);
+                var point = verts[i];
+                //positions.Add(ClearanceLinesMeshFilter.transform.position + point);
+                positions.Add(point);
+            }
+
+            if (verts.Length > 0)
+            {
+                var point = verts[0];
+                //var point = ClearanceLinesMeshFilter.transform.TransformPoint(verts[0]);
+                positions.Add(point);
+            }
+
+            return positions;
+        }
         
         Selectable highestSelectable = null;
         Transform parent = transform.parent;
@@ -277,6 +301,8 @@ public class Selectable : MonoBehaviour
                     highestSelectable = selectable;
                 }
             }
+
+            parent = parent.parent;
         }
 
         if (highestSelectable == null)
@@ -286,12 +312,16 @@ public class Selectable : MonoBehaviour
 
         SetAssemblyToDefaultRotations();
 
-        List<Vector3> positions = new();
-        for (int i = 0; i < 360; i++)
+        if (TryGetArmAssemblyRoot(out var root))
         {
-            highestSelectable.transform.Rotate(new Vector3(0, 0, 1));
-            positions.Add(ClearanceLineMeasuringPosition.transform.position);
+            for (int i = 0; i < 361; i++)
+            {
+                highestSelectable.transform.Rotate(new Vector3(0, 0, 1));
+                var point = root.transform.InverseTransformPoint(ClearanceLineMeasuringPosition.transform.position);
+                positions.Add(point);
+            }
         }
+        
 
         RestoreArmAssemblyRotations();
 
@@ -616,6 +646,12 @@ public class Selectable : MonoBehaviour
     {
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;
+
+        if (ClearanceLinesRenderers.Count > 0)
+        {
+            UI_ToggleClearanceLines.ClearanceLinesToggled.AddListener(UpdateClearanceLines);
+        }
+        
         while (parent != null)
         {
             if (parent.TryGetComponent<AttachmentPoint>(out var attachmentPoint))
@@ -695,8 +731,21 @@ public class Selectable : MonoBehaviour
     private void OnDestroy()
     {
         if (IsDestroyed) return;
-        IsDestroyed = true;
 
+        IsDestroyed = true; 
+        
+        if (ClearanceLinesRenderers.Count > 0)
+        {
+            UI_ToggleClearanceLines.ClearanceLinesToggled.RemoveListener(UpdateClearanceLines);
+            if (_rendererMoved)
+            {
+                ClearanceLinesRenderers.ForEach(item =>
+                {
+                    Destroy(item.gameObject);
+                });
+            }
+        }
+        
         ActiveSelectables.Remove(this);
 
         if (SelectedSelectable == this)
@@ -745,6 +794,9 @@ public class Selectable : MonoBehaviour
         //OriginalLocalRotation = transform.localEulerAngles;
         Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
         transform.localPosition += adjustedOffsetVector;
+
+        if (ClearanceLinesRenderers.Count > 0)
+            UpdateClearanceLines();
     }
 
     private void Update()
