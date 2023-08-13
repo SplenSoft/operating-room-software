@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5886017757515193121}
   - component: {fileID: 1448583762114242434}
   - component: {fileID: 276927918642515267}
-  m_Layer: 0
+  - component: {fileID: 1281172547}
+  m_Layer: 6
   m_Name: Area Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,11 +44,11 @@ Light:
   m_GameObject: {fileID: 5438590910198535558}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 0
+  m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
-  m_Range: 10
+  m_Range: 30
   m_SpotAngle: 179
   m_InnerSpotAngle: 170.80208
   m_CookieSize: 10
@@ -128,3 +129,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9794f62fb94912c40ace4692ba27cccf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1281172547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5438590910198535558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d00a4aafe7c6054ca3fe80415597755, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <VirtualParent>k__BackingField: {fileID: 0}

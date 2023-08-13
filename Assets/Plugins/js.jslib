@@ -27,6 +27,8 @@ mergeInto(LibraryManager.library, {
         document.body.removeChild(element);
   },
   SaveElevationPDF: function (jsonData) {
-    exportPdf(jsonData);
+    var strContent = UTF8ToString(jsonData);
+    //console.log(strContent);
+    exportPdf(strContent);
   },
 });

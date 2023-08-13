@@ -938,7 +938,8 @@ public enum SelectableType
     ArmSegment,
     BoomSegment,
     BoomHead,
-    Wall
+    Wall,
+    CeilingLight
 }
 
 [Serializable]

@@ -61,6 +61,16 @@ public class ObjectMenu : MonoBehaviour
         ItemTemplate.SetActive(false);
     }
 
+    private void OnDisable()
+    {
+        ActiveStateChanged?.Invoke();
+    }
+
+    private void OnEnable()
+    {
+        ActiveStateChanged?.Invoke();
+    }
+
     private void FilterMenuItems(AttachmentPoint attachmentPoint)
     {
         ObjectMenuItems.ForEach(item =>
@@ -96,7 +106,8 @@ public class ObjectMenu : MonoBehaviour
             bool isMount = item.Selectable.Types.Contains(SelectableType.Mount);
             bool isFurniture = item.Selectable.Types.Contains(SelectableType.Furniture);
             bool isWall = item.Selectable.Types.Contains(SelectableType.Wall);
-            item.GameObject.SetActive(isMount || isFurniture || isWall);
+            bool isCeilingLight = item.Selectable.Types.Contains(SelectableType.CeilingLight);
+            item.GameObject.SetActive(isMount || isFurniture || isWall || isCeilingLight);
         });
     }
 
