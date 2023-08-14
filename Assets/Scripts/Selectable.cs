@@ -47,7 +47,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
     [field: SerializeField] private bool ZAlignUpIsParentRight { get; set; }
-    [field: SerializeField] public Measurable Measurable { get; private set; }
+    [field: SerializeField] public List<Measurable> Measurables { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
     [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
 
@@ -64,6 +64,7 @@ public class Selectable : MonoBehaviour
     private Quaternion _localRotationBeforeElevationPhoto;
     private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
+
     /// <summary>
     /// If true, this is probably a ceiling mount
     /// </summary>
@@ -442,11 +443,14 @@ public class Selectable : MonoBehaviour
                 Dictionary<Measurable, bool> measurableActiveStates = new();
                 _assemblySelectables.ForEach(item =>
                 {
-                    if (item.Measurable != null)
+                    if (item.Measurables.Count > 0)
                     {
-                        item.Measurable.ArmAssemblyActiveInElevationPhotoMode = true;
-                        measurableActiveStates[item.Measurable] = item.Measurable.IsActive;
-                        item.Measurable.SetActive(true);
+                        item.Measurables.ForEach(measurable =>
+                        {
+                            measurable.ArmAssemblyActiveInElevationPhotoMode = true;
+                            measurableActiveStates[measurable] = measurable.IsActive;
+                            measurable.SetActive(true);
+                        });
                     }
                 });
 
@@ -563,9 +567,13 @@ public class Selectable : MonoBehaviour
         float addedHeight = 0.1f;
         assemblySelectables.ForEach(item =>
         {
-            if (item.Measurable != null)
+            if (item.Measurables.Count > 0)
             {
-                item.Measurable.UpdateMeasurements(ref addedHeight, camera);
+                item.Measurables.ForEach(measurable =>
+                {
+                    measurable.UpdateMeasurements(ref addedHeight, camera);
+                });
+                
             }
         });
 

@@ -104,14 +104,14 @@ public class Measurer : MonoBehaviour
 
     public void UpdateVisibility(Camera camera = null)
     {
-        bool isEnabled = true;
+        bool isEnabled = Measurement.IsValid;
         if (Selectable.IsInElevationPhotoMode)
         {
             isEnabled = AllowInElevationPhotoMode;
         }
         else if (FreeLookCam.IsActive)
         {
-            isEnabled = Measurement != null && Measurement.MeasurementType != MeasurementType.ToArmAssemblyOrigin;
+            isEnabled = Measurement != null && Measurement.MeasurementType != MeasurementType.ToArmAssemblyOrigin && Measurement.IsValid;
         }
         
         if (isEnabled)

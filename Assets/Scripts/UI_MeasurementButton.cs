@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UI_MeasurementButton : MonoBehaviour
 {
     private Toggle _toggle;
-    private Measurable _currentMeasurable;
+    private List<Measurable> _currentMeasurables = new();
     public static UnityEvent Toggled = new();
 
     private void Awake()
@@ -18,16 +18,16 @@ public class UI_MeasurementButton : MonoBehaviour
             if (!Application.isPlaying) return;
             if (gameObject == null) return;
 
-            bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.Measurable != null;
+            bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.Measurables.Count > 0;
             gameObject.SetActive(active);
             if (active)
             {
-                _currentMeasurable = Selectable.SelectedSelectable.Measurable;
-                _toggle.SetIsOnWithoutNotify(active && Selectable.SelectedSelectable.Measurable.IsActive);
+                _currentMeasurables = Selectable.SelectedSelectable.Measurables;
+                _toggle.SetIsOnWithoutNotify(active && Selectable.SelectedSelectable.Measurables[0].IsActive);
             }
             else
             {
-                _currentMeasurable = null;
+                _currentMeasurables = null;
             }
         };
         gameObject.SetActive(false);
@@ -35,9 +35,13 @@ public class UI_MeasurementButton : MonoBehaviour
 
     public void OnToggle(bool isOn)
     {
-        if (_currentMeasurable != null) 
+        if (_currentMeasurables != null) 
         {
-            _currentMeasurable.SetActive(isOn);
+            _currentMeasurables.ForEach(item =>
+            {
+                item.SetActive(isOn);
+            });
+            
         }
 
         Toggled?.Invoke();

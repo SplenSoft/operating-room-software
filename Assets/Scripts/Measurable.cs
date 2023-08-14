@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using static Measurable;
+using static UnityEditor.Progress;
 
 public class Measurable : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Measurable : MonoBehaviour
             Measurable = measurable;
         }
 
+        public bool IsValid { get; set; }
         public Vector3 Origin { get; set; }
         public Vector3 Direction { get; set; }
         public Vector3 HitPoint { get; set; }
@@ -24,6 +26,7 @@ public class Measurable : MonoBehaviour
         public Measurable Measurable { get; }
         public MeasurementType MeasurementType { get; set; }
         public RoomBoundaryType RoomBoundaryType { get; set; }
+
     }
 
     public static UnityEvent ActiveMeasurablesChanged { get; } = new UnityEvent();
@@ -55,20 +58,31 @@ public class Measurable : MonoBehaviour
         {
             if (item == MeasurementType.Walls)
             {
-                new List<RoomBoundaryType>()
-                {
-                    RoomBoundaryType.WallEast,
-                    RoomBoundaryType.WallWest,
-                    RoomBoundaryType.WallSouth,
-                    RoomBoundaryType.WallNorth,
-                }.ForEach(type =>
+                if (ForwardOnly)
                 {
                     Measurements.Add(new Measurement(this)
                     {
                         MeasurementType = item,
-                        RoomBoundaryType = type
                     });
-                });
+                }
+                else
+                {
+                    new List<RoomBoundaryType>()
+                    {
+                        RoomBoundaryType.WallEast,
+                        RoomBoundaryType.WallWest,
+                        RoomBoundaryType.WallSouth,
+                        RoomBoundaryType.WallNorth,
+                    }.ForEach(type =>
+                    {
+                        Measurements.Add(new Measurement(this)
+                        {
+                            MeasurementType = item,
+                            RoomBoundaryType = type
+                        });
+                    });
+                }
+                
             }
             else
             {
@@ -167,13 +181,23 @@ public class Measurable : MonoBehaviour
     private void UpdateMeasurementViaRaycast(Vector3 direction, Measurement measurement)
     {
         Ray ray = new Ray(transform.position, direction);
-        int layerMask = 1 << LayerMask.NameToLayer("Wall");
-
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, layerMask))
+        int mask = LayerMask.GetMask("Wall", "Selectable");
+        measurement.IsValid = false;
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, mask))
         {
-            measurement.Origin = ray.origin;
-            measurement.HitPoint = raycastHit.point;
+            var obj = raycastHit.collider.gameObject;
+            if (obj.layer == LayerMask.NameToLayer("Wall") || obj.CompareTag("Wall"))
+            {
+                measurement.Origin = ray.origin;
+                measurement.HitPoint = raycastHit.point;
+                measurement.IsValid = true;
+            }
         }
+        //if (Physics.Raycast(ray, out raycastHit, 1000f, 1 << LayerMask.NameToLayer("Wall")))
+        //{
+        //    measurement.Origin = ray.origin;
+        //    measurement.HitPoint = raycastHit.point;
+        //}
     } 
 
     private float GetCeilingYValue()
@@ -207,7 +231,14 @@ public class Measurable : MonoBehaviour
             switch (item.MeasurementType)
             {
                 case MeasurementType.Walls:
-                    UpdateMeasurementViaRaycast(_wallDirectionVectors[item.RoomBoundaryType], item);
+                    if (ForwardOnly)
+                    {
+                        UpdateMeasurementViaRaycast(transform.forward, item);
+                    }
+                    else
+                    {
+                        UpdateMeasurementViaRaycast(_wallDirectionVectors[item.RoomBoundaryType], item);
+                    }
                     break;
                 case MeasurementType.Ceiling:
                     UpdateMeasurementViaRaycast(Vector3.up, item);
@@ -216,6 +247,7 @@ public class Measurable : MonoBehaviour
                     UpdateMeasurementViaRaycast(Vector3.down, item);
                     break;
                 case MeasurementType.ToArmAssemblyOrigin:
+                    item.IsValid = true;
                     Vector3 addedHeight = Vector3.up * heightMod;
                     Vector3 origin = transform.position;
                     item.HitPoint = HighestAssemblyAttachmentPoint.transform.position + addedHeight;
