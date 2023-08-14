@@ -59,6 +59,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2342445553743564237, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2fb26cf900ea7494f93ad51734a84ccb, type: 2}
     - target: {fileID: 2999278789812950873, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
       propertyPath: m_Name
       value: ClearanceLinesRenderer
@@ -311,8 +315,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}
   m_PrefabInstance: {fileID: 8591587907464624248}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &5576426002521420025
-MeshCollider:
+--- !u!65 &8266585669596919459
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -321,10 +325,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6459982504928610614, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.2091992, z: 2.1624334}
+  m_Center: {x: 0, y: -0.079945095, z: 0.0108036995}
 --- !u!114 &1184361009105363674
 MonoBehaviour:
   m_ObjectHideFlags: 0

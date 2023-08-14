@@ -328,13 +328,13 @@ MonoBehaviour:
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <ZAlignUpIsParentRight>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
+  <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
   <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
   <ClearanceLinesRenderers>k__BackingField: []
   <ClearanceLinesMeshFilters>k__BackingField: []
-  _currentScaleLevel:
+  <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
   _currentPreviewScaleLevel:
@@ -601,6 +601,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2342445553743564237, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2fb26cf900ea7494f93ad51734a84ccb, type: 2}
     - target: {fileID: 2999278789812950873, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
       propertyPath: m_Name
       value: ClearanceLinesRenderer
