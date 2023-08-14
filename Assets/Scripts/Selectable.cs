@@ -70,7 +70,7 @@ public class Selectable : MonoBehaviour
     /// </summary>
     private bool IsAssemblyRoot => Types.Contains(SelectableType.Mount);
 
-    [SerializeField, ReadOnly] private ScaleLevel _currentScaleLevel;
+    [field: SerializeField, ReadOnly] public ScaleLevel CurrentScaleLevel { get; private set; }
     [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;   
     
     private bool _isRaycastPlacementMode;
@@ -214,7 +214,7 @@ public class Selectable : MonoBehaviour
             Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, closest.ScaleZ);
             transform.localScale = newScale;
 
-            if (closest == _currentScaleLevel)
+            if (closest == CurrentScaleLevel)
             {
                 //Debug.Log("Using stored child scales");
                 for (int i = 0; i < transform.childCount; i++)
@@ -248,7 +248,7 @@ public class Selectable : MonoBehaviour
         {
             ScaleLevels.ForEach((item) => item.Selected = false);
             closest.Selected = true;
-            _currentScaleLevel = closest;
+            CurrentScaleLevel = closest;
             StoreChildScales();
         }
 
@@ -411,7 +411,7 @@ public class Selectable : MonoBehaviour
             if (rootObj == gameObject)
             {
                 _assemblySelectables = GetComponentsInChildren<Selectable>().ToList();
-                _assemblySelectables.Add(this);
+                //_assemblySelectables.Add(this);
                 _originalRotations.Clear();
                 Array.ForEach(_assemblySelectables.OrderBy(x => x.GetParentCount()).ToArray(), item =>
                 {
@@ -430,7 +430,7 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    public void SetForElevationPhoto()
+    public void ExportElevationPdf()
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
         {
@@ -496,7 +496,7 @@ public class Selectable : MonoBehaviour
                     });
                 }
                 
-                PdfExporter.ExportElevationPdf(imageDatas);
+                PdfExporter.ExportElevationPdf(imageDatas, _assemblySelectables);
 
                 for (int i = 0; i < ActiveSelectables.Count; i++)
                 {
@@ -528,7 +528,7 @@ public class Selectable : MonoBehaviour
             }
             else
             {
-                rootObj.GetComponent<Selectable>().SetForElevationPhoto();
+                rootObj.GetComponent<Selectable>().ExportElevationPdf();
                 return;
             }
         }
@@ -703,9 +703,9 @@ public class Selectable : MonoBehaviour
 
         if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
         {
-            _currentScaleLevel = ScaleLevels.First(item => item.Selected);
-            _currentPreviewScaleLevel = _currentScaleLevel;
-            _currentScaleLevel.ScaleZ = transform.localScale.z;
+            CurrentScaleLevel = ScaleLevels.First(item => item.Selected);
+            _currentPreviewScaleLevel = CurrentScaleLevel;
+            CurrentScaleLevel.ScaleZ = transform.localScale.z;
 
             StoreChildScales();
 
@@ -713,8 +713,8 @@ public class Selectable : MonoBehaviour
             {
                 if (!item.Selected)
                 {
-                    float perc = item.Size / _currentScaleLevel.Size;
-                    item.ScaleZ = _currentScaleLevel.ScaleZ * perc;
+                    float perc = item.Size / CurrentScaleLevel.Size;
+                    item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
                 }
             });
 
@@ -811,12 +811,6 @@ public class Selectable : MonoBehaviour
     {
         UpdateRaycastPlacementMode();
         FaceZTowardGround();
-
-        //testing
-        if (SelectedSelectable == this && Input.GetKeyUp(KeyCode.Space)) 
-        {
-            SetForElevationPhoto();
-        }
     }
     #endregion
 

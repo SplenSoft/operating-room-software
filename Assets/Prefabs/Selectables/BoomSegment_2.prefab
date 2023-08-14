@@ -624,7 +624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
-  <Name>k__BackingField: Boom Segment 2-3
+  <Name>k__BackingField: Boom Segment 2
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -634,10 +634,13 @@ MonoBehaviour:
   <ZAlwaysFacesGround>k__BackingField: 1
   <ZAlignUpIsParentForward>k__BackingField: 0
   <ZAlignUpIsParentRight>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 5451522369069084445}
+  <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
-  _currentScaleLevel:
+  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
+  <ClearanceLinesRenderers>k__BackingField: []
+  <ClearanceLinesMeshFilters>k__BackingField: []
+  <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
   _currentPreviewScaleLevel:
@@ -700,7 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
-  <Name>k__BackingField: Boom Segment 2-2
+  <Name>k__BackingField: Boom Segment 2
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -716,10 +719,13 @@ MonoBehaviour:
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <ZAlignUpIsParentRight>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
+  <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 1
-  _currentScaleLevel:
+  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
+  <ClearanceLinesRenderers>k__BackingField: []
+  <ClearanceLinesMeshFilters>k__BackingField: []
+  <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
   _currentPreviewScaleLevel:

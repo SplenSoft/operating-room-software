@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class UI_ButtonExportPdf : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        Selectable.SelectionChanged += (o, e) =>
+        {
+            gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly());
+        };
+
+        gameObject.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ExportPdf()
     {
-        
+        if (Selectable.SelectedSelectable.TryGetArmAssemblyRoot(out GameObject obj))
+        {
+            Selectable.SelectedSelectable.ExportElevationPdf();
+        }
+        else
+        {
+            throw new System.Exception("Something went wrong. Couldn't export PDF");
+        }
     }
 }

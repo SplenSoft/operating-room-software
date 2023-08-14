@@ -511,7 +511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
-  <Name>k__BackingField: Boom Drop Tube_1
+  <Name>k__BackingField: Boom Drop Tube
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -522,6 +522,7 @@ MonoBehaviour:
     <Unrestricted>k__BackingField: 1
     <MaxValue>k__BackingField: 0
     <MinValue>k__BackingField: 0
+    <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.1
     <Selected>k__BackingField: 0
@@ -532,8 +533,15 @@ MonoBehaviour:
   - <Size>k__BackingField: 0.7
     <Selected>k__BackingField: 1
   <ZAlwaysFacesGround>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
-  _currentScaleLevel:
+  <ZAlignUpIsParentForward>k__BackingField: 0
+  <ZAlignUpIsParentRight>k__BackingField: 0
+  <Measurables>k__BackingField: []
+  <AlignForElevationPhoto>k__BackingField: 0
+  <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
+  <ClearanceLinesRenderers>k__BackingField: []
+  <ClearanceLinesMeshFilters>k__BackingField: []
+  <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
   _currentPreviewScaleLevel:

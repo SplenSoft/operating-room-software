@@ -273,7 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
-  <Name>k__BackingField: 
+  <Name>k__BackingField: Arm Segment 1
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -284,6 +284,7 @@ MonoBehaviour:
     <Unrestricted>k__BackingField: 1
     <MaxValue>k__BackingField: 0
     <MinValue>k__BackingField: 0
+    <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.2
     <Selected>k__BackingField: 0
@@ -318,9 +319,15 @@ MonoBehaviour:
   - <Size>k__BackingField: 1.7
     <Selected>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
+  <ZAlignUpIsParentForward>k__BackingField: 0
+  <ZAlignUpIsParentRight>k__BackingField: 0
+  <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
-  _currentScaleLevel:
+  <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
+  <ClearanceLinesRenderers>k__BackingField: []
+  <ClearanceLinesMeshFilters>k__BackingField: []
+  <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
   _currentPreviewScaleLevel:

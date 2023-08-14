@@ -21,7 +21,7 @@ public class PdfExporter : MonoBehaviour
         public int Width { get; set; }
     }
 
-    public static void ExportElevationPdf(List<PdfImageData> imageData)
+    public static void ExportElevationPdf(List<PdfImageData> imageData, List<Selectable> selectables)
     {
 //#if UNITY_EDITOR
         //PdfDocument document = new PdfDocument();
@@ -74,6 +74,18 @@ public class PdfExporter : MonoBehaviour
         SimpleJSON.JSONObject node = new();
         node.Add("image1", image1);
         node.Add("image2", image2);
+        SimpleJSON.JSONArray selectableArray = new();
+        selectables.ForEach(item =>
+        {
+            if (item.ScaleLevels.Count > 0) 
+            {
+                SimpleJSON.JSONObject selectableData = new();
+                selectableData.Add("title", item.Name + " length");
+                selectableData.Add("length", item.CurrentScaleLevel.Size * 1000f + "mm");
+                selectableArray.Add(selectableData);
+            }
+        });
+        node.Add("selectableData", selectableArray);
         Debug.Log(node);
 #if UNITY_WEBGL && !UNITY_EDITOR
         WebGLExtern.SaveElevationPDF(node.ToString());
