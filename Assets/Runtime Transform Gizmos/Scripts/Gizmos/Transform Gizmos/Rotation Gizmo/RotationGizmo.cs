@@ -139,8 +139,8 @@ namespace RTG
 
         public override void OnGizmoUpdateBegin()
         {
-            if (UseSnapEnableHotkey)
-                SetSnapEnabled(Hotkeys.EnableSnapping.IsActive());
+            //if (UseSnapEnableHotkey)
+            //    SetSnapEnabled(Hotkeys.EnableSnapping.IsActive());
 
             _midCap.SetVisible(LookAndFeel3D.IsMidCapVisible);
             _camXYRotationDrag.Sensitivity = Settings3D.DragSensitivity;

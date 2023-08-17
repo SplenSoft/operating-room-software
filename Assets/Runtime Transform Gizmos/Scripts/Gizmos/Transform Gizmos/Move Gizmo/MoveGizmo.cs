@@ -320,8 +320,8 @@ namespace RTG
             Update2DGizmoPosition();
             if (!_is2DModeEnabled && !_isVertexSnapEnabled) _midCap.SetVisible(LookAndFeel3D.IsMidCapVisible);
 
-            if (UseSnapEnableHotkey)
-                SetSnapEnabled(Hotkeys.EnableSnapping.IsActive());
+            //if (UseSnapEnableHotkey)
+                //SetSnapEnabled(Hotkeys.EnableSnapping.IsActive());
             if (Use2DModeEnableHotkey)
                 Set2DModeEnabled(Hotkeys.Enable2DMode.IsActive());
 

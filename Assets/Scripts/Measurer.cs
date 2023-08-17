@@ -146,6 +146,8 @@ public class Measurer : MonoBehaviour
     private void OnDestroy()
     {
         Measurers.Remove(this);
-        Destroy(MeasurementText.gameObject);
+
+        if (MeasurementText != null)
+            Destroy(MeasurementText.gameObject);
     }
 }

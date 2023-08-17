@@ -208,8 +208,8 @@ namespace RTG
         {
             _unformScaleDrag.Sensitivity = Settings3D.DragSensitivity;
 
-            if (UseSnapEnableHotkey)
-                SetSnapEnabled(Hotkeys.EnableSnapping.IsActive());
+            //if (UseSnapEnableHotkey)
+            //    SetSnapEnabled(Hotkeys.EnableSnapping.IsActive());
 
             if (UseMultiAxisScaleModeHotkey)
             {

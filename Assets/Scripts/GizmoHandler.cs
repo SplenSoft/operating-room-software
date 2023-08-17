@@ -34,9 +34,10 @@ public class GizmoHandler : MonoBehaviour
     {
         _selectable = GetComponent<Selectable>();
         GizmoSelector.GizmoModeChanged += GizmoModeChanged;
+        UI_ToggleSnapping.SnappingToggled.AddListener(EnableGizmo);
     }
 
-    private void GizmoModeChanged(object sender, EventArgs e)
+    private void GizmoModeChanged(object sender = null, EventArgs e = null)
     {
         EnableGizmo();
     }
@@ -44,6 +45,7 @@ public class GizmoHandler : MonoBehaviour
     private void OnDestroy()
     {
         GizmoSelector.GizmoModeChanged -= GizmoModeChanged;
+        UI_ToggleSnapping.SnappingToggled.RemoveListener(EnableGizmo);
     }
 
     public void SelectableSelected()
@@ -71,6 +73,8 @@ public class GizmoHandler : MonoBehaviour
             {
                 _translateGizmo.Gizmo.Transform.Position3D = transform.position;
                 //_translateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+                _translateGizmo.Gizmo.MoveGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
+                //RTGizmosEngine.Get.MoveGizmoSettings3D.SetXSnapStep
 
                 bool xMovementAllowed = _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.X);
                 bool yMovementAllowed = _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.Y);
@@ -92,6 +96,7 @@ public class GizmoHandler : MonoBehaviour
             {
                 _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
                 _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+                _rotateGizmo.Gizmo.RotationGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
 
                 RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(0, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X));
                 RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(1, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y));
@@ -101,6 +106,7 @@ public class GizmoHandler : MonoBehaviour
             {
                 _scaleGizmo.Gizmo.Transform.LocalPosition3D = transform.position;
                 _scaleGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+                _scaleGizmo.Gizmo.ScaleGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
 
                 RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X));
                 RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y));
