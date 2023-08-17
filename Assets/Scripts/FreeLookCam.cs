@@ -14,6 +14,8 @@ public class FreeLookCam : MonoBehaviour
     private Collider _collider;
     public static bool IsActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == Instance.VirtualCamera;
 
+    private bool _noRotating;
+
     private void Awake()
     {
         Instance = this;
@@ -30,7 +32,20 @@ public class FreeLookCam : MonoBehaviour
     private void Update()
     {
         if (!IsActive || FullScreenMenu.IsOpen) return;
-        if (Input.GetMouseButton(0))
+
+        if (Input.GetMouseButtonDown(0) && InputHandler.IsPointerOverUIElement())
+        {
+            _noRotating = true;
+            return;
+        }
+
+        if (_noRotating) 
+        {
+            if (Input.GetMouseButtonUp(0) || !Input.GetMouseButton(0))
+                _noRotating = false;
+        }
+
+        if (!_noRotating && Input.GetMouseButton(0))
         {
             HandleRotation();
         }
@@ -78,7 +93,7 @@ public class FreeLookCam : MonoBehaviour
 
     private void HandleRotation()
     {
-        if (GizmoHandler.GizmoBeingUsed) return;
+        if (GizmoHandler.GizmoBeingUsed || _noRotating) return;
         transform.Rotate(new Vector3(0, InputHandler.MouseDeltaScreenPercentage.x * LookSensitivityX, 0));
         Head.transform.Rotate(new Vector3(-InputHandler.MouseDeltaScreenPercentage.y * LookSensitivityY, 0, 0));
         var signedAngle = Vector3.SignedAngle(transform.forward, Head.forward, transform.right);

@@ -5675,7 +5675,7 @@ MonoBehaviour:
     _canBeDisplayed: 1
     _isExpanded: 1
     _gridUp:
-      _isEnabled: 1
+      _isEnabled: 0
       _key: 93
       _lCtrl: 0
       _lCmd: 0
@@ -5690,7 +5690,7 @@ MonoBehaviour:
       _staticData:
         CanHaveMouseButtons: 0
     _gridDown:
-      _isEnabled: 1
+      _isEnabled: 0
       _key: 91
       _lCtrl: 0
       _lCmd: 0
@@ -7217,6 +7217,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 340905463803878314, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 340905463803878314, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 340905463803878314, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 340905463803878314, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1077273775123983699, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7267,7 +7283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00007247925
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 3767629317904733376, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y

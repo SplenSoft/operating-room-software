@@ -32,7 +32,7 @@ namespace RTG
             content.text = "Line color";
             content.tooltip = "Allows you to control the color of the grid lines.";
             newColor = EditorGUILayout.ColorField(content, LineColor);
-            if(newColor != LineColor)
+            if (!Application.isPlaying && newColor != LineColor)
             {
                 EditorUndoEx.Record(undoRecordObject);
                 LineColor = newColor;
