@@ -17,10 +17,13 @@ public class KeepRelativePosition : MonoBehaviour
     {
         RoomSize.RoomSizeChanged += RoomSizeChanged;
         RecalculateRelativePosition();
-        _roomBoundary = VirtualParent.GetComponent<RoomBoundary>();
-        if (_roomBoundary != null && HideIfSurfaceIsHidden)
+        if (VirtualParent != null) 
         {
-            _roomBoundary.VisibilityStatusChanged.AddListener(CheckHideStatus);
+            _roomBoundary = VirtualParent.GetComponent<RoomBoundary>();
+            if (_roomBoundary != null && HideIfSurfaceIsHidden)
+            {
+                _roomBoundary.VisibilityStatusChanged.AddListener(CheckHideStatus);
+            }
         }
 
         _light = GetComponentInChildren<InGameLight>();

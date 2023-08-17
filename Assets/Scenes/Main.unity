@@ -1247,7 +1247,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2328,7 +2328,7 @@ MonoBehaviour:
       _text: Scale gizmo
     - _tooltip: Allows you to change universal gizmo settings.
       _text: Universal gizmo
-    _activeTabIndex: 2
+    _activeTabIndex: 4
   _settings:
     _canBeDisplayed: 1
     _isExpanded: 1
@@ -3487,7 +3487,7 @@ MonoBehaviour:
   _scaleGizmoSettings3D:
     _canBeDisplayed: 1
     _isExpanded: 1
-    _uniformSnapStep: 0.1
+    _uniformSnapStep: 0.0127
     _sglSliderSettings:
     - _lineHoverEps: 0.7
       _boxHoverEps: 0.5
@@ -3563,7 +3563,7 @@ MonoBehaviour:
       _scaleMode: 1
       _scaleSnapStepRight: 0.0127
       _scaleSnapStepUp: 0.0127
-      _proportionalScaleSnapStep: 0.1
+      _proportionalScaleSnapStep: 0.0127
       _offsetSensitivity: 1
       _rotationSensitivity: 0.45
       _scaleSensitivity: 1
@@ -3580,7 +3580,7 @@ MonoBehaviour:
       _scaleMode: 1
       _scaleSnapStepRight: 0.0127
       _scaleSnapStepUp: 0.0127
-      _proportionalScaleSnapStep: 0.1
+      _proportionalScaleSnapStep: 0.0127
       _offsetSensitivity: 1
       _rotationSensitivity: 0.45
       _scaleSensitivity: 1
@@ -3597,7 +3597,7 @@ MonoBehaviour:
       _scaleMode: 1
       _scaleSnapStepRight: 0.0127
       _scaleSnapStepUp: 0.0127
-      _proportionalScaleSnapStep: 0.1
+      _proportionalScaleSnapStep: 0.0127
       _offsetSensitivity: 1
       _rotationSensitivity: 0.45
       _scaleSensitivity: 1
@@ -5956,7 +5956,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633508577}
-  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7288,7 +7288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000022888184
+      value: 0.0000038146973
       objectReference: {fileID: 0}
     - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y

@@ -377,6 +377,25 @@ public class GizmoHandler : MonoBehaviour
             float xScale = _localScaleBeforeStartDrag.x * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X) ? gizmo.TotalDragScale.x : 1);
             float yScale = _localScaleBeforeStartDrag.y * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y) ? gizmo.TotalDragScale.y : 1);
             float zScale = _selectable.ScaleLevels.Count == 0 ? _localScaleBeforeStartDrag.z * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z) ? gizmo.TotalDragScale.z : 1) : _selectable.transform.localScale.z;
+
+            if (UI_ToggleSnapping.SnappingEnabled) 
+            { 
+                if (xScale != _localScaleBeforeStartDrag.x) 
+                {
+                    xScale = Selectable.RoundToNearestHalfInch(xScale);
+                }
+                
+                if (yScale != _localScaleBeforeStartDrag.y)
+                {
+                    yScale = Selectable.RoundToNearestHalfInch(yScale);
+                }
+                
+                if (_selectable.ScaleLevels.Count == 0 && zScale != _localScaleBeforeStartDrag.z)
+                {
+                    zScale = Selectable.RoundToNearestHalfInch(zScale);
+                }
+            }
+
             _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);    
         }
 

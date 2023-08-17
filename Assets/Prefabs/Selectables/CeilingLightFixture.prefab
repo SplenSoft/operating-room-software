@@ -55,7 +55,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Area Light
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1281172547, guid: 507423c88dca02e44bf1e266b76f2d06, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 507423c88dca02e44bf1e266b76f2d06, type: 3}
 --- !u!1001 &5877046167845906647
 PrefabInstance:

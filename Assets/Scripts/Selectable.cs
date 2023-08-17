@@ -53,7 +53,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private Transform ClearanceLineMeasuringPosition { get; set; }
     [field: SerializeField] private List<ClearanceLinesRenderer> ClearanceLinesRenderers { get; set; }
     [field: SerializeField] private List<MeshFilter> ClearanceLinesMeshFilters { get; set; } = new();
-    [field: SerializeField] private bool HideIfSurfaceIsHidden { get; set; }
+    
 
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;
@@ -856,6 +856,22 @@ public class Selectable : MonoBehaviour
         _isRaycastPlacementMode = true;
     }
 
+    public static float RoundToNearestHalfInch(float value)
+    {
+        float halfInch = 0.0127f;
+        float modulo = value % halfInch;
+        if (modulo <= halfInch / 2)
+        { 
+            value -= modulo;
+        }
+        else
+        {
+            value += halfInch - modulo;
+        }
+
+        return value;
+    }
+
     private async void UpdateRaycastPlacementMode()
     {
         if (!_isRaycastPlacementMode || _hasBeenPlaced) return;
@@ -866,7 +882,30 @@ public class Selectable : MonoBehaviour
         {
             void SetPosition(RaycastHit hit)
             {
-                transform.SetPositionAndRotation(hit.point, Quaternion.LookRotation(hit.normal));
+                Vector3 destination = hit.point;
+                if (UI_ToggleSnapping.SnappingEnabled) 
+                {
+                    float yMag = Mathf.Abs(hit.normal.y);
+                    float xMag = Mathf.Abs(hit.normal.x);
+                    float zMag = Mathf.Abs(hit.normal.z);
+
+                    if (yMag > xMag && yMag > zMag) 
+                    {
+                        destination.x = RoundToNearestHalfInch(destination.x);
+                        destination.z = RoundToNearestHalfInch(destination.z);
+                    }
+                    else if (xMag > yMag && xMag > zMag) 
+                    {
+                        destination.y = RoundToNearestHalfInch(destination.y);
+                        destination.z = RoundToNearestHalfInch(destination.z);
+                    }
+                    else if (zMag > xMag && zMag > yMag)
+                    {
+                        destination.y = RoundToNearestHalfInch(destination.y);
+                        destination.x = RoundToNearestHalfInch(destination.x);
+                    }
+                }
+                transform.SetPositionAndRotation(destination, Quaternion.LookRotation(hit.normal));
                 _virtualParent = hit.collider.transform;
             }
 
