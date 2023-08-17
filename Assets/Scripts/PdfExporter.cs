@@ -23,30 +23,33 @@ public class PdfExporter : MonoBehaviour
 
     public static void ExportElevationPdf(List<PdfImageData> imageData, List<Selectable> selectables)
     {
-//#if UNITY_EDITOR
-        //PdfDocument document = new PdfDocument();
-        //PdfPage page = document.AddPage();
+#if UNITY_EDITOR
+        PdfDocument document = new PdfDocument();
+        PdfPage page = document.AddPage();
 
-        //// 11x17" landscape
-        //page.Orientation = PageOrientation.Landscape;
-        //page.Width = 17 * 72;
-        //page.Height = 11 * 72;
+        // 11x17" landscape
+        page.Orientation = PageOrientation.Landscape;
+        page.Width = 17 * 72;
+        page.Height = 11 * 72;
 
-        //XGraphics gfx = XGraphics.FromPdfPage(page);
+        XGraphics gfx = XGraphics.FromPdfPage(page);
 
-        //double printedWidth = page.Width * 0.33;
+        double printedWidth = page.Width * 0.33;
 
-        //for (int i = 0; i < imageData.Count; i++)
-        //{
-        //    var item = imageData[i];
-        //    XImage image = XImage.FromFile(item.Path);
+        for (int i = 0; i < imageData.Count; i++)
+        {
+            var item = imageData[i];
+            XImage image = XImage.FromFile(item.Path);
 
-        //    double printedHeight = (printedWidth / item.Width) * item.Height;
-        //    gfx.DrawImage(image, (i * printedWidth) + 36, 144, printedWidth, printedHeight);
-        //}
-        ////const string fileNamePDF = "ExportedArmAssemblyElevation.pdf";
-        //string fileNamePDF = EditorUtility.SaveFilePanel("Export .png file", "", "ExportedArmAssemblyElevation", "pdf");
-        //document.Save(fileNamePDF);
+            double printedHeight = (printedWidth / item.Width) * item.Height;
+            gfx.DrawImage(image, (i * printedWidth) + 36, 144, printedWidth, printedHeight);
+        }
+        //const string fileNamePDF = "ExportedArmAssemblyElevation.pdf";
+        string fileNamePDF = EditorUtility.SaveFilePanel("Export .pdf file", "", "ExportedArmAssemblyElevation", "pdf");
+        document.Save(fileNamePDF);
+        return;
+#endif
+
 //#elif UNITY_WEBGL
         string image1 = "";
         string image2 = "";
@@ -80,8 +83,8 @@ public class PdfExporter : MonoBehaviour
             if (item.ScaleLevels.Count > 0) 
             {
                 SimpleJSON.JSONObject selectableData = new();
-                selectableData.Add("title", item.Name + " length");
-                selectableData.Add("length", item.CurrentScaleLevel.Size * 1000f + "mm");
+                selectableData.Add("Item", item.Name + " length");
+                selectableData.Add("Value", item.CurrentScaleLevel.Size * 1000f + "mm");
                 selectableArray.Add(selectableData);
             }
         });

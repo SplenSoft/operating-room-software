@@ -64,6 +64,7 @@ public class Selectable : MonoBehaviour
     private Quaternion _localRotationBeforeElevationPhoto;
     private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
+    public static Camera ActiveCameraRenderTextureElevation { get; private set; }
 
     /// <summary>
     /// If true, this is probably a ceiling mount
@@ -437,6 +438,8 @@ public class Selectable : MonoBehaviour
             if (rootObj == gameObject)
             {// this obj is the ceiling mount
                 IsInElevationPhotoMode = true;
+                var camera = GetComponentInChildren<Camera>();
+                ActiveCameraRenderTextureElevation = camera;
 
                 SetAssemblyToDefaultRotations();
 
@@ -487,7 +490,6 @@ public class Selectable : MonoBehaviour
                     var bounds = GetAssemblyBounds();
 
                     //take the photo
-                    var camera = GetComponentInChildren<Camera>();
                     imageDatas.Add(new PdfExporter.PdfImageData()
                     {
                         Path = GetElevationPhoto(camera, bounds, _assemblySelectables, out var imageWidth, out var imageHeight, i),
@@ -573,18 +575,23 @@ public class Selectable : MonoBehaviour
                 {
                     measurable.UpdateMeasurements(ref addedHeight, camera);
                 });
-                
             }
         });
+
+        List<MeasurementText> textsToUpdate = new List<MeasurementText>();
 
         Measurer.Measurers.ForEach(measurer =>
         {
             measurer.UpdateTransform();
             measurer.UpdateVisibility(camera);
-            measurer.MeasurementText.CheckActiveState();
-            measurer.MeasurementText.UpdateVisibilityAndPosition(camera);
+            //measurer.MeasurementText.CheckActiveState();
+            //measurer.MeasurementText.UpdateVisibilityAndPosition(camera);
+            measurer.MeasurementText.gameObject.SetActive(true);
             if (measurer.IsRendererVisible) 
             {
+                measurer.MeasurementText.gameObject.SetActive(true);
+                textsToUpdate.Add(measurer.MeasurementText);
+                measurer.MeasurementText.UpdateVisibilityAndPosition(camera, force: true);
                 bounds.Encapsulate(measurer.Renderer.bounds);
                 bounds.Encapsulate(measurer.TextPosition + (Vector3.up * (0.3f + addedHeight)));
             }
@@ -620,8 +627,19 @@ public class Selectable : MonoBehaviour
             throw new Exception("Could not get bounds of Arm Assembly for photo");
         }
 
+        textsToUpdate.ForEach(text =>
+        {
+            text.gameObject.SetActive(true);
+            text.Text.enabled = true;
+            text.UpdateVisibilityAndPosition(camera, force: true);
+            text.transform.rotation = text.GetRotationTowardCamera(camera);
+        });
+
         imageWidth = Mathf.CeilToInt(Mathf.Abs(screenPointMax.x - screenPointMin.x));
         imageHeight = Mathf.CeilToInt(Mathf.Abs(screenPointMax.y - screenPointMin.y));
+
+        Canvas.ForceUpdateCanvases();
+        Debug.Break();
 
         InGameLight.ToggleLights(false);
         Light cameraLight = camera.GetComponentInChildren<Light>(true);

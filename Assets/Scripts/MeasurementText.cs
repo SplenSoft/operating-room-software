@@ -19,7 +19,18 @@ public class MeasurementText : MonoBehaviour
         {
             Measurer.MeasurerAdded += (o, newMeasurer) =>
             {
-                var newText = Instantiate(_master.gameObject, _master.transform.parent).GetComponent<MeasurementText>();
+                Quaternion quat;
+
+                if (Selectable.IsInElevationPhotoMode)
+                {
+                    quat = GetRotationTowardCamera(Selectable.ActiveCameraRenderTextureElevation);
+                }
+                else
+                {
+                    quat = GetRotationTowardCamera();
+                }
+
+                var newText = Instantiate(_master.gameObject, newMeasurer.TextPosition, quat, _master.transform.parent).GetComponent<MeasurementText>();
                 newText._measurer = newMeasurer;
                 newText._measurer.MeasurementText = newText;
                 newText.gameObject.SetActive(true);
@@ -53,9 +64,32 @@ public class MeasurementText : MonoBehaviour
         {
             gameObject.SetActive(_measurer.IsRendererVisible);
         }
+
+        if (Selectable.IsInElevationPhotoMode && gameObject.activeSelf)
+        {
+            Debug.Log("Successfully activated measurer text");
+        }
     }
 
     public void RotateTowardCamera(Camera camera = null)
+    {
+        if (camera == null)
+        {
+            camera = Camera.main;
+        }
+
+        var quat = GetRotationTowardCamera(camera);
+        transform.SetPositionAndRotation(transform.position, quat);
+
+        float angleOfMeasurer = Vector3.Angle(_measurer.transform.forward, Vector3.up);
+        float angle2 = Vector3.Angle(_measurer.transform.forward, Vector3.down);
+        if (angleOfMeasurer < 10f || angle2 < 10f)
+        {
+            transform.Rotate(0, 0, 90);
+        }
+    }
+
+    public Quaternion GetRotationTowardCamera(Camera camera = null)
     {
         if (camera == null)
         {
@@ -69,17 +103,7 @@ public class MeasurementText : MonoBehaviour
         var vec = transform.position - planePoint;
         vec = vec.normalized;
 
-        float angleOfMeasurer = Vector3.Angle(_measurer.transform.forward, Vector3.up);
-        float angle2 = Vector3.Angle(_measurer.transform.forward, Vector3.down);
-
-        var quat = Quaternion.LookRotation(vec);
-        transform.SetPositionAndRotation(transform.position, quat);
-
-        if (angleOfMeasurer < 10f || angle2 < 10f)
-        {
-            transform.Rotate(0, 0, 90);
-        }
-        
+        return Quaternion.LookRotation(vec);
     }
 
     public void Update()
@@ -87,12 +111,15 @@ public class MeasurementText : MonoBehaviour
         UpdateVisibilityAndPosition();
     }
 
-    public void UpdateVisibilityAndPosition(Camera camera = null)
+    public void UpdateVisibilityAndPosition(Camera camera = null, bool force = false)
     {
         if (!_measurer.gameObject.activeSelf)
         {
-            gameObject.SetActive(false);
-            return;
+            if (!force)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
         }
 
         if (camera == null)
@@ -103,5 +130,10 @@ public class MeasurementText : MonoBehaviour
         Text.text = _measurer.Distance;
         transform.position = _measurer.TextPosition;
         RotateTowardCamera(camera);
+
+        if (Selectable.IsInElevationPhotoMode)
+        {
+            Debug.Log($"Successfully rotated measurer text toward camera, active state is {gameObject.activeSelf}");
+        }
     }
 }

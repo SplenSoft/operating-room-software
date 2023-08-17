@@ -3,11 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
-using static Measurable;
-using static UnityEditor.Progress;
 
 public class Measurable : MonoBehaviour
 {
@@ -26,7 +24,6 @@ public class Measurable : MonoBehaviour
         public Measurable Measurable { get; }
         public MeasurementType MeasurementType { get; set; }
         public RoomBoundaryType RoomBoundaryType { get; set; }
-
     }
 
     public static UnityEvent ActiveMeasurablesChanged { get; } = new UnityEvent();
@@ -42,17 +39,19 @@ public class Measurable : MonoBehaviour
 
     public bool IsActive { get; private set; }
 
-    private void Awake()
+    private async void Awake()
     {
         MeasurementTypes = MeasurementTypes.Distinct().ToList();
         //LineRenderers = GetComponentsInChildren<LineRenderer>(true).ToList();
-        
+        while (!Measurer.Initialized)
+        {
+            await Task.Yield();
+        }
+        Initialize();
     }
 
-    private IEnumerator Start()
+    private void Initialize()
     {
-        yield return new WaitUntil(() => Measurer.Initialized);
-
         bool newMeasurement = false;
         MeasurementTypes.ForEach(item =>
         {
@@ -121,6 +120,10 @@ public class Measurable : MonoBehaviour
 
             HighestAssemblyAttachmentPoint = attachmentPoint;
         }
+
+        //SetActive(true);
+        //SetActive(false);
+        Debug.Log($"Measurable {gameObject.name} initialized");
     }
 
     public void SetActive(bool active)
@@ -140,9 +143,23 @@ public class Measurable : MonoBehaviour
             {
                 item.Measurer.SetMeasurement(null);
                 item.Measurer.LineRenderers.ForEach(item => item.enabled = false);
-                item.Measurer = null;
+                //item.Measurer = null;
             });
         }
+    }
+
+    private void OnDestroy()
+    {
+        Measurements.ToList().ForEach(item =>
+        {
+            item.Measurer.SetMeasurement(null);
+            item.Measurer.LineRenderers.ForEach(item => 
+            {
+                if (item != null)
+                    item.enabled = false;
+            });
+            item.Measurer = null;
+        });
     }
 
     public void SetForElevationPhoto()
@@ -257,6 +274,11 @@ public class Measurable : MonoBehaviour
                     var measurer = item.Measurer;
                     if (item.Measurer != null)
                     {
+                        if (Selectable.IsInElevationPhotoMode)
+                        {
+                            measurer.UpdateTransform();
+                            measurer.UpdateVisibility(camera);
+                        }
                         measurer.LineRenderers[0].enabled = measurer.IsRendererVisible;
                         measurer.LineRenderers[1].enabled = measurer.IsRendererVisible;
                         if (measurer.IsRendererVisible)

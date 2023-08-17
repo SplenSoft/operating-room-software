@@ -18,8 +18,11 @@ public class Measurer : MonoBehaviour
     public static bool Initialized { get; private set; }
     public List<LineRenderer> LineRenderers { get; private set; } = new();
     public MeasurementText MeasurementText;
-
     public bool AllowInElevationPhotoMode => Measurement != null && Measurement.Measurable.ArmAssemblyActiveInElevationPhotoMode && Measurement.MeasurementType == MeasurementType.ToArmAssemblyOrigin;
+    public Measurable.Measurement Measurement { get; private set; }
+    public string Distance { get; private set; } = string.Empty;
+    private Transform _childTransform;
+    public Vector3 TextPosition => _childTransform.position;
 
     [RuntimeInitializeOnLoadMethod]
     private static void OnAppStart()
@@ -28,8 +31,8 @@ public class Measurer : MonoBehaviour
         {
             Measurable.ActiveMeasurables.ForEach(activeMeasurable =>
             {
-                activeMeasurable.Measurements.ForEach(item => 
-                { 
+                activeMeasurable.Measurements.ForEach(item =>
+                {
                     if (item.Measurer == null)
                     {
                         item.Measurer = GetAvailableMeasurer();
@@ -40,13 +43,6 @@ public class Measurer : MonoBehaviour
         });
         Initialized = true;
     }
-
-    public Measurable.Measurement Measurement { get; private set; }
-
-    public string Distance { get; private set; } = string.Empty;
-
-    private Transform _childTransform;
-    public Vector3 TextPosition => _childTransform.position;
 
     private static Measurer GetAvailableMeasurer()
     {
@@ -104,7 +100,7 @@ public class Measurer : MonoBehaviour
 
     public void UpdateVisibility(Camera camera = null)
     {
-        bool isEnabled = Measurement.IsValid;
+        bool isEnabled = Measurement != null && Measurement.IsValid;
         if (Selectable.IsInElevationPhotoMode)
         {
             isEnabled = AllowInElevationPhotoMode;
@@ -150,5 +146,6 @@ public class Measurer : MonoBehaviour
     private void OnDestroy()
     {
         Measurers.Remove(this);
+        Destroy(MeasurementText.gameObject);
     }
 }
