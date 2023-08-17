@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class RoomBoundary : MonoBehaviour
 {
+    public UnityEvent VisibilityStatusChanged { get; } = new();
     private static readonly float _mouseMoveSensitivityX = 10f;
     private static readonly float _mouseMoveSensitivityY = 10f;
     private static readonly float _scrollSensitivity = 0.5f;
@@ -14,7 +16,7 @@ public class RoomBoundary : MonoBehaviour
     [field: SerializeField] public RoomBoundaryType RoomBoundaryType { get; private set; }
     [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
     private bool VirtualCameraActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
-    private MeshRenderer _meshRenderer;
+    public MeshRenderer MeshRenderer { get; private set; }
     private Collider _collider;
     private CinemachineTransposer _transposer;
 
@@ -22,7 +24,7 @@ public class RoomBoundary : MonoBehaviour
     {
         Instances.Add(this);
 
-        _meshRenderer = GetComponent<MeshRenderer>();
+        MeshRenderer = GetComponent<MeshRenderer>();
         _collider = GetComponent<Collider>();
 
         if (VirtualCamera != null)
@@ -81,6 +83,8 @@ public class RoomBoundary : MonoBehaviour
         {
             VirtualCamera.m_Lens.OrthographicSize = (transform.localScale.y / 2f) + (transform.localScale.y / 10f);
         }
+
+        
     }
 
     private void Update()
@@ -136,8 +140,14 @@ public class RoomBoundary : MonoBehaviour
 
     private void ToggleMeshRendererAndCollider(bool toggle)
     {
-        _meshRenderer.enabled = toggle;
+        bool oldStatus = MeshRenderer.enabled;
+        MeshRenderer.enabled = toggle;
         _collider.enabled = toggle;
+
+        if (toggle != oldStatus)
+        {
+            VisibilityStatusChanged?.Invoke();
+        }
     }
 }
 

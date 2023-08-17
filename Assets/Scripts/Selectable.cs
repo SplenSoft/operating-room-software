@@ -50,10 +50,10 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public List<Measurable> Measurables { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
     [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
-
     [field: SerializeField] private Transform ClearanceLineMeasuringPosition { get; set; }
     [field: SerializeField] private List<ClearanceLinesRenderer> ClearanceLinesRenderers { get; set; }
     [field: SerializeField] private List<MeshFilter> ClearanceLinesMeshFilters { get; set; } = new();
+    [field: SerializeField] private bool HideIfSurfaceIsHidden { get; set; }
 
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;

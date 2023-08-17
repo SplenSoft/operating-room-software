@@ -599,6 +599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <VirtualParent>k__BackingField: {fileID: 866518813}
+  <HideIfSurfaceIsHidden>k__BackingField: 0
 --- !u!1001 &630779405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7265,6 +7266,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2291703187636673326, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2667125568743690322, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -7283,7 +7288,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.000030517578
+      value: -0.000022888184
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3767629317904733376, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7500,6 +7525,10 @@ PrefabInstance:
     - target: {fileID: 9203701989936365271, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_Name
       value: OnScreenUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 9222885609192098014, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
