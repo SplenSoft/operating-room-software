@@ -521,12 +521,6 @@ public class Selectable : MonoBehaviour
                     float _ = 0;
                     item.UpdateMeasurements(ref _);
                 });
-
-                Measurer.Measurers.ForEach(measurer =>
-                {
-                    measurer.UpdateTransform();
-                    measurer.UpdateVisibility();
-                });
             }
             else
             {
@@ -573,27 +567,21 @@ public class Selectable : MonoBehaviour
             {
                 item.Measurables.ForEach(measurable =>
                 {
-                    measurable.UpdateMeasurements(ref addedHeight, camera);
+                    var validMeasurements = measurable.Measurements.Where(measurement => measurement.MeasurementType == MeasurementType.ToArmAssemblyOrigin).ToList();
+                    if (validMeasurements.Count > 0)
+                    {
+                        measurable.SetActive(true);
+                        measurable.UpdateMeasurements(ref addedHeight, camera);
+                        validMeasurements.ForEach(measurement =>
+                        {
+                            measurement.Measurer.MeasurementText.UpdateVisibilityAndPosition(camera, force: true);
+                            bounds.Encapsulate(measurement.Measurer.Renderer.bounds);
+                            bounds.Encapsulate(measurement.Measurer.TextPosition + (Vector3.up * (0.3f + addedHeight)));
+                        });
+                        
+                    }
+                    
                 });
-            }
-        });
-
-        List<MeasurementText> textsToUpdate = new List<MeasurementText>();
-
-        Measurer.Measurers.ForEach(measurer =>
-        {
-            measurer.UpdateTransform();
-            measurer.UpdateVisibility(camera);
-            //measurer.MeasurementText.CheckActiveState();
-            //measurer.MeasurementText.UpdateVisibilityAndPosition(camera);
-            measurer.MeasurementText.gameObject.SetActive(true);
-            if (measurer.IsRendererVisible) 
-            {
-                measurer.MeasurementText.gameObject.SetActive(true);
-                textsToUpdate.Add(measurer.MeasurementText);
-                measurer.MeasurementText.UpdateVisibilityAndPosition(camera, force: true);
-                bounds.Encapsulate(measurer.Renderer.bounds);
-                bounds.Encapsulate(measurer.TextPosition + (Vector3.up * (0.3f + addedHeight)));
             }
         });
 
@@ -627,19 +615,10 @@ public class Selectable : MonoBehaviour
             throw new Exception("Could not get bounds of Arm Assembly for photo");
         }
 
-        textsToUpdate.ForEach(text =>
-        {
-            text.gameObject.SetActive(true);
-            text.Text.enabled = true;
-            text.UpdateVisibilityAndPosition(camera, force: true);
-            text.transform.rotation = text.GetRotationTowardCamera(camera);
-        });
-
         imageWidth = Mathf.CeilToInt(Mathf.Abs(screenPointMax.x - screenPointMin.x));
         imageHeight = Mathf.CeilToInt(Mathf.Abs(screenPointMax.y - screenPointMin.y));
 
         Canvas.ForceUpdateCanvases();
-        Debug.Break();
 
         InGameLight.ToggleLights(false);
         Light cameraLight = camera.GetComponentInChildren<Light>(true);

@@ -6,69 +6,40 @@ using UnityEngine;
 
 public class MeasurementText : MonoBehaviour
 {
-    public static List<MeasurementText> Instances { get; } = new List<MeasurementText>();
-
-    private static MeasurementText _master;
+    private static GameObject Prefab { get; set; }
 
     [SerializeField, ReadOnly] private Measurer _measurer;
     public TextMeshProUGUI Text; 
 
     private void Awake()
     {
-        if (_master == null)
+        if (Prefab == null)
         {
-            Measurer.MeasurerAdded += (o, newMeasurer) =>
-            {
-                Quaternion quat;
-
-                if (Selectable.IsInElevationPhotoMode)
-                {
-                    quat = GetRotationTowardCamera(Selectable.ActiveCameraRenderTextureElevation);
-                }
-                else
-                {
-                    quat = GetRotationTowardCamera();
-                }
-
-                var newText = Instantiate(_master.gameObject, newMeasurer.TextPosition, quat, _master.transform.parent).GetComponent<MeasurementText>();
-                newText._measurer = newMeasurer;
-                newText._measurer.MeasurementText = newText;
-                newText.gameObject.SetActive(true);
-                newText._measurer.ActiveStateToggled.AddListener(() =>
-                {
-                    newText.gameObject.SetActive(newText._measurer.gameObject.activeSelf);
-                });
-                newText._measurer.VisibilityToggled.AddListener(() =>
-                {
-                    newText.Text.enabled = newText._measurer.IsRendererVisible;
-                });
-            };
-
-            _master = this;
+            Prefab = gameObject;
             gameObject.SetActive(false);
+            return;
         }
-        else
-        {
-            UI_MeasurementButton.Toggled.AddListener(CheckActiveState);
 
-            Measurable.ActiveMeasurablesChanged.AddListener(CheckActiveState);
+        Measurable.ActiveMeasurablesChanged.AddListener(CheckActiveState);
+        Text = GetComponent<TextMeshProUGUI>();
+    }
 
-            Text = GetComponent<TextMeshProUGUI>();
-            Instances.Add(this);
-        }
+    private void OnDestroy()
+    {
+        Measurable.ActiveMeasurablesChanged.RemoveListener(CheckActiveState);
+    }
+
+    public static MeasurementText GetMeasurementText(Measurer measurer)
+    {
+        var newObj = Instantiate(Prefab, Prefab.transform.parent);
+        MeasurementText measurementText = newObj.GetComponent<MeasurementText>();
+        measurementText._measurer = measurer;
+        return measurementText;
     }
 
     public void CheckActiveState()
     {
-        if (_measurer != null)
-        {
-            gameObject.SetActive(_measurer.IsRendererVisible);
-        }
-
-        if (Selectable.IsInElevationPhotoMode && gameObject.activeSelf)
-        {
-            Debug.Log("Successfully activated measurer text");
-        }
+        gameObject.SetActive(_measurer.Measurement.Measurable.IsActive);
     }
 
     public void RotateTowardCamera(Camera camera = null)
@@ -113,15 +84,6 @@ public class MeasurementText : MonoBehaviour
 
     public void UpdateVisibilityAndPosition(Camera camera = null, bool force = false)
     {
-        if (!_measurer.gameObject.activeSelf)
-        {
-            if (!force)
-            {
-                gameObject.SetActive(false);
-                return;
-            }
-        }
-
         if (camera == null)
         {
             camera = Camera.main;
@@ -131,9 +93,9 @@ public class MeasurementText : MonoBehaviour
         transform.position = _measurer.TextPosition;
         RotateTowardCamera(camera);
 
-        if (Selectable.IsInElevationPhotoMode)
-        {
-            Debug.Log($"Successfully rotated measurer text toward camera, active state is {gameObject.activeSelf}");
-        }
+        //if (Selectable.IsInElevationPhotoMode)
+        //{
+        //    Debug.Log($"Successfully rotated measurer text toward camera, active state is {gameObject.activeSelf}");
+        //}
     }
 }

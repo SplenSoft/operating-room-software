@@ -14,6 +14,7 @@ public class Measurable : MonoBehaviour
         public Measurement(Measurable measurable) 
         {
             Measurable = measurable;
+            Measurer = Measurer.GetMeasurer(this);
         }
 
         public bool IsValid { get; set; }
@@ -28,25 +29,16 @@ public class Measurable : MonoBehaviour
 
     public static UnityEvent ActiveMeasurablesChanged { get; } = new UnityEvent();
     private static readonly float _lineRendererSizeScalar = 0.005f;
-    public static List<Measurable> ActiveMeasurables { get; } = new();
-    //public Dictionary<MeasurementType, Measurement> Measurements { get; private set; } = new();
     public List<Measurement> Measurements { get; } = new();
     [field: SerializeField] public List<MeasurementType> MeasurementTypes { get; private set; } = new();
     [field: SerializeField] private bool ForwardOnly { get; set; }
     private AttachmentPoint HighestAssemblyAttachmentPoint { get; set; }
-    //[field: SerializeField] private List<LineRenderer> LineRenderers { get; set; } = new();
     public bool ArmAssemblyActiveInElevationPhotoMode { get; set; }
-
     public bool IsActive { get; private set; }
 
-    private async void Awake()
+    private void Awake()
     {
         MeasurementTypes = MeasurementTypes.Distinct().ToList();
-        //LineRenderers = GetComponentsInChildren<LineRenderer>(true).ToList();
-        while (!Measurer.Initialized)
-        {
-            await Task.Yield();
-        }
         Initialize();
     }
 
@@ -61,7 +53,7 @@ public class Measurable : MonoBehaviour
                 {
                     Measurements.Add(new Measurement(this)
                     {
-                        MeasurementType = item,
+                        MeasurementType = item
                     });
                 }
                 else
@@ -120,51 +112,29 @@ public class Measurable : MonoBehaviour
 
             HighestAssemblyAttachmentPoint = attachmentPoint;
         }
-
-        //SetActive(true);
-        //SetActive(false);
-        Debug.Log($"Measurable {gameObject.name} initialized");
     }
 
     public void SetActive(bool active)
     {
         IsActive = active;
 
-        if (IsActive && !ActiveMeasurables.Contains(this))
+        Measurements.ToList().ForEach(item =>
         {
-            ActiveMeasurables.Add(this);
-            ActiveMeasurablesChanged?.Invoke();
-        }
-        else if (!IsActive && ActiveMeasurables.Contains(this))
-        {
-            ActiveMeasurables.Remove(this);
-            ActiveMeasurablesChanged?.Invoke();
-            Measurements.ToList().ForEach(item =>
-            {
-                item.Measurer.SetMeasurement(null);
-                item.Measurer.LineRenderers.ForEach(item => item.enabled = false);
-                //item.Measurer = null;
-            });
-        }
+            item.Measurer.gameObject.SetActive(IsActive);
+            item.Measurer.LineRenderers.ForEach(renderer => renderer.enabled = item.MeasurementType == MeasurementType.ToArmAssemblyOrigin && IsActive);
+        });
+        ActiveMeasurablesChanged?.Invoke();
     }
 
     private void OnDestroy()
     {
         Measurements.ToList().ForEach(item =>
         {
-            item.Measurer.SetMeasurement(null);
-            item.Measurer.LineRenderers.ForEach(item => 
+            if (item.Measurer != null)
             {
-                if (item != null)
-                    item.enabled = false;
-            });
-            item.Measurer = null;
+                Destroy(item.Measurer.gameObject);
+            }
         });
-    }
-
-    public void SetForElevationPhoto()
-    {
-        
     }
 
     private int GetTotalNeededMeasurements()
@@ -210,16 +180,6 @@ public class Measurable : MonoBehaviour
                 measurement.IsValid = true;
             }
         }
-        //if (Physics.Raycast(ray, out raycastHit, 1000f, 1 << LayerMask.NameToLayer("Wall")))
-        //{
-        //    measurement.Origin = ray.origin;
-        //    measurement.HitPoint = raycastHit.point;
-        //}
-    } 
-
-    private float GetCeilingYValue()
-    {
-        return RoomBoundary.Instances.Where(x => x.RoomBoundaryType == RoomBoundaryType.Ceiling).ToList()[0].transform.position.y;
     }
 
     private float GetDistanceToCameraPlane(Vector3 point, Camera camera = null)
@@ -272,35 +232,32 @@ public class Measurable : MonoBehaviour
                     item.Origin = origin + addedHeight;
                     
                     var measurer = item.Measurer;
-                    if (item.Measurer != null)
-                    {
-                        if (Selectable.IsInElevationPhotoMode)
-                        {
-                            measurer.UpdateTransform();
-                            measurer.UpdateVisibility(camera);
-                        }
-                        measurer.LineRenderers[0].enabled = measurer.IsRendererVisible;
-                        measurer.LineRenderers[1].enabled = measurer.IsRendererVisible;
-                        if (measurer.IsRendererVisible)
-                        {
-                            measurer.LineRenderers[0].positionCount = 2;
-                            Vector3 line1Start = addedHeight + origin;
-                            Vector3 line1End = transform.position;
-                            measurer.LineRenderers[0].SetPosition(0, line1Start);
-                            measurer.LineRenderers[0].SetPosition(1, line1End);
-                            measurer.LineRenderers[0].startWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line1Start, camera);
-                            measurer.LineRenderers[0].endWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line1End, camera);
 
-                            measurer.LineRenderers[1].positionCount = 2;
-                            Vector3 line2Start = addedHeight + HighestAssemblyAttachmentPoint.transform.position;
-                            Vector3 line2End = HighestAssemblyAttachmentPoint.transform.position;
-                            measurer.LineRenderers[1].SetPosition(0, line2Start);
-                            measurer.LineRenderers[1].SetPosition(1, line2End);
-                            measurer.LineRenderers[1].startWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line2Start, camera);
-                            measurer.LineRenderers[1].endWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line2End, camera);
-                            heightMod += heightMod;
-                        }
+                    if (Selectable.IsInElevationPhotoMode)
+                    {
+                        measurer.UpdateTransform(camera);
+                        //measurer.UpdateVisibility(camera);
                     }
+
+                    measurer.LineRenderers[0].enabled = true;
+                    measurer.LineRenderers[0].positionCount = 2;
+                    Vector3 line1Start = addedHeight + origin;
+                    Vector3 line1End = transform.position;
+                    measurer.LineRenderers[0].SetPosition(0, line1Start);
+                    measurer.LineRenderers[0].SetPosition(1, line1End);
+                    measurer.LineRenderers[0].startWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line1Start, camera);
+                    measurer.LineRenderers[0].endWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line1End, camera);
+
+                    measurer.LineRenderers[0].enabled = true;
+                    measurer.LineRenderers[1].positionCount = 2;
+                    Vector3 line2Start = addedHeight + HighestAssemblyAttachmentPoint.transform.position;
+                    Vector3 line2End = HighestAssemblyAttachmentPoint.transform.position;
+                    measurer.LineRenderers[1].SetPosition(0, line2Start);
+                    measurer.LineRenderers[1].SetPosition(1, line2End);
+                    measurer.LineRenderers[1].startWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line2Start, camera);
+                    measurer.LineRenderers[1].endWidth = _lineRendererSizeScalar * GetDistanceToCameraPlane(line2End, camera);
+                    heightMod += heightMod;
+
                     break;
             }
         }
