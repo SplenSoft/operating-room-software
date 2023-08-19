@@ -157,15 +157,20 @@ MonoBehaviour:
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.2
-    <Selected>k__BackingField: 0
-  - <Size>k__BackingField: 0.4
     <Selected>k__BackingField: 1
+    <ModelDefault>k__BackingField: 0
+  - <Size>k__BackingField: 0.4
+    <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 1
   - <Size>k__BackingField: 0.6
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.8
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <ZAlignUpIsParentRight>k__BackingField: 0
@@ -178,9 +183,11 @@ MonoBehaviour:
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   _currentPreviewScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
 --- !u!114 &3577282033252816624
 MonoBehaviour:
   m_ObjectHideFlags: 0

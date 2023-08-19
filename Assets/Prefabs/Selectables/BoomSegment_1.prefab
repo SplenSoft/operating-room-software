@@ -605,17 +605,23 @@ MonoBehaviour:
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.6
-    <Selected>k__BackingField: 0
+    <Selected>k__BackingField: 1
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.8
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1
-    <Selected>k__BackingField: 1
+    <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 1
   - <Size>k__BackingField: 1.2
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.4
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.6
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <ZAlignUpIsParentRight>k__BackingField: 0
@@ -629,9 +635,11 @@ MonoBehaviour:
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   _currentPreviewScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
 --- !u!1 &2642125426156754210 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3627749116223921745, guid: 7aa393eafe077db46b1090af76678ed1, type: 3}

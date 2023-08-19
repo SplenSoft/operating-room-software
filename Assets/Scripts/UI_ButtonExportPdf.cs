@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,12 +7,18 @@ public class UI_ButtonExportPdf : MonoBehaviour
 {
     private void Awake()
     {
-        Selectable.SelectionChanged += (o, e) =>
-        {
-            gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly());
-        };
-
+        Selectable.SelectionChanged += OnSelectionChanged;
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        Selectable.SelectionChanged -= OnSelectionChanged;
+    }
+
+    private void OnSelectionChanged(object sender, EventArgs e)
+    {
+        gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly());
     }
 
     public void ExportPdf()

@@ -15,6 +15,7 @@ public class Selectable : MonoBehaviour
     {
         [field: SerializeField] public float Size { get; set; }
         [field: SerializeField] public bool Selected { get; set; }
+        [field: SerializeField] public bool ModelDefault { get; set; }
         public float ScaleZ { get; set; }
     }
 
@@ -54,7 +55,6 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private List<ClearanceLinesRenderer> ClearanceLinesRenderers { get; set; }
     [field: SerializeField] private List<MeshFilter> ClearanceLinesMeshFilters { get; set; } = new();
     
-
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;
     private Selectable _parentSelectable;
@@ -197,14 +197,9 @@ public class Selectable : MonoBehaviour
         return false;
     }
 
-    private void UpdateZScaling(bool setSelected)
+    private void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
-        if (ScaleLevels.Count == 0) return;
-        //get closest scale in list
-        ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
-        if (closest == _currentPreviewScaleLevel && !setSelected) return;
-
-        _currentPreviewScaleLevel = closest;
+        _currentPreviewScaleLevel = scaleLevel;
 
         Quaternion storedRotation = transform.rotation;
         transform.rotation = _originalRotation;
@@ -212,10 +207,10 @@ public class Selectable : MonoBehaviour
         for (int j = 0; j < 2; j++) //not sure if still need to do this twice
         {
             Vector3 parentOriginalScale = transform.localScale;
-            Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, closest.ScaleZ);
+            Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, scaleLevel.ScaleZ);
             transform.localScale = newScale;
 
-            if (closest == CurrentScaleLevel)
+            if (scaleLevel == CurrentScaleLevel)
             {
                 //Debug.Log("Using stored child scales");
                 for (int i = 0; i < transform.childCount; i++)
@@ -248,12 +243,21 @@ public class Selectable : MonoBehaviour
         if (setSelected)
         {
             ScaleLevels.ForEach((item) => item.Selected = false);
-            closest.Selected = true;
-            CurrentScaleLevel = closest;
+            scaleLevel.Selected = true;
+            CurrentScaleLevel = scaleLevel;
             StoreChildScales();
         }
 
         transform.rotation = storedRotation;
+    }
+
+    private void UpdateZScaling(bool setSelected)
+    {
+        if (ScaleLevels.Count == 0) return;
+        //get closest scale in list
+        ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
+        if (closest == _currentPreviewScaleLevel && !setSelected) return;
+        SetScaleLevel(closest, setSelected);
     }
 
     private void StoreChildScales()
@@ -700,7 +704,7 @@ public class Selectable : MonoBehaviour
 
         if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
         {
-            CurrentScaleLevel = ScaleLevels.First(item => item.Selected);
+            CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
             _currentPreviewScaleLevel = CurrentScaleLevel;
             CurrentScaleLevel.ScaleZ = transform.localScale.z;
 
@@ -708,12 +712,15 @@ public class Selectable : MonoBehaviour
 
             ScaleLevels.ForEach(item =>
             {
-                if (!item.Selected)
+                if (!item.ModelDefault)
                 {
                     float perc = item.Size / CurrentScaleLevel.Size;
                     item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
                 }
             });
+
+            var defaultSelected = ScaleLevels.First(item => item.Selected);
+            SetScaleLevel(defaultSelected, true);
 
             _gizmoHandler.GizmoDragEnded.AddListener(() =>
             {

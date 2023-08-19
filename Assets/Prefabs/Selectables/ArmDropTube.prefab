@@ -134,71 +134,109 @@ MonoBehaviour:
     <Unrestricted>k__BackingField: 1
     <MaxValue>k__BackingField: 0
     <MinValue>k__BackingField: 0
+    <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.15
-    <Selected>k__BackingField: 0
+    <Selected>k__BackingField: 1
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.2
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.25
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.3
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.35
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.4
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.45
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.5
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.55
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.6
-    <Selected>k__BackingField: 1
+    <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 1
   - <Size>k__BackingField: 0.65
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.7
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.75
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.8
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.85
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.9
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.95
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.05
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.1
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.15
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.2
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.25
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.3
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.35
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.4
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.45
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.5
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
-  _currentScaleLevel:
+  <ZAlignUpIsParentForward>k__BackingField: 0
+  <ZAlignUpIsParentRight>k__BackingField: 0
+  <Measurables>k__BackingField: []
+  <AlignForElevationPhoto>k__BackingField: 0
+  <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
+  <ClearanceLinesRenderers>k__BackingField: []
+  <ClearanceLinesMeshFilters>k__BackingField: []
+  <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   _currentPreviewScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
 --- !u!114 &6406418629594509657
 MonoBehaviour:
   m_ObjectHideFlags: 0
