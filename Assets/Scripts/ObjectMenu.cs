@@ -106,7 +106,8 @@ public class ObjectMenu : MonoBehaviour
             bool isFurniture = item.Selectable.Types.Contains(SelectableType.Furniture);
             bool isWall = item.Selectable.Types.Contains(SelectableType.Wall);
             bool isCeilingLight = item.Selectable.Types.Contains(SelectableType.CeilingLight);
-            item.GameObject.SetActive(isMount || isFurniture || isWall || isCeilingLight);
+            bool isDoor = item.Selectable.Types.Contains(SelectableType.Door);
+            item.GameObject.SetActive(isMount || isFurniture || isWall || isCeilingLight || isDoor);
         });
     }
 

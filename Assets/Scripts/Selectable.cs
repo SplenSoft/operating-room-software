@@ -874,6 +874,36 @@ public class Selectable : MonoBehaviour
                     destination += RoomBoundary.DefaultWallThickness * Vector3.down;
                     normal *= -1;
                 }
+                
+                if (Types.Contains(SelectableType.Door))
+                {
+                    RoomBoundaryType roomBoundaryType = hit.collider.gameObject.GetComponent<RoomBoundary>().RoomBoundaryType;
+
+                    float halfThickness = RoomBoundary.DefaultWallThickness / 2f;
+                    if (roomBoundaryType == RoomBoundaryType.WallNorth)
+                    {
+                        destination.z = hit.collider.transform.position.z - halfThickness;
+                        normal = -Vector3.forward;
+                    }
+                    else if (roomBoundaryType == RoomBoundaryType.WallSouth) 
+                    {
+                        destination.z = hit.collider.transform.position.z + halfThickness;
+                        normal = Vector3.forward;
+                    }
+                    else if (roomBoundaryType == RoomBoundaryType.WallWest) 
+                    {
+                        destination.x = hit.collider.transform.position.x + halfThickness;
+                        normal = Vector3.right;
+                    }
+                    else if (roomBoundaryType == RoomBoundaryType.WallEast)
+                    {
+                        destination.x = hit.collider.transform.position.x - halfThickness;
+                        normal = -Vector3.right;
+                    }
+                    
+
+                    destination.y = 0;
+                }
 
                 if (UI_ToggleSnapping.SnappingEnabled) 
                 {
@@ -993,7 +1023,8 @@ public enum SelectableType
     BoomSegment,
     BoomHead,
     Wall,
-    CeilingLight
+    CeilingLight,
+    Door
 }
 
 [Serializable]
