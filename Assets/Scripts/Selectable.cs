@@ -20,7 +20,7 @@ public class Selectable : MonoBehaviour
     }
 
     #region Fields and Properties
-    private static List<Selectable> ActiveSelectables { get; } = new List<Selectable>();
+    public static List<Selectable> ActiveSelectables { get; } = new List<Selectable>();
 
     public static EventHandler SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
@@ -28,6 +28,7 @@ public class Selectable : MonoBehaviour
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
+    public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
     public bool IsMouseOver { get; private set; }
     public bool IsDestroyed { get; private set; }
@@ -738,6 +739,7 @@ public class Selectable : MonoBehaviour
                 }
             });
         }
+        ActiveSelectablesInSceneChanged?.Invoke();
     }
 
     private void OnDestroy()
@@ -777,6 +779,7 @@ public class Selectable : MonoBehaviour
         }
 
         SelectableDestroyed?.Invoke();
+        ActiveSelectablesInSceneChanged?.Invoke();
     }
 
     public void OnMouseUpAsButton()
@@ -1007,7 +1010,7 @@ public class Selectable : MonoBehaviour
             SelectionChanged?.Invoke(this, null);
     }
 
-    private void Select()
+    public void Select()
     {
         if (IsSelected || _isRaycastPlacementMode || GizmoHandler.GizmoBeingUsed) return;
         if (SelectedSelectable != null)

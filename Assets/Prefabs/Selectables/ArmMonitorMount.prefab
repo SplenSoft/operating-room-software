@@ -312,7 +312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
-  <Name>k__BackingField: 
+  <Name>k__BackingField: Arm Monitor Mount
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -337,9 +337,11 @@ MonoBehaviour:
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
   _currentPreviewScaleLevel:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
 --- !u!114 &4445801110952554528
 MonoBehaviour:
   m_ObjectHideFlags: 0
