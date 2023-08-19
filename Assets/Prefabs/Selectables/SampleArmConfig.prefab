@@ -64,9 +64,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 992512197717363911}
     m_Modifications:
+    - target: {fileID: 919813875480930223, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
+      propertyPath: rmsCount
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4539726008913472782, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
       propertyPath: m_Name
       value: BoomSegment_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5091070793845044945, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
+      propertyPath: rmsCount
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5847277044198170897, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
       propertyPath: m_RootOrder
@@ -111,6 +119,14 @@ PrefabInstance:
     - target: {fileID: 5847277044198170897, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7172299882540765360, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
+      propertyPath: rmsCount
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7511422527843455098, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
+      propertyPath: rmsCount
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16a9b6546d2960f48beb4a95fe98b7f0, type: 3}
@@ -192,7 +208,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7052096847261562413, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: rmsCount
-      value: 1
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
@@ -355,7 +371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[1].<Axis>k__BackingField
@@ -364,6 +380,10 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<Axis>k__BackingField
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<GizmoType>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<Unrestricted>k__BackingField
@@ -455,9 +475,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4380449287376532771}
     m_Modifications:
+    - target: {fileID: 1772505737172110929, guid: 489bf8b9c4f4e1d46b78a9534b9c434e, type: 3}
+      propertyPath: rmsCount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332075179499909090, guid: 489bf8b9c4f4e1d46b78a9534b9c434e, type: 3}
+      propertyPath: rmsCount
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 4221720670961798976, guid: 489bf8b9c4f4e1d46b78a9534b9c434e, type: 3}
       propertyPath: m_Name
       value: BoomSegment_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4841886079408034975, guid: 489bf8b9c4f4e1d46b78a9534b9c434e, type: 3}
+      propertyPath: rmsCount
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6103357333319172959, guid: 489bf8b9c4f4e1d46b78a9534b9c434e, type: 3}
       propertyPath: m_RootOrder
@@ -517,9 +549,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5922968390491980600}
     m_Modifications:
+    - target: {fileID: 118175949561301942, guid: 6935fe97e09de22468b27e8fe6ba08a1, type: 3}
+      propertyPath: rmsCount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1164053765823973348, guid: 6935fe97e09de22468b27e8fe6ba08a1, type: 3}
       propertyPath: m_Name
       value: BoomSegment_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3577282033252816624, guid: 6935fe97e09de22468b27e8fe6ba08a1, type: 3}
+      propertyPath: rmsCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7602297803946630203, guid: 6935fe97e09de22468b27e8fe6ba08a1, type: 3}
+      propertyPath: rmsCount
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9079933078280670203, guid: 6935fe97e09de22468b27e8fe6ba08a1, type: 3}
       propertyPath: m_RootOrder
@@ -579,6 +623,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6330951370092189811}
     m_Modifications:
+    - target: {fileID: 2201531979431520101, guid: d5dacc51c29d78143b1fe2a7553376e1, type: 3}
+      propertyPath: rmsCount
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 2969715242736161826, guid: d5dacc51c29d78143b1fe2a7553376e1, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -623,9 +671,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4518274617615287266, guid: d5dacc51c29d78143b1fe2a7553376e1, type: 3}
+      propertyPath: rmsCount
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 5121551525075998781, guid: d5dacc51c29d78143b1fe2a7553376e1, type: 3}
       propertyPath: m_Name
       value: ArmSegment_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5532946138074921689, guid: d5dacc51c29d78143b1fe2a7553376e1, type: 3}
+      propertyPath: rmsCount
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5dacc51c29d78143b1fe2a7553376e1, type: 3}
@@ -688,6 +744,18 @@ PrefabInstance:
     - target: {fileID: 5507074809351700880, guid: 8d1c540de7b95ef45bd0a0379fd6550c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6185911303159707547, guid: 8d1c540de7b95ef45bd0a0379fd6550c, type: 3}
+      propertyPath: rmsCount
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6406418629594509657, guid: 8d1c540de7b95ef45bd0a0379fd6550c, type: 3}
+      propertyPath: rmsCount
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6624691459418003024, guid: 8d1c540de7b95ef45bd0a0379fd6550c, type: 3}
+      propertyPath: rmsCount
+      value: 19
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d1c540de7b95ef45bd0a0379fd6550c, type: 3}
@@ -760,6 +828,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1241565027188489551}
     m_Modifications:
+    - target: {fileID: 269822003809573259, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
+      propertyPath: rmsCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1065366555688500700, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
+      propertyPath: rmsCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1435925695497998849, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
+      propertyPath: rmsCount
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1458101105138519627, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -803,6 +883,14 @@ PrefabInstance:
     - target: {fileID: 1458101105138519627, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1678234417323807083, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
+      propertyPath: rmsCount
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2353843362685861263, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
+      propertyPath: rmsCount
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8798305822279664212, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
       propertyPath: m_Name
@@ -822,6 +910,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2528067177131637356}
     m_Modifications:
+    - target: {fileID: 648965820310759063, guid: 8a9d70475b8764042ac5cbac8ec9360d, type: 3}
+      propertyPath: rmsCount
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 2919093905022089459, guid: 8a9d70475b8764042ac5cbac8ec9360d, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -866,9 +958,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4539657994318442291, guid: 8a9d70475b8764042ac5cbac8ec9360d, type: 3}
+      propertyPath: rmsCount
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5091143240833348844, guid: 8a9d70475b8764042ac5cbac8ec9360d, type: 3}
       propertyPath: m_Name
       value: BoomDropTube
+      objectReference: {fileID: 0}
+    - target: {fileID: 8549841038474379866, guid: 8a9d70475b8764042ac5cbac8ec9360d, type: 3}
+      propertyPath: rmsCount
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a9d70475b8764042ac5cbac8ec9360d, type: 3}
@@ -1047,7 +1147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7052096847261562413, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: rmsCount
-      value: 1
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
