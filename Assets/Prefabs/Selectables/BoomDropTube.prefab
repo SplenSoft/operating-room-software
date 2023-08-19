@@ -525,10 +525,10 @@ MonoBehaviour:
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.1
-    <Selected>k__BackingField: 1
+    <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.3
-    <Selected>k__BackingField: 0
+    <Selected>k__BackingField: 1
     <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.5
     <Selected>k__BackingField: 0
