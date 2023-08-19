@@ -29,10 +29,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[1].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<Axis>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<GizmoType>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
@@ -41,6 +49,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[1].<Unrestricted>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<Unrestricted>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
@@ -100,6 +112,11 @@ PrefabInstance:
 --- !u!4 &283216889106712806 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+  m_PrefabInstance: {fileID: 3499122359141037136}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7911659062658401529 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 3499122359141037136}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4704851492251527630
@@ -179,3 +196,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 468223201f47f4f48a2ac5c905a31942, type: 3}
+--- !u!1 &5587722837635060895 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 468223201f47f4f48a2ac5c905a31942, type: 3}
+  m_PrefabInstance: {fileID: 4704851492251527630}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &358555214476463010
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587722837635060895}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8251029720672023211, guid: 468223201f47f4f48a2ac5c905a31942, type: 3}
+--- !u!114 &727112244817750243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5587722837635060895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d13a952dd356a94492b01c9bd024acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Target>k__BackingField: {fileID: 7911659062658401529}
