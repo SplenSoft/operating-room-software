@@ -1247,7 +1247,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1929,6 +1929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1219145056}
   - component: {fileID: 1219145057}
+  - component: {fileID: 1219145058}
   m_Layer: 8
   m_Name: Head
   m_TagString: Untagged
@@ -2002,6 +2003,19 @@ MonoBehaviour:
           m_CallState: 2
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1296496716}
+--- !u!114 &1219145058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219145055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c0ec6e22f084742bf5d8c9a10f0fc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CameraType>k__BackingField: 1
 --- !u!1 &1246402703 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 169857843208681756, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
@@ -5546,6 +5560,10 @@ PrefabInstance:
       propertyPath: m_Transitions.m_OnCameraLive.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2265921533599909296, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
+      propertyPath: <CameraType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2737079972269664056, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
       propertyPath: m_LocalPosition.z
       value: -10
@@ -5782,6 +5800,10 @@ PrefabInstance:
       propertyPath: m_Transitions.m_OnCameraLive.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2265921533599909296, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
+      propertyPath: <CameraType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2737079972269664056, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10
@@ -5956,7 +5978,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633508577}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6224,6 +6246,10 @@ PrefabInstance:
       propertyPath: m_Transitions.m_OnCameraLive.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2265921533599909296, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
+      propertyPath: <CameraType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2737079972269664056, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -10
@@ -6458,6 +6484,10 @@ PrefabInstance:
     - target: {fileID: 1249555379781275023, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
       propertyPath: m_Transitions.m_OnCameraLive.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2265921533599909296, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
+      propertyPath: <CameraType>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2737079972269664056, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7288,7 +7318,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0000038146973
+      value: -0.000076293945
       objectReference: {fileID: 0}
     - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y
