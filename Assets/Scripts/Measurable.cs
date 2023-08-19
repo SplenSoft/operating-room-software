@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,6 +15,16 @@ public class Measurable : MonoBehaviour
         public Measurement(Measurable measurable) 
         {
             Measurable = measurable;
+            Measurable.StartCoroutine(GetMeasurer());
+            
+        }
+
+        private IEnumerator GetMeasurer()
+        {
+            if (!Measurer.Initialized)
+            {
+                yield return new WaitUntil(() => Measurer.Initialized);
+            }
             Measurer = Measurer.GetMeasurer(this);
         }
 
@@ -21,7 +32,7 @@ public class Measurable : MonoBehaviour
         public Vector3 Origin { get; set; }
         public Vector3 Direction { get; set; }
         public Vector3 HitPoint { get; set; }
-        public Measurer Measurer { get; set; }
+        public Measurer Measurer { get; private set; }
         public Measurable Measurable { get; }
         public MeasurementType MeasurementType { get; set; }
         public RoomBoundaryType RoomBoundaryType { get; set; }

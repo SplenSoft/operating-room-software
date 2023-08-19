@@ -21,6 +21,7 @@ public class Measurer : MonoBehaviour
     public string Distance { get; private set; } = string.Empty;
     private Transform _childTransform;
     public Vector3 TextPosition => _childTransform.position;
+    public static bool Initialized { get; private set; }
 
     private void OnEnable()
     {
@@ -69,6 +70,7 @@ public class Measurer : MonoBehaviour
         if (Prefab == null)
         {
             Prefab = gameObject;
+            Initialized = true;
             gameObject.SetActive(false);
             return;
         }
