@@ -829,6 +829,7 @@ public class Selectable : MonoBehaviour
         if (ParentAttachmentPoint != null) return;
         DeselectAll();
         _highlightEffect.highlighted = true;
+
         await Task.Yield();
         if (!Application.isPlaying) return;
 
@@ -855,6 +856,11 @@ public class Selectable : MonoBehaviour
     {
         if (!_isRaycastPlacementMode || _hasBeenPlaced) return;
 
+        if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+        {
+            RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = true;
+        }
+
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         int mask = 1 << LayerMask.NameToLayer("Wall");
         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, mask))
@@ -862,6 +868,13 @@ public class Selectable : MonoBehaviour
             void SetPosition(RaycastHit hit)
             {
                 Vector3 destination = hit.point;
+                Vector3 normal = hit.normal;
+                if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling) 
+                {
+                    destination += RoomBoundary.DefaultWallThickness * Vector3.down;
+                    normal *= -1;
+                }
+
                 if (UI_ToggleSnapping.SnappingEnabled) 
                 {
                     float yMag = Mathf.Abs(hit.normal.y);
@@ -884,7 +897,7 @@ public class Selectable : MonoBehaviour
                         destination.x = RoundToNearestHalfInch(destination.x);
                     }
                 }
-                transform.SetPositionAndRotation(destination, Quaternion.LookRotation(hit.normal));
+                transform.SetPositionAndRotation(destination, Quaternion.LookRotation(normal));
                 _virtualParent = hit.collider.transform;
             }
 
@@ -917,7 +930,10 @@ public class Selectable : MonoBehaviour
             _hasBeenPlaced = true;
             SendMessage("SelectablePositionChanged");
             SendMessage("VirtualParentChanged", _virtualParent);
-
+            if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+            {
+                RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = false;
+            }
             await Task.Yield();
             if (!Application.isPlaying) return;
 

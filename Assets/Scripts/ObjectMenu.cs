@@ -8,12 +8,11 @@ using UnityEngine.UI;
 
 public class ObjectMenu : MonoBehaviour
 {
-    private static ObjectMenu Instance { get; set; }
+    public static ObjectMenu Instance { get; private set; }
     public static UnityEvent ActiveStateChanged { get; } = new();
 
     [field: SerializeField] private GameObject ItemTemplate { get; set; }
     [field: SerializeField] private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }
-    //[field: SerializeField] private Button ItemTemplateButtonAddObject { get; set; }
     [field: SerializeField] private List<GameObject> BuiltInSelectablePrefabs { get; set; } = new();
     private AttachmentPoint _attachmentPoint;
     private List<ObjectMenuItem> ObjectMenuItems { get; set; } = new();

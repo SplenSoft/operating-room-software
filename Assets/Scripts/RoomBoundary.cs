@@ -12,20 +12,22 @@ public class RoomBoundary : MonoBehaviour
     private static readonly float _mouseMoveSensitivityY = 10f;
     private static readonly float _scrollSensitivity = 0.5f;
     public static List<RoomBoundary> Instances { get; private set; } = new();
-    private readonly float _defaultWallThickness = 0.375f.ToMeters(); //4.5 inches
+    public static readonly float DefaultWallThickness = 0.375f.ToMeters(); //4.5 inches
     [field: SerializeField] public RoomBoundaryType RoomBoundaryType { get; private set; }
     [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
     private bool VirtualCameraActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
     public MeshRenderer MeshRenderer { get; private set; }
-    private Collider _collider;
+    public Collider Collider { get; private set; }
     private CinemachineTransposer _transposer;
+    private static Dictionary<RoomBoundaryType, RoomBoundary> RoomBoundariesByType { get; set; } = new();
 
     private void Awake()
     {
         Instances.Add(this);
+        RoomBoundariesByType[RoomBoundaryType] = this;
 
         MeshRenderer = GetComponent<MeshRenderer>();
-        _collider = GetComponent<Collider>();
+        Collider = GetComponent<Collider>();
 
         if (VirtualCamera != null)
         {
@@ -42,27 +44,27 @@ public class RoomBoundary : MonoBehaviour
             switch (RoomBoundaryType)
             {
                 case RoomBoundaryType.Ceiling:
-                    transform.localScale = new Vector3(width, _defaultWallThickness, depth);
+                    transform.localScale = new Vector3(width, DefaultWallThickness, depth);
                     transform.position = new Vector3(0, height + (transform.localScale.y / 2), 0);
                     break;
                 case RoomBoundaryType.Floor:
-                    transform.localScale = new Vector3(width, _defaultWallThickness, depth);
+                    transform.localScale = new Vector3(width, DefaultWallThickness, depth);
                     transform.position = new Vector3(0, 0 - (transform.localScale.y / 2), 0);
                     break;
                 case RoomBoundaryType.WallSouth:
-                    transform.localScale = new Vector3(width, height, _defaultWallThickness);
+                    transform.localScale = new Vector3(width, height, DefaultWallThickness);
                     transform.position = new Vector3(0, height / 2f, 0 - (depth / 2f) - (transform.localScale.z / 2));
                     break;
                 case RoomBoundaryType.WallWest:
-                    transform.localScale = new Vector3(_defaultWallThickness, height, depth);
+                    transform.localScale = new Vector3(DefaultWallThickness, height, depth);
                     transform.position = new Vector3(0 - (width / 2f) - (transform.localScale.x / 2f), height / 2f, 0);
                     break;
                 case RoomBoundaryType.WallEast:
-                    transform.localScale = new Vector3(_defaultWallThickness, height, depth);
+                    transform.localScale = new Vector3(DefaultWallThickness, height, depth);
                     transform.position = new Vector3(0 + (width / 2f) + (transform.localScale.x / 2f), height / 2f, 0);
                     break;
                 case RoomBoundaryType.WallNorth:
-                    transform.localScale = new Vector3(width, height, _defaultWallThickness);
+                    transform.localScale = new Vector3(width, height, DefaultWallThickness);
                     transform.position = new Vector3(0, height / 2f, 0 + (depth / 2f) + (transform.localScale.z / 2));
                     break;
             }
@@ -83,8 +85,6 @@ public class RoomBoundary : MonoBehaviour
         {
             VirtualCamera.m_Lens.OrthographicSize = (transform.localScale.y / 2f) + (transform.localScale.y / 10f);
         }
-
-        
     }
 
     private void Update()
@@ -98,7 +98,7 @@ public class RoomBoundary : MonoBehaviour
 
     private void HandleCameraMovement()
     {
-        if (GizmoHandler.GizmoBeingUsed) return;
+        if (GizmoHandler.GizmoBeingUsed || ObjectMenu.Instance.gameObject.activeSelf) return;
         float scroll = -GetScrollWheel() * _scrollSensitivity;
         bool move = Input.GetMouseButton(0);
         Vector2 mouseMovement = new Vector2(move ? InputHandler.MouseDeltaScreenPercentage.x * _mouseMoveSensitivityX : 0, move ? InputHandler.MouseDeltaScreenPercentage.y * _mouseMoveSensitivityY : 0);
@@ -142,12 +142,17 @@ public class RoomBoundary : MonoBehaviour
     {
         bool oldStatus = MeshRenderer.enabled;
         MeshRenderer.enabled = toggle;
-        _collider.enabled = toggle;
+        Collider.enabled = toggle;
 
         if (toggle != oldStatus)
         {
             VisibilityStatusChanged?.Invoke();
         }
+    }
+
+    public static RoomBoundary GetRoomBoundary(RoomBoundaryType roomBoundaryType)
+    {
+        return RoomBoundariesByType[roomBoundaryType];
     }
 }
 

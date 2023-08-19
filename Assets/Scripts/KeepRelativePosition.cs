@@ -16,6 +16,7 @@ public class KeepRelativePosition : MonoBehaviour
     private void Awake()
     {
         RoomSize.RoomSizeChanged += RoomSizeChanged;
+        
         RecalculateRelativePosition();
         if (VirtualParent != null) 
         {
@@ -23,6 +24,7 @@ public class KeepRelativePosition : MonoBehaviour
             if (_roomBoundary != null && HideIfSurfaceIsHidden)
             {
                 _roomBoundary.VisibilityStatusChanged.AddListener(CheckHideStatus);
+                UI_ToggleShowCeilingObjects.CeilingObjectVisibilityToggled.AddListener(CheckHideStatus);
             }
         }
 
@@ -48,6 +50,7 @@ public class KeepRelativePosition : MonoBehaviour
         if (_roomBoundary != null && HideIfSurfaceIsHidden)
         {
             _roomBoundary.VisibilityStatusChanged.AddListener(CheckHideStatus);
+            UI_ToggleShowCeilingObjects.CeilingObjectVisibilityToggled.AddListener(CheckHideStatus);
         }
     }
 
@@ -55,12 +58,12 @@ public class KeepRelativePosition : MonoBehaviour
     {
         if (_roomBoundary != null && HideIfSurfaceIsHidden)
         {
-            bool enabled = _roomBoundary.MeshRenderer.enabled;
+            bool enabled = _roomBoundary.MeshRenderer.enabled || (_roomBoundary.RoomBoundaryType == RoomBoundaryType.Ceiling && UI_ToggleShowCeilingObjects.ShowCeilingObjects);
             if (_light != null) 
             {
                 _light.transform.parent = enabled ? _originalLightParent : null;
             }
-            gameObject.SetActive(_roomBoundary.MeshRenderer.enabled);
+            gameObject.SetActive(enabled);
         }
     }
 
@@ -89,6 +92,7 @@ public class KeepRelativePosition : MonoBehaviour
         if (_roomBoundary != null && HideIfSurfaceIsHidden)
         {
             _roomBoundary.VisibilityStatusChanged.RemoveListener(CheckHideStatus);
+            UI_ToggleShowCeilingObjects.CeilingObjectVisibilityToggled.RemoveListener(CheckHideStatus);
         }
     }
 }
