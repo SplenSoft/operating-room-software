@@ -16,7 +16,6 @@ public class Measurable : MonoBehaviour
         {
             Measurable = measurable;
             Measurable.StartCoroutine(GetMeasurer());
-            
         }
 
         private IEnumerator GetMeasurer()

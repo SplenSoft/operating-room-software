@@ -98,7 +98,7 @@ public class RoomBoundary : MonoBehaviour
 
     private void HandleCameraMovement()
     {
-        if (GizmoHandler.GizmoBeingUsed || ObjectMenu.Instance.gameObject.activeSelf) return;
+        if (GizmoHandler.GizmoBeingUsed || FullScreenMenu.IsOpen) return;
         float scroll = -GetScrollWheel() * _scrollSensitivity;
         bool move = Input.GetMouseButton(0);
         Vector2 mouseMovement = new Vector2(move ? InputHandler.MouseDeltaScreenPercentage.x * _mouseMoveSensitivityX : 0, move ? InputHandler.MouseDeltaScreenPercentage.y * _mouseMoveSensitivityY : 0);
