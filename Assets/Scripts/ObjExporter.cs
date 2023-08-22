@@ -130,6 +130,7 @@ public static class ObjExporter
         CombineInstance[] combine = combineInstances.ToArray();
 
         Mesh mesh = new Mesh();
+        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         mesh.CombineMeshes(combine, mergeSubMeshes: false, useMatrices: true);
         obj.transform.position = oldPos;
 
