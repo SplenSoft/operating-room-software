@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MeasurementTypes>k__BackingField: 03000000
   <ForwardOnly>k__BackingField: 0
+  <ShowInElevationPhoto>k__BackingField: 1
 --- !u!1001 &1446381655106275019
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -404,6 +405,7 @@ MonoBehaviour:
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Arm Segment 2
+  <SubPartName>k__BackingField: Y Rotation
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -418,7 +420,6 @@ MonoBehaviour:
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
-  <ZAlignUpIsParentRight>k__BackingField: 0
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 1
@@ -670,6 +671,7 @@ MonoBehaviour:
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Arm Segment 2
+  <SubPartName>k__BackingField: Scalable Arm
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -732,7 +734,6 @@ MonoBehaviour:
     <ModelDefault>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
-  <ZAlignUpIsParentRight>k__BackingField: 0
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
@@ -957,6 +958,7 @@ MonoBehaviour:
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Arm Segment 2
+  <SubPartName>k__BackingField: Head Attachment Point
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -965,7 +967,6 @@ MonoBehaviour:
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 1
   <ZAlignUpIsParentForward>k__BackingField: 0
-  <ZAlignUpIsParentRight>k__BackingField: 0
   <Measurables>k__BackingField:
   - {fileID: 6918089412624650777}
   <AlignForElevationPhoto>k__BackingField: 0
@@ -995,6 +996,10 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
       value: Arm Segment 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <SubPartName>k__BackingField
+      value: Z Rotation
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.size

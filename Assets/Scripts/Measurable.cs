@@ -42,6 +42,7 @@ public class Measurable : MonoBehaviour
     public List<Measurement> Measurements { get; } = new();
     [field: SerializeField] public List<MeasurementType> MeasurementTypes { get; private set; } = new();
     [field: SerializeField] private bool ForwardOnly { get; set; }
+    [field: SerializeField] public bool ShowInElevationPhoto { get; private set; }
     private AttachmentPoint HighestAssemblyAttachmentPoint { get; set; }
     public bool ArmAssemblyActiveInElevationPhotoMode { get; set; }
     public bool IsActive { get; private set; }
@@ -49,6 +50,11 @@ public class Measurable : MonoBehaviour
     private void Awake()
     {
         MeasurementTypes = MeasurementTypes.Distinct().ToList();
+        
+    }
+
+    private void Start()
+    {
         Initialize();
     }
 
@@ -232,6 +238,10 @@ public class Measurable : MonoBehaviour
                     break;
                 case MeasurementType.Floor:
                     UpdateMeasurementViaRaycast(Vector3.down, item);
+                    if (Selectable.IsInElevationPhotoMode)
+                    {
+                        item.Measurer.UpdateTransform(camera);
+                    }
                     break;
                 case MeasurementType.ToArmAssemblyOrigin:
                     item.IsValid = true;
@@ -246,7 +256,6 @@ public class Measurable : MonoBehaviour
                     if (Selectable.IsInElevationPhotoMode)
                     {
                         measurer.UpdateTransform(camera);
-                        //measurer.UpdateVisibility(camera);
                     }
 
                     measurer.LineRenderers[0].enabled = true;

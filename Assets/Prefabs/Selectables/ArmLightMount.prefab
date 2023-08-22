@@ -31,6 +31,53 @@ Transform:
   m_Father: {fileID: 966175934513125193}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3766783583857384008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7564102043301509901}
+  - component: {fileID: 7054644447808303633}
+  m_Layer: 6
+  m_Name: Measurable_ToFloor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7564102043301509901
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3766783583857384008}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0.001, y: 0.7286, z: 0.0038}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 205558765197591547}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!114 &7054644447808303633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3766783583857384008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 533802ce717278149876c674f9f556b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MeasurementTypes>k__BackingField: 01000000
+  <ForwardOnly>k__BackingField: 1
+  <ShowInElevationPhoto>k__BackingField: 1
 --- !u!1001 &1557001612651131062
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -94,6 +141,14 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: fe8fe446f6ef7dc44a08cc64bcf86e85, type: 2}
+    - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -6128321496008555920, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -112,6 +167,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+--- !u!4 &205558765197591547 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1675864817872008013, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+  m_PrefabInstance: {fileID: 1557001612651131062}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1827051214467681767 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
@@ -190,6 +250,7 @@ MonoBehaviour:
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Arm Light Mount
+  <SubPartName>k__BackingField: X Rotation
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -204,9 +265,8 @@ MonoBehaviour:
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
-  <ZAlignUpIsParentRight>k__BackingField: 0
   <Measurables>k__BackingField: []
-  <AlignForElevationPhoto>k__BackingField: 0
+  <AlignForElevationPhoto>k__BackingField: 1
   <ChangeHeightForElevationPhoto>k__BackingField: 0
   <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
   <ClearanceLinesRenderers>k__BackingField: []
@@ -419,6 +479,7 @@ MonoBehaviour:
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Arm Light Mount
+  <SubPartName>k__BackingField: Y Rotation
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -433,9 +494,9 @@ MonoBehaviour:
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
-  <ZAlignUpIsParentRight>k__BackingField: 0
-  <Measurables>k__BackingField: []
-  <AlignForElevationPhoto>k__BackingField: 0
+  <Measurables>k__BackingField:
+  - {fileID: 7054644447808303633}
+  <AlignForElevationPhoto>k__BackingField: 1
   <ChangeHeightForElevationPhoto>k__BackingField: 0
   <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
   <ClearanceLinesRenderers>k__BackingField: []
@@ -712,6 +773,14 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
       value: Arm Light Mount
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <SubPartName>k__BackingField
+      value: Z Rotation
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AlignForElevationPhoto>k__BackingField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.size

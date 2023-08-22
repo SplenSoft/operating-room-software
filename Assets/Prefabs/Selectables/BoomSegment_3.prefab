@@ -144,6 +144,7 @@ MonoBehaviour:
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 0ac55f9f886d827408c102bdf33c5ff7, type: 3}
   <Name>k__BackingField: Boom Segment 3
+  <SubPartName>k__BackingField: Tube
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
@@ -173,7 +174,6 @@ MonoBehaviour:
     <ModelDefault>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
-  <ZAlignUpIsParentRight>k__BackingField: 0
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
@@ -384,6 +384,10 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <AllowScaleZ>k__BackingField
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <SubPartName>k__BackingField
+      value: Mount
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <AllowMovementX>k__BackingField

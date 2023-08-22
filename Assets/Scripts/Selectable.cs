@@ -40,6 +40,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
+    [field: SerializeField] public string SubPartName { get; private set; }
     [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
@@ -48,7 +49,6 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
-    [field: SerializeField] private bool ZAlignUpIsParentRight { get; set; }
     [field: SerializeField] public List<Measurable> Measurables { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
     [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
@@ -572,7 +572,7 @@ public class Selectable : MonoBehaviour
             {
                 item.Measurables.ForEach(measurable =>
                 {
-                    var validMeasurements = measurable.Measurements.Where(measurement => measurement.MeasurementType == MeasurementType.ToArmAssemblyOrigin).ToList();
+                    var validMeasurements = measurable.Measurements.Where(measurement => measurement.Measurable.ShowInElevationPhoto).ToList();
                     if (validMeasurements.Count > 0)
                     {
                         measurable.SetActive(true);
@@ -583,9 +583,7 @@ public class Selectable : MonoBehaviour
                             bounds.Encapsulate(measurement.Measurer.Renderer.bounds);
                             bounds.Encapsulate(measurement.Measurer.TextPosition + (Vector3.up * (0.3f + addedHeight)));
                         });
-                        
                     }
-                    
                 });
             }
         });
