@@ -587,7 +587,7 @@ public class Selectable : MonoBehaviour
                 });
             }
         });
-
+        //bounds.Encapsulate(new Vector3(bounds.center.x, -0.1f, bounds.center.z));
         camera.transform.position = bounds.center + (outwardDirection.normalized * bounds.extents.magnitude);
         camera.transform.LookAt(bounds.center, Vector3.up);
         camera.orthographicSize = bounds.extents.y;

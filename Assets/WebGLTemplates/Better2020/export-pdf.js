@@ -16,18 +16,22 @@ function exportPdf(json) {
 
     var maxImageHeight = pageHeightPx * 0.5;
     var startingPos = 10;
-    printImage(doc, data.image1, startingPos, 10, image1Data.width, image1Data.height, maxImageHeight, pageWidthPx * 0.33, "image1", actualPrintedWidth => startingPos = actualPrintedWidth + 10);
+    printImage(doc, data.image1, startingPos, 10, image1Data.width, image1Data.height, maxImageHeight, pageWidthPx * 0.33, "image1", actualPrintedWidth => startingPos = actualPrintedWidth + 30);
     printImage(doc, data.image2, startingPos, 10, image2Data.width, image2Data.height, maxImageHeight, pageWidthPx * 0.33, "image2");
+    getBase64Image("floor_finish.png", floorFinishImageData => {
+        //var floorFinishImageProperties = doc.getImageProperties(floorFinishImageData);
+        doc.addImage(floorFinishImageData, 'png', 0, maxImageHeight + 10, pageWidthPx, 50, "floor_finish", "none", 0);
 
-    for (const element of data.selectableData) {
-        console.log(element);
-    }
-    //var headers = ["Item 1", "Item 2"];
-    doc.table(10, maxImageHeight + 10, data.selectableData, null, {
-        autoSize: true
+        for (const element of data.selectableData) {
+            console.log(element);
+        }
+        //var headers = ["Item 1", "Item 2"];
+        doc.table(10, maxImageHeight + 50, data.selectableData, null, {
+            autoSize: true
+        });
+    
+        doc.save("a3.pdf");
     });
-
-    doc.save("a3.pdf");
 }
 
 function printImage(jsPdf, imageData, x, y, imageWidth, imageHeight, maxImageHeight, printedWidth, id, callback) {

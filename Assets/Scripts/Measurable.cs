@@ -27,7 +27,6 @@ public class Measurable : MonoBehaviour
             Measurer = Measurer.GetMeasurer(this);
         }
 
-        public bool IsValid { get; set; }
         public Vector3 Origin { get; set; }
         public Vector3 Direction { get; set; }
         public Vector3 HitPoint { get; set; }
@@ -181,11 +180,14 @@ public class Measurable : MonoBehaviour
         { RoomBoundaryType.WallWest, -Vector3.forward }
     };
 
-    private void UpdateMeasurementViaRaycast(Vector3 direction, Measurement measurement)
+    private void UpdateMeasurementViaRaycast(Vector3 direction, Measurement measurement, bool ignoreSelectables = false)
     {
         Ray ray = new Ray(transform.position, direction);
         int mask = LayerMask.GetMask("Wall", "Selectable");
-        measurement.IsValid = false;
+        if (ignoreSelectables)
+        {
+            mask = LayerMask.GetMask("Wall");
+        }
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, mask))
         {
             var obj = raycastHit.collider.gameObject;
@@ -193,7 +195,6 @@ public class Measurable : MonoBehaviour
             {
                 measurement.Origin = ray.origin;
                 measurement.HitPoint = raycastHit.point;
-                measurement.IsValid = true;
             }
         }
     }
@@ -237,14 +238,13 @@ public class Measurable : MonoBehaviour
                     UpdateMeasurementViaRaycast(Vector3.up, item);
                     break;
                 case MeasurementType.Floor:
-                    UpdateMeasurementViaRaycast(Vector3.down, item);
+                    UpdateMeasurementViaRaycast(Vector3.down, item, true);
                     if (Selectable.IsInElevationPhotoMode)
                     {
                         item.Measurer.UpdateTransform(camera);
                     }
                     break;
                 case MeasurementType.ToArmAssemblyOrigin:
-                    item.IsValid = true;
                     Vector3 addedHeight = Vector3.up * heightMod;
                     Vector3 origin = transform.position;
                     item.HitPoint = HighestAssemblyAttachmentPoint.transform.position + addedHeight;
