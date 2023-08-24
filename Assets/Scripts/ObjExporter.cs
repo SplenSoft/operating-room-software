@@ -4,6 +4,10 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System;
+using Object = UnityEngine.Object;
+using Debug = UnityEngine.Debug;
 
 public class ObjExporterScript
 {
@@ -107,7 +111,7 @@ public static class ObjExporter
         Vector3 oldPos = obj.transform.position;
         obj.transform.position = Vector3.zero;
         MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>().Where(item => item.enabled).ToList().ConvertAll(item => item.gameObject.GetComponent<MeshFilter>()).ToArray();
-        Debug.Log($"Found {meshFilters.Length} meshfilters");
+        UnityEngine.Debug.Log($"Found {meshFilters.Length} meshfilters");
         //CombineInstance[] combine = new CombineInstance[meshFilters.Length];
         List<CombineInstance> combineInstances = new List<CombineInstance>();
 
@@ -149,15 +153,28 @@ public static class ObjExporter
         }
         meshString.Append(ProcessTransform(t, makeSubmeshes));
 
+        
+
 #if UNITY_EDITOR
         string fileName = EditorUtility.SaveFilePanel("Export .obj file", "", meshName, "obj");
         //WriteToFile(meshString.ToString(), Application.persistentDataPath + "/exportedObj.obj");
         WriteToFile(meshString.ToString(), fileName);
-        Debug.Log("Exported Mesh: " + fileName);
+        UnityEngine.Debug.Log("Exported Mesh: " + fileName);
 #elif UNITY_WEBGL
         WebGLExtern.SaveStringToFile(meshString.ToString(), "obj");
+#elif UNITY_STANDALONE_WIN
+        string fileName = Application.persistentDataPath + $"/ExportedArmAssemblyElevationOBJ_{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}.obj";
+        WriteToFile(meshString.ToString(), fileName);
+        ProcessStartInfo startInfo = new ProcessStartInfo
+        {
+            UseShellExecute = true,
+            Verb = "open",
+            FileName = Application.persistentDataPath,
+        };
+
+        Process.Start(startInfo);
 #else
-        throw new Exception("Not supported on this platform");
+        throw new System.Exception("Not supported on this platform");
 #endif
 
         t.position = originalPosition;

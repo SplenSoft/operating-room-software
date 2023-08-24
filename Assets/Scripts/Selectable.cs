@@ -1,4 +1,5 @@
 using HighlightPlus;
+using RTG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -318,18 +319,24 @@ public class Selectable : MonoBehaviour
         }
 
         SetAssemblyToDefaultRotations();
-
+        var higestOriginalRotation = highestSelectable.transform.rotation;
+        //Debug.Break();
         if (TryGetArmAssemblyRoot(out var root))
         {
             for (int i = 0; i < 361; i++)
             {
                 highestSelectable.transform.Rotate(new Vector3(0, 0, 1));
-                var point = root.transform.InverseTransformPoint(ClearanceLineMeasuringPosition.transform.position);
-                positions.Add(point);
+                //Vector3 worldPoint = ClearanceLineMeasuringPosition.transform.position;
+                ////var point = root.transform.InverseTransformPoint(ClearanceLineMeasuringPosition.transform.position);
+                ////var point = worldPoint - root.transform.position;
+                ////var point = root.transform.InverseTransformDirection(worldPoint);
+                //var point = root.transform.InverseTransformPoint(worldPoint);
+                ////Debug.Log($"Worldpoint = {worldPoint}, localPoint = {point} at {root.name}");
+                positions.Add(ClearanceLineMeasuringPosition.transform.position);
             }
         }
-        
 
+        highestSelectable.transform.rotation = higestOriginalRotation;
         RestoreArmAssemblyRotations();
 
         return positions;
