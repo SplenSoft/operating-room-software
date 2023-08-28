@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ClearanceLinesRenderer : MonoBehaviour
 {
-    private static readonly float _sizeScalar = 0.01f;
-    private static readonly float _sizeScalarOrtho = 0.01f;
-    private static readonly float _sizeScalarOrthoMax = 0.07f;
+    private static readonly float _sizeScalar = 0.005f;
+    private static readonly float _sizeScalarOrtho = 0.005f;
+    private static readonly float _sizeScalarOrthoMax = 0.05f;
     [field: SerializeField] private LineRenderer LineRenderer { get; set; }
 
     private void Awake()
