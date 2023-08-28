@@ -74,8 +74,8 @@ public class Selectable : MonoBehaviour
     private bool IsAssemblyRoot => Types.Contains(SelectableType.Mount);
 
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentScaleLevel { get; private set; }
-    [SerializeField, ReadOnly] private ScaleLevel _currentPreviewScaleLevel;   
-    
+    [field: SerializeField, ReadOnly] public ScaleLevel CurrentPreviewScaleLevel { get; private set; }
+
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
     private bool _rendererMoved;
@@ -201,7 +201,7 @@ public class Selectable : MonoBehaviour
 
     private void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
-        _currentPreviewScaleLevel = scaleLevel;
+        CurrentPreviewScaleLevel = scaleLevel;
 
         Quaternion storedRotation = transform.rotation;
         transform.rotation = _originalRotation;
@@ -258,7 +258,7 @@ public class Selectable : MonoBehaviour
         if (ScaleLevels.Count == 0) return;
         //get closest scale in list
         ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
-        if (closest == _currentPreviewScaleLevel && !setSelected) return;
+        if (closest == CurrentPreviewScaleLevel && !setSelected) return;
         SetScaleLevel(closest, setSelected);
     }
 
@@ -711,7 +711,7 @@ public class Selectable : MonoBehaviour
         if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
         {
             CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
-            _currentPreviewScaleLevel = CurrentScaleLevel;
+            CurrentPreviewScaleLevel = CurrentScaleLevel;
             CurrentScaleLevel.ScaleZ = transform.localScale.z;
 
             StoreChildScales();
