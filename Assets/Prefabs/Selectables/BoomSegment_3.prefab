@@ -157,8 +157,11 @@ MonoBehaviour:
     <MinValue>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
-  - <Size>k__BackingField: 0.2
+  - <Size>k__BackingField: 0.12
     <Selected>k__BackingField: 1
+    <ModelDefault>k__BackingField: 0
+  - <Size>k__BackingField: 0.2
+    <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.4
     <Selected>k__BackingField: 0
@@ -184,7 +187,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  _currentPreviewScaleLevel:
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
