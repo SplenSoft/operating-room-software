@@ -1247,7 +1247,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6106,7 +6106,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633508577}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7584,7 +7584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00006484985
+      value: -0.00009918213
       objectReference: {fileID: 0}
     - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8070,7 +8070,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.size
-      value: 23
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[0]
@@ -8164,6 +8164,10 @@ PrefabInstance:
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[22]
       value: 
       objectReference: {fileID: 4577080573810289250, guid: 3b01e8973086f5945a325b5a7ae408b3, type: 3}
+    - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.data[23]
+      value: 
+      objectReference: {fileID: 4391845275555302199, guid: b82533f1d434e5e4a8c917f1777df0ab, type: 3}
     - target: {fileID: 3345374975738051746, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -8190,7 +8194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808924356805802442, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000016580723
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 4135108817545400510, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchoredPosition.y
