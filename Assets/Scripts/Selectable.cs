@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Add basic selectable - <see href="https://youtu.be/qEaRrGC_MX8?si=kCXNSVa11KxLKRNG"/> 
+/// </summary>
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
 public class Selectable : MonoBehaviour
 {
