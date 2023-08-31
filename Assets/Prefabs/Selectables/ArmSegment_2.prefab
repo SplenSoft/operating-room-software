@@ -430,7 +430,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  _currentPreviewScaleLevel:
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
@@ -744,7 +744,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  _currentPreviewScaleLevel:
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
@@ -978,7 +978,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  _currentPreviewScaleLevel:
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
@@ -1114,7 +1114,7 @@ PrefabInstance:
       objectReference: {fileID: 5795551125299341961}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectables>k__BackingField.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectables>k__BackingField.Array.data[0]
@@ -1124,6 +1124,10 @@ PrefabInstance:
       propertyPath: <AllowedSelectables>k__BackingField.Array.data[1]
       value: 
       objectReference: {fileID: 3817767745036341489, guid: ebe209fad8b3c7b41b4aab780f8a96dd, type: 3}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectables>k__BackingField.Array.data[2]
+      value: 
+      objectReference: {fileID: 2954072631648425232, guid: 9548e43dbf80de84fa9980537b084d38, type: 3}
     - target: {fileID: 4686421761804208745, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_Name
       value: AttachPoint

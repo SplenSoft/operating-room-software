@@ -143,11 +143,31 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: fe8fe446f6ef7dc44a08cc64bcf86e85, type: 2}
     - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9999619
       objectReference: {fileID: 0}
     - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.002149184
+      objectReference: {fileID: 0}
+    - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.0074695977
+      objectReference: {fileID: 0}
+    - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.0039699064
+      objectReference: {fileID: 0}
+    - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0.243
+      objectReference: {fileID: 0}
+    - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0.857
+      objectReference: {fileID: 0}
+    - target: {fileID: -7250779516938127205, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0.457
       objectReference: {fileID: 0}
     - target: {fileID: -6128321496008555920, guid: 400ee51e91c7dbe448278f1ef6b39a2e, type: 3}
       propertyPath: m_Layer
@@ -275,7 +295,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  _currentPreviewScaleLevel:
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
@@ -505,7 +525,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  _currentPreviewScaleLevel:
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
