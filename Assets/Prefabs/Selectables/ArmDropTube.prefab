@@ -71,13 +71,12 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c6e78fd763bca3c44b8bb9ab35bfb3d7, type: 2}
+    - target: {fileID: 9158380496299305910, guid: b7452f11ea2cd8c47ba65f06c246bb22, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7452f11ea2cd8c47ba65f06c246bb22, type: 3}
---- !u!4 &1235851459949870324 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8004490667942821253, guid: b7452f11ea2cd8c47ba65f06c246bb22, type: 3}
-  m_PrefabInstance: {fileID: 129749515818466959}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2756733522749426552 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6373414845701196297, guid: b7452f11ea2cd8c47ba65f06c246bb22, type: 3}
@@ -233,7 +232,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  _currentPreviewScaleLevel:
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
@@ -403,12 +402,17 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
+--- !u!4 &9139471562538898745 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9158380496299305910, guid: b7452f11ea2cd8c47ba65f06c246bb22, type: 3}
+  m_PrefabInstance: {fileID: 129749515818466959}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3748913770802774454
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1235851459949870324}
+    m_TransformParent: {fileID: 9139471562538898745}
     m_Modifications:
     - target: {fileID: 3319231398677291549, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_LocalScale.x
@@ -428,12 +432,16 @@ PrefabInstance:
       objectReference: {fileID: 4347221317816860388}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectables>k__BackingField.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectables>k__BackingField.Array.data[0]
       value: 
       objectReference: {fileID: 1199479408543421338, guid: d5dacc51c29d78143b1fe2a7553376e1, type: 3}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectables>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 9130924483306567345, guid: 7d2dca5fe2bd0304c97016a775a10cee, type: 3}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectableTypes>k__BackingField.Array.size
       value: 0
@@ -452,11 +460,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6775254227244211833, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6775254227244211833, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.572
+      value: 0.001049459
       objectReference: {fileID: 0}
     - target: {fileID: 6775254227244211833, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -464,15 +472,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6775254227244211833, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6775254227244211833, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6775254227244211833, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6775254227244211833, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
