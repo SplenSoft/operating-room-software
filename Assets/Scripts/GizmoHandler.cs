@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Color = UnityEngine.Color;
 
-[RequireComponent(typeof(Selectable))]
+//[RequireComponent(typeof(Selectable))]
 public class GizmoHandler : MonoBehaviour
 {
     private ObjectTransformGizmo _translateGizmo;
