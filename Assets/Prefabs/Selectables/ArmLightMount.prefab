@@ -269,7 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
-  <Name>k__BackingField: Arm Light Mount
+  <Name>k__BackingField: Light & Mount
   <SubPartName>k__BackingField: X Rotation
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
@@ -498,7 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
-  <Name>k__BackingField: Arm Light Mount
+  <Name>k__BackingField: Light & Mount
   <SubPartName>k__BackingField: Y Rotation
   <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
@@ -800,7 +800,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
-      value: Arm Light Mount
+      value: Light & Mount
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <SubPartName>k__BackingField

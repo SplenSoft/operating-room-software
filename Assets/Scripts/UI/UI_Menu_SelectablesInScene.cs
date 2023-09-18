@@ -42,7 +42,7 @@ public class UI_Menu_SelectablesInScene : MonoBehaviour
             {
                 title += " ";
             }
-            title += item.Name;
+            title += item.Name + (!string.IsNullOrWhiteSpace(item.SubPartName) ? $" ({item.SubPartName})" : "");
             newItem.GetComponentInChildren<TextMeshProUGUI>().text = title;
             newItem.GetComponentInChildren<Button>().onClick.AddListener(() =>
             {

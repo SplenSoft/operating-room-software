@@ -52,6 +52,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
+    [field: SerializeField] private bool ZAlwaysFacesGroundElevationOnly { get; set; }
     [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
     [field: SerializeField] public List<Measurable> Measurables { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
@@ -431,7 +432,7 @@ public class Selectable : MonoBehaviour
                 _originalRotations.Clear();
                 Array.ForEach(_assemblySelectables.OrderBy(x => x.GetParentCount()).ToArray(), item =>
                 {
-                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto)
+                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto || item.ZAlwaysFacesGroundElevationOnly)
                     {
                         _originalRotations[item] = item.transform.localRotation;
                         item.transform.localRotation = item._originalRotation2;
@@ -497,7 +498,7 @@ public class Selectable : MonoBehaviour
                         item.transform.localEulerAngles = newAngles;
                     }
 
-                    _assemblySelectables.Where(x => x.ZAlwaysFacesGround).ToList().ForEach(item =>
+                    _assemblySelectables.Where(x => x.ZAlwaysFacesGround || x.ZAlwaysFacesGroundElevationOnly).ToList().ForEach(item =>
                     {
                         item.FaceZTowardGround();
                     });
@@ -553,7 +554,7 @@ public class Selectable : MonoBehaviour
             {
                 _assemblySelectables.ForEach(item =>
                 {
-                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto)
+                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto || item.ZAlwaysFacesGroundElevationOnly)
                         item.transform.localRotation = _originalRotations[item];
                 });
             }
@@ -831,7 +832,7 @@ public class Selectable : MonoBehaviour
 
     private void FaceZTowardGround()
     {
-        if (ZAlwaysFacesGround)
+        if (ZAlwaysFacesGround || (ZAlwaysFacesGroundElevationOnly && IsInElevationPhotoMode))
         {
             float oldX = transform.localEulerAngles.x;
             transform.LookAt(transform.position + Vector3.down, ZAlignUpIsParentForward ? transform.parent.forward : transform.parent.right);

@@ -389,52 +389,19 @@ MonoBehaviour:
     <MinValue>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
-  - <Size>k__BackingField: 0.2
-    <Selected>k__BackingField: 1
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 0.3
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 0.4
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 0.5
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 0.6
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 0.7
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 0.8
-    <Selected>k__BackingField: 0
+    <Selected>k__BackingField: 1
     <ModelDefault>k__BackingField: 1
-  - <Size>k__BackingField: 0.9
+  - <Size>k__BackingField: 0.925
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 1
+  - <Size>k__BackingField: 1.04
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 1.1
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 1.2
+  - <Size>k__BackingField: 1.15
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
   - <Size>k__BackingField: 1.3
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 1.4
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 1.5
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 1.6
-    <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 0
-  - <Size>k__BackingField: 1.7
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
@@ -451,7 +418,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
-  _currentPreviewScaleLevel:
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
@@ -868,12 +835,16 @@ PrefabInstance:
       objectReference: {fileID: 990557865460738268}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectables>k__BackingField.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectables>k__BackingField.Array.data[0]
       value: 
       objectReference: {fileID: 3292082223256734195, guid: 5bb6da0aca83dfc458175dadb423b2db, type: 3}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectables>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 9130924483306567345, guid: 7d2dca5fe2bd0304c97016a775a10cee, type: 3}
     - target: {fileID: 4686421761804208745, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_Name
       value: AttachPoint
