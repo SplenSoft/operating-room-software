@@ -187,6 +187,10 @@ PrefabInstance:
       value: Robotic Vision System
       objectReference: {fileID: 0}
     - target: {fileID: 6813821526796668377, guid: 57cf0712ce7ba7b49bda7c8c8616bf92, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813821526796668377, guid: 57cf0712ce7ba7b49bda7c8c8616bf92, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c6e78fd763bca3c44b8bb9ab35bfb3d7, type: 2}
