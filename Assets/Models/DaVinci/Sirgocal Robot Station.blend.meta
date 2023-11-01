@@ -3,7 +3,47 @@ guid: 8dfef2d0cba403042a3269f13b2fb21f
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: chrome_detail
+    second: {fileID: 2100000, guid: a7a5cb091d0a9fa40aa1d08edb97805d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_body_1_001
+    second: {fileID: 2100000, guid: 034fe7d6d96a7784894ca7f5c64d56df, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_body_2
+    second: {fileID: 2100000, guid: 06ac0c771575add4eb41a47cd8438462, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_body_3
+    second: {fileID: 2100000, guid: 878cdbf4a38428a4ab13cb15adeb1373, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_glass
+    second: {fileID: 2100000, guid: fb8e0b4e4b33e1f41bff4b8e52923a83, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_leather
+    second: {fileID: 2100000, guid: 904ac50cdb1e28442bbeb70936e1dacd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mat_lenses
+    second: {fileID: 2100000, guid: bd3cc86df34b1fe48a92484862fc5399, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tires_001
+    second: {fileID: 2100000, guid: d5787460f67bda842907f925bcbf5b57, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
