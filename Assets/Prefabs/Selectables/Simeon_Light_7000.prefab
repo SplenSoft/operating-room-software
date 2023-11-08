@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &514149856502130554
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 491881647126246520}
+  m_Layer: 6
+  m_Name: LightAttachPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &491881647126246520
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 514149856502130554}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 319, z: 169.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7745216756100520302}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &553451882768079532
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,6 +702,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1085032996762512355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 496620799682976184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4bfa600169491047becb9b94db72e97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  on: 0
+  lightAttachPoint: {fileID: 491881647126246520}
+  emissiveObject: {fileID: 289391840736853366}
+  emissionColor: {r: 0.7253471, g: 0.9433962, b: 0.9181535, a: 1}
 --- !u!4 &7745216756100520302 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2227739483529983487, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}

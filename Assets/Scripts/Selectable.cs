@@ -186,6 +186,11 @@ public class Selectable : MonoBehaviour
         return exceedsX || exceedsY || exceedsZ;
     }
 
+    public bool HasLights()
+    {
+        if(GetComponent<LightFactory>() != null) return true; else return false;
+    }
+
     public bool IsArmAssembly()
     {
         var rootSelectable = transform.root.GetComponent<Selectable>();
