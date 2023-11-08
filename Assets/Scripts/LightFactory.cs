@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class LightFactory : MonoBehaviour
@@ -9,7 +10,11 @@ public class LightFactory : MonoBehaviour
     [Header("Light Builder")]
     [Tooltip("The point where the light will be position on Start")]
     [SerializeField] Transform lightAttachPoint;
-    Light light;
+    [SerializeField] [Range(1500, 20000)] float tempature = 3000;
+    [SerializeField] [Range(1, 50)] float intensity = 1;
+    [SerializeField] float innerAngle = 15;
+    [SerializeField] float outerAngle = 20;
+    Light _light;
 
     [Header("Emission Settings")]
     [SerializeField] GameObject emissiveObject;
@@ -30,20 +35,25 @@ public class LightFactory : MonoBehaviour
         if(on)
         {
             emissiveMaterial.EnableKeyword("_EMISSION");
-            light.enabled = true;
+            _light.enabled = true;
         }
         else
         {
             emissiveMaterial.DisableKeyword("_EMISSION");
-            light.enabled = false;
+            _light.enabled = false;
         }
     }
 
     void BuildLights()
     {
-        light = lightAttachPoint.AddComponent<Light>();
+        _light = lightAttachPoint.AddComponent<Light>();
 
-        light.type = LightType.Spot;
-        light.enabled = false;
+        _light.type = LightType.Spot;
+        _light.useColorTemperature = true;
+        _light.colorTemperature = tempature;
+        _light.intensity = intensity;
+        _light.innerSpotAngle = innerAngle;
+        _light.spotAngle = outerAngle;
+        _light.enabled = false;
     }
 }
