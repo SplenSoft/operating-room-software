@@ -3,7 +3,42 @@ guid: a49450048dbb0c3458cbeb68f3901cf6
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bag Plastic
+    second: {fileID: 2100000, guid: 8af9e50f8b5bcfd40b1359c12810f41b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic Bleu
+    second: {fileID: 2100000, guid: 8540e01c627e33c43991159147801559, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wheel rubber
+    second: {fileID: 2100000, guid: f1b4ceb58007bb74db70f26561733621, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: rubber_2
+    second: {fileID: 2100000, guid: 208c8f5c4011a6f4f87ae45a40a206e4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver
+    second: {fileID: 2100000, guid: 10fbdca418577d64089a8417543af229, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver brushed_1
+    second: {fileID: 2100000, guid: e74ad95c797afa341b67fe3c67b9c544, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver rough
+    second: {fileID: 2100000, guid: 52006caae97eb754ba0739a7d980150e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

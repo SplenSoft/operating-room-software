@@ -3,7 +3,22 @@ guid: 5141d00f6c9bfc7488c65e9186101ad0
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Body Biohazard waste
+    second: {fileID: 2100000, guid: 8bd12b9cbcf161b4ab057cc8942c8f11, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cover Biohazard waste
+    second: {fileID: 2100000, guid: 607ad244810337640bd890a360ba4644, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rubber
+    second: {fileID: 2100000, guid: c058ccb73a8941c4e9a7d42771c3e4bf, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
