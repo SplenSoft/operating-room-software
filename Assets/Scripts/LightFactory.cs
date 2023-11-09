@@ -32,16 +32,13 @@ public class LightFactory : MonoBehaviour
     public void SwitchLight()
     {
         on = !on;
-        if(on)
-        {
-            emissiveMaterial.EnableKeyword("_EMISSION");
-            _light.enabled = true;
-        }
-        else
-        {
-            emissiveMaterial.DisableKeyword("_EMISSION");
-            _light.enabled = false;
-        }
+        ToggleEmissive();
+        _light.enabled = on;
+    }
+
+    public bool isOn()
+    {
+        return on;
     }
 
     void BuildLights()
@@ -54,6 +51,18 @@ public class LightFactory : MonoBehaviour
         _light.intensity = intensity;
         _light.innerSpotAngle = innerAngle;
         _light.spotAngle = outerAngle;
-        _light.enabled = false;
+        _light.enabled = on;
+    }
+
+    void ToggleEmissive()
+    {
+        if(on)
+        {
+            emissiveMaterial.EnableKeyword("_EMISSION");
+        }
+        else
+        {
+            emissiveMaterial.DisableKeyword("_EMISSION");
+        }
     }
 }

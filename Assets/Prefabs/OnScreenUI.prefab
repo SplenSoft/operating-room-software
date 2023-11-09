@@ -974,19 +974,7 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2027220840309148696}
-        m_TargetAssemblyTypeName: UI_ToggleLightSwitch, Assembly-CSharp
-        m_MethodName: ToggleLights
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 0
 --- !u!114 &2027220840309148696
 MonoBehaviour:
@@ -6607,7 +6595,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6970767217658300712, guid: 1b5aabd6165e0114d814efde0da6593b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000019073486
+      value: 0.00004196167
       objectReference: {fileID: 0}
     - target: {fileID: 8475948815219142054, guid: 1b5aabd6165e0114d814efde0da6593b, type: 3}
       propertyPath: m_SizeDelta.y
