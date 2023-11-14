@@ -87,7 +87,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6565122453228016778, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: rmsCount
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
@@ -351,15 +351,19 @@ PrefabInstance:
     - target: {fileID: -5733647046545974506, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: f7fc533091e8b5041ad635bee8bd40b2, type: 2}
     - target: {fileID: -5733647046545974506, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: f7fc533091e8b5041ad635bee8bd40b2, type: 2}
+      objectReference: {fileID: 2100000, guid: 7bec4e898352a774b8711af6af5013d2, type: 2}
     - target: {fileID: -5733647046545974506, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: 7bec4e898352a774b8711af6af5013d2, type: 2}
+    - target: {fileID: -3324752396432627105, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: e1bb85545c84c454dbc93c1f60368dd3, type: 2}
     - target: {fileID: -1039719619257380377, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -408,6 +412,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5d51cded3a6dd8e4bac1259a7d16fb2d, type: 2}
+    - target: {fileID: 2500534211277831883, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
 --- !u!1 &289391840736853366 stripped
@@ -653,7 +661,7 @@ MonoBehaviour:
   seeThroughTexture: {fileID: 0}
   seeThroughTextureUVSpace: 0
   seeThroughTextureScale: 1
-  rmsCount: 2
+  rmsCount: 3
   hitFxInitialIntensity: 0
   hitFxMode: 0
   hitFxFadeOutDuration: 0.25
