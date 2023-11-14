@@ -78,6 +78,7 @@ public class LightFactory : MonoBehaviour
         _light.intensity = intensity;
         _light.innerSpotAngle = innerAngle;
         _light.spotAngle = outerAngle;
+        _light.shadows = LightShadows.Soft;
         _light.enabled = on; // As this runs on Start only, here we set the initial ON/OFF state
     }
 
