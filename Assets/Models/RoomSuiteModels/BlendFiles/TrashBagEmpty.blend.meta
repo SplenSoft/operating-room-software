@@ -3,7 +3,37 @@ guid: f8fdd8ad38ecae44183e934696bdd254
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Cover
+    second: {fileID: 2100000, guid: d88a556c6521cbd42b5b4c0adeb06ffc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Platic Pedal
+    second: {fileID: 2100000, guid: 69d48d52f97e6a149a5821f202b84790, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Waste Bag_1
+    second: {fileID: 2100000, guid: 49d6e1fab6126614d9d2e1953ee2fb2c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wheel rubber
+    second: {fileID: 2100000, guid: d21d1ea74b0625d49b20f9b4cbe49520, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver
+    second: {fileID: 2100000, guid: 68733648962c74a43b08081931afed78, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: silver brushed
+    second: {fileID: 2100000, guid: 34fa0ba9dd5f22541837875880dbb8cf, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
