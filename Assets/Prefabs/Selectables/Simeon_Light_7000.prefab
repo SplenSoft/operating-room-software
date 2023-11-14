@@ -445,7 +445,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 5d51cded3a6dd8e4bac1259a7d16fb2d, type: 2}
     - target: {fileID: 2500534211277831883, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
@@ -505,7 +505,7 @@ MonoBehaviour:
   intensity: 5
   innerAngle: 20
   outerAngle: 20
-  emissiveObject: {fileID: 289391840736853366}
+  emissiveObject: {fileID: 4369711182650762182}
   emissionColor: {r: 0.7253471, g: 0.9433962, b: 0.9181535, a: 1}
 --- !u!114 &3131619152337864307
 MonoBehaviour:
@@ -730,6 +730,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4369711182650762182 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3948995034231107753, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
+  m_PrefabInstance: {fileID: 8472973885160877201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7745216756100520302 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2227739483529983487, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
