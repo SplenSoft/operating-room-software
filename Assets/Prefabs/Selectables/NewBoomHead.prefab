@@ -1676,6 +1676,26 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5468008263045937546, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468008263045937546, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468008263045937546, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468008263045937546, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5468008263045937546, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5941457476853523155, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1794,7 +1814,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -2005,7 +2025,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -2218,7 +2238,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -2434,7 +2454,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -2625,7 +2645,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -2796,7 +2816,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -3018,7 +3038,7 @@ MonoBehaviour:
   outlineWidth: 0.83
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -3204,7 +3224,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -3395,7 +3415,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -3586,7 +3606,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -3782,7 +3802,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -3973,7 +3993,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -4204,7 +4224,7 @@ MonoBehaviour:
   outlineWidth: 0.2
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
