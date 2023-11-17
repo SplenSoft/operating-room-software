@@ -1043,7 +1043,8 @@ public enum SelectableType
     BoomHead,
     Wall,
     CeilingLight,
-    Door
+    Door,
+    ServiceHeadPanel
 }
 
 [Serializable]
