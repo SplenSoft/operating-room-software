@@ -25,7 +25,13 @@ public class AttachmentPoint : MonoBehaviour
     /// Lower transform hierarchy items will use this attachment point as a rotation reference when taking elevation photos (instead of using ceiling mount attachment points). This is used for arm segments having opposite rotation directions in elevation photos.
     /// </summary>
     [field: SerializeField] public bool TreatAsTopMost { get; private set; }
+    /// <summary>
+    /// Allows the attachment point to have multiple attached selectables, otherwise attachpoint will disable once an attachment is selected
+    /// </summary>
     [field: SerializeField] private bool MultiAttach { get; set; }
+    /// <summary>
+    /// Sets the maximum number of attachments for a attachment points with MultiAttach set to True
+    /// </summary>
     [field: SerializeField] private int MultiLimit { get; set; } = 3;
 
     public List<Selectable> ParentSelectables { get; } = new();
@@ -136,7 +142,7 @@ public class AttachmentPoint : MonoBehaviour
 
     private void UpdateComponentStatus()
     {
-        int multiAllowed = MultiAttach ? MultiLimit : 0;
+        int multiAllowed = MultiAttach ? MultiLimit : 0; // check if this is a multiattach point and use the limit, otherwise use 0 for default points. 
 
         bool isMouseOverAnyParentSelectable = ParentSelectables.FirstOrDefault(item => item.IsMouseOver) != default;
         bool areAnyParentSelectablesSelected = ParentSelectables.Contains(Selectable.SelectedSelectable);

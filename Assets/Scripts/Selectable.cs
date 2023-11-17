@@ -49,6 +49,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
+    [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
     [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
@@ -60,7 +61,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private Transform ClearanceLineMeasuringPosition { get; set; }
     [field: SerializeField] private List<ClearanceLinesRenderer> ClearanceLinesRenderers { get; set; }
     [field: SerializeField] private List<MeshFilter> ClearanceLinesMeshFilters { get; set; } = new();
-    
+
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;
     private Selectable _parentSelectable;
@@ -103,7 +104,7 @@ public class Selectable : MonoBehaviour
             for (int i = 0; i < ClearanceLinesRenderers.Count; i++)
             {
                 var filter = ClearanceLinesMeshFilters.Count > i ? ClearanceLinesMeshFilters[i] : null;
-                if (filter == null && !_rendererMoved) 
+                if (filter == null && !_rendererMoved)
                 {
                     if (TryGetArmAssemblyRoot(out var root))
                     {
@@ -120,7 +121,7 @@ public class Selectable : MonoBehaviour
 
                 ClearanceLinesRenderers[i].SetPositions(GetClearanceLinePath(filter));
             }
-            
+
             Debug.Log($"Clearance line positions updated for Selectable {gameObject.name}");
         }
     }
@@ -195,7 +196,7 @@ public class Selectable : MonoBehaviour
     public bool TryGetArmAssemblyRoot(out GameObject rootObj)
     {
         rootObj = null;
-        if (transform.root.TryGetComponent<Selectable>(out var rootSelectable)) 
+        if (transform.root.TryGetComponent<Selectable>(out var rootSelectable))
         {
             rootObj = rootSelectable.gameObject;
             return rootSelectable.Types.Contains(SelectableType.Mount);
@@ -301,11 +302,11 @@ public class Selectable : MonoBehaviour
 
             return positions;
         }
-        
+
         Selectable highestSelectable = null;
         Transform parent = transform.parent;
-        while (parent != null) 
-        { 
+        while (parent != null)
+        {
             if (parent.TryGetComponent<Selectable>(out var selectable))
             {
                 if (selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
@@ -401,7 +402,7 @@ public class Selectable : MonoBehaviour
                 throw new Exception("Could not get assembly root");
             }
         }
-        
+
         List<MeshRenderer> renderers = GetComponentsInChildren<MeshRenderer>().Where(r => r.enabled).ToList();
 
         if (renderers.Count == 0)
@@ -481,7 +482,7 @@ public class Selectable : MonoBehaviour
                 var imageDatas = new List<PdfExporter.PdfImageData>();
                 for (int i = 0; i < 2; i++)
                 {
-                    foreach(Selectable item in heightChangingSelectables)
+                    foreach (Selectable item in heightChangingSelectables)
                     {
                         var newAngles = item.transform.localEulerAngles;
                         var gizmoSetting = item.GizmoSettings[GizmoType.Rotate][Axis.Y];
@@ -513,7 +514,7 @@ public class Selectable : MonoBehaviour
                         Height = imageHeight
                     });
                 }
-                
+
                 PdfExporter.ExportElevationPdf(imageDatas, _assemblySelectables);
 
                 for (int i = 0; i < ActiveSelectables.Count; i++)
@@ -644,7 +645,7 @@ public class Selectable : MonoBehaviour
         InGameLight.ToggleLights(true);
 
         RenderTexture.active = renderTexture;
-        
+
         Texture2D tex = new Texture2D(imageWidth, imageHeight, TextureFormat.RGB24, false);
 
         float screenMinX = Mathf.Min(screenPointMin.x, screenPointMax.x);
@@ -670,7 +671,7 @@ public class Selectable : MonoBehaviour
         {
             UI_ToggleClearanceLines.ClearanceLinesToggled.AddListener(UpdateClearanceLines);
         }
-        
+
         while (parent != null)
         {
             if (parent.TryGetComponent<AttachmentPoint>(out var attachmentPoint))
@@ -684,7 +685,7 @@ public class Selectable : MonoBehaviour
 
             if (parent.TryGetComponent<Selectable>(out var selectable))
             {
-                _parentSelectable = selectable; 
+                _parentSelectable = selectable;
                 break;
             }
 
@@ -755,8 +756,8 @@ public class Selectable : MonoBehaviour
     {
         if (IsDestroyed) return;
 
-        IsDestroyed = true; 
-        
+        IsDestroyed = true;
+
         if (ClearanceLinesRenderers.Count > 0)
         {
             UI_ToggleClearanceLines.ClearanceLinesToggled.RemoveListener(UpdateClearanceLines);
@@ -768,7 +769,7 @@ public class Selectable : MonoBehaviour
                 });
             }
         }
-        
+
         ActiveSelectables.Remove(this);
 
         if (SelectedSelectable == this)
@@ -838,7 +839,7 @@ public class Selectable : MonoBehaviour
             transform.LookAt(transform.position + Vector3.down, ZAlignUpIsParentForward ? transform.parent.forward : transform.parent.right);
             //if (!IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
             //{
-                transform.localEulerAngles = new Vector3(oldX, transform.localEulerAngles.y, 0);
+            transform.localEulerAngles = new Vector3(oldX, transform.localEulerAngles.y, 0);
             //}
         }
     }
@@ -860,7 +861,7 @@ public class Selectable : MonoBehaviour
         float halfInch = 0.0127f;
         float modulo = value % halfInch;
         if (modulo <= halfInch / 2)
-        { 
+        {
             value -= modulo;
         }
         else
@@ -888,12 +889,12 @@ public class Selectable : MonoBehaviour
             {
                 Vector3 destination = hit.point;
                 Vector3 normal = hit.normal;
-                if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling) 
+                if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
                 {
                     destination += RoomBoundary.DefaultWallThickness * Vector3.down;
                     normal *= -1;
                 }
-                
+
                 if (Types.Contains(SelectableType.Door))
                 {
                     RoomBoundaryType roomBoundaryType = hit.collider.gameObject.GetComponent<RoomBoundary>().RoomBoundaryType;
@@ -904,12 +905,12 @@ public class Selectable : MonoBehaviour
                         destination.z = hit.collider.transform.position.z - halfThickness;
                         normal = -Vector3.forward;
                     }
-                    else if (roomBoundaryType == RoomBoundaryType.WallSouth) 
+                    else if (roomBoundaryType == RoomBoundaryType.WallSouth)
                     {
                         destination.z = hit.collider.transform.position.z + halfThickness;
                         normal = Vector3.forward;
                     }
-                    else if (roomBoundaryType == RoomBoundaryType.WallWest) 
+                    else if (roomBoundaryType == RoomBoundaryType.WallWest)
                     {
                         destination.x = hit.collider.transform.position.x + halfThickness;
                         normal = Vector3.right;
@@ -919,23 +920,23 @@ public class Selectable : MonoBehaviour
                         destination.x = hit.collider.transform.position.x - halfThickness;
                         normal = -Vector3.right;
                     }
-                    
+
 
                     destination.y = 0;
                 }
 
-                if (UI_ToggleSnapping.SnappingEnabled) 
+                if (UI_ToggleSnapping.SnappingEnabled)
                 {
                     float yMag = Mathf.Abs(hit.normal.y);
                     float xMag = Mathf.Abs(hit.normal.x);
                     float zMag = Mathf.Abs(hit.normal.z);
 
-                    if (yMag > xMag && yMag > zMag) 
+                    if (yMag > xMag && yMag > zMag)
                     {
                         destination.x = RoundToNearestHalfInch(destination.x);
                         destination.z = RoundToNearestHalfInch(destination.z);
                     }
-                    else if (xMag > yMag && xMag > zMag) 
+                    else if (xMag > yMag && xMag > zMag)
                     {
                         destination.y = RoundToNearestHalfInch(destination.y);
                         destination.z = RoundToNearestHalfInch(destination.z);
@@ -959,7 +960,7 @@ public class Selectable : MonoBehaviour
                     SetPosition(raycastHit2);
                 }
             }
-            else if (WallRestrictions.Count > 0) 
+            else if (WallRestrictions.Count > 0)
             {
                 var wall = raycastHit.collider.GetComponent<RoomBoundary>();
                 if (WallRestrictions.Contains(wall.RoomBoundaryType))

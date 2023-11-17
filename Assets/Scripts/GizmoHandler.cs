@@ -258,7 +258,7 @@ public class GizmoHandler : MonoBehaviour
             {
                 Selectable verticalComponent = null;
                 
-                while (parent != null && verticalComponent == null)
+                while (parent != null && verticalComponent == null && _selectable.AllowInverseControl)
                 {
                     var parentSelectable = parent.GetComponent<Selectable>();
                     if (parentSelectable != null && parentSelectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y))
@@ -313,7 +313,7 @@ public class GizmoHandler : MonoBehaviour
                 parent = parent.parent;
             }
 
-            if (closestBone != null && farthestBone != null)
+            if (closestBone != null && farthestBone != null && _selectable.AllowInverseControl)
             {
                 Vector3 farthestBoneXZ = new Vector3(farthestBone.transform.position.x, 0, farthestBone.transform.position.z);
                 Vector3 closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
