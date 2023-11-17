@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 6195002381174702858}
   - component: {fileID: 6562998353812398397}
   - component: {fileID: 2415867761661642735}
+  - component: {fileID: 6462583564701765492}
   m_Layer: 6
   m_Name: SHP_LV_Knob1
   m_TagString: Untagged
@@ -351,3 +352,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <VirtualParent>k__BackingField: {fileID: 0}
   <HideIfSurfaceIsHidden>k__BackingField: 0
+--- !u!65 &6462583564701765492
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3197086238112897237}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.14650857, y: 0.029517371, z: 0.19151878}
+  m_Center: {x: 0.0036181398, y: 0.0006764336, z: -0.002955377}
