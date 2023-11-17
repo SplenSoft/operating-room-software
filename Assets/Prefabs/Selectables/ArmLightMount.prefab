@@ -275,7 +275,7 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <allowInverse>k__BackingField: 1
+  <AllowInverseControl>k__BackingField: 1
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 0
     <GizmoType>k__BackingField: 1
@@ -506,7 +506,7 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <allowInverse>k__BackingField: 1
+  <AllowInverseControl>k__BackingField: 0
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 1
     <GizmoType>k__BackingField: 1
@@ -812,6 +812,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <allowInverse>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AllowInverseControl>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
