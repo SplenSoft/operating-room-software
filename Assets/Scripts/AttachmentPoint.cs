@@ -11,7 +11,7 @@ public class AttachmentPoint : MonoBehaviour
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
-    [field: SerializeField] public Selectable AttachedSelectable { get; private set; }
+    [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
 
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
     [field: SerializeField] private HighlightEffect HighlightHovered { get; set; }
@@ -25,6 +25,8 @@ public class AttachmentPoint : MonoBehaviour
     /// Lower transform hierarchy items will use this attachment point as a rotation reference when taking elevation photos (instead of using ceiling mount attachment points). This is used for arm segments having opposite rotation directions in elevation photos.
     /// </summary>
     [field: SerializeField] public bool TreatAsTopMost { get; private set; }
+    [field: SerializeField] private bool MultiAttach { get; set; }
+    [field: SerializeField] private int MultiLimit { get; set; } = 3;
 
     public List<Selectable> ParentSelectables { get; } = new();
     [SerializeField, ReadOnly] private Transform _originalParent;
@@ -34,7 +36,7 @@ public class AttachmentPoint : MonoBehaviour
 
     public void SetAttachedSelectable(Selectable selectable)
     {
-        AttachedSelectable = selectable;
+        AttachedSelectable.Add(selectable);
         if (MoveUpOnAttach)
         {
             Transform parent = transform.parent;
@@ -52,10 +54,11 @@ public class AttachmentPoint : MonoBehaviour
         UpdateComponentStatus();
     }
 
-    public void DetachSelectable() 
+    public void DetachSelectable(Selectable selectable)
     {
         if (_isDestroyed) return;
-        AttachedSelectable = null;
+        AttachedSelectable.Remove(selectable);
+        AttachedSelectable.TrimExcess();
         if (MoveUpOnAttach)
         {
             transform.parent = _originalParent;
@@ -65,6 +68,8 @@ public class AttachmentPoint : MonoBehaviour
 
     private void Awake()
     {
+        EmptyNullList();
+
         _collider = GetComponentInChildren<Collider>();
         _renderer = GetComponentInChildren<MeshRenderer>();
 
@@ -83,12 +88,15 @@ public class AttachmentPoint : MonoBehaviour
             if (parent == null) break;
         }
 
-        var childSelectable = GetComponentInChildren<Selectable>();
-        if (childSelectable != null && AttachedSelectable == null) 
+        var childSelectables = GetComponentsInChildren<Selectable>();
+        if (childSelectables.Length > 0 && AttachedSelectable.Count == 0)
         {
-            SetAttachedSelectable(childSelectable);
+            foreach (Selectable s in childSelectables)
+            {
+                SetAttachedSelectable(s);
+            }
         }
-        
+
         ParentSelectables.ForEach(item =>
         {
             item.MouseOverStateChanged += MouseOverStateChanged;
@@ -128,11 +136,13 @@ public class AttachmentPoint : MonoBehaviour
 
     private void UpdateComponentStatus()
     {
+        int multiAllowed = MultiAttach ? MultiLimit : 0;
+
         bool isMouseOverAnyParentSelectable = ParentSelectables.FirstOrDefault(item => item.IsMouseOver) != default;
         bool areAnyParentSelectablesSelected = ParentSelectables.Contains(Selectable.SelectedSelectable);
-        _renderer.enabled = (isMouseOverAnyParentSelectable || _attachmentPointHovered) && !areAnyParentSelectablesSelected && AttachedSelectable == null;
-        HighlightHovered.highlighted = _attachmentPointHovered && !areAnyParentSelectablesSelected && AttachedSelectable == null;
-        _collider.enabled = AttachedSelectable == null && !areAnyParentSelectablesSelected;
+        _renderer.enabled = (isMouseOverAnyParentSelectable || _attachmentPointHovered) && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
+        HighlightHovered.highlighted = _attachmentPointHovered && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
+        _collider.enabled = AttachedSelectable.Count <= multiAllowed && !areAnyParentSelectablesSelected;
     }
 
     private void OnDestroy()
@@ -168,5 +178,17 @@ public class AttachmentPoint : MonoBehaviour
         SelectedAttachmentPoint = this;
         UpdateComponentStatus();
         ObjectMenu.Open(this);
+    }
+
+    private void EmptyNullList()
+    {
+        if (AttachedSelectable.Count == 1)
+        {
+            if (AttachedSelectable[0] == null)
+            {
+                AttachedSelectable.Clear();
+                AttachedSelectable.TrimExcess();
+            }
+        }
     }
 }

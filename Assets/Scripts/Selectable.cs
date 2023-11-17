@@ -779,7 +779,7 @@ public class Selectable : MonoBehaviour
         InputHandler.KeyStateChanged -= InputHandler_KeyStateChanged;
         if (ParentAttachmentPoint != null)
         {
-            ParentAttachmentPoint.DetachSelectable();
+            ParentAttachmentPoint.DetachSelectable(this);
         }
 
         if (_parentSelectable != null)
@@ -1044,7 +1044,8 @@ public enum SelectableType
     Wall,
     CeilingLight,
     Door,
-    ServiceHeadPanel
+    ServiceHeadPanel,
+    ServiceHeadShelves
 }
 
 [Serializable]
