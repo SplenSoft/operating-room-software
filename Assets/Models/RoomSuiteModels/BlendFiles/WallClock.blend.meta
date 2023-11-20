@@ -3,7 +3,27 @@ guid: 93b1e587ddd7c664c921a0c703664d22
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: black matt
+    second: {fileID: 2100000, guid: fa1605cab514333469fab3f1f740ca0b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: black_inside
+    second: {fileID: 2100000, guid: 2eeac212164f8f245994d2eff0e42d64, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: clock
+    second: {fileID: 2100000, guid: e388a64b6d35c084a922f831335f5016, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: red
+    second: {fileID: 2100000, guid: 5260f483f58a12a4c8ebe098c0a78b05, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
