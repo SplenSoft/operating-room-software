@@ -132,6 +132,11 @@ public class RoomBoundary : MonoBehaviour
         Instances.ForEach(item => item.ToggleMeshRendererAndCollider(true));
     }
 
+    public void SetColor(Color c)
+    {
+        GetComponent<MeshRenderer>().material.color = c;
+    }
+
     private void OnMouseUpAsButton()
     {
         if (InputHandler.IsPointerOverUIElement()) return;
