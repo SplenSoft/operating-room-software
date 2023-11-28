@@ -132,6 +132,23 @@ public class RoomBoundary : MonoBehaviour
         Instances.ForEach(item => item.ToggleMeshRendererAndCollider(true));
     }
 
+    /// <summary>
+    /// Toggles the walls between opaque and clear
+    /// </summary>
+    /// <param name="toggle">True = Opaque, False = Clear</param>
+    public static void ToggleAllWallOpaque(bool toggle)
+    {
+        Instances.ForEach(item => item.ToggleWallOpaque(toggle));
+    }
+
+    private void ToggleWallOpaque(bool toggle)
+    {
+        if(RoomBoundaryType == RoomBoundaryType.Floor || RoomBoundaryType == RoomBoundaryType.Ceiling) return;
+        Color c = MeshRenderer.material.color;
+        c.a = toggle ? 1 : 0;
+        MeshRenderer.material.color = c;
+    }
+
     private void OnMouseUpAsButton()
     {
         if (InputHandler.IsPointerOverUIElement()) return;
