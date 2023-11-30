@@ -1051,7 +1051,8 @@ public enum SelectableType
     CeilingLight,
     Door,
     ServiceHeadPanel,
-    ServiceHeadShelves
+    ServiceHeadShelves,
+    Tabletop
 }
 
 [Serializable]
