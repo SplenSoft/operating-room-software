@@ -17,5 +17,6 @@ public enum OperatingRoomCameraType
 {
     OrthoCeiling,
     FreeLook,
-    OrthoSide
+    OrthoSide,
+    Orbit
 }
