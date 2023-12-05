@@ -15,11 +15,10 @@ public class CameraManager : MonoBehaviour
         _cameras.Add(cam);
     }
 
-    //public static void SetActiveCamera(CinemachineVirtualCamera cam)
-    //{
-    //    ActiveCamera = cam;
-        
-    //}
+    public static void SetActiveCamera(CinemachineVirtualCamera cam)
+    {
+       ActiveCamera = cam;
+    }
 
     public static void CycleCam()
     {

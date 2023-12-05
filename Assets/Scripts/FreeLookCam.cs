@@ -21,6 +21,7 @@ public class FreeLookCam : MonoBehaviour
         Instance = this;
         _collider = GetComponent<Collider>();
         CameraManager.Register(VirtualCamera);
+        CameraManager.SetActiveCamera(VirtualCamera);
         CameraManager.CameraChanged.AddListener(() =>
         {
             bool active = CameraManager.ActiveCamera == VirtualCamera;
