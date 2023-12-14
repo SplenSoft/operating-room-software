@@ -41,7 +41,12 @@ public class OrbitCamera : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            orbitTarget.transform.Rotate(new Vector3(0, h, 0));
+            orbitTarget.transform.Rotate(new Vector3(v, h, 0));
+
+            Vector3 currentRot = orbitTarget.transform.localRotation.eulerAngles;
+            currentRot.x = ClampAngle(currentRot.x, -54, 32);
+            currentRot.z = Mathf.Clamp(currentRot.z, 0, 0);
+            orbitTarget.transform.localRotation = Quaternion.Euler(currentRot);
         }
 
         if (Input.GetMouseButton(1))
@@ -76,6 +81,20 @@ public class OrbitCamera : MonoBehaviour
 
             orbitTarget.transform.position = Selectable.SelectedSelectable.transform.position;
         }
+    }
+
+    public float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < 90 || angle > 270) // critic zone
+        {
+            if(angle > 180) angle -= 360; // convert all angles to -180 to +180
+            if(max > 180) max -= 360;
+            if(min > 180) min -= 360;
+        }
+
+        angle = Mathf.Clamp(angle, min, max);
+        if(angle < 0) angle += 360; // if angle is negative, convert to 0 to 360
+        return angle;
     }
 }
 
