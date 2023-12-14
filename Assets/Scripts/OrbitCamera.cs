@@ -34,7 +34,7 @@ public class OrbitCamera : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (CameraManager.ActiveCamera != VirtualCamera) return;
+        if (CameraManager.ActiveCamera != VirtualCamera || GizmoHandler.GizmoBeingUsed) return;
 
         float h = Input.GetAxis("Mouse X");
         float v = Input.GetAxis("Mouse Y");
