@@ -35,6 +35,7 @@ public class GizmoHandler : MonoBehaviour
         _selectable = GetComponent<Selectable>();
         GizmoSelector.GizmoModeChanged += GizmoModeChanged;
         UI_ToggleSnapping.SnappingToggled.AddListener(EnableGizmo);
+        CameraManager.CameraChanged.AddListener(EnableGizmo);
     }
 
     private void GizmoModeChanged(object sender = null, EventArgs e = null)
@@ -46,6 +47,7 @@ public class GizmoHandler : MonoBehaviour
     {
         GizmoSelector.GizmoModeChanged -= GizmoModeChanged;
         UI_ToggleSnapping.SnappingToggled.RemoveListener(EnableGizmo);
+        CameraManager.CameraChanged.RemoveListener(EnableGizmo);
     }
 
     public void SelectableSelected()
@@ -98,11 +100,16 @@ public class GizmoHandler : MonoBehaviour
                 _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
                 _rotateGizmo.Gizmo.RotationGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
 
+                Debug.Log(CameraManager.ActiveCamera.name);
+
+                bool allowHorizontal = CameraManager.ActiveCamera.GetComponent<OperatingRoomCamera>().CameraType != OperatingRoomCameraType.OrthoSide ? true : false;
+                bool allowVertical = CameraManager.ActiveCamera.GetComponent<OperatingRoomCamera>().CameraType != OperatingRoomCameraType.OrthoCeiling ? true : false;
+
                 RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(0, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X));
-                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(1, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y));
-                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(2, _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z));
+                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(1, allowVertical ? _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) : false);
+                RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(2, allowHorizontal ? _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z) : false);
             }
-            else if (_scaleGizmo.Gizmo.IsEnabled) 
+            else if (_scaleGizmo.Gizmo.IsEnabled)
             {
                 _scaleGizmo.Gizmo.Transform.LocalPosition3D = transform.position;
                 _scaleGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
@@ -115,7 +122,7 @@ public class GizmoHandler : MonoBehaviour
                 RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X));
                 RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y));
                 RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(2, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z));
-            }            
+            }
         }
 
         //_universalGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Universal && _selectable.IsSelected);
@@ -257,7 +264,7 @@ public class GizmoHandler : MonoBehaviour
             if (gizmo.RelativeDragOffset.y != 0)
             {
                 Selectable verticalComponent = null;
-                
+
                 while (parent != null && verticalComponent == null && _selectable.AllowInverseControl)
                 {
                     var parentSelectable = parent.GetComponent<Selectable>();
@@ -378,25 +385,25 @@ public class GizmoHandler : MonoBehaviour
             float yScale = _localScaleBeforeStartDrag.y * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y) ? gizmo.TotalDragScale.y : 1);
             float zScale = _selectable.ScaleLevels.Count == 0 ? _localScaleBeforeStartDrag.z * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z) ? gizmo.TotalDragScale.z : 1) : _selectable.transform.localScale.z;
 
-            if (UI_ToggleSnapping.SnappingEnabled) 
-            { 
-                if (xScale != _localScaleBeforeStartDrag.x) 
+            if (UI_ToggleSnapping.SnappingEnabled)
+            {
+                if (xScale != _localScaleBeforeStartDrag.x)
                 {
                     xScale = Selectable.RoundToNearestHalfInch(xScale);
                 }
-                
+
                 if (yScale != _localScaleBeforeStartDrag.y)
                 {
                     yScale = Selectable.RoundToNearestHalfInch(yScale);
                 }
-                
+
                 if (_selectable.ScaleLevels.Count == 0 && zScale != _localScaleBeforeStartDrag.z)
                 {
                     zScale = Selectable.RoundToNearestHalfInch(zScale);
                 }
             }
 
-            _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);    
+            _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
         }
 
         GizmoDragPostUpdate?.Invoke();

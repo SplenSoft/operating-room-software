@@ -15,7 +15,10 @@ public class UI_ToggleShowCeilingObjects : MonoBehaviour
         _toggle = GetComponent<Toggle>();   
         CameraManager.CameraChanged.AddListener(() =>
         {
-            gameObject.SetActive(CameraManager.ActiveCamera.GetComponent<OperatingRoomCamera>().CameraType == OperatingRoomCameraType.OrthoCeiling);
+            bool orthoCeilingCamActive = CameraManager.ActiveCamera.GetComponent<OperatingRoomCamera>().CameraType == OperatingRoomCameraType.OrthoCeiling;
+            ToggleShowCeilingObjects(false);
+            _toggle.isOn = false;
+            gameObject.SetActive(orthoCeilingCamActive);
         });
 
         ObjectMenu.ActiveStateChanged.AddListener(() =>
