@@ -49,6 +49,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
+    [field: SerializeField] public bool isDestructible { get; private set; } = true;
     [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
     [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
@@ -1010,6 +1011,7 @@ public class Selectable : MonoBehaviour
         else if (e.KeyCode == KeyCode.Delete && e.KeyState == KeyState.ReleasedThisFrame && IsSelected)
         {
             Deselect();
+
             Destroy(gameObject);
         }
     }

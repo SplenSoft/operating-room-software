@@ -50,20 +50,32 @@ MonoBehaviour:
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 9aebd705574f9e642aef1e5f59b3e4d8, type: 3}
   <Name>k__BackingField: Unknown
+  <SubPartName>k__BackingField: 
   <Description>k__BackingField: Unknown
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <isDestructible>k__BackingField: 1
+  <AllowInverseControl>k__BackingField: 0
   <GizmoSettingsList>k__BackingField: []
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 0
-  <Measurable>k__BackingField: {fileID: 0}
-  _currentScaleLevel:
+  <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
+  <ZAlignUpIsParentForward>k__BackingField: 0
+  <Measurables>k__BackingField: []
+  <AlignForElevationPhoto>k__BackingField: 0
+  <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
+  <ClearanceLinesRenderers>k__BackingField: []
+  <ClearanceLinesMeshFilters>k__BackingField: []
+  <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
-  _currentPreviewScaleLevel:
+    <ModelDefault>k__BackingField: 0
+  <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
 --- !u!114 &-6565122453228016778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,3 +267,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <VirtualParent>k__BackingField: {fileID: 0}
+  <HideIfSurfaceIsHidden>k__BackingField: 0
