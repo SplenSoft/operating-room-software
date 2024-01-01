@@ -19,4 +19,9 @@ public class MaterialPalette : MonoBehaviour
     {
         if(zeroStart) meshRenderer.material = materials[0];
     }
+
+    public void Assign(Material material)
+    {
+        meshRenderer.material = material;
+    }
 }
