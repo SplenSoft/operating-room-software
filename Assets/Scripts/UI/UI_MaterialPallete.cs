@@ -7,14 +7,14 @@ public class UI_MaterialPallete : MonoBehaviour
     public GameObject materialPrefab;
     [field: SerializeField] public List<UI_MaterialPalleteSwatch> pallete { get; private set; }
 
-    public void LoadPalleteOptions(Material[] materials)
+    public void LoadPalleteOptions(Material[] materials, int element)
     {
         ClearPalleteOptions();
 
         foreach(Material material in materials)
         {
             UI_MaterialPalleteSwatch swatch = Instantiate(materialPrefab, this.gameObject.transform).GetComponent<UI_MaterialPalleteSwatch>();
-            swatch.AssignMaterialToSwatch(material);
+            swatch.AssignMaterialToSwatch(material, element);
             pallete.Add(swatch);
         }
     }

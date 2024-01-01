@@ -642,6 +642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ui_pallete: {fileID: 1381862402703693964}
+  label: {fileID: 6377567865217709007}
 --- !u!1 &477778477484681109
 GameObject:
   m_ObjectHideFlags: 0
@@ -2682,10 +2683,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 30.4
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2718,7 +2719,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 8, y: 8, z: 8, w: 8}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7344,7 +7345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6970767217658300712, guid: 1b5aabd6165e0114d814efde0da6593b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.00008010864
+      value: 0.000022888184
       objectReference: {fileID: 0}
     - target: {fileID: 8475948815219142054, guid: 1b5aabd6165e0114d814efde0da6593b, type: 3}
       propertyPath: m_SizeDelta.y
