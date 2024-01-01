@@ -8,22 +8,27 @@ public class MaterialPalette : MonoBehaviour
 {
     [field: SerializeField] public bool zeroStart { get; private set; }
     public Material[] materials;
-    private MeshRenderer meshRenderer;
+    [field: SerializeField] public MeshRenderer meshRenderer {get; private set; }
 
     void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+        if(meshRenderer == null)
+        {
+            meshRenderer = GetComponent<MeshRenderer>();
+        }
     }
 
     void Start()
     {
-        if(zeroStart) meshRenderer.material = materials[0];
-        GetComponent<ScaleMaterialTextureWithTransform>().Scale();
+        if(zeroStart) Assign(materials[0]);
     }
 
     public void Assign(Material material)
     {
         meshRenderer.material = material;
-        GetComponent<ScaleMaterialTextureWithTransform>().Scale();
+        if(TryGetComponent<ScaleMaterialTextureWithTransform>(out ScaleMaterialTextureWithTransform s))
+        {
+            s.Scale();
+        }
     }
 }

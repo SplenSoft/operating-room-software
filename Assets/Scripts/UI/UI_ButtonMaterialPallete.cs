@@ -13,18 +13,23 @@ public class UI_ButtonMaterialPallete : MonoBehaviour
     {
         button = GetComponent<Button>();
 
-        Selectable.SelectionChanged += (o, e) => 
+        Selectable.SelectionChanged += (o, e) =>
         {
+            bool b = false;
             palette = null;
             ui_pallete.ClearPalleteOptions();
-            bool b = Selectable.SelectedSelectable.gameObject.TryGetComponent<MaterialPalette>(out MaterialPalette m);
-
-            gameObject.SetActive(b);
-
-            if(b)
+            try
             {
+                b = Selectable.SelectedSelectable.gameObject.TryGetComponent<MaterialPalette>(out MaterialPalette m);
                 palette = m;
             }
+            catch
+            {
+                b = false;
+            }
+
+
+            gameObject.SetActive(b);
         };
 
         button.onClick.AddListener(() => DisplayPallete());
@@ -34,7 +39,7 @@ public class UI_ButtonMaterialPallete : MonoBehaviour
 
     void DisplayPallete()
     {
-        if(palette == null || ui_pallete.pallete.Count != 0)
+        if (palette == null || ui_pallete.pallete.Count != 0)
         {
             ui_pallete.ClearPalleteOptions();
         }
