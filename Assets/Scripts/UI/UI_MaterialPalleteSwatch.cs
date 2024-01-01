@@ -6,7 +6,6 @@ using TMPro;
 
 public class UI_MaterialPalleteSwatch : MonoBehaviour
 {
-    private Material material;
     private Image image;
     private TMP_Text m_name;
     private Button b_ApplySwatch;
@@ -28,6 +27,6 @@ public class UI_MaterialPalleteSwatch : MonoBehaviour
 
     private void AssignSwatchToSelectable()
     {
-        Selectable.SelectedSelectable.GetComponent<MaterialPalette>().Assign(material);
+        Selectable.SelectedSelectable.GetComponent<MaterialPalette>().Assign(image.material);
     }
 }

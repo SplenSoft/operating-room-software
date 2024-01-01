@@ -9,10 +9,13 @@ public class UI_MaterialPallete : MonoBehaviour
 
     public void LoadPalleteOptions(Material[] materials)
     {
+        ClearPalleteOptions();
+
         foreach(Material material in materials)
         {
             UI_MaterialPalleteSwatch swatch = Instantiate(materialPrefab, this.gameObject.transform).GetComponent<UI_MaterialPalleteSwatch>();
             swatch.AssignMaterialToSwatch(material);
+            pallete.Add(swatch);
         }
     }
 

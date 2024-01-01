@@ -11,17 +11,19 @@ public class UI_ButtonMaterialPallete : MonoBehaviour
 
     private void Awake()
     {
+        button = GetComponent<Button>();
+
         Selectable.SelectionChanged += (o, e) => 
         {
+            palette = null;
             ui_pallete.ClearPalleteOptions();
-            bool b = false;
-            if(Selectable.SelectedSelectable.gameObject.GetComponent<MaterialPalette>() != null) b = true;
+            bool b = Selectable.SelectedSelectable.gameObject.TryGetComponent<MaterialPalette>(out MaterialPalette m);
 
             gameObject.SetActive(b);
 
             if(b)
             {
-                palette = Selectable.SelectedSelectable.gameObject.GetComponent<MaterialPalette>();
+                palette = m;
             }
         };
 
@@ -32,7 +34,7 @@ public class UI_ButtonMaterialPallete : MonoBehaviour
 
     void DisplayPallete()
     {
-        if(ui_pallete.pallete.Count > 0)
+        if(palette == null || ui_pallete.pallete.Count != 0)
         {
             ui_pallete.ClearPalleteOptions();
         }

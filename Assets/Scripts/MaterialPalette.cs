@@ -18,10 +18,12 @@ public class MaterialPalette : MonoBehaviour
     void Start()
     {
         if(zeroStart) meshRenderer.material = materials[0];
+        GetComponent<ScaleMaterialTextureWithTransform>().Scale();
     }
 
     public void Assign(Material material)
     {
         meshRenderer.material = material;
+        GetComponent<ScaleMaterialTextureWithTransform>().Scale();
     }
 }

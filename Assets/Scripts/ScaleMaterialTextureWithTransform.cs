@@ -16,39 +16,44 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
         RoomSize.RoomSizeChanged += async (o, e) =>
         {
             await Task.Yield();
-            bool factor1Set = false;
-            bool factor2Set = false;
-            float factor1 = 1f;
-            float factor2 = 1f;
-            if (_useX)
+            Scale();
+        };
+    }
+
+    public void Scale()
+    {
+        bool factor1Set = false;
+        bool factor2Set = false;
+        float factor1 = 1f;
+        float factor2 = 1f;
+        if (_useX)
+        {
+            factor1 = transform.localScale.x;
+            factor1Set = true;
+        }
+
+        if (_useZ)
+        {
+            if (!factor1Set)
             {
-                factor1 = transform.localScale.x;
+                factor1 = transform.localScale.z;
                 factor1Set = true;
             }
-
-            if (_useZ) 
+            else
             {
-                if (!factor1Set)
-                {
-                    factor1 = transform.localScale.z;
-                    factor1Set = true;
-                }
-                else
-                {
-                    factor2 = transform.localScale.z;
-                    factor2Set = true;
-                }
+                factor2 = transform.localScale.z;
+                factor2Set = true;
             }
+        }
 
-            if (_useY) 
-            { 
-                if (!factor2Set)
-                {
-                    factor2 = transform.localScale.y;
-                }
+        if (_useY)
+        {
+            if (!factor2Set)
+            {
+                factor2 = transform.localScale.y;
             }
+        }
 
-            _meshRenderer.material.SetTextureScale("_BaseMap", new Vector2(factor1 * _multiplier, factor2 * _multiplier));
-        };
+        _meshRenderer.material.SetTextureScale("_BaseMap", new Vector2(factor1 * _multiplier, factor2 * _multiplier));
     }
 }
