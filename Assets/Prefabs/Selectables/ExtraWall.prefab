@@ -531,11 +531,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee7bd3faa4e32a34db16a4c0117799c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <zeroStart>k__BackingField: 1
-  materials:
-  - {fileID: 2100000, guid: 2e87dfa724ce53243b3a190911ef2743, type: 2}
-  - {fileID: 2100000, guid: 355eeea3ec9b41044820ac1ccd2773cc, type: 2}
-  - {fileID: 2100000, guid: e26fb82eb654e1145be5d2673baf3045, type: 2}
+  <elements>k__BackingField:
+  - <_zeroStart>k__BackingField: 1
+    materials:
+    - {fileID: 2100000, guid: 2e87dfa724ce53243b3a190911ef2743, type: 2}
+    - {fileID: 2100000, guid: 355eeea3ec9b41044820ac1ccd2773cc, type: 2}
+    - {fileID: 2100000, guid: e26fb82eb654e1145be5d2673baf3045, type: 2}
   <meshRenderer>k__BackingField: {fileID: 3123351360766199621}
 --- !u!114 &1165342630076357617
 MonoBehaviour:

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-
 public class ScaleMaterialTextureWithTransform : MonoBehaviour
 {
-    private MeshRenderer _meshRenderer;
+    [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private bool _useX;
     [SerializeField] private bool _useY;
     [SerializeField] private bool _useZ;
@@ -55,6 +54,9 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
             }
         }
 
-        _meshRenderer.material.SetTextureScale("_BaseMap", new Vector2(factor1 * _multiplier, factor2 * _multiplier));
+        foreach (Material m in _meshRenderer.materials)
+        {
+            m.SetTextureScale("_BaseMap", new Vector2(factor1 * _multiplier, factor2 * _multiplier));
+        }
     }
 }
