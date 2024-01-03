@@ -3,7 +3,27 @@ guid: ac8a62205939f6043b271c80f6124320
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cgaxis_models_46_47_01
+    second: {fileID: 2100000, guid: dd3ac36cc1d17af44967dd1fc0be7f90, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cgaxis_models_46_47_02
+    second: {fileID: 2100000, guid: 8ac451e4072f01b468a1acf7402e5258, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cgaxis_models_46_47_03
+    second: {fileID: 2100000, guid: de69cebb86a5cb74bb7e591e9dcdd5a9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: cgaxis_models_46_47_04
+    second: {fileID: 2100000, guid: 84036d58830f6e0409deea989c694b5f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
