@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &984267318519801455
+--- !u!1001 &1427416214956593275
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -9,11 +9,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6565122453228016778, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: rmsCount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
-      value: 4x2 Window
+      value: 2x2 Window
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.size
@@ -23,22 +23,6 @@ PrefabInstance:
       propertyPath: <Types>k__BackingField.Array.data[0]
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <Measurables>k__BackingField.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <Measurables>k__BackingField.Array.data[0]
-      value: 
-      objectReference: {fileID: 1810275668245765676, guid: f4f553885fd84c348ae49b391a9178a4, type: 3}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <Measurables>k__BackingField.Array.data[1]
-      value: 
-      objectReference: {fileID: 5647385927394762137, guid: f4f553885fd84c348ae49b391a9178a4, type: 3}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <Measurables>k__BackingField.Array.data[2]
-      value: 
-      objectReference: {fileID: 957241372840286945, guid: f4f553885fd84c348ae49b391a9178a4, type: 3}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.size
       value: 4
@@ -63,30 +47,6 @@ PrefabInstance:
       propertyPath: <WallRestrictions>k__BackingField.Array.data[3]
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <ClearanceLinesRenderers>k__BackingField.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <ClearanceLinesMeshFilters>k__BackingField.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <ClearanceLinesRenderers>k__BackingField.Array.data[0]
-      value: 
-      objectReference: {fileID: 3306045249350837383, guid: f4f553885fd84c348ae49b391a9178a4, type: 3}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <ClearanceLinesRenderers>k__BackingField.Array.data[1]
-      value: 
-      objectReference: {fileID: 7066754986176662161, guid: f4f553885fd84c348ae49b391a9178a4, type: 3}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <ClearanceLinesMeshFilters>k__BackingField.Array.data[0]
-      value: 
-      objectReference: {fileID: 2194370750356190112, guid: f4f553885fd84c348ae49b391a9178a4, type: 3}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <ClearanceLinesMeshFilters>k__BackingField.Array.data[1]
-      value: 
-      objectReference: {fileID: 1749219368707295923, guid: f4f553885fd84c348ae49b391a9178a4, type: 3}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<Axis>k__BackingField
       value: 1
@@ -161,17 +121,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
---- !u!4 &4524288677098330841 stripped
+--- !u!4 &2354927414158322893 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-  m_PrefabInstance: {fileID: 984267318519801455}
+  m_PrefabInstance: {fileID: 1427416214956593275}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &3457624607996706436
+--- !u!1001 &5641814515629027075
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 4524288677098330841}
+    m_TransformParent: {fileID: 2354927414158322893}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ac8a62205939f6043b271c80f6124320, type: 3}
       propertyPath: m_RootOrder
