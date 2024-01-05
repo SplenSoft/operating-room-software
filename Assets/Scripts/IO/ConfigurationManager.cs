@@ -7,10 +7,17 @@ using Newtonsoft.Json;
 
 public class ConfigurationManager : MonoBehaviour
 {
+    public static ConfigurationManager _instance;
+    public bool isDebug = false;
     private Tracker tracker;
 
     void Awake()
     {
+        if(_instance != null)
+            Destroy(this.gameObject);
+
+        _instance = this;
+
         CreateTracker();
     }
 
@@ -48,8 +55,7 @@ public class ConfigurationManager : MonoBehaviour
 
         foreach (TrackedObject obj in foundObjects)
         {
-            if (obj.gameObject.transform == obj.gameObject.transform.root)
-                tracker.objects.Add(obj.GetData());
+            tracker.objects.Add(obj.GetData());
         }
 
         // ======SAVING JSON=========

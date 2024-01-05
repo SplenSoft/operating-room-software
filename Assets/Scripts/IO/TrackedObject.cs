@@ -15,7 +15,7 @@ public class TrackedObject : MonoBehaviour
         public string global_guid;
         public Vector3 pos;
         public Quaternion rot;
-        public Data[] attachments;
+        public string parent;
     }
 
     private Data data;
@@ -23,37 +23,40 @@ public class TrackedObject : MonoBehaviour
     public Data GetData()
     {
         data.objectName = gameObject.name;
+        GetGUIDs(gameObject);
+
         data.pos = transform.position;
         data.rot = transform.rotation;
-        data.instance_guid = gameObject.GetComponent<Selectable>().guid.ToString();
-        data.global_guid = gameObject.GetComponent<Selectable>().GUID;
-
-        List<Data> tempData = new List<Data>();
-        SearchForAttachments(tempData, transform);
-        data.attachments = tempData.ToArray();
 
         return data;
     }
 
-    void SearchForAttachments(List<Data> d, Transform parent)
+    void GetGUIDs(GameObject go)
     {
-        // foreach (Transform go in parent)
-        // {
-        //     if (go.TryGetComponent<AttachmentPoint>(out AttachmentPoint ap))
-        //     {
-        //         if (ap.AttachedSelectable[0].gameObject.TryGetComponent(out TrackedObject tracked))
-        //         {
-        //             d.Add(tracked.GetData());
-        //         }
-        //     }
+        if(gameObject.TryGetComponent<Selectable>(out Selectable s))
+        {
+            data.instance_guid = s.guid.ToString();
+            data.global_guid = s.GUID;
 
-        //     if(go.TryGetComponent<Selectable>(out Selectable s))
-        //     {
-        //         continue;
-        //     }
+            if(s.ParentAttachmentPoint != null) // This selectable is a child of a configuration, assign AttachmentPoint guid to it's parent ref
+            {
+                data.parent = s.ParentAttachmentPoint.guid.ToString();
+            }
+        }
+        else
+        {
+            AttachmentPoint ap = gameObject.GetComponent<AttachmentPoint>();
+            data.instance_guid = ap.guid.ToString();
+            data.global_guid = ap.GUID;
 
-        //     if(go.childCount > 0)
-        //     SearchForAttachments(d, go);
-        // }
+            if(ap.ParentSelectables[0].GUID == "" || ap.ParentSelectables[0].GUID == null)
+            {
+                data.parent = ConfigurationManager.GetGameObjectPath(ap.ParentSelectables[0].gameObject);
+            }
+            else
+            {
+                data.parent = ap.ParentSelectables[0].guid.ToString();
+            }
+        }
     }
 }

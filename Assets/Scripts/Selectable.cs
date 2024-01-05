@@ -672,6 +672,8 @@ public class Selectable : MonoBehaviour
     private void Awake()
     {
         guid = Guid.NewGuid();
+        if(!ConfigurationManager._instance.isDebug) gameObject.name = guid.ToString();
+
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;
 
