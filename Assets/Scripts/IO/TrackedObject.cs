@@ -26,7 +26,7 @@ public class TrackedObject : MonoBehaviour
         data.pos = transform.position;
         data.rot = transform.rotation;
         data.instance_guid = gameObject.GetComponent<Selectable>().guid.ToString();
-        data.global_guid = gameObject.GetComponent<Selectable>()._guid;
+        data.global_guid = gameObject.GetComponent<Selectable>().GUID;
 
         List<Data> tempData = new List<Data>();
         SearchForAttachments(tempData, transform);

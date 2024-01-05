@@ -41,7 +41,7 @@ public class Selectable : MonoBehaviour
     public Vector3 OriginalLocalPosition { get; private set; }
     public Vector3 OriginalLocalRotation { get; private set; }
     [field: SerializeField, HideInInspector] public System.Guid guid { get; private set; }
-    [field: SerializeField] public string _guid { get; private set; }
+    [field: SerializeField] public string GUID { get; private set; }
     [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }

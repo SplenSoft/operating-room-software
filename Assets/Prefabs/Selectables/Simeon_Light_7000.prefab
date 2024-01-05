@@ -121,6 +121,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GUID>k__BackingField
+      value: 5A4653EC-38B8-4757-BFA2-5410AB62E811
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
       value: Light & Mount (Low Ceiling)
       objectReference: {fileID: 0}
@@ -527,6 +531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GUID>k__BackingField: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Light & Mount (Low Ceiling)
@@ -535,6 +540,7 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <isDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 1
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 1

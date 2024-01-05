@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MeasurementTypes>k__BackingField: 00000000
   <ForwardOnly>k__BackingField: 1
+  <ShowInElevationPhoto>k__BackingField: 0
 --- !u!1 &7247830145713838882
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,6 +93,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MeasurementTypes>k__BackingField: 00000000
   <ForwardOnly>k__BackingField: 1
+  <ShowInElevationPhoto>k__BackingField: 0
 --- !u!1001 &1725304457245593701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -190,6 +192,10 @@ PrefabInstance:
     - target: {fileID: -6565122453228016778, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: glowPasses.Array.data[3].color.r
       value: 0.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GUID>k__BackingField
+      value: 4FE733DD-825D-4B77-A830-9A94E08AECEB
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
