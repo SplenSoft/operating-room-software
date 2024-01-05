@@ -8654,6 +8654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d0888de7f56d7b42bdc9a783b6d0dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDebug: 0
 --- !u!4 &2105755162
 Transform:
   m_ObjectHideFlags: 0
@@ -9703,7 +9704,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000038146973
+      value: 0.000019073486
       objectReference: {fileID: 0}
     - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y
