@@ -6,21 +6,25 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Net.Mail;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 public class ConfigurationManager : MonoBehaviour
 {
     public static ConfigurationManager _instance;
     public bool isDebug = false;
     private Tracker tracker;
+    private RoomConfiguration roomConfiguration;
 
     void Awake()
     {
-        if(_instance != null)
+        if (_instance != null)
             Destroy(this.gameObject);
 
         _instance = this;
 
         CreateTracker();
+
+        roomConfiguration.collections = new List<Tracker>();
     }
 
     Tracker CreateTracker()
@@ -32,20 +36,26 @@ public class ConfigurationManager : MonoBehaviour
         return tracker;
     }
 
+    void RefreshRoomConfig()
+    {
+        roomConfiguration.collections.Clear();
+        roomConfiguration.collections.TrimExcess();
+    }
+
     void Update()
     {
         if (Input.GetKeyUp(KeyCode.K))
         {
-            TestSaveData("test");
+            SaveRoom("test");
         }
 
         if (Input.GetKeyUp(KeyCode.L))
         {
-            LoadConfig();
+            LoadRoom();
         }
     }
 
-    void TestSaveData(string title)
+    void SaveRoom(string title)
     {
         if (tracker.objects.Count > 0)
         {
@@ -57,11 +67,22 @@ public class ConfigurationManager : MonoBehaviour
 
         foreach (TrackedObject obj in foundObjects)
         {
-            tracker.objects.Add(obj.GetData());
+            CreateTracker();
+            if (obj.transform == obj.transform.root)
+            {
+                CreateTracker();
+                TrackedObject[] temps = obj.transform.GetComponentsInChildren<TrackedObject>();
+                foreach (TrackedObject to in temps)
+                {
+                    tracker.objects.Add(to.GetData());
+                }
+
+                roomConfiguration.collections.Add(tracker);
+            }
         }
 
         // ======SAVING JSON=========
-        string json = JsonConvert.SerializeObject(tracker, new JsonSerializerSettings
+        string json = JsonConvert.SerializeObject(roomConfiguration, new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
@@ -85,7 +106,7 @@ public class ConfigurationManager : MonoBehaviour
         Debug.Log($"Saved Config: {path}");
     }
 
-    public void LoadConfig()
+    public void LoadRoom()
     {
         string folder = Application.dataPath + "/Configs/";
         string configName = "test.json";
@@ -94,47 +115,56 @@ public class ConfigurationManager : MonoBehaviour
 
         if (File.Exists(path))
         {
+            CreateTracker();
             string json = File.ReadAllText(path);
-            tracker = JsonConvert.DeserializeObject<Tracker>(json);
-            GenerateConfig();
+            roomConfiguration = JsonConvert.DeserializeObject<RoomConfiguration>(json);
+            GenerateRoomConfig();
         }
     }
 
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
-    void GenerateConfig()
+    void GenerateRoomConfig()
     {
-        List<AttachmentPoint> newPoints = new List<AttachmentPoint>();
+        // insert room size logic here
 
-        tracker.objects.Reverse();
-        foreach(TrackedObject.Data to in tracker.objects)
+        foreach (Tracker t in roomConfiguration.collections)
         {
-            GameObject go = null;
-            if(to.global_guid != attachPointGUID && to.global_guid != "" && to.global_guid != null) // if it is not an AttachPoint, we need to place the Selectable
-            {
-               go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid), to.pos, to.rot);
-               go.name = to.instance_guid;
-            }
+            List<AttachmentPoint> newPoints = new List<AttachmentPoint>();
 
-            if(to.parent != null)
+            //t.objects.Reverse();
+            foreach (TrackedObject.Data to in t.objects)
             {
-                if(to.global_guid == null || to.global_guid == "") // embedded selectable component
+                GameObject go = null;
+                if (to.global_guid != attachPointGUID && to.global_guid != "" && to.global_guid != null) // if it is not an AttachPoint, we need to place the Selectable
                 {
-                    go = GameObject.Find(to.parent);
+                    go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid), to.pos, to.rot);
+                    go.name = to.instance_guid;
                     go.GetComponent<Selectable>().guid = to.instance_guid;
                 }
-                else if(to.global_guid == attachPointGUID) // attachment point component
+
+                if (to.parent != null)
                 {
-                    GameObject myself = GameObject.Find(to.parent);
-                    myself.GetComponent<AttachmentPoint>().guid = to.instance_guid;
-                    newPoints.Add(myself.GetComponent<AttachmentPoint>());
+                    if (to.global_guid == null || to.global_guid == "") // embedded selectable component
+                    {
+                        Debug.Log($"Finding: {to.parent}");
+                        go = GameObject.Find(to.parent);
+                        go.GetComponent<Selectable>().guid = to.instance_guid;
+                    }
+                    else if (to.global_guid == attachPointGUID) // attachment point component
+                    {
+                        Debug.Log($"Finding: {to.parent}");
+                        GameObject myself = GameObject.Find(to.parent);
+                        myself.GetComponent<AttachmentPoint>().guid = to.instance_guid;
+                        newPoints.Add(myself.GetComponent<AttachmentPoint>());
+                    }
+                    else // selectable attached to an attachment point
+                    {
+                        AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
+                        ap.SetAttachedSelectable(go.GetComponent<Selectable>());
+                        go.transform.SetParent(ap.gameObject.transform);
+                    }
                 }
-                else // selectable attached to an attachment point
-                {
-                    AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
-                    ap.SetAttachedSelectable(go.GetComponent<Selectable>());
-                    go.transform.SetParent(ap.gameObject.transform);
-                }
-            }   
+            }
         }
     }
 

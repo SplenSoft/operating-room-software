@@ -1,0 +1,653 @@
+{
+    "objects": [
+        {
+            "objectName": "AttachPoint",
+            "instance_guid": "871748da-5da7-4e2c-96af-e4605996acc4",
+            "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
+            "pos": {
+                "x": -0.101375222,
+                "y": 2.22907567,
+                "z": 0.08880365,
+                "normalized": {
+                    "x": -0.0453957,
+                    "y": 0.99817735,
+                    "z": 0.0397661626,
+                    "normalized": {
+                        "x": -0.0453956947,
+                        "y": 0.99817723,
+                        "z": 0.03976616,
+                        "normalized": {
+                            "x": -0.0453957,
+                            "y": 0.9981773,
+                            "z": 0.0397661626,
+                            "magnitude": 1.0,
+                            "sqrMagnitude": 1.0
+                        },
+                        "magnitude": 0.99999994,
+                        "sqrMagnitude": 0.9999999
+                    },
+                    "magnitude": 1.00000012,
+                    "sqrMagnitude": 1.00000012
+                },
+                "magnitude": 2.233146,
+                "sqrMagnitude": 4.98694134
+            },
+            "rot": {
+                "x": 0.560985744,
+                "y": -0.430459321,
+                "z": 0.43045938,
+                "w": 0.5609855,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 285.0,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 0.301131368,
+                        "y": 0.953582644,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 0.99999994
+                    },
+                    "magnitude": 298.8729,
+                    "sqrMagnitude": 89325.0
+                },
+                "normalized": {
+                    "x": 0.5609857,
+                    "y": -0.430459261,
+                    "z": 0.430459321,
+                    "w": 0.560985446,
+                    "eulerAngles": {
+                        "x": 90.0,
+                        "y": 285.0,
+                        "z": 0.0,
+                        "normalized": {
+                            "x": 0.301131368,
+                            "y": 0.953582644,
+                            "z": 0.0,
+                            "magnitude": 1.0,
+                            "sqrMagnitude": 0.99999994
+                        },
+                        "magnitude": 298.8729,
+                        "sqrMagnitude": 89325.0
+                    }
+                }
+            },
+            "parent": "/cea89e59-e8b6-47c9-abbd-e05850e5227a/AttachPoint/cece9c9a-cd2d-46ae-a35d-6bedfd2edb98/BoomDropTube/BoomDropTube.001/AttachPoint/c9726321-224d-474f-abd9-a5b0fd2cd33a/BoomSegment_1/BoomSegment_1-2/BoomSegment_1-3/AttachPoint/c346a093-ef09-4294-8549-f1d9b3eece53/BoomSegment_2/BoomSegment_2_2/BoomSegment_2_3/AttachPoint"
+        },
+        {
+            "objectName": "BoomSegment_2_3",
+            "instance_guid": "a5338430-aecf-4d67-aa2b-1cddb66632d3",
+            "global_guid": null,
+            "pos": {
+                "x": -0.122061074,
+                "y": 2.32507563,
+                "z": 0.0115253329,
+                "normalized": {
+                    "x": -0.0524248444,
+                    "y": 0.9986126,
+                    "z": 0.004950094,
+                    "magnitude": 1.0,
+                    "sqrMagnitude": 0.99999994
+                },
+                "magnitude": 2.328306,
+                "sqrMagnitude": 5.42100859
+            },
+            "rot": {
+                "x": 0.430459321,
+                "y": 0.560985744,
+                "z": -0.5609855,
+                "w": 0.43045938,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 105.000023,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 0.6507913,
+                        "y": 0.759256661,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 138.293182,
+                    "sqrMagnitude": 19125.0039
+                },
+                "normalized": {
+                    "x": 0.430459261,
+                    "y": 0.5609857,
+                    "z": -0.560985446,
+                    "w": 0.430459321,
+                    "eulerAngles": {
+                        "x": 90.0,
+                        "y": 105.000023,
+                        "z": 0.0,
+                        "normalized": {
+                            "x": 0.6507913,
+                            "y": 0.759256661,
+                            "z": 0.0,
+                            "magnitude": 1.0,
+                            "sqrMagnitude": 1.0
+                        },
+                        "magnitude": 138.293182,
+                        "sqrMagnitude": 19125.0039
+                    }
+                }
+            },
+            "parent": "/cea89e59-e8b6-47c9-abbd-e05850e5227a/AttachPoint/cece9c9a-cd2d-46ae-a35d-6bedfd2edb98/BoomDropTube/BoomDropTube.001/AttachPoint/c9726321-224d-474f-abd9-a5b0fd2cd33a/BoomSegment_1/BoomSegment_1-2/BoomSegment_1-3/AttachPoint/c346a093-ef09-4294-8549-f1d9b3eece53/BoomSegment_2/BoomSegment_2_2/BoomSegment_2_3"
+        },
+        {
+            "objectName": "BoomSegment_2_2",
+            "instance_guid": "1cc612fa-e315-4af3-8355-6b13763e0041",
+            "global_guid": null,
+            "pos": {
+                "x": -0.339090228,
+                "y": 2.32597113,
+                "z": -0.799254835,
+                "normalized": {
+                    "x": -0.136579752,
+                    "y": 0.936861455,
+                    "z": -0.3219262,
+                    "normalized": {
+                        "x": -0.136579767,
+                        "y": 0.9368615,
+                        "z": -0.321926236,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 0.99999994,
+                    "sqrMagnitude": 0.9999999
+                },
+                "magnitude": 2.48272681,
+                "sqrMagnitude": 6.16393232
+            },
+            "rot": {
+                "x": 0.4304593,
+                "y": 0.5609857,
+                "z": -0.560985565,
+                "w": 0.4304594,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 105.000008,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 0.650791347,
+                        "y": 0.759256661,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 138.293167,
+                    "sqrMagnitude": 19125.002
+                },
+                "normalized": {
+                    "x": 0.430459231,
+                    "y": 0.5609856,
+                    "z": -0.5609855,
+                    "w": 0.43045935,
+                    "eulerAngles": {
+                        "x": 90.0,
+                        "y": 105.000008,
+                        "z": 0.0,
+                        "normalized": {
+                            "x": 0.650791347,
+                            "y": 0.759256661,
+                            "z": 0.0,
+                            "magnitude": 1.0,
+                            "sqrMagnitude": 1.0
+                        },
+                        "magnitude": 138.293167,
+                        "sqrMagnitude": 19125.002
+                    }
+                }
+            },
+            "parent": "/cea89e59-e8b6-47c9-abbd-e05850e5227a/AttachPoint/cece9c9a-cd2d-46ae-a35d-6bedfd2edb98/BoomDropTube/BoomDropTube.001/AttachPoint/c9726321-224d-474f-abd9-a5b0fd2cd33a/BoomSegment_1/BoomSegment_1-2/BoomSegment_1-3/AttachPoint/c346a093-ef09-4294-8549-f1d9b3eece53/BoomSegment_2/BoomSegment_2_2"
+        },
+        {
+            "objectName": "c346a093-ef09-4294-8549-f1d9b3eece53",
+            "instance_guid": "c346a093-ef09-4294-8549-f1d9b3eece53",
+            "global_guid": "B12C8360-E6F8-4699-8401-6E97CE61068D",
+            "pos": {
+                "x": -0.359767318,
+                "y": 2.54462624,
+                "z": -0.876500547,
+                "normalized": {
+                    "x": -0.132496759,
+                    "y": 0.9371466,
+                    "z": -0.32280165,
+                    "magnitude": 1.0,
+                    "sqrMagnitude": 1.0
+                },
+                "magnitude": 2.7152915,
+                "sqrMagnitude": 7.37280846
+            },
+            "rot": {
+                "x": -0.5609857,
+                "y": 0.430459261,
+                "z": -0.43045938,
+                "w": -0.560985565,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 285.0,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 0.301131368,
+                        "y": 0.953582644,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 0.99999994
+                    },
+                    "magnitude": 298.8729,
+                    "sqrMagnitude": 89325.0
+                },
+                "normalized": {
+                    "x": -0.5609856,
+                    "y": 0.4304592,
+                    "z": -0.430459321,
+                    "w": -0.5609855,
+                    "eulerAngles": {
+                        "x": 90.0,
+                        "y": 285.0,
+                        "z": 0.0,
+                        "normalized": {
+                            "x": 0.301131368,
+                            "y": 0.953582644,
+                            "z": 0.0,
+                            "magnitude": 1.0,
+                            "sqrMagnitude": 0.99999994
+                        },
+                        "magnitude": 298.8729,
+                        "sqrMagnitude": 89325.0
+                    },
+                    "normalized": {
+                        "x": -0.5609857,
+                        "y": 0.430459231,
+                        "z": -0.43045935,
+                        "w": -0.560985565,
+                        "eulerAngles": {
+                            "x": 90.0,
+                            "y": 285.0,
+                            "z": 0.0,
+                            "normalized": {
+                                "x": 0.301131368,
+                                "y": 0.953582644,
+                                "z": 0.0,
+                                "magnitude": 1.0,
+                                "sqrMagnitude": 0.99999994
+                            },
+                            "magnitude": 298.8729,
+                            "sqrMagnitude": 89325.0
+                        }
+                    }
+                }
+            },
+            "parent": "0fe30990-4a5b-452e-9e17-e257f68baa67"
+        },
+        {
+            "objectName": "AttachPoint",
+            "instance_guid": "0fe30990-4a5b-452e-9e17-e257f68baa67",
+            "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
+            "pos": {
+                "x": -0.359767318,
+                "y": 2.54462624,
+                "z": -0.876500547,
+                "normalized": {
+                    "x": -0.132496759,
+                    "y": 0.9371466,
+                    "z": -0.32280165,
+                    "magnitude": 1.0,
+                    "sqrMagnitude": 1.0
+                },
+                "magnitude": 2.7152915,
+                "sqrMagnitude": 7.37280846
+            },
+            "rot": {
+                "x": -0.707106769,
+                "y": 4.214685E-08,
+                "z": -2.10734257E-08,
+                "w": -0.7071069,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": -6.83018834E-06,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 1.0,
+                        "y": -7.589098E-08,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
+                }
+            },
+            "parent": "/cea89e59-e8b6-47c9-abbd-e05850e5227a/AttachPoint/cece9c9a-cd2d-46ae-a35d-6bedfd2edb98/BoomDropTube/BoomDropTube.001/AttachPoint/c9726321-224d-474f-abd9-a5b0fd2cd33a/BoomSegment_1/BoomSegment_1-2/BoomSegment_1-3/AttachPoint"
+        },
+        {
+            "objectName": "BoomSegment_1-2",
+            "instance_guid": "07fdcabe-4ce2-4125-87ac-dfb400cf3c8a",
+            "global_guid": null,
+            "pos": {
+                "x": -0.94120127,
+                "y": 2.60092545,
+                "z": -0.877075553,
+                "normalized": {
+                    "x": -0.324360639,
+                    "y": 0.896341562,
+                    "z": -0.302261353,
+                    "magnitude": 1.0,
+                    "sqrMagnitude": 0.99999994
+                },
+                "magnitude": 2.90171242,
+                "sqrMagnitude": 8.419934
+            },
+            "rot": {
+                "x": 0.7068815,
+                "y": 2.98023224E-08,
+                "z": 0.707332134,
+                "w": 8.940697E-08,
+                "eulerAngles": {
+                    "x": 4.826595E-06,
+                    "y": 89.9634857,
+                    "z": 180.0,
+                    "normalized": {
+                        "x": 2.398549E-08,
+                        "y": 0.447068423,
+                        "z": 0.8944997,
+                        "normalized": {
+                            "x": 2.39854909E-08,
+                            "y": 0.447068453,
+                            "z": 0.8944998,
+                            "magnitude": 1.0,
+                            "sqrMagnitude": 1.0
+                        },
+                        "magnitude": 0.99999994,
+                        "sqrMagnitude": 0.99999994
+                    },
+                    "magnitude": 201.2298,
+                    "sqrMagnitude": 40493.43
+                },
+                "normalized": {
+                    "x": 0.706881464,
+                    "y": 2.98023188E-08,
+                    "z": 0.7073321,
+                    "w": 8.940696E-08,
+                    "eulerAngles": {
+                        "x": 4.826595E-06,
+                        "y": 89.9634857,
+                        "z": 180.0,
+                        "normalized": {
+                            "x": 2.398549E-08,
+                            "y": 0.447068423,
+                            "z": 0.8944997,
+                            "normalized": {
+                                "x": 2.39854909E-08,
+                                "y": 0.447068453,
+                                "z": 0.8944998,
+                                "magnitude": 1.0,
+                                "sqrMagnitude": 1.0
+                            },
+                            "magnitude": 0.99999994,
+                            "sqrMagnitude": 0.99999994
+                        },
+                        "magnitude": 201.2298,
+                        "sqrMagnitude": 40493.43
+                    }
+                }
+            },
+            "parent": "/cea89e59-e8b6-47c9-abbd-e05850e5227a/AttachPoint/cece9c9a-cd2d-46ae-a35d-6bedfd2edb98/BoomDropTube/BoomDropTube.001/AttachPoint/c9726321-224d-474f-abd9-a5b0fd2cd33a/BoomSegment_1/BoomSegment_1-2"
+        },
+        {
+            "objectName": "c9726321-224d-474f-abd9-a5b0fd2cd33a",
+            "instance_guid": "c9726321-224d-474f-abd9-a5b0fd2cd33a",
+            "global_guid": "89B34AE1-8252-46D4-8405-F5CD532F0CFE",
+            "pos": {
+                "x": -1.0414,
+                "y": 2.73392057,
+                "z": -0.8763,
+                "normalized": {
+                    "x": -0.34099865,
+                    "y": 0.8952019,
+                    "z": -0.2869379,
+                    "normalized": {
+                        "x": -0.340998679,
+                        "y": 0.895202,
+                        "z": -0.286937922,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 0.99999994,
+                    "sqrMagnitude": 0.99999994
+                },
+                "magnitude": 3.05397081,
+                "sqrMagnitude": 9.326737
+            },
+            "rot": {
+                "x": 0.7071068,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.7071068,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 1.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
+                }
+            },
+            "parent": "75f9ed69-6c0c-4a59-9d9f-4e1472620010"
+        },
+        {
+            "objectName": "AttachPoint",
+            "instance_guid": "75f9ed69-6c0c-4a59-9d9f-4e1472620010",
+            "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
+            "pos": {
+                "x": -1.0414,
+                "y": 2.73392057,
+                "z": -0.8763,
+                "normalized": {
+                    "x": -0.34099865,
+                    "y": 0.8952019,
+                    "z": -0.2869379,
+                    "normalized": {
+                        "x": -0.340998679,
+                        "y": 0.895202,
+                        "z": -0.286937922,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 0.99999994,
+                    "sqrMagnitude": 0.99999994
+                },
+                "magnitude": 3.05397081,
+                "sqrMagnitude": 9.326737
+            },
+            "rot": {
+                "x": 0.7071068,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.7071068,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 1.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
+                }
+            },
+            "parent": "/cea89e59-e8b6-47c9-abbd-e05850e5227a/AttachPoint/cece9c9a-cd2d-46ae-a35d-6bedfd2edb98/BoomDropTube/BoomDropTube.001/AttachPoint"
+        },
+        {
+            "objectName": "BoomDropTube.001",
+            "instance_guid": "8a71a24b-d9c3-4834-bc05-eb0bed18ad00",
+            "global_guid": null,
+            "pos": {
+                "x": -1.0414,
+                "y": 3.023378,
+                "z": -0.8763,
+                "normalized": {
+                    "x": -0.31409058,
+                    "y": 0.9118634,
+                    "z": -0.264295727,
+                    "magnitude": 1.0,
+                    "sqrMagnitude": 0.99999994
+                },
+                "magnitude": 3.315604,
+                "sqrMagnitude": 10.99323
+            },
+            "rot": {
+                "x": 0.7071068,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.7071068,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 1.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
+                }
+            },
+            "parent": "/cea89e59-e8b6-47c9-abbd-e05850e5227a/AttachPoint/cece9c9a-cd2d-46ae-a35d-6bedfd2edb98/BoomDropTube/BoomDropTube.001"
+        },
+        {
+            "objectName": "cece9c9a-cd2d-46ae-a35d-6bedfd2edb98",
+            "instance_guid": "cece9c9a-cd2d-46ae-a35d-6bedfd2edb98",
+            "global_guid": "92B75922-A802-4CFD-9D8F-5BD3F17E8527",
+            "pos": {
+                "x": -1.0414,
+                "y": 3.048,
+                "z": -0.8763,
+                "normalized": {
+                    "x": -0.311976552,
+                    "y": 0.91310215,
+                    "z": -0.262516856,
+                    "magnitude": 1.0,
+                    "sqrMagnitude": 1.0
+                },
+                "magnitude": 3.33807135,
+                "sqrMagnitude": 11.14272
+            },
+            "rot": {
+                "x": 0.7071068,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.7071068,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 1.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
+                }
+            },
+            "parent": "a4c85279-83a5-4be8-bea6-292219642c50"
+        },
+        {
+            "objectName": "AttachPoint",
+            "instance_guid": "a4c85279-83a5-4be8-bea6-292219642c50",
+            "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
+            "pos": {
+                "x": -1.0414,
+                "y": 3.048,
+                "z": -0.8763,
+                "normalized": {
+                    "x": -0.311976552,
+                    "y": 0.91310215,
+                    "z": -0.262516856,
+                    "magnitude": 1.0,
+                    "sqrMagnitude": 1.0
+                },
+                "magnitude": 3.33807135,
+                "sqrMagnitude": 11.14272
+            },
+            "rot": {
+                "x": 0.7071068,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.7071068,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 1.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
+                }
+            },
+            "parent": "/cea89e59-e8b6-47c9-abbd-e05850e5227a/AttachPoint"
+        },
+        {
+            "objectName": "cea89e59-e8b6-47c9-abbd-e05850e5227a",
+            "instance_guid": "cea89e59-e8b6-47c9-abbd-e05850e5227a",
+            "global_guid": "54EA5A4F-1679-4E1E-9906-EADDD82609B7",
+            "pos": {
+                "x": -1.0414,
+                "y": 3.048,
+                "z": -0.8763,
+                "normalized": {
+                    "x": -0.311976552,
+                    "y": 0.91310215,
+                    "z": -0.262516856,
+                    "magnitude": 1.0,
+                    "sqrMagnitude": 1.0
+                },
+                "magnitude": 3.33807135,
+                "sqrMagnitude": 11.14272
+            },
+            "rot": {
+                "x": 0.7071068,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.7071068,
+                "eulerAngles": {
+                    "x": 90.0,
+                    "y": 0.0,
+                    "z": 0.0,
+                    "normalized": {
+                        "x": 1.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "magnitude": 1.0,
+                        "sqrMagnitude": 1.0
+                    },
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
+                }
+            },
+            "parent": null
+        }
+    ]
+}
