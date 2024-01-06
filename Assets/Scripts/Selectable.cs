@@ -211,7 +211,7 @@ public class Selectable : MonoBehaviour
         return false;
     }
 
-    private void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
+    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
         CurrentPreviewScaleLevel = scaleLevel;
 

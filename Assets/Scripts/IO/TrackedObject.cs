@@ -16,6 +16,7 @@ public class TrackedObject : MonoBehaviour
         public Vector3 pos;
         public Quaternion rot;
         public string parent;
+        public Selectable.ScaleLevel scaleLevel;
     }
 
     private Data data;
@@ -28,7 +29,22 @@ public class TrackedObject : MonoBehaviour
         data.pos = transform.position;
         data.rot = transform.rotation;
 
+        if(gameObject.TryGetComponent<Selectable>(out Selectable s))
+        {
+            data.scaleLevel = s.CurrentScaleLevel;
+        }
+
         return data;
+    }
+
+    public Selectable.ScaleLevel GetScale()
+    {
+        return data.scaleLevel;
+    }
+
+    public void StoreScale(Selectable.ScaleLevel scale)
+    {
+        data.scaleLevel = scale;
     }
 
     void GetGUIDs(GameObject go)

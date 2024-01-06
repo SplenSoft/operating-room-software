@@ -130,8 +130,7 @@ public class ConfigurationManager : MonoBehaviour
         foreach (Tracker t in roomConfiguration.collections)
         {
             List<AttachmentPoint> newPoints = new List<AttachmentPoint>();
-
-            //t.objects.Reverse();
+            List<TrackedObject> newObjects = new List<TrackedObject>();
             foreach (TrackedObject.Data to in t.objects)
             {
                 GameObject go = null;
@@ -140,6 +139,8 @@ public class ConfigurationManager : MonoBehaviour
                     go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid), to.pos, to.rot);
                     go.name = to.instance_guid;
                     go.GetComponent<Selectable>().guid = to.instance_guid;
+                    LogScale(go.GetComponent<Selectable>(), to);
+                    newObjects.Add(go.GetComponent<TrackedObject>());
                 }
 
                 if (to.parent != null)
@@ -149,6 +150,8 @@ public class ConfigurationManager : MonoBehaviour
                         Debug.Log($"Finding: {to.parent}");
                         go = GameObject.Find(to.parent);
                         go.GetComponent<Selectable>().guid = to.instance_guid;
+                        LogScale(go.GetComponent<Selectable>(), to);
+                        newObjects.Add(go.GetComponent<TrackedObject>());
                     }
                     else if (to.global_guid == attachPointGUID) // attachment point component
                     {
@@ -162,9 +165,27 @@ public class ConfigurationManager : MonoBehaviour
                         AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
                         ap.SetAttachedSelectable(go.GetComponent<Selectable>());
                         go.transform.SetParent(ap.gameObject.transform);
+                        go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
+                        LogScale(go.GetComponent<Selectable>(), to);
+                        newObjects.Add(go.GetComponent<TrackedObject>());
                     }
                 }
             }
+
+            newObjects.Reverse();
+            foreach (TrackedObject obj in newObjects)
+            {
+                if(obj.GetScale() != null)
+                {
+                    obj.gameObject.GetComponent<Selectable>().SetScaleLevel(obj.GetScale(), false);
+                }
+            }
+        }
+
+        void LogScale(Selectable s, TrackedObject.Data to)
+        {
+            if (to.scaleLevel.Selected && to.scaleLevel != s.CurrentScaleLevel)
+                s.GetComponent<TrackedObject>().StoreScale(to.scaleLevel);
         }
     }
 
