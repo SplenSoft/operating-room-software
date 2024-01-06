@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.Net.Mail;
+using System.Linq;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -98,9 +100,37 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
     void GenerateConfig()
     {
+        List<AttachmentPoint> newPoints = new List<AttachmentPoint>();
 
+        tracker.objects.Reverse();
+        foreach(TrackedObject.Data to in tracker.objects)
+        {
+            GameObject go = null;
+            if(to.global_guid != attachPointGUID) // if it is not an AttachPoint, we need to place the Selectable
+            {
+               go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid), to.pos, to.rot);
+               go.name = to.instance_guid;
+            }
+
+            if(to.parent != null)
+            {
+                if(to.global_guid == attachPointGUID)
+                {
+                    GameObject myself = GameObject.Find(to.parent);
+                    myself.GetComponent<AttachmentPoint>().guid = to.instance_guid;
+                    newPoints.Add(myself.GetComponent<AttachmentPoint>());
+                }
+                else
+                {
+                    AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
+                    ap.SetAttachedSelectable(go.GetComponent<Selectable>());
+                    go.transform.SetParent(ap.gameObject.transform);
+                }
+            }   
+        }
     }
 
     public static string GetGameObjectPath(GameObject obj)

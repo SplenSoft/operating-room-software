@@ -36,7 +36,14 @@ public class TrackedObject : MonoBehaviour
         if(gameObject.TryGetComponent<Selectable>(out Selectable s))
         {
             data.instance_guid = s.guid.ToString();
-            data.global_guid = s.GUID;
+            if(s.GUID == "" || s.GUID == null)
+            {
+                data.parent = ConfigurationManager.GetGameObjectPath(gameObject);
+            }
+            else
+            {
+                data.global_guid = s.GUID;
+            }
 
             if(s.ParentAttachmentPoint != null) // This selectable is a child of a configuration, assign AttachmentPoint guid to it's parent ref
             {
@@ -49,14 +56,7 @@ public class TrackedObject : MonoBehaviour
             data.instance_guid = ap.guid.ToString();
             data.global_guid = ap.GUID;
 
-            if(ap.ParentSelectables[0].GUID == "" || ap.ParentSelectables[0].GUID == null)
-            {
-                data.parent = ConfigurationManager.GetGameObjectPath(ap.ParentSelectables[0].gameObject);
-            }
-            else
-            {
-                data.parent = ap.ParentSelectables[0].guid.ToString();
-            }
+            data.parent = ConfigurationManager.GetGameObjectPath(gameObject);
         }
     }
 }

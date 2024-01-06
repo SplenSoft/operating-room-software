@@ -11,7 +11,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Add basic selectable - <see href="https://youtu.be/qEaRrGC_MX8?si=kCXNSVa11KxLKRNG"/> 
 /// </summary>
-[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect)), Serializable]
+[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect), typeof(TrackedObject)), Serializable]
 public class Selectable : MonoBehaviour
 {
     [Serializable]

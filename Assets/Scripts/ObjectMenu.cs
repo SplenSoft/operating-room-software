@@ -30,6 +30,11 @@ public class ObjectMenu : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public GameObject GetPrefabByGUID(string guid)
+    {
+        return BuiltInSelectablePrefabs.Single(s => s.GetComponent<Selectable>().GUID == guid);
+    }
+
     private void InstantiateMenuItems()
     {
         BuiltInSelectablePrefabs.ForEach(prefab =>

@@ -11,7 +11,7 @@ public class AttachmentPoint : MonoBehaviour
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
-    [field: SerializeField, HideInInspector] public System.Guid guid { get; private set; }
+    [field: SerializeField, HideInInspector] public string guid { get; set; }
     [field: SerializeField] public string GUID { get; private set; }
     [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
@@ -77,9 +77,7 @@ public class AttachmentPoint : MonoBehaviour
     {
         EmptyNullList();
 
-        guid = Guid.NewGuid();
-
-        if(!ConfigurationManager._instance.isDebug) gameObject.name = guid.ToString();
+        guid = Guid.NewGuid().ToString();
 
         _collider = GetComponentInChildren<Collider>();
         _renderer = GetComponentInChildren<MeshRenderer>();

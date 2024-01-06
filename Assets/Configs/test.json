@@ -1,289 +1,75 @@
 {
     "objects": [
         {
-            "objectName": "Simeon_Light_7000(Clone)",
-            "instance_guid": "9ca74279-8b20-4483-8aa4-f3dd32405ec6",
-            "global_guid": "5A4653EC-38B8-4757-BFA2-5410AB62E811",
-            "pos": {
-                "x": 0.0179251432,
-                "y": 2.69713879,
-                "z": 1.549365,
-                "normalized": {
-                    "x": 0.005762725,
-                    "y": 0.8670988,
-                    "z": 0.498102874,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 1.0
-                },
-                "magnitude": 3.11053228,
-                "sqrMagnitude": 9.675411
-            },
-            "rot": {
-                "x": -0.50000006,
-                "y": 0.499999821,
-                "z": -0.499999881,
-                "w": 0.5000003,
-                "eulerAngles": {
-                    "x": -3.7566042E-05,
-                    "y": 89.9999847,
-                    "z": 270.0,
-                    "normalized": {
-                        "x": -1.31993616E-07,
-                        "y": 0.316227734,
-                        "z": 0.9486833,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 284.60498,
-                    "sqrMagnitude": 81000.0
-                }
-            },
-            "parent": "2058ec5a-95d5-47ae-a6a0-f1a6bff71e4c"
-        },
-        {
             "objectName": "AttachPoint",
-            "instance_guid": "2058ec5a-95d5-47ae-a6a0-f1a6bff71e4c",
+            "instance_guid": "6857c3ef-2395-4705-8b82-54941a7ba6a3",
             "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
             "pos": {
-                "x": 0.0179253817,
-                "y": 2.69713879,
-                "z": 1.549365,
+                "x": -0.359767318,
+                "y": 2.54462624,
+                "z": -0.927300632,
                 "normalized": {
-                    "x": 0.005762802,
-                    "y": 0.8670988,
-                    "z": 0.498102874,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 1.0
-                },
-                "magnitude": 3.11053228,
-                "sqrMagnitude": 9.675411
-            },
-            "rot": {
-                "x": -0.5000001,
-                "y": 0.4999998,
-                "z": -0.499999851,
-                "w": 0.500000358,
-                "eulerAngles": {
-                    "x": -4.78113252E-05,
-                    "y": 89.9999847,
-                    "z": 270.0,
+                    "x": -0.13168098,
+                    "y": 0.9313766,
+                    "z": -0.339407861,
                     "normalized": {
-                        "x": -1.67991871E-07,
-                        "y": 0.316227734,
-                        "z": 0.9486833,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 284.60498,
-                    "sqrMagnitude": 81000.0
-                }
-            },
-            "parent": "/CeilingMount_Double(Clone)/AttachPoint/ArmDropTube(Clone)/ArmDropTube/ArmDropTube.001/AttachmentPoint/AttachPoint/ArmSegment_1(Clone)/ArmSegment_1/ArmSegment_1.001/ArmSegment_1.002/AttachPoint/ArmSegment_1_Cardanic(Clone)/ArmSegment_1_Cardanic/Arm"
-        },
-        {
-            "objectName": "ArmSegment_1_Cardanic(Clone)",
-            "instance_guid": "3398143c-9468-4f14-97c2-f39ae0e5dfb1",
-            "global_guid": "336C14B8-B377-4A92-9F67-3062DF962676",
-            "pos": {
-                "x": -0.7880042,
-                "y": 2.77971864,
-                "z": 1.54936862,
-                "normalized": {
-                    "x": -0.240357712,
-                    "y": 0.8478721,
-                    "z": 0.4725897,
-                    "normalized": {
-                        "x": -0.240357727,
-                        "y": 0.847872138,
-                        "z": 0.472589731,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 0.99999994,
-                    "sqrMagnitude": 0.99999994
-                },
-                "magnitude": 3.27846456,
-                "sqrMagnitude": 10.7483292
-            },
-            "rot": {
-                "x": -0.7071068,
-                "y": -1.57349049E-07,
-                "z": -4.32706827E-07,
-                "w": -0.7071067,
-                "eulerAngles": {
-                    "x": 89.98022,
-                    "y": 2.54995066E-05,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 1.0,
-                        "y": 2.83390136E-07,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 89.98022,
-                    "sqrMagnitude": 8096.43945
-                },
-                "normalized": {
-                    "x": -0.7071069,
-                    "y": -1.57349064E-07,
-                    "z": -4.32706855E-07,
-                    "w": -0.707106769,
-                    "eulerAngles": {
-                        "x": 90.0,
-                        "y": 2.54995084E-05,
-                        "z": 0.0,
-                        "normalized": {
-                            "x": 1.0,
-                            "y": 2.83327864E-07,
-                            "z": 0.0,
-                            "magnitude": 1.0,
-                            "sqrMagnitude": 1.0
-                        },
-                        "magnitude": 90.0,
-                        "sqrMagnitude": 8100.0
-                    }
-                }
-            },
-            "parent": "30a57a79-0f7b-4c78-8610-a6640bba9c94"
-        },
-        {
-            "objectName": "AttachPoint",
-            "instance_guid": "b32710d2-4e7f-4dc8-97f3-2160a76d7eaa",
-            "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
-            "pos": {
-                "x": -1.5875,
-                "y": 2.77988982,
-                "z": 1.54939961,
-                "normalized": {
-                    "x": -0.4463677,
-                    "y": 0.781639755,
-                    "z": 0.4356548,
-                    "normalized": {
-                        "x": -0.446367741,
-                        "y": 0.7816398,
-                        "z": 0.435654819,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.00000012
-                    },
-                    "magnitude": 0.99999994,
-                    "sqrMagnitude": 0.99999994
-                },
-                "magnitude": 3.5564847,
-                "sqrMagnitude": 12.6485825
-            },
-            "rot": {
-                "x": 0.0,
-                "y": -0.707106948,
-                "z": 0.7071067,
-                "w": 0.0,
-                "eulerAngles": {
-                    "x": 90.0,
-                    "y": 180.0,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 0.4472136,
-                        "y": 0.8944272,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 201.246124,
-                    "sqrMagnitude": 40500.0
-                }
-            },
-            "parent": "54052ee8-5987-4cae-875c-686e6f492612"
-        },
-        {
-            "objectName": "AttachPoint",
-            "instance_guid": "30a57a79-0f7b-4c78-8610-a6640bba9c94",
-            "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
-            "pos": {
-                "x": -0.7880041,
-                "y": 2.77971864,
-                "z": 1.54936862,
-                "normalized": {
-                    "x": -0.240357667,
-                    "y": 0.8478721,
-                    "z": 0.4725897,
-                    "normalized": {
-                        "x": -0.240357682,
-                        "y": 0.847872138,
-                        "z": 0.472589731,
+                        "x": -0.131681,
+                        "y": 0.931376636,
+                        "z": -0.3394079,
                         "magnitude": 1.0,
                         "sqrMagnitude": 1.0
                     },
                     "magnitude": 0.99999994,
                     "sqrMagnitude": 0.9999999
                 },
-                "magnitude": 3.27846456,
-                "sqrMagnitude": 10.7483292
+                "magnitude": 2.73211312,
+                "sqrMagnitude": 7.464442
             },
             "rot": {
-                "x": -0.7071068,
-                "y": -1.57349064E-07,
-                "z": -4.32706827E-07,
-                "w": -0.7071067,
+                "x": -0.707106769,
+                "y": 4.214685E-08,
+                "z": -2.10734257E-08,
+                "w": -0.7071069,
                 "eulerAngles": {
-                    "x": 89.98022,
-                    "y": 2.5499512E-05,
+                    "x": 90.0,
+                    "y": -6.83018834E-06,
                     "z": 0.0,
                     "normalized": {
                         "x": 1.0,
-                        "y": 2.833902E-07,
+                        "y": -7.589098E-08,
                         "z": 0.0,
                         "magnitude": 1.0,
                         "sqrMagnitude": 1.0
                     },
-                    "magnitude": 89.98022,
-                    "sqrMagnitude": 8096.43945
-                },
-                "normalized": {
-                    "x": -0.7071069,
-                    "y": -1.57349078E-07,
-                    "z": -4.32706855E-07,
-                    "w": -0.707106769,
-                    "eulerAngles": {
-                        "x": 90.0,
-                        "y": 2.54995084E-05,
-                        "z": 0.0,
-                        "normalized": {
-                            "x": 1.0,
-                            "y": 2.83327864E-07,
-                            "z": 0.0,
-                            "magnitude": 1.0,
-                            "sqrMagnitude": 1.0
-                        },
-                        "magnitude": 90.0,
-                        "sqrMagnitude": 8100.0
-                    }
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
                 }
             },
-            "parent": "/CeilingMount_Double(Clone)/AttachPoint/ArmDropTube(Clone)/ArmDropTube/ArmDropTube.001/AttachmentPoint/AttachPoint/ArmSegment_1(Clone)/ArmSegment_1/ArmSegment_1.001"
+            "parent": "/0ab4501d-0285-4211-88f9-8400c673f5b3/AttachPoint/9ad772e7-34be-4462-899f-d5dffac25df2/BoomDropTube/0d27f5bf-13c1-4dfd-9ae8-712ef6a2543b/AttachPoint/cf54c6fd-7f2e-44c3-a3b4-5601efd1c1cd/BoomSegment_1/3441a0c6-d9db-43bf-af98-30536296f0b6/BoomSegment_1-3/AttachPoint"
         },
         {
-            "objectName": "ArmSegment_1(Clone)",
-            "instance_guid": "54052ee8-5987-4cae-875c-686e6f492612",
-            "global_guid": "2AF955E3-1E04-4240-BAB4-92F534FDF0B3",
+            "objectName": "cf54c6fd-7f2e-44c3-a3b4-5601efd1c1cd",
+            "instance_guid": "cf54c6fd-7f2e-44c3-a3b4-5601efd1c1cd",
+            "global_guid": "89B34AE1-8252-46D4-8405-F5CD532F0CFE",
             "pos": {
-                "x": -1.5875,
-                "y": 2.8795898,
-                "z": 1.54939961,
+                "x": -1.0414,
+                "y": 2.73392057,
+                "z": -0.927100062,
                 "normalized": {
-                    "x": -0.436732739,
-                    "y": 0.792196035,
-                    "z": 0.426251054,
+                    "x": -0.339336157,
+                    "y": 0.8908375,
+                    "z": -0.302092,
                     "magnitude": 1.0,
                     "sqrMagnitude": 1.0
                 },
-                "magnitude": 3.634946,
-                "sqrMagnitude": 13.2128325
+                "magnitude": 3.068933,
+                "sqrMagnitude": 9.41835
             },
             "rot": {
-                "x": 0.707106948,
+                "x": 0.7071068,
                 "y": 0.0,
                 "z": 0.0,
-                "w": 0.7071067,
+                "w": 0.7071068,
                 "eulerAngles": {
                     "x": 90.0,
                     "y": 0.0,
@@ -299,65 +85,25 @@
                     "sqrMagnitude": 8100.0
                 }
             },
-            "parent": "5e53287e-80f5-437b-b412-69f0844fe7e6"
+            "parent": "0942898b-5deb-4ab3-89c2-94e08b06cac4"
         },
         {
             "objectName": "AttachPoint",
-            "instance_guid": "5e53287e-80f5-437b-b412-69f0844fe7e6",
+            "instance_guid": "0942898b-5deb-4ab3-89c2-94e08b06cac4",
             "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
             "pos": {
-                "x": -1.5875,
-                "y": 2.8795898,
-                "z": 1.54939961,
+                "x": -1.0414,
+                "y": 2.73392057,
+                "z": -0.927100062,
                 "normalized": {
-                    "x": -0.436732739,
-                    "y": 0.792196035,
-                    "z": 0.426251054,
+                    "x": -0.339336157,
+                    "y": 0.8908375,
+                    "z": -0.302092,
                     "magnitude": 1.0,
                     "sqrMagnitude": 1.0
                 },
-                "magnitude": 3.634946,
-                "sqrMagnitude": 13.2128325
-            },
-            "rot": {
-                "x": 0.707106948,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 0.7071067,
-                "eulerAngles": {
-                    "x": 90.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 1.0,
-                        "y": 0.0,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 90.0,
-                    "sqrMagnitude": 8100.0
-                }
-            },
-            "parent": "/CeilingMount_Double(Clone)/AttachPoint/ArmDropTube(Clone)/ArmDropTube/ArmDropTube.001"
-        },
-        {
-            "objectName": "ArmDropTube(Clone)",
-            "instance_guid": "31270abd-f79d-447f-80cf-b964bc80ebed",
-            "global_guid": "7DDAA2E6-742E-48EC-9F5F-8FC4E32AE16A",
-            "pos": {
-                "x": -1.5875,
-                "y": 3.048,
-                "z": 1.5494,
-                "normalized": {
-                    "x": -0.421114177,
-                    "y": 0.8085393,
-                    "z": 0.411007434,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 1.0
-                },
-                "magnitude": 3.76976132,
-                "sqrMagnitude": 14.2111006
+                "magnitude": 3.068933,
+                "sqrMagnitude": 9.41835
             },
             "rot": {
                 "x": 0.7071068,
@@ -379,65 +125,65 @@
                     "sqrMagnitude": 8100.0
                 }
             },
-            "parent": "128eb528-774d-4772-a29b-1848062318d6"
+            "parent": "/0ab4501d-0285-4211-88f9-8400c673f5b3/AttachPoint/9ad772e7-34be-4462-899f-d5dffac25df2/BoomDropTube/0d27f5bf-13c1-4dfd-9ae8-712ef6a2543b/AttachPoint"
         },
         {
-            "objectName": "AttachPoint (1)",
-            "instance_guid": "d6809a7b-1c43-4501-bc45-207e0ea50bf3",
-            "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
+            "objectName": "9ad772e7-34be-4462-899f-d5dffac25df2",
+            "instance_guid": "9ad772e7-34be-4462-899f-d5dffac25df2",
+            "global_guid": "92B75922-A802-4CFD-9D8F-5BD3F17E8527",
             "pos": {
-                "x": -1.8923,
+                "x": -1.0414,
                 "y": 3.048,
-                "z": 1.5494,
+                "z": -0.9271,
                 "normalized": {
-                    "x": -0.484223276,
-                    "y": 0.779957,
-                    "z": 0.396478117,
+                    "x": -0.3107019,
+                    "y": 0.9093715,
+                    "z": -0.27660048,
                     "magnitude": 1.0,
                     "sqrMagnitude": 1.0
                 },
-                "magnitude": 3.907908,
-                "sqrMagnitude": 15.2717438
+                "magnitude": 3.35176563,
+                "sqrMagnitude": 11.234333
             },
             "rot": {
-                "x": 0.0,
-                "y": 0.7071068,
-                "z": -0.7071068,
-                "w": 0.0,
+                "x": 0.7071068,
+                "y": 0.0,
+                "z": 0.0,
+                "w": 0.7071068,
                 "eulerAngles": {
                     "x": 90.0,
-                    "y": 180.0,
+                    "y": 0.0,
                     "z": 0.0,
                     "normalized": {
-                        "x": 0.4472136,
-                        "y": 0.8944272,
+                        "x": 1.0,
+                        "y": 0.0,
                         "z": 0.0,
                         "magnitude": 1.0,
                         "sqrMagnitude": 1.0
                     },
-                    "magnitude": 201.246124,
-                    "sqrMagnitude": 40500.0
+                    "magnitude": 90.0,
+                    "sqrMagnitude": 8100.0
                 }
             },
-            "parent": "0afb7d0d-1731-48df-8be4-81f6f5858132"
+            "parent": "81d8d2ba-4a19-4835-82eb-3868032f14a6"
         },
         {
             "objectName": "AttachPoint",
-            "instance_guid": "128eb528-774d-4772-a29b-1848062318d6",
+            "instance_guid": "81d8d2ba-4a19-4835-82eb-3868032f14a6",
             "global_guid": "C9614497-545A-414A-8452-3B7CF50EE43E",
             "pos": {
-                "x": -1.5875,
+                "x": -1.0414,
                 "y": 3.048,
-                "z": 1.5494,
+                "z": -0.9271,
                 "normalized": {
-                    "x": -0.421114177,
-                    "y": 0.8085393,
-                    "z": 0.411007434,
+                    "x": -0.3107019,
+                    "y": 0.9093715,
+                    "z": -0.27660048,
                     "magnitude": 1.0,
                     "sqrMagnitude": 1.0
                 },
-                "magnitude": 3.76976132,
-                "sqrMagnitude": 14.2111006
+                "magnitude": 3.35176563,
+                "sqrMagnitude": 11.234333
             },
             "rot": {
                 "x": 0.7071068,
@@ -459,25 +205,25 @@
                     "sqrMagnitude": 8100.0
                 }
             },
-            "parent": "0afb7d0d-1731-48df-8be4-81f6f5858132"
+            "parent": "/0ab4501d-0285-4211-88f9-8400c673f5b3/AttachPoint"
         },
         {
-            "objectName": "CeilingMount_Double(Clone)",
-            "instance_guid": "0afb7d0d-1731-48df-8be4-81f6f5858132",
-            "global_guid": "6E04D795-2F9E-484A-9DA5-343C193BB306",
+            "objectName": "0ab4501d-0285-4211-88f9-8400c673f5b3",
+            "instance_guid": "0ab4501d-0285-4211-88f9-8400c673f5b3",
+            "global_guid": "54EA5A4F-1679-4E1E-9906-EADDD82609B7",
             "pos": {
-                "x": -1.7399,
+                "x": -1.0414,
                 "y": 3.048,
-                "z": 1.5494,
+                "z": -0.9271,
                 "normalized": {
-                    "x": -0.453520566,
-                    "y": 0.7944886,
-                    "z": 0.403865,
+                    "x": -0.3107019,
+                    "y": 0.9093715,
+                    "z": -0.27660048,
                     "magnitude": 1.0,
                     "sqrMagnitude": 1.0
                 },
-                "magnitude": 3.83643031,
-                "sqrMagnitude": 14.7181969
+                "magnitude": 3.35176563,
+                "sqrMagnitude": 11.234333
             },
             "rot": {
                 "x": 0.7071068,
@@ -497,279 +243,6 @@
                     },
                     "magnitude": 90.0,
                     "sqrMagnitude": 8100.0
-                }
-            },
-            "parent": null
-        },
-        {
-            "objectName": "OR_Table_0 (1)",
-            "instance_guid": "d4fedc08-10c3-415f-8263-bb777cf53cf3",
-            "global_guid": "4FE733DD-825D-4B77-A830-9A94E08AECEB",
-            "pos": {
-                "x": 0.0,
-                "y": 0.0,
-                "z": 0.0,
-                "magnitude": 0.0,
-                "sqrMagnitude": 0.0
-            },
-            "rot": {
-                "x": -0.5,
-                "y": -0.5,
-                "z": -0.5,
-                "w": 0.5,
-                "eulerAngles": {
-                    "x": 270.0,
-                    "y": 270.0,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 0.707106769,
-                        "y": 0.707106769,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 0.99999994
-                    },
-                    "magnitude": 381.837677,
-                    "sqrMagnitude": 145800.0
-                }
-            },
-            "parent": null
-        },
-        {
-            "objectName": "CeilingLightFixture (2)",
-            "instance_guid": "161bd991-7cb9-44b0-b4ac-db29f9898d98",
-            "global_guid": "4D70C3EA-FE43-4E56-AB17-0D4452784DBD",
-            "pos": {
-                "x": 0.0,
-                "y": 3.048,
-                "z": 2.0,
-                "normalized": {
-                    "x": 0.0,
-                    "y": 0.836079359,
-                    "z": 0.5486085,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 0.99999994
-                },
-                "magnitude": 3.645587,
-                "sqrMagnitude": 13.2903042
-            },
-            "rot": {
-                "x": 0.7071068,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 0.7071068,
-                "eulerAngles": {
-                    "x": 90.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 1.0,
-                        "y": 0.0,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 90.0,
-                    "sqrMagnitude": 8100.0
-                }
-            },
-            "parent": null
-        },
-        {
-            "objectName": "CeilingLightFixture (1)",
-            "instance_guid": "00b87021-dc5f-4294-ba15-3870ff35af08",
-            "global_guid": "4D70C3EA-FE43-4E56-AB17-0D4452784DBD",
-            "pos": {
-                "x": -2.0,
-                "y": 3.048,
-                "z": 0.0,
-                "normalized": {
-                    "x": -0.5486085,
-                    "y": 0.836079359,
-                    "z": 0.0,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 0.99999994
-                },
-                "magnitude": 3.645587,
-                "sqrMagnitude": 13.2903042
-            },
-            "rot": {
-                "x": 0.7071068,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 0.7071068,
-                "eulerAngles": {
-                    "x": 90.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 1.0,
-                        "y": 0.0,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 90.0,
-                    "sqrMagnitude": 8100.0
-                }
-            },
-            "parent": null
-        },
-        {
-            "objectName": "CeilingLightFixture (3)",
-            "instance_guid": "ed470f78-09ce-4d63-86bc-b7971058d078",
-            "global_guid": "4D70C3EA-FE43-4E56-AB17-0D4452784DBD",
-            "pos": {
-                "x": 0.0,
-                "y": 3.048,
-                "z": -2.0,
-                "normalized": {
-                    "x": 0.0,
-                    "y": 0.836079359,
-                    "z": -0.5486085,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 0.99999994
-                },
-                "magnitude": 3.645587,
-                "sqrMagnitude": 13.2903042
-            },
-            "rot": {
-                "x": 0.7071068,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 0.7071068,
-                "eulerAngles": {
-                    "x": 90.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 1.0,
-                        "y": 0.0,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 90.0,
-                    "sqrMagnitude": 8100.0
-                }
-            },
-            "parent": null
-        },
-        {
-            "objectName": "CeilingLightFixture",
-            "instance_guid": "c8ee9588-e0b6-4d1d-addc-14a210ba1e53",
-            "global_guid": "4D70C3EA-FE43-4E56-AB17-0D4452784DBD",
-            "pos": {
-                "x": 2.0,
-                "y": 3.048,
-                "z": 0.0,
-                "normalized": {
-                    "x": 0.5486085,
-                    "y": 0.836079359,
-                    "z": 0.0,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 0.99999994
-                },
-                "magnitude": 3.645587,
-                "sqrMagnitude": 13.2903042
-            },
-            "rot": {
-                "x": 0.7071068,
-                "y": 0.0,
-                "z": 0.0,
-                "w": 0.7071068,
-                "eulerAngles": {
-                    "x": 90.0,
-                    "y": 0.0,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 1.0,
-                        "y": 0.0,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 90.0,
-                    "sqrMagnitude": 8100.0
-                }
-            },
-            "parent": null
-        },
-        {
-            "objectName": "Surgeon_1",
-            "instance_guid": "98057eb6-5c02-40c5-a1a2-76da59dea803",
-            "global_guid": "4A0041E4-C5CC-40D2-B034-6584733E1E84",
-            "pos": {
-                "x": 0.592,
-                "y": -0.000149998814,
-                "z": -0.011,
-                "normalized": {
-                    "x": 0.9998274,
-                    "y": -0.000253332633,
-                    "z": -0.0185778737,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 1.0
-                },
-                "magnitude": 0.5921022,
-                "sqrMagnitude": 0.350585043
-            },
-            "rot": {
-                "x": -0.506157458,
-                "y": -0.493765831,
-                "z": -0.493765831,
-                "w": 0.506157458,
-                "eulerAngles": {
-                    "x": 270.0,
-                    "y": 271.42,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 0.7052498,
-                        "y": 0.7089589,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 382.843079,
-                    "sqrMagnitude": 146568.828
-                }
-            },
-            "parent": null
-        },
-        {
-            "objectName": "Surgeon_2",
-            "instance_guid": "051c9402-c7a8-44f8-9846-6db28db1491e",
-            "global_guid": "8E2FEC60-46CB-418F-A009-3E97A33549B0",
-            "pos": {
-                "x": -1.09,
-                "y": 0.00284999982,
-                "z": 1.09,
-                "normalized": {
-                    "x": -0.7071056,
-                    "y": 0.00184885389,
-                    "z": 0.7071056,
-                    "magnitude": 1.0,
-                    "sqrMagnitude": 1.0
-                },
-                "magnitude": 1.54149544,
-                "sqrMagnitude": 2.37620831
-            },
-            "rot": {
-                "x": 0.2459571,
-                "y": -0.6629518,
-                "z": -0.6629518,
-                "w": -0.2459571,
-                "eulerAngles": {
-                    "x": 270.0,
-                    "y": 139.29,
-                    "z": 0.0,
-                    "normalized": {
-                        "x": 0.888707638,
-                        "y": 0.458474368,
-                        "z": 0.0,
-                        "magnitude": 1.0,
-                        "sqrMagnitude": 1.0
-                    },
-                    "magnitude": 303.811951,
-                    "sqrMagnitude": 92301.7
                 }
             },
             "parent": null
