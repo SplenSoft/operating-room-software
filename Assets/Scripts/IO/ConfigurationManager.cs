@@ -109,7 +109,7 @@ public class ConfigurationManager : MonoBehaviour
         foreach(TrackedObject.Data to in tracker.objects)
         {
             GameObject go = null;
-            if(to.global_guid != attachPointGUID) // if it is not an AttachPoint, we need to place the Selectable
+            if(to.global_guid != attachPointGUID && to.global_guid != "" && to.global_guid != null) // if it is not an AttachPoint, we need to place the Selectable
             {
                go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid), to.pos, to.rot);
                go.name = to.instance_guid;
@@ -117,13 +117,18 @@ public class ConfigurationManager : MonoBehaviour
 
             if(to.parent != null)
             {
-                if(to.global_guid == attachPointGUID)
+                if(to.global_guid == null || to.global_guid == "") // embedded selectable component
+                {
+                    go = GameObject.Find(to.parent);
+                    go.GetComponent<Selectable>().guid = to.instance_guid;
+                }
+                else if(to.global_guid == attachPointGUID) // attachment point component
                 {
                     GameObject myself = GameObject.Find(to.parent);
                     myself.GetComponent<AttachmentPoint>().guid = to.instance_guid;
                     newPoints.Add(myself.GetComponent<AttachmentPoint>());
                 }
-                else
+                else // selectable attached to an attachment point
                 {
                     AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
                     ap.SetAttachedSelectable(go.GetComponent<Selectable>());

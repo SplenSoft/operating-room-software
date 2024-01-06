@@ -40,7 +40,7 @@ public class Selectable : MonoBehaviour
     public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
     public Vector3 OriginalLocalPosition { get; private set; }
     public Vector3 OriginalLocalRotation { get; private set; }
-    [field: SerializeField, HideInInspector] public System.Guid guid { get; private set; }
+    [field: SerializeField, HideInInspector] public string guid { get; set; }
     [field: SerializeField] public string GUID { get; private set; }
     [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
@@ -671,8 +671,8 @@ public class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
-        guid = Guid.NewGuid();
-        if(!ConfigurationManager._instance.isDebug) gameObject.name = guid.ToString();
+        guid = Guid.NewGuid().ToString();
+        if(!ConfigurationManager._instance.isDebug && GUID != "") gameObject.name = guid.ToString();
 
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;
