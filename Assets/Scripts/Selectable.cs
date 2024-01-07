@@ -1016,6 +1016,8 @@ public class Selectable : MonoBehaviour
         }
         else if (e.KeyCode == KeyCode.Delete && e.KeyState == KeyState.ReleasedThisFrame && IsSelected)
         {
+            if(!isDestructible) return;
+
             Deselect();
 
             Destroy(gameObject);
