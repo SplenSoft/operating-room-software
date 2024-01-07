@@ -37,14 +37,30 @@ public class TrackedObject : MonoBehaviour
         return data;
     }
 
-    public Selectable.ScaleLevel GetScale()
+    public Selectable.ScaleLevel GetScaleLevel()
     {
-        return data.scaleLevel;
+        if(data.scaleLevel == null) return null;
+
+        List<Selectable.ScaleLevel> scales = GetComponent<Selectable>().ScaleLevels;
+
+        return scales.First(x => x.Size == data.scaleLevel.Size);
     }
 
-    public void StoreScale(Selectable.ScaleLevel scale)
+    public Vector3 GetPosition()
     {
-        data.scaleLevel = scale;
+        return data.pos;
+    }
+
+    public Quaternion GetRotation()
+    {
+        return data.rot;
+    }
+
+    public void StoreValues(TrackedObject.Data d)
+    {
+        data.scaleLevel = d.scaleLevel;
+        data.pos = d.pos;
+        data.rot = d.rot;
     }
 
     void GetGUIDs(GameObject go)

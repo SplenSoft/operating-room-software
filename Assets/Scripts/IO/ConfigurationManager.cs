@@ -1,12 +1,9 @@
-using System;
 using System.IO;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
-using System.Net.Mail;
 using System.Linq;
-using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -23,8 +20,7 @@ public class ConfigurationManager : MonoBehaviour
         _instance = this;
 
         CreateTracker();
-
-        roomConfiguration.collections = new List<Tracker>();
+        NewRoomSave();
     }
 
     Tracker CreateTracker()
@@ -36,10 +32,13 @@ public class ConfigurationManager : MonoBehaviour
         return tracker;
     }
 
-    void RefreshRoomConfig()
+    RoomConfiguration NewRoomSave()
     {
-        roomConfiguration.collections.Clear();
-        roomConfiguration.collections.TrimExcess();
+        roomConfiguration = new RoomConfiguration
+        {
+            collections = new List<Tracker>()
+        };
+        return roomConfiguration;
     }
 
     void Update()
@@ -57,11 +56,8 @@ public class ConfigurationManager : MonoBehaviour
 
     void SaveRoom(string title)
     {
-        if (tracker.objects.Count > 0)
-        {
-            tracker.objects.Clear();
-            tracker.objects.TrimExcess();
-        }
+        CreateTracker();
+        NewRoomSave();
 
         TrackedObject[] foundObjects = FindObjectsOfType<TrackedObject>();
 
@@ -123,7 +119,7 @@ public class ConfigurationManager : MonoBehaviour
     }
 
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
-    void GenerateRoomConfig()
+    async void GenerateRoomConfig()
     {
         // insert room size logic here
 
@@ -136,7 +132,8 @@ public class ConfigurationManager : MonoBehaviour
                 GameObject go = null;
                 if (to.global_guid != attachPointGUID && to.global_guid != "" && to.global_guid != null) // if it is not an AttachPoint, we need to place the Selectable
                 {
-                    go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid), to.pos, to.rot);
+                    go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid));
+                    go.transform.SetPositionAndRotation(to.pos, to.rot);
                     go.name = to.instance_guid;
                     go.GetComponent<Selectable>().guid = to.instance_guid;
                     LogScale(go.GetComponent<Selectable>(), to);
@@ -147,15 +144,14 @@ public class ConfigurationManager : MonoBehaviour
                 {
                     if (to.global_guid == null || to.global_guid == "") // embedded selectable component
                     {
-                        Debug.Log($"Finding: {to.parent}");
                         go = GameObject.Find(to.parent);
                         go.GetComponent<Selectable>().guid = to.instance_guid;
                         LogScale(go.GetComponent<Selectable>(), to);
                         newObjects.Add(go.GetComponent<TrackedObject>());
+                        go.transform.rotation = to.rot;
                     }
                     else if (to.global_guid == attachPointGUID) // attachment point component
                     {
-                        Debug.Log($"Finding: {to.parent}");
                         GameObject myself = GameObject.Find(to.parent);
                         myself.GetComponent<AttachmentPoint>().guid = to.instance_guid;
                         newPoints.Add(myself.GetComponent<AttachmentPoint>());
@@ -175,9 +171,20 @@ public class ConfigurationManager : MonoBehaviour
             newObjects.Reverse();
             foreach (TrackedObject obj in newObjects)
             {
-                if(obj.GetScale() != null)
+                if (obj.GetScaleLevel() != null)
                 {
-                    obj.gameObject.GetComponent<Selectable>().SetScaleLevel(obj.GetScale(), false);
+                    obj.GetComponent<Selectable>().ScaleLevels.ForEach((item) => item.Selected = false);
+                    obj.GetScaleLevel().Selected = true;
+                }
+            }
+
+            await Task.Yield();
+
+            foreach (TrackedObject obj in newObjects)
+            {
+                if (!string.IsNullOrEmpty(obj.GetComponent<Selectable>().GUID) && obj.transform != obj.transform.root)
+                {
+                    obj.transform.localPosition = Vector3.zero;
                 }
             }
         }
@@ -185,7 +192,9 @@ public class ConfigurationManager : MonoBehaviour
         void LogScale(Selectable s, TrackedObject.Data to)
         {
             if (to.scaleLevel.Selected && to.scaleLevel != s.CurrentScaleLevel)
-                s.GetComponent<TrackedObject>().StoreScale(to.scaleLevel);
+            {
+                s.GetComponent<TrackedObject>().StoreValues(to);
+            }
         }
     }
 
