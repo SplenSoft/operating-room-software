@@ -77,6 +77,8 @@ public class ConfigurationManager : MonoBehaviour
 
         File.WriteAllText(path, json);
         Debug.Log($"Saved Config: {path}");
+
+        ObjectMenu.Instance.AddCustomMenuItem(path);
     }
 
     public void SaveRoom(string title)
