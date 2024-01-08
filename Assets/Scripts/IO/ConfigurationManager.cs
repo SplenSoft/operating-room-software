@@ -54,6 +54,42 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    void SaveConfiguration(string title)
+    {
+        CreateTracker();
+
+        TrackedObject[] foundObjects = Selectable.SelectedSelectable.transform.root.GetComponentsInChildren<TrackedObject>();
+
+        foreach (TrackedObject obj in foundObjects)
+        {
+            tracker.objects.Add(obj.GetData());
+        }
+
+        //====== SAVING JSON =======
+        string json = JsonConvert.SerializeObject(tracker, new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        });
+        string folder = Application.dataPath + $"/Saved/Configs/";
+        string configName = title.Replace(" ", "_") + ".json";
+
+        if (!Directory.Exists(folder))
+        {
+            Directory.CreateDirectory(folder);
+        }
+
+        string path = Path.Combine(folder, configName);
+
+        //Overwrite data
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+
+        File.WriteAllText(path, json);
+        Debug.Log($"Saved Config: {path}");
+    }
+
     void SaveRoom(string title)
     {
         CreateTracker();
@@ -84,7 +120,7 @@ public class ConfigurationManager : MonoBehaviour
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
-        string folder = Application.dataPath + $"/Configs/";
+        string folder = Application.dataPath + $"/Saved/";
         string configName = title.Replace(" ", "_") + ".json";
 
         if (!Directory.Exists(folder))
@@ -101,14 +137,15 @@ public class ConfigurationManager : MonoBehaviour
         }
 
         File.WriteAllText(path, json);
-        Debug.Log($"Saved Config: {path}");
+        Debug.Log($"Saved Room: {path}");
     }
 
+    private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
     public void LoadRoom()
     {
-        string folder = Application.dataPath + "/Configs/";
+        string folder = Application.dataPath + "/Saved/";
         string configName = "test.json";
-        Debug.Log($"Loading Config at /{folder}/{configName}");
+        Debug.Log($"Loading Room at /{folder}/{configName}");
         string path = Path.Combine(folder, configName);
 
         if (File.Exists(path))
@@ -120,7 +157,6 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
     async void GenerateRoomConfig()
     {
         RoomSize.RoomSizeChanged?.Invoke(roomConfiguration.roomDimension);

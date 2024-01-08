@@ -11,7 +11,7 @@ public class RoomSize : MonoBehaviour
     public static Action<RoomDimension> RoomSizeChanged;
     public static RoomSize Instance { get; set; }
     private readonly float _minimumSizeInFeet = 6f;
-    [field: SerializeField] public RoomDimension currentDimensions { get; private set; }
+    [field: SerializeField, HideInInspector] public RoomDimension currentDimensions { get; private set; }
 
     [field: SerializeField] private TMP_InputField InputFieldWidth { get; set; }
     [field: SerializeField] private TMP_InputField InputFieldHeight { get; set; }
