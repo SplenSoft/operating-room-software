@@ -47,11 +47,6 @@ public class ConfigurationManager : MonoBehaviour
         {
             SaveRoom("test");
         }
-
-        if (Input.GetKeyUp(KeyCode.L))
-        {
-            LoadRoom();
-        }
     }
 
     void SaveConfiguration(string title)
@@ -141,10 +136,10 @@ public class ConfigurationManager : MonoBehaviour
     }
 
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
-    public void LoadRoom()
+    public void LoadRoom(string fileName)
     {
         string folder = Application.dataPath + "/Saved/";
-        string configName = "test.json";
+        string configName = fileName;
         Debug.Log($"Loading Room at /{folder}/{configName}");
         string path = Path.Combine(folder, configName);
 
