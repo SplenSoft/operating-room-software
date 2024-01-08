@@ -79,7 +79,7 @@ public class KeepRelativePosition : MonoBehaviour
         RecalculateRelativePosition();
     }
 
-    private async void RoomSizeChanged(object sender, EventArgs e)
+    private async void RoomSizeChanged(RoomDimension dimension)
     {
         if (VirtualParent == null) return;
         await Task.Yield();

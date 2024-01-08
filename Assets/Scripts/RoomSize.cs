@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 
@@ -9,9 +8,10 @@ using UnityEngine;
 /// </summary>
 public class RoomSize : MonoBehaviour
 {
-    public static EventHandler RoomSizeChanged;
-    private static RoomSize Instance { get; set; }
+    public static Action<RoomDimension> RoomSizeChanged;
+    public static RoomSize Instance { get; set; }
     private readonly float _minimumSizeInFeet = 6f;
+    [field: SerializeField] public RoomDimension currentDimensions { get; private set; }
 
     [field: SerializeField] private TMP_InputField InputFieldWidth { get; set; }
     [field: SerializeField] private TMP_InputField InputFieldHeight { get; set; }
@@ -23,6 +23,8 @@ public class RoomSize : MonoBehaviour
         InputFieldWidth.onEndEdit.AddListener(text => EnforceDimensionSize(InputFieldWidth, text));
         InputFieldHeight.onEndEdit.AddListener(text => EnforceDimensionSize(InputFieldHeight, text));
         InputFieldDepth.onEndEdit.AddListener(text => EnforceDimensionSize(InputFieldDepth, text));
+
+        RoomSizeChanged += x => { Debug.Log(x.Width); currentDimensions = x; };
     }
 
     private void EnforceDimensionSize(TMP_InputField inputField, string text)
@@ -46,26 +48,26 @@ public class RoomSize : MonoBehaviour
 
     public void OnButtonConfirm()
     {
-        RoomSizeChanged?.Invoke(this, null);
+        RoomSizeChanged?.Invoke(new RoomDimension(
+            float.Parse(Instance.InputFieldWidth.text),
+            float.Parse(Instance.InputFieldHeight.text),
+            float.Parse(Instance.InputFieldDepth.text)
+            ));
         gameObject.SetActive(false);
-    }
-
-    /// <returns>Dimension in meters</returns>
-    public static float GetDimension(RoomDimension dimension)
-    {
-        return dimension switch
-        {
-            RoomDimension.Width => float.Parse(Instance.InputFieldWidth.text).ToMeters(),
-            RoomDimension.Height => float.Parse(Instance.InputFieldHeight.text).ToMeters(),
-            RoomDimension.Depth => float.Parse(Instance.InputFieldDepth.text).ToMeters(),
-            _ => throw new ArgumentException($"Unhandled argument {dimension}"),
-        };
     }
 }
 
-public enum RoomDimension
+[Serializable]
+public struct RoomDimension
 {
-    Width,
-    Height,
-    Depth
+    public float Width;
+    public float Height;
+    public float Depth;
+
+    public RoomDimension(float w, float h, float d)
+    {
+        Width = w;
+        Height = h;
+        Depth = d;
+    }
 }

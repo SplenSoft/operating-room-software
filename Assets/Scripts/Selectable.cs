@@ -671,7 +671,6 @@ public class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
-        Debug.LogWarning("Awake");
         guid = Guid.NewGuid().ToString();
         if (!ConfigurationManager._instance.isDebug && GUID != "") gameObject.name = guid.ToString();
 

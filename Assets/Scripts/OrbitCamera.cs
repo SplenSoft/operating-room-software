@@ -21,7 +21,7 @@ public class OrbitCamera : MonoBehaviour
 
         CameraManager.Register(VirtualCamera);
 
-        RoomSize.RoomSizeChanged += (obj, arg) =>
+        RoomSize.RoomSizeChanged += x =>
         {
             orbitTarget.transform.position = new Vector3(0, 0, 0);
         };

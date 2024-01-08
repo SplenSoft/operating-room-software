@@ -14,9 +14,7 @@ public class RoomTracker
 [Serializable]
 public struct RoomConfiguration
 {
-    public int width;
-    public int height;
-    public int depth; 
+    public RoomDimension roomDimension;
     public List<Tracker> collections;
 }
 

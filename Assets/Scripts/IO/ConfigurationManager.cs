@@ -59,6 +59,8 @@ public class ConfigurationManager : MonoBehaviour
         CreateTracker();
         NewRoomSave();
 
+        roomConfiguration.roomDimension = RoomSize.Instance.currentDimensions;
+
         TrackedObject[] foundObjects = FindObjectsOfType<TrackedObject>();
 
         foreach (TrackedObject obj in foundObjects)
@@ -121,7 +123,7 @@ public class ConfigurationManager : MonoBehaviour
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
     async void GenerateRoomConfig()
     {
-        // insert room size logic here
+        RoomSize.RoomSizeChanged?.Invoke(roomConfiguration.roomDimension);
 
         foreach (Tracker t in roomConfiguration.collections)
         {
