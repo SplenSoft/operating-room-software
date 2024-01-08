@@ -92,6 +92,19 @@ public class ConfigurationManager : MonoBehaviour
         Debug.Log($"Saved Config: {path}");
 
         ObjectMenu.Instance.AddCustomMenuItem(path); // add this configuration to the ObjectMenu
+        foreach(TrackedObject obj in foundObjects)
+        {
+            if(obj.TryGetComponent(out Selectable s))
+            {
+                s.guid = Guid.NewGuid().ToString();
+                s.name = s.guid;
+            }
+            else
+            {
+                obj.GetComponent<AttachmentPoint>().guid = Guid.NewGuid().ToString();
+                obj.gameObject.name = obj.GetComponent<AttachmentPoint>().guid;
+            }
+        }
     }
 
     public void SaveRoom(string title)
