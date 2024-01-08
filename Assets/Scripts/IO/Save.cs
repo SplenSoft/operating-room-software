@@ -19,7 +19,7 @@ public class Save : MonoBehaviour
     void Awake()
     {
         b_Save.onClick.AddListener(() => {
-            if(Selectable.SelectedSelectable != null)
+            if(Selectable.SelectedSelectable == null)
             {
                 header.text = "Save Room";
             }
