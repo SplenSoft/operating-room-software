@@ -402,6 +402,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GUID>k__BackingField: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Arm Segment 2
@@ -410,6 +411,8 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <isDestructible>k__BackingField: 1
+  <AllowInverseControl>k__BackingField: 0
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 1
     <GizmoType>k__BackingField: 1
@@ -419,6 +422,7 @@ MonoBehaviour:
     <Invert>k__BackingField: 1
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 0
+  <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
@@ -434,6 +438,18 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+--- !u!114 &8332728326877537099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3830815374097157049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4470908901458506887 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3033543263183221324, guid: f6547d73b0c4cc44182bc942137efaff, type: 3}
@@ -698,6 +714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GUID>k__BackingField: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Arm Segment 2
@@ -706,9 +723,12 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <isDestructible>k__BackingField: 1
+  <AllowInverseControl>k__BackingField: 0
   <GizmoSettingsList>k__BackingField: []
   <ScaleLevels>k__BackingField: []
   <ZAlwaysFacesGround>k__BackingField: 1
+  <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <Measurables>k__BackingField:
   - {fileID: 6918089412624650777}
@@ -725,6 +745,18 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+--- !u!114 &8159518019350529328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8909825708376091570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2836535797014885117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -735,6 +767,10 @@ PrefabInstance:
     - target: {fileID: -6565122453228016778, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: rmsCount
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GUID>k__BackingField
+      value: B20E7318-2141-411E-9295-955E076FD3D0
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField

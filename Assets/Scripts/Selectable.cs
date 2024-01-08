@@ -11,7 +11,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Add basic selectable - <see href="https://youtu.be/qEaRrGC_MX8?si=kCXNSVa11KxLKRNG"/> 
 /// </summary>
-[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
+[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect), typeof(TrackedObject)), Serializable]
 public class Selectable : MonoBehaviour
 {
     [Serializable]
@@ -38,9 +38,10 @@ public class Selectable : MonoBehaviour
     public bool IsDestroyed { get; private set; }
 
     public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
-    public Vector3 OriginalLocalPosition { get; private set; }
+    public Vector3 OriginalLocalPosition { get; set; }
     public Vector3 OriginalLocalRotation { get; private set; }
-
+    public string guid { get; set; }
+    [field: SerializeField] public string GUID { get; private set; }
     [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
@@ -190,7 +191,7 @@ public class Selectable : MonoBehaviour
 
     public bool HasLights()
     {
-        if(GetComponent<LightFactory>() != null) return true; else return false;
+        if (GetComponent<LightFactory>() != null) return true; else return false;
     }
 
     public bool IsArmAssembly()
@@ -210,7 +211,7 @@ public class Selectable : MonoBehaviour
         return false;
     }
 
-    private void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
+    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
         CurrentPreviewScaleLevel = scaleLevel;
 
@@ -670,6 +671,9 @@ public class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
+        guid = Guid.NewGuid().ToString();
+        if (!ConfigurationManager._instance.isDebug && GUID != "") gameObject.name = guid.ToString();
+
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;
 
@@ -719,42 +723,6 @@ public class Selectable : MonoBehaviour
             GizmoSettings[item.GizmoType][item.Axis] = item;
         });
 
-        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
-        {
-            CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
-            CurrentPreviewScaleLevel = CurrentScaleLevel;
-            CurrentScaleLevel.ScaleZ = transform.localScale.z;
-
-            StoreChildScales();
-
-            ScaleLevels.ForEach(item =>
-            {
-                if (!item.ModelDefault)
-                {
-                    float perc = item.Size / CurrentScaleLevel.Size;
-                    item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
-                }
-            });
-
-            var defaultSelected = ScaleLevels.First(item => item.Selected);
-            SetScaleLevel(defaultSelected, true);
-
-            _gizmoHandler.GizmoDragEnded.AddListener(() =>
-            {
-                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
-                {
-                    UpdateZScaling(true);
-                }
-            });
-
-            _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
-            {
-                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
-                {
-                    UpdateZScaling(false);
-                }
-            });
-        }
         ActiveSelectablesInSceneChanged?.Invoke();
     }
 
@@ -820,6 +788,43 @@ public class Selectable : MonoBehaviour
 
     private void Start()
     {
+        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+        {
+            CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
+            CurrentPreviewScaleLevel = CurrentScaleLevel;
+            CurrentScaleLevel.ScaleZ = transform.localScale.z;
+
+            StoreChildScales();
+
+            ScaleLevels.ForEach(item =>
+            {
+                if (!item.ModelDefault)
+                {
+                    float perc = item.Size / CurrentScaleLevel.Size;
+                    item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
+                }
+            });
+
+            var defaultSelected = ScaleLevels.First(item => item.Selected);
+            SetScaleLevel(defaultSelected, true);
+
+            _gizmoHandler.GizmoDragEnded.AddListener(() =>
+            {
+                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                {
+                    UpdateZScaling(true);
+                }
+            });
+
+            _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
+            {
+                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                {
+                    UpdateZScaling(false);
+                }
+            });
+        }
+
         _originalRotation2 = transform.localRotation;
         OriginalLocalPosition = transform.localPosition;
         //OriginalLocalRotation = transform.localEulerAngles;
@@ -1010,6 +1015,8 @@ public class Selectable : MonoBehaviour
         }
         else if (e.KeyCode == KeyCode.Delete && e.KeyState == KeyState.ReleasedThisFrame && IsSelected)
         {
+            if(!isDestructible) return;
+
             Deselect();
 
             Destroy(gameObject);

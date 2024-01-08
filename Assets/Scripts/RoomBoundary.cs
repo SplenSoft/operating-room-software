@@ -33,42 +33,44 @@ public class RoomBoundary : MonoBehaviour
         {
             CameraManager.Register(VirtualCamera);
             _transposer = VirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
-        }   
+        }
 
-        RoomSize.RoomSizeChanged += (obj, arg) =>
+        RoomSize.RoomSizeChanged += SetSize;
+    }
+
+    void SetSize(RoomDimension dimension)
+    {
+        float height = dimension.Height.ToMeters();
+        float width = dimension.Width.ToMeters();
+        float depth = dimension.Depth.ToMeters();
+
+        switch (RoomBoundaryType)
         {
-            float height = RoomSize.GetDimension(RoomDimension.Height);
-            float width = RoomSize.GetDimension(RoomDimension.Width);
-            float depth = RoomSize.GetDimension(RoomDimension.Depth);
-
-            switch (RoomBoundaryType)
-            {
-                case RoomBoundaryType.Ceiling:
-                    transform.localScale = new Vector3(width, DefaultWallThickness, depth);
-                    transform.position = new Vector3(0, height + (transform.localScale.y / 2), 0);
-                    break;
-                case RoomBoundaryType.Floor:
-                    transform.localScale = new Vector3(width, DefaultWallThickness, depth);
-                    transform.position = new Vector3(0, 0 - (transform.localScale.y / 2), 0);
-                    break;
-                case RoomBoundaryType.WallSouth:
-                    transform.localScale = new Vector3(width, height, DefaultWallThickness);
-                    transform.position = new Vector3(0, height / 2f, 0 - (depth / 2f) - (transform.localScale.z / 2));
-                    break;
-                case RoomBoundaryType.WallWest:
-                    transform.localScale = new Vector3(DefaultWallThickness, height, depth);
-                    transform.position = new Vector3(0 - (width / 2f) - (transform.localScale.x / 2f), height / 2f, 0);
-                    break;
-                case RoomBoundaryType.WallEast:
-                    transform.localScale = new Vector3(DefaultWallThickness, height, depth);
-                    transform.position = new Vector3(0 + (width / 2f) + (transform.localScale.x / 2f), height / 2f, 0);
-                    break;
-                case RoomBoundaryType.WallNorth:
-                    transform.localScale = new Vector3(width, height, DefaultWallThickness);
-                    transform.position = new Vector3(0, height / 2f, 0 + (depth / 2f) + (transform.localScale.z / 2));
-                    break;
-            }
-        };
+            case RoomBoundaryType.Ceiling:
+                transform.localScale = new Vector3(width, DefaultWallThickness, depth);
+                transform.position = new Vector3(0, height + (transform.localScale.y / 2), 0);
+                break;
+            case RoomBoundaryType.Floor:
+                transform.localScale = new Vector3(width, DefaultWallThickness, depth);
+                transform.position = new Vector3(0, 0 - (transform.localScale.y / 2), 0);
+                break;
+            case RoomBoundaryType.WallSouth:
+                transform.localScale = new Vector3(width, height, DefaultWallThickness);
+                transform.position = new Vector3(0, height / 2f, 0 - (depth / 2f) - (transform.localScale.z / 2));
+                break;
+            case RoomBoundaryType.WallWest:
+                transform.localScale = new Vector3(DefaultWallThickness, height, depth);
+                transform.position = new Vector3(0 - (width / 2f) - (transform.localScale.x / 2f), height / 2f, 0);
+                break;
+            case RoomBoundaryType.WallEast:
+                transform.localScale = new Vector3(DefaultWallThickness, height, depth);
+                transform.position = new Vector3(0 + (width / 2f) + (transform.localScale.x / 2f), height / 2f, 0);
+                break;
+            case RoomBoundaryType.WallNorth:
+                transform.localScale = new Vector3(width, height, DefaultWallThickness);
+                transform.position = new Vector3(0, height / 2f, 0 + (depth / 2f) + (transform.localScale.z / 2));
+                break;
+        }
     }
 
     public void OnCameraLive()
@@ -136,7 +138,7 @@ public class RoomBoundary : MonoBehaviour
     {
         GetComponent<MeshRenderer>().material.color = c;
     }
-    
+
     /// <summary>
     /// Toggles the walls between opaque and clear
     /// </summary>
@@ -148,7 +150,7 @@ public class RoomBoundary : MonoBehaviour
 
     private void ToggleWallOpaque(bool toggle)
     {
-        if(RoomBoundaryType == RoomBoundaryType.Floor || RoomBoundaryType == RoomBoundaryType.Ceiling) return;
+        if (RoomBoundaryType == RoomBoundaryType.Floor || RoomBoundaryType == RoomBoundaryType.Ceiling) return;
         Color c = MeshRenderer.material.color;
         c.a = toggle ? 1 : 0;
         MeshRenderer.material.color = c;

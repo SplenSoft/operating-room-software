@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6775254227244211833}
   - component: {fileID: 4575778834203773398}
   - component: {fileID: 7052096847261562413}
+  - component: {fileID: -1254061871684585859}
   m_Layer: 6
   m_Name: AttachPoint
   m_TagString: Untagged
@@ -46,11 +47,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <AttachedSelectable>k__BackingField: {fileID: 0}
+  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <AttachedSelectable>k__BackingField:
+  - {fileID: 0}
   _attachmentPointHovered: 0
   <HighlightHovered>k__BackingField: {fileID: 7052096847261562413}
   <AllowedSelectableTypes>k__BackingField: 
   <AllowedSelectables>k__BackingField: []
+  <MoveUpOnAttach>k__BackingField: 0
+  <TreatAsTopMost>k__BackingField: 0
+  <MultiAttach>k__BackingField: 0
+  <MultiLimit>k__BackingField: 3
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!114 &7052096847261562413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,6 +225,18 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
+--- !u!114 &-1254061871684585859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4686421761804208745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6583124271688593669
 GameObject:
   m_ObjectHideFlags: 0

@@ -180,7 +180,10 @@ public class GizmoHandler : MonoBehaviour
 
     private async void OnGizmoPostDragEnd(Gizmo gizmo, int handleId)
     {
-        SendMessage("SelectablePositionChanged");
+        if(TryGetComponent(out KeepRelativePosition k))
+        {
+            k.SelectablePositionChanged();
+        }
         GizmoBeingUsed = false;
         IsBeingUsed = false;
         GizmoDragEnded?.Invoke();
@@ -257,6 +260,7 @@ public class GizmoHandler : MonoBehaviour
 
         if (gizmo.ObjectTransformGizmo == _translateGizmo && _selectable.ExeedsMaxTranslation(out Vector3 totalExcess))
         {
+            Debug.Log("Entered DragUpdate IF");
             transform.localPosition -= totalExcess;
             Transform parent = transform.parent;
 
@@ -284,6 +288,7 @@ public class GizmoHandler : MonoBehaviour
                     float distance = Vector3.Distance(desiredPosition, currentPos);
 
                     verticalComponent.transform.Rotate(0, angle, 0);
+                    Debug.Log($"Found Vertical Component {angle}");
                     currentPos = new Vector3(_positionBeforeStartDrag.x, transform.position.y, _positionBeforeStartDrag.z);
                     float distance2 = Vector3.Distance(desiredPosition, currentPos);
                     if (distance2 > distance)
@@ -293,6 +298,7 @@ public class GizmoHandler : MonoBehaviour
 
                     if (verticalComponent.ExceedsMaxRotation(out Vector3 totalExcess1))
                     {
+                        // Debug.Log("Doin stuffs");
                         verticalComponent.transform.localRotation *= Quaternion.Euler(-totalExcess1.x, -totalExcess1.y, -totalExcess1.z);
                     }
                 }

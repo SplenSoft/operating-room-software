@@ -90,6 +90,10 @@ PrefabInstance:
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GUID>k__BackingField
+      value: 2AF955E3-1E04-4240-BAB4-92F534FDF0B3
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
       value: Arm Segment 1
       objectReference: {fileID: 0}
@@ -373,6 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <GUID>k__BackingField: 
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Arm Segment 1
@@ -381,6 +386,8 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <isDestructible>k__BackingField: 1
+  <AllowInverseControl>k__BackingField: 0
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
@@ -405,6 +412,7 @@ MonoBehaviour:
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
+  <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <Measurables>k__BackingField:
   - {fileID: 6218818349811936795}
@@ -600,6 +608,18 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
+--- !u!114 &5490691006568982216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8140088957434317375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7951708201210905122
 PrefabInstance:
   m_ObjectHideFlags: 0

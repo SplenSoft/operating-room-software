@@ -31,7 +31,6 @@ public class MaterialPalette : MonoBehaviour
 
     public void Assign(Material material, int i)
     {
-        Debug.Log($"Attempting to put {material.name} onto element {i}");
         Material[] mats = meshRenderer.materials;
         mats[i] = material;
         meshRenderer.materials = mats;

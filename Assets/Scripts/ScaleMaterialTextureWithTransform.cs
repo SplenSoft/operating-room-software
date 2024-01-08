@@ -13,7 +13,7 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
     private void Awake()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
-        RoomSize.RoomSizeChanged += async (o, e) =>
+        RoomSize.RoomSizeChanged += async x =>
         {
             await Task.Yield();
             Scale();

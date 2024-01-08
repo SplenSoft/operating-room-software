@@ -18,10 +18,10 @@ public class MatchHeightToWalls : MonoBehaviour
 
     private void Start()
     {
-        UpdateScale();
+        UpdateScale(new RoomDimension());
     }
 
-    private void UpdateScale(object o = null, EventArgs e = null)
+    private void UpdateScale(RoomDimension dimension)
     {
         var wall = RoomBoundary.Instances.Where(item => item.RoomBoundaryType == RoomBoundaryType.WallWest).First();
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, wall.transform.localScale.y);
