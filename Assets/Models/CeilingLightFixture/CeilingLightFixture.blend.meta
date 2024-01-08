@@ -3,7 +3,22 @@ guid: ee793d41881f37b48a82d1ff00f0da6f
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plastic-Signify-Lens_Frosted-4000K
+    second: {fileID: 2100000, guid: 9ff3cf0ec47aa2d4c9a91f47b83a6ea9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steel-Signify-Galvanized
+    second: {fileID: 2100000, guid: e1bb85545c84c454dbc93c1f60368dd3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steel-Signify-White
+    second: {fileID: 5048755751817175872, guid: 548fc95ad54091a488645ae7161ee4e2, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
