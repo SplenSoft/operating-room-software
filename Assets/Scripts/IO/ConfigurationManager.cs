@@ -59,7 +59,7 @@ public class ConfigurationManager : MonoBehaviour
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
-        string folder = Application.dataPath + $"/Saved/Configs/";
+        string folder = Application.persistentDataPath + $"/Saved/Configs/";
         string configName = title.Replace(" ", "_") + ".json";
 
         if (!Directory.Exists(folder))
@@ -111,7 +111,7 @@ public class ConfigurationManager : MonoBehaviour
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
-        string folder = Application.dataPath + $"/Saved/";
+        string folder = Application.persistentDataPath + $"/Saved/";
         string configName = title.Replace(" ", "_") + ".json";
 
         if (!Directory.Exists(folder))
@@ -261,7 +261,12 @@ public class ConfigurationManager : MonoBehaviour
         foreach (TrackedObject obj in newObjects)
         {
             ResetScaleLevels(obj);
-            await Task.Yield();
+        }
+
+        await Task.Yield();
+
+        foreach (TrackedObject obj in newObjects)
+        {
             ResetLocalPosition(obj);
         }
     }
@@ -280,6 +285,7 @@ public class ConfigurationManager : MonoBehaviour
         if (!string.IsNullOrEmpty(obj.GetComponent<Selectable>().GUID) && obj.transform != obj.transform.root)
         {
             obj.transform.localPosition = Vector3.zero;
+            obj.GetComponent<Selectable>().OriginalLocalPosition = obj.transform.localPosition;
         }
     }
 

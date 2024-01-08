@@ -137,7 +137,11 @@ public class ObjectMenu : MonoBehaviour
     {
         ObjectMenuItems.ForEach(item =>
         {
-            if (item.Selectable == null) return;
+            if (item.Selectable == null)
+            {
+                item.GameObject.SetActive(true);
+                return;
+            }
 
             bool isMount = item.Selectable.Types.Contains(SelectableType.Mount);
             bool isFurniture = item.Selectable.Types.Contains(SelectableType.Furniture);

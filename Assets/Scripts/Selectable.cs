@@ -38,7 +38,7 @@ public class Selectable : MonoBehaviour
     public bool IsDestroyed { get; private set; }
 
     public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
-    public Vector3 OriginalLocalPosition { get; private set; }
+    public Vector3 OriginalLocalPosition { get; set; }
     public Vector3 OriginalLocalRotation { get; private set; }
     public string guid { get; set; }
     [field: SerializeField] public string GUID { get; private set; }

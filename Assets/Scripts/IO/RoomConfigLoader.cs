@@ -12,9 +12,9 @@ public class RoomConfigLoader : MonoBehaviour
 
     void Awake()
     {
-        if (Directory.Exists(Application.dataPath + "/Saved/"))
+        if (Directory.Exists(Application.persistentDataPath + "/Saved/"))
         {
-            string[] files = Directory.GetFiles(Application.dataPath + "/Saved/");
+            string[] files = Directory.GetFiles(Application.persistentDataPath + "/Saved/");
             foreach (string f in files.Where(x => x.EndsWith(".json")))
             {
                 GameObject go = Instantiate(filePrefab, Vector3.zero, Quaternion.identity);

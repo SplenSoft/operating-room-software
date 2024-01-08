@@ -8,9 +8,9 @@ public class ConfigurationLoader : MonoBehaviour
 {
     void Start()
     {
-        if(Directory.Exists(Application.dataPath + "/Saved/Configs/"))
+        if(Directory.Exists(Application.persistentDataPath + "/Saved/Configs/"))
         {
-            string[] files = Directory.GetFiles(Application.dataPath + "/Saved/Configs/");
+            string[] files = Directory.GetFiles(Application.persistentDataPath + "/Saved/Configs/");
             foreach(string f in files.Where(x => x.EndsWith(".json")))
             {
                 ObjectMenu.Instance.AddCustomMenuItem(f);
