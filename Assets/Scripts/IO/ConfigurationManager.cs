@@ -50,7 +50,7 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    void SaveConfiguration(string title)
+    public void SaveConfiguration(string title)
     {
         CreateTracker();
 
@@ -86,7 +86,7 @@ public class ConfigurationManager : MonoBehaviour
         Debug.Log($"Saved Config: {path}");
     }
 
-    void SaveRoom(string title)
+    public void SaveRoom(string title)
     {
         CreateTracker();
         NewRoomSave();
