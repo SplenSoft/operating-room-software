@@ -66,6 +66,16 @@ public class ObjectMenu : MonoBehaviour
 
             ObjectMenuItems.Add(new ObjectMenuItem { Selectable = selectable, GameObject = newMenuItem });
         });
+
+        if(Directory.Exists(Application.persistentDataPath + "/Saved/Configs/"))
+        {
+            string[] files = Directory.GetFiles(Application.persistentDataPath + "/Saved/Configs/");
+            foreach(string f in files.Where(x => x.EndsWith(".json")))
+            {
+                AddCustomMenuItem(f);
+            }
+        }
+
         ItemTemplate.SetActive(false);
     }
 
@@ -80,6 +90,10 @@ public class ObjectMenu : MonoBehaviour
         {
             gameObject.SetActive(false);
             GameObject newSelectable = await ConfigurationManager._instance.LoadConfig(f);
+            if(newSelectable == null)
+            {
+                Debug.LogError("Something went wrong with LoadConfig!!");
+            }
 
             Selectable selectable = newSelectable.GetComponent<Selectable>();
             selectable.StartRaycastPlacementMode();

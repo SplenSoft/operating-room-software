@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using Unity.VisualScripting;
+using System;
+using UnityEditor.UI;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -142,15 +144,17 @@ public class ConfigurationManager : MonoBehaviour
             CreateTracker();
             string json = File.ReadAllText(file);
             tracker = JsonConvert.DeserializeObject<Tracker>(json);
+
+            newPoints = new List<AttachmentPoint>();
+            newObjects = new List<TrackedObject>();
+
+            ProcessTrackedObjects(tracker.objects);
+            await ResetObjectPositions(newObjects);
+            RandomizeInstanceGUIDs();
+
+            return GetRoot();
         }
-
-        newPoints = new List<AttachmentPoint>();
-        newObjects = new List<TrackedObject>();
-
-        ProcessTrackedObjects(tracker.objects);
-        await ResetObjectPositions(newObjects);
-
-        return GetRoot();
+        else return null;
     }
 
     public void LoadRoom(string file)
@@ -186,6 +190,7 @@ public class ConfigurationManager : MonoBehaviour
 
             ProcessTrackedObjects(t.objects);
             await ResetObjectPositions(newObjects);
+            RandomizeInstanceGUIDs();
         }
     }
 
@@ -268,6 +273,21 @@ public class ConfigurationManager : MonoBehaviour
         foreach (TrackedObject obj in newObjects)
         {
             ResetLocalPosition(obj);
+        }
+    }
+
+    void RandomizeInstanceGUIDs()
+    {
+        foreach(AttachmentPoint ap in newPoints)
+        {
+            ap.guid = Guid.NewGuid().ToString();
+            ap.gameObject.name = ap.guid;
+        }
+
+        foreach(TrackedObject to in newObjects)
+        {
+            to.gameObject.GetComponent<Selectable>().guid = Guid.NewGuid().ToString();
+            to.gameObject.name = to.gameObject.GetComponent<Selectable>().guid;
         }
     }
 
