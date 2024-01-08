@@ -12,9 +12,10 @@ using UnityEditor.UI;
 public class ConfigurationManager : MonoBehaviour
 {
     public static ConfigurationManager _instance;
+    [Tooltip("Contextual display of GUIDs in hierarchy for easier debugging")]
     public bool isDebug = false;
-    private Tracker tracker;
-    private RoomConfiguration roomConfiguration;
+    private Tracker tracker; // The tracker for individual configurations
+    private RoomConfiguration roomConfiguration; // overall room configuration, contains collection of trackers
 
     void Awake()
     {
@@ -27,6 +28,9 @@ public class ConfigurationManager : MonoBehaviour
         NewRoomSave();
     }
 
+    /// <summary>
+    /// Creates a new tracker to be used with a fresh configuration load
+    /// </summary>
     Tracker CreateTracker()
     {
         tracker = new Tracker
@@ -36,6 +40,9 @@ public class ConfigurationManager : MonoBehaviour
         return tracker;
     }
 
+    /// <summary>
+    /// Create a new room configuration to be used with a fresh room load
+    /// </summary>
     RoomConfiguration NewRoomSave()
     {
         roomConfiguration = new RoomConfiguration
@@ -45,31 +52,35 @@ public class ConfigurationManager : MonoBehaviour
         return roomConfiguration;
     }
 
+    /// <summary>
+    /// Saves a configuration (collection of selectable objects from the transform.root).
+    /// </summary>
+    /// <param name="title">The title/fileName for this grouping</param>
     public void SaveConfiguration(string title)
     {
         CreateTracker();
 
-        TrackedObject[] foundObjects = Selectable.SelectedSelectable.transform.root.GetComponentsInChildren<TrackedObject>();
+        TrackedObject[] foundObjects = Selectable.SelectedSelectable.transform.root.GetComponentsInChildren<TrackedObject>(); // finds all the Selectable & AttachmentPoints for this object
 
         foreach (TrackedObject obj in foundObjects)
         {
-            tracker.objects.Add(obj.GetData());
+            tracker.objects.Add(obj.GetData()); // Add each tracked object, add to our local tracker instance
         }
 
         //====== SAVING JSON =======
         string json = JsonConvert.SerializeObject(tracker, new JsonSerializerSettings
         {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore // allows Newtonsoft to go through the loop to serialize entire Position and Quaternion Rotation
         });
         string folder = Application.persistentDataPath + $"/Saved/Configs/";
-        string configName = title.Replace(" ", "_") + ".json";
+        string configName = title.Replace(" ", "_") + ".json"; // remove spaces and replace with underscores
 
         if (!Directory.Exists(folder))
         {
             Directory.CreateDirectory(folder);
         }
 
-        string path = Path.Combine(folder, configName);
+        string path = Path.Combine(folder, configName); // ensure proper pathing
 
         //Overwrite data
         if (File.Exists(path))
@@ -80,7 +91,7 @@ public class ConfigurationManager : MonoBehaviour
         File.WriteAllText(path, json);
         Debug.Log($"Saved Config: {path}");
 
-        ObjectMenu.Instance.AddCustomMenuItem(path);
+        ObjectMenu.Instance.AddCustomMenuItem(path); // add this configuration to the ObjectMenu
     }
 
     public void SaveRoom(string title)
@@ -88,23 +99,22 @@ public class ConfigurationManager : MonoBehaviour
         CreateTracker();
         NewRoomSave();
 
-        roomConfiguration.roomDimension = RoomSize.Instance.currentDimensions;
+        roomConfiguration.roomDimension = RoomSize.Instance.currentDimensions; // grabs the current dimensions of the RoomSize to be applied on load
 
         TrackedObject[] foundObjects = FindObjectsOfType<TrackedObject>();
 
-        foreach (TrackedObject obj in foundObjects)
+        foreach (TrackedObject obj in foundObjects) // We need to go through each object
         {
-            CreateTracker();
             if (obj.transform == obj.transform.root)
             {
-                CreateTracker();
-                TrackedObject[] temps = obj.transform.GetComponentsInChildren<TrackedObject>();
+                CreateTracker(); // creating trackers as we go
+                TrackedObject[] temps = obj.transform.GetComponentsInChildren<TrackedObject>(); // and finding all embedded/attached selectables along with attachment points
                 foreach (TrackedObject to in temps)
                 {
-                    tracker.objects.Add(to.GetData());
+                    tracker.objects.Add(to.GetData()); // add them to their respective tracker
                 }
 
-                roomConfiguration.collections.Add(tracker);
+                roomConfiguration.collections.Add(tracker); // and add them to the room tracker collection
             }
         }
 
@@ -133,7 +143,7 @@ public class ConfigurationManager : MonoBehaviour
         Debug.Log($"Saved Room: {path}");
     }
 
-    private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
+    private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E"; // this is the prefab GUID for ALL attachment points. DO NOT CHANGE.
 
     public async Task<GameObject> LoadConfig(string file)
     {
@@ -141,7 +151,7 @@ public class ConfigurationManager : MonoBehaviour
 
         if (File.Exists(file))
         {
-            CreateTracker();
+            CreateTracker(); 
             string json = File.ReadAllText(file);
             tracker = JsonConvert.DeserializeObject<Tracker>(json);
 
@@ -160,8 +170,8 @@ public class ConfigurationManager : MonoBehaviour
     public void LoadRoom(string file)
     {
         Debug.Log($"Clearing default room objects");
-        TrackedObject[] existingObjects = FindObjectsOfType<TrackedObject>();
-        foreach (TrackedObject to in existingObjects)
+        TrackedObject[] existingObjects = FindObjectsOfType<TrackedObject>(); // we need to clear the current room (default objects in scene) to load our new one
+        foreach (TrackedObject to in existingObjects) 
         {
             if (to.transform == to.transform.root) Destroy(to.gameObject);
         }
@@ -181,9 +191,9 @@ public class ConfigurationManager : MonoBehaviour
     List<AttachmentPoint> newPoints;
     async void GenerateRoomConfig()
     {
-        RoomSize.RoomSizeChanged?.Invoke(roomConfiguration.roomDimension);
+        RoomSize.RoomSizeChanged?.Invoke(roomConfiguration.roomDimension); // apply the saved room dimensions from the json to the RoomSize
 
-        foreach (Tracker t in roomConfiguration.collections)
+        foreach (Tracker t in roomConfiguration.collections) // iterate though each tracker in the collection creating new objects. 
         {
             newPoints = new List<AttachmentPoint>();
             newObjects = new List<TrackedObject>();
@@ -225,6 +235,11 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Instantiates a object, applies position, rotation, guid, and logs the scale for use later.
+    /// </summary>
+    /// <param name="to">The JSON structure of this object</param>
+    /// <returns>The gameobject of our newly instantiated and setup logic applied</returns>
     GameObject InstantiateObject(TrackedObject.Data to)
     {
         GameObject go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid));
@@ -235,6 +250,10 @@ public class ConfigurationManager : MonoBehaviour
         return go;
     }
 
+    /// <summary>
+    /// Finds and applies the tracked AttachmentPoint information to the prefab included version
+    /// </summary>
+    /// <param name="to">The JSON structure of this object</param>
     void ProcessAttachmentPoint(TrackedObject.Data to)
     {
         GameObject myself = GameObject.Find(to.parent);
@@ -242,6 +261,11 @@ public class ConfigurationManager : MonoBehaviour
         newPoints.Add(myself.GetComponent<AttachmentPoint>());
     }
 
+    /// <summary>
+    /// Finds and applies the tracked EmbeddedSelectable (non-root selectable of a prefab) to the prefab included version
+    /// </summary>
+    /// <param name="to">The JSON structure of this object</param>
+    /// <returns>The populated selectable's gameobject is returned</returns>
     GameObject ProcessEmbeddedSelectable(TrackedObject.Data to)
     {
         GameObject go = GameObject.Find(to.parent);
@@ -251,6 +275,11 @@ public class ConfigurationManager : MonoBehaviour
         return go;
     }
 
+    /// <summary>
+    /// Finds and applies the tracked AttachedSelectable (root selectable of a prefab attached to another Selectable) and sets it's parent transform
+    /// </summary>
+    /// <param name="go">Reference to the gameObject being applied data</param>
+    /// <param name="to">The JSON structure of this object</param>
     void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
     {
         AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
@@ -260,15 +289,19 @@ public class ConfigurationManager : MonoBehaviour
         LogScale(go.GetComponent<Selectable>(), to);
     }
 
+    /// <summary>
+    /// Resets the objects position and rotation to match with the JSON strucutre, after a frame to allow other logic to process the correct information
+    /// </summary>
+    /// <param name="newObjects">The tracked list of new objects that have been created during loading</param>
     async Task ResetObjectPositions(List<TrackedObject> newObjects)
     {
-        newObjects.Reverse();
+        newObjects.Reverse(); // The list needs to be reversed so that the hierarchy is root downwards. 
         foreach (TrackedObject obj in newObjects)
         {
             ResetScaleLevels(obj);
         }
 
-        await Task.Yield();
+        await Task.Yield(); // allow time for scaling values to be applied in Selectable
 
         foreach (TrackedObject obj in newObjects)
         {
@@ -276,6 +309,9 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Randomizes the instance GUIDs of the tracked objects within the configuration so that double loading doesn't have conflicts with GameObject.Find
+    /// </summary>
     void RandomizeInstanceGUIDs()
     {
         foreach(AttachmentPoint ap in newPoints)
@@ -291,6 +327,10 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the scale of the object
+    /// </summary>
+    /// <param name="obj">The JSON structure of the object</param>
     void ResetScaleLevels(TrackedObject obj)
     {
         if (obj.GetScaleLevel() != null)
@@ -300,6 +340,10 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the Local Position & "OriginalLocalPosition" of the object
+    /// </summary>
+    /// <param name="obj">The JSON structure of the object</param>
     void ResetLocalPosition(TrackedObject obj)
     {
         if (!string.IsNullOrEmpty(obj.GetComponent<Selectable>().GUID) && obj.transform != obj.transform.root)
@@ -309,6 +353,11 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Logs the JSON structure of the object scale to be applied at a later point in execution by ResetScaleLevels()
+    /// </summary>
+    /// <param name="s">The object's selectable component</param>
+    /// <param name="to">The JSON structure of this object</param>
     void LogScale(Selectable s, TrackedObject.Data to)
     {
         if (to.scaleLevel.Selected && to.scaleLevel != s.CurrentScaleLevel)
@@ -317,11 +366,20 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Finds the root transform of a generated configuration
+    /// </summary>
+    /// <returns>Generated configuration's transform.root</returns>
     GameObject GetRoot()
     {
         return newObjects.Single(x => x.transform == x.transform.root).gameObject;
     }
 
+    /// <summary>
+    /// Gets the hierachy PATH for a GameObject
+    /// </summary>
+    /// <param name="obj">The object whoms path you are needing</param>
+    /// <returns>string value containing entire editor & engine pathing</returns>
     public static string GetGameObjectPath(GameObject obj)
     {
         string path = "/" + obj.name;
