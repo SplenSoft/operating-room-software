@@ -139,6 +139,13 @@ public class ConfigurationManager : MonoBehaviour
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
     public void LoadRoom(string file)
     {
+        Debug.Log($"Clearing default room objects");
+        TrackedObject[] existingObjects = FindObjectsOfType<TrackedObject>();
+        foreach(TrackedObject to in existingObjects)
+        {
+            if(to.transform == to.transform.root) Destroy(to.gameObject);
+        }
+
         Debug.Log($"Loading Room at {file}");
 
         if (File.Exists(file))
