@@ -16,10 +16,11 @@ public class Save : MonoBehaviour
     [Header("Dynamic UI")]
     public TMP_Text header;
 
-    void Awake()
+    void Start()
     {
-        b_Save.onClick.AddListener(() => {
-            if(Selectable.SelectedSelectable == null)
+        b_Save.onClick.AddListener(() =>
+        {
+            if (Selectable.SelectedSelectable == null)
             {
                 header.text = "Save Room";
             }
@@ -28,12 +29,13 @@ public class Save : MonoBehaviour
                 header.text = "Save Configuration";
             }
 
+            FreeLookCam.Instance.isLocked = true;
             savePanel.SetActive(true);
         });
 
-        b_Confirm.onClick.AddListener(() => 
+        b_Confirm.onClick.AddListener(() =>
         {
-            if(Selectable.SelectedSelectable == null)
+            if (Selectable.SelectedSelectable == null)
             {
                 ConfigurationManager._instance.SaveRoom(fileName.text.Replace(" ", "_"));
             }
@@ -43,12 +45,17 @@ public class Save : MonoBehaviour
             }
 
             fileName.text = "";
+            FreeLookCam.Instance.isLocked = false;
             savePanel.SetActive(false);
         });
 
-        foreach(Button b in b_Cancel)
+        foreach (Button b in b_Cancel)
         {
-            b.onClick.AddListener(() => savePanel.SetActive(false));
+            b.onClick.AddListener(() =>
+            {
+                savePanel.SetActive(false);
+                FreeLookCam.Instance.isLocked = false;
+            });
         }
 
         savePanel.SetActive(false);
