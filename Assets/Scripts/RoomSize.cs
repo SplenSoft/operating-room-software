@@ -24,7 +24,7 @@ public class RoomSize : MonoBehaviour
         InputFieldHeight.onEndEdit.AddListener(text => EnforceDimensionSize(InputFieldHeight, text));
         InputFieldDepth.onEndEdit.AddListener(text => EnforceDimensionSize(InputFieldDepth, text));
 
-        RoomSizeChanged += x => { Debug.Log(x.Width); currentDimensions = x; };
+        RoomSizeChanged += x => { currentDimensions = x; };
     }
 
     private void EnforceDimensionSize(TMP_InputField inputField, string text)

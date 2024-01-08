@@ -136,17 +136,14 @@ public class ConfigurationManager : MonoBehaviour
     }
 
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
-    public void LoadRoom(string fileName)
+    public void LoadRoom(string file)
     {
-        string folder = Application.dataPath + "/Saved/";
-        string configName = fileName;
-        Debug.Log($"Loading Room at /{folder}/{configName}");
-        string path = Path.Combine(folder, configName);
+        Debug.Log($"Loading Room at {file}");
 
-        if (File.Exists(path))
+        if (File.Exists(file))
         {
             CreateTracker();
-            string json = File.ReadAllText(path);
+            string json = File.ReadAllText(file);
             roomConfiguration = JsonConvert.DeserializeObject<RoomConfiguration>(json);
             GenerateRoomConfig();
         }
