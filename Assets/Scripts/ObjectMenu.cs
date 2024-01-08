@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -21,6 +24,7 @@ public class ObjectMenu : MonoBehaviour
     {
         public Selectable Selectable { get; set; }
         public GameObject GameObject { get; set; }
+        public string customFile { get; set; }
     }
 
     private void Awake()
@@ -65,6 +69,26 @@ public class ObjectMenu : MonoBehaviour
         ItemTemplate.SetActive(false);
     }
 
+    public async void AddCustomMenuItem(string f)
+    {
+        ItemTemplate.SetActive(true);
+        string configName = Path.GetFileName(f).Replace(".json", "").Replace("_", " ");
+
+        ItemTemplateTextObjectName.text = configName;
+        GameObject newMenuItem = Instantiate(ItemTemplate, ItemTemplate.transform.parent);
+        newMenuItem.GetComponentInChildren<Button>().onClick.AddListener(async () =>
+        {
+            gameObject.SetActive(false);
+            GameObject newSelectable = await ConfigurationManager._instance.LoadConfig(f);
+
+            Selectable selectable = newSelectable.GetComponent<Selectable>();
+            selectable.StartRaycastPlacementMode();
+        });
+
+        ObjectMenuItems.Add(new ObjectMenuItem { GameObject = newMenuItem, customFile = f });
+        ItemTemplate.SetActive(false);
+    }
+
     private void OnDisable()
     {
         ActiveStateChanged?.Invoke();
@@ -85,7 +109,13 @@ public class ObjectMenu : MonoBehaviour
             //    return;
             //}
 
-            foreach (var type in item.Selectable.Types) 
+            if (item.Selectable == null)
+            {
+                item.GameObject.SetActive(false);
+                return;
+            }
+
+            foreach (var type in item.Selectable.Types)
             {
                 if (attachmentPoint.AllowedSelectableTypes.Contains(type))
                 {
@@ -107,6 +137,8 @@ public class ObjectMenu : MonoBehaviour
     {
         ObjectMenuItems.ForEach(item =>
         {
+            if (item.Selectable == null) return;
+
             bool isMount = item.Selectable.Types.Contains(SelectableType.Mount);
             bool isFurniture = item.Selectable.Types.Contains(SelectableType.Furniture);
             bool isWall = item.Selectable.Types.Contains(SelectableType.Wall);

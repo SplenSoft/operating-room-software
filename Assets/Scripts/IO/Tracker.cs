@@ -6,11 +6,6 @@ public class Tracker
     public List<TrackedObject.Data> objects;
 }
 
-public class RoomTracker
-{
-    public RoomConfiguration room;
-}
-
 [Serializable]
 public struct RoomConfiguration
 {

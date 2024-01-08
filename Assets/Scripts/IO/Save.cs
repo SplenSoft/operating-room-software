@@ -33,7 +33,7 @@ public class Save : MonoBehaviour
 
         b_Confirm.onClick.AddListener(() => 
         {
-            if(Selectable.SelectedSelectable != null)
+            if(Selectable.SelectedSelectable == null)
             {
                 ConfigurationManager._instance.SaveRoom(fileName.text.Replace(" ", "_"));
             }

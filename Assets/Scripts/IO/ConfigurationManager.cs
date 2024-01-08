@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Mail;
+using Unity.VisualScripting;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -40,14 +41,6 @@ public class ConfigurationManager : MonoBehaviour
             collections = new List<Tracker>()
         };
         return roomConfiguration;
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.K))
-        {
-            SaveRoom("test");
-        }
     }
 
     public void SaveConfiguration(string title)
@@ -137,13 +130,34 @@ public class ConfigurationManager : MonoBehaviour
     }
 
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E";
+
+    public async Task<GameObject> LoadConfig(string file)
+    {
+        Debug.Log($"Loading config file at {file}");
+
+        if (File.Exists(file))
+        {
+            CreateTracker();
+            string json = File.ReadAllText(file);
+            tracker = JsonConvert.DeserializeObject<Tracker>(json);
+        }
+
+        newPoints = new List<AttachmentPoint>();
+        newObjects = new List<TrackedObject>();
+
+        ProcessTrackedObjects(tracker.objects);
+        await ResetObjectPositions(newObjects);
+
+        return GetRoot();
+    }
+
     public void LoadRoom(string file)
     {
         Debug.Log($"Clearing default room objects");
         TrackedObject[] existingObjects = FindObjectsOfType<TrackedObject>();
-        foreach(TrackedObject to in existingObjects)
+        foreach (TrackedObject to in existingObjects)
         {
-            if(to.transform == to.transform.root) Destroy(to.gameObject);
+            if (to.transform == to.transform.root) Destroy(to.gameObject);
         }
 
         Debug.Log($"Loading Room at {file}");
@@ -171,109 +185,113 @@ public class ConfigurationManager : MonoBehaviour
             ProcessTrackedObjects(t.objects);
             await ResetObjectPositions(newObjects);
         }
+    }
 
-        void ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
+    void ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
+    {
+        foreach (TrackedObject.Data to in trackedObjects)
         {
-            foreach (TrackedObject.Data to in trackedObjects)
+            GameObject go = null;
+            if (to.global_guid != attachPointGUID && !string.IsNullOrEmpty(to.global_guid)) // if it is not an AttachPoint, we need to place the Selectable
             {
-                GameObject go = null;
-                if (to.global_guid != attachPointGUID && !string.IsNullOrEmpty(to.global_guid)) // if it is not an AttachPoint, we need to place the Selectable
+                go = InstantiateObject(to);
+                newObjects.Add(go.GetComponent<TrackedObject>());
+            }
+
+            if (to.parent != null)
+            {
+                if (to.global_guid == null || to.global_guid == "") // embedded selectable component
                 {
-                    go = InstantiateObject(to);
+                    go = ProcessEmbeddedSelectable(to);
                     newObjects.Add(go.GetComponent<TrackedObject>());
                 }
-
-                if (to.parent != null)
+                else if (to.global_guid == attachPointGUID) // attachment point component
                 {
-                    if (to.global_guid == null || to.global_guid == "") // embedded selectable component
-                    {
-                        go = ProcessEmbeddedSelectable(to);
-                        newObjects.Add(go.GetComponent<TrackedObject>());
-                    }
-                    else if (to.global_guid == attachPointGUID) // attachment point component
-                    {
-                        ProcessAttachmentPoint(to);
-                    }
-                    else // selectable attached to an attachment point
-                    {
-                        ProcessAttachedSelectable(go, to);
-                        newObjects.Add(go.GetComponent<TrackedObject>());
-                    }
+                    ProcessAttachmentPoint(to);
+                }
+                else // selectable attached to an attachment point
+                {
+                    ProcessAttachedSelectable(go, to);
+                    newObjects.Add(go.GetComponent<TrackedObject>());
                 }
             }
         }
+    }
 
-        GameObject InstantiateObject(TrackedObject.Data to)
+    GameObject InstantiateObject(TrackedObject.Data to)
+    {
+        GameObject go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid));
+        go.transform.SetPositionAndRotation(to.pos, to.rot);
+        go.name = to.instance_guid;
+        go.GetComponent<Selectable>().guid = to.instance_guid;
+        LogScale(go.GetComponent<Selectable>(), to);
+        return go;
+    }
+
+    void ProcessAttachmentPoint(TrackedObject.Data to)
+    {
+        GameObject myself = GameObject.Find(to.parent);
+        myself.GetComponent<AttachmentPoint>().guid = to.instance_guid;
+        newPoints.Add(myself.GetComponent<AttachmentPoint>());
+    }
+
+    GameObject ProcessEmbeddedSelectable(TrackedObject.Data to)
+    {
+        GameObject go = GameObject.Find(to.parent);
+        go.GetComponent<Selectable>().guid = to.instance_guid;
+        LogScale(go.GetComponent<Selectable>(), to);
+        go.transform.rotation = to.rot;
+        return go;
+    }
+
+    void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
+    {
+        AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
+        ap.SetAttachedSelectable(go.GetComponent<Selectable>());
+        go.transform.SetParent(ap.gameObject.transform);
+        go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
+        LogScale(go.GetComponent<Selectable>(), to);
+    }
+
+    async Task ResetObjectPositions(List<TrackedObject> newObjects)
+    {
+        newObjects.Reverse();
+        foreach (TrackedObject obj in newObjects)
         {
-            GameObject go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid));
-            go.transform.SetPositionAndRotation(to.pos, to.rot);
-            go.name = to.instance_guid;
-            go.GetComponent<Selectable>().guid = to.instance_guid;
-            LogScale(go.GetComponent<Selectable>(), to);
-            return go;
+            ResetScaleLevels(obj);
+            await Task.Yield();
+            ResetLocalPosition(obj);
         }
+    }
 
-        void ProcessAttachmentPoint(TrackedObject.Data to)
+    void ResetScaleLevels(TrackedObject obj)
+    {
+        if (obj.GetScaleLevel() != null)
         {
-            GameObject myself = GameObject.Find(to.parent);
-            myself.GetComponent<AttachmentPoint>().guid = to.instance_guid;
-            newPoints.Add(myself.GetComponent<AttachmentPoint>());
+            obj.GetComponent<Selectable>().ScaleLevels.ForEach((item) => item.Selected = false);
+            obj.GetScaleLevel().Selected = true;
         }
+    }
 
-        GameObject ProcessEmbeddedSelectable(TrackedObject.Data to)
+    void ResetLocalPosition(TrackedObject obj)
+    {
+        if (!string.IsNullOrEmpty(obj.GetComponent<Selectable>().GUID) && obj.transform != obj.transform.root)
         {
-            GameObject go = GameObject.Find(to.parent);
-            go.GetComponent<Selectable>().guid = to.instance_guid;
-            LogScale(go.GetComponent<Selectable>(), to);
-            go.transform.rotation = to.rot;
-            return go;
+            obj.transform.localPosition = Vector3.zero;
         }
+    }
 
-        void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
+    void LogScale(Selectable s, TrackedObject.Data to)
+    {
+        if (to.scaleLevel.Selected && to.scaleLevel != s.CurrentScaleLevel)
         {
-            AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
-            ap.SetAttachedSelectable(go.GetComponent<Selectable>());
-            go.transform.SetParent(ap.gameObject.transform);
-            go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
-            LogScale(go.GetComponent<Selectable>(), to);
+            s.GetComponent<TrackedObject>().StoreValues(to);
         }
+    }
 
-        async Task ResetObjectPositions(List<TrackedObject> newObjects)
-        {
-            newObjects.Reverse();
-            foreach (TrackedObject obj in newObjects)
-            {
-                ResetScaleLevels(obj);
-                await Task.Yield();
-                ResetLocalPosition(obj);
-
-            }
-        }
-
-        void ResetScaleLevels(TrackedObject obj)
-        {
-            if (obj.GetScaleLevel() != null)
-            {
-                obj.GetComponent<Selectable>().ScaleLevels.ForEach((item) => item.Selected = false);
-                obj.GetScaleLevel().Selected = true;
-            }
-        }
-
-        void ResetLocalPosition(TrackedObject obj)
-        {
-            if (!string.IsNullOrEmpty(obj.GetComponent<Selectable>().GUID) && obj.transform != obj.transform.root)
-            {
-                obj.transform.localPosition = Vector3.zero;
-            }
-        }
-
-        void LogScale(Selectable s, TrackedObject.Data to)
-        {
-            if (to.scaleLevel.Selected && to.scaleLevel != s.CurrentScaleLevel)
-            {
-                s.GetComponent<TrackedObject>().StoreValues(to);
-            }
-        }
+    GameObject GetRoot()
+    {
+        return newObjects.Single(x => x.transform == x.transform.root).gameObject;
     }
 
     public static string GetGameObjectPath(GameObject obj)
