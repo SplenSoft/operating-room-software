@@ -89,6 +89,19 @@ public class ConfigurationManager : MonoBehaviour
         Debug.Log($"Saved Config: {path}");
 
         ObjectMenu.Instance.AddCustomMenuItem(path); // add this configuration to the ObjectMenu
+        foreach(TrackedObject obj in foundObjects)
+        {
+            if(obj.TryGetComponent(out Selectable s))
+            {
+                s.guid = Guid.NewGuid().ToString();
+                s.name = s.guid;
+            }
+            else
+            {
+                obj.GetComponent<AttachmentPoint>().guid = Guid.NewGuid().ToString();
+                obj.gameObject.name = obj.GetComponent<AttachmentPoint>().guid;
+            }
+        }
     }
 
     public void SaveRoom(string title)
@@ -138,6 +151,8 @@ public class ConfigurationManager : MonoBehaviour
 
         File.WriteAllText(path, json);
         Debug.Log($"Saved Room: {path}");
+
+        RoomConfigLoader.Instance.GenerateRoomItem(path);
     }
 
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E"; // this is the prefab GUID for ALL attachment points. DO NOT CHANGE.
