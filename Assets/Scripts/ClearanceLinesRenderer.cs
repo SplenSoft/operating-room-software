@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class ClearanceLinesRenderer : MonoBehaviour
@@ -22,6 +23,9 @@ public class ClearanceLinesRenderer : MonoBehaviour
     private List<Selectable> _trackedParentSelectables = new();
     private bool _rotateMeshWhenFindingFarthestVert;
     private bool _needsUpdate = true;
+    private bool _taskRunning = false;
+    private bool _cancelTask = false;
+    private Task _taskUpdateLineRenderer;
     #endregion
 
     #region Monobehaviour
@@ -54,6 +58,11 @@ public class ClearanceLinesRenderer : MonoBehaviour
     private void Update()
     {
         if (!UI_ToggleClearanceLines.IsActive) return;
+
+        if (_needsUpdate && !_taskRunning)
+        {
+            UpdateLineRenderer();
+        }
 
         if (FreeLookCam.IsActive)
         {
@@ -111,6 +120,10 @@ public class ClearanceLinesRenderer : MonoBehaviour
     private void SetNeedsUpdate()
     {
         _needsUpdate = true;
+        if (_taskRunning)
+        {
+            _cancelTask = true;
+        }
         CheckStatus();
     }
 
@@ -128,12 +141,17 @@ public class ClearanceLinesRenderer : MonoBehaviour
 
         if (UI_ToggleClearanceLines.IsActive && _needsUpdate)
         {
-            UpdateLineRenderer();
+            if (!_taskRunning)
+            {
+                UpdateLineRenderer();
+            }
         }
     }
 
-    public void UpdateLineRenderer()
+    public async void UpdateLineRenderer()
     {
+        _taskRunning = true;
+
         List<Vector3> positions = new();
 
         _highestSelectable.SetAssemblyToDefaultRotations();
@@ -150,35 +168,50 @@ public class ClearanceLinesRenderer : MonoBehaviour
         float lowestYValue = float.MaxValue;
         float medianY = 0f;
 
-        void GetFarthestDistance()
+        async Task GetFarthestDistance()
         {
             for (int j = 0; j < meshFilters.Length; j++)
             {
                 var filter = meshFilters[j];
                 Vector3[] verts = filter.sharedMesh.vertices;
-                for (int i = 0; i < verts.Length; i++)
+                Quaternion rotation = filter.transform.rotation;
+                Vector3 position = filter.transform.position;
+
+                Task task = Task.Factory.StartNew(() =>
                 {
-                    Vector3 transformedPoint = filter.transform.TransformPoint(verts[i]);
-
-                    if (j == 0 && !medianYEstablished)
+                    for (int i = 0; i < verts.Length; i++)
                     {
-                        if (transformedPoint.y > highestYValue)
+                        //Vector3 transformedPoint = filter.transform.TransformPoint(verts[i]);
+                        Vector3 vert = verts[i];
+                        vert = rotation * vert;
+                        Vector3 transformedPoint = vert + position;
+                        if (j == 0 && !medianYEstablished)
                         {
-                            highestYValue = transformedPoint.y;
+                            if (transformedPoint.y > highestYValue)
+                            {
+                                highestYValue = transformedPoint.y;
+                            }
+
+                            if (transformedPoint.y < lowestYValue)
+                            {
+                                lowestYValue = transformedPoint.y;
+                            }
                         }
 
-                        if (transformedPoint.y < lowestYValue)
+                        float distance = Vector2.Distance(originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
+                        if (distance > farthestDistance)
                         {
-                            lowestYValue = transformedPoint.y;
+                            farthestDistance = distance;
+                        }
+
+                        if (_cancelTask)
+                        {
+                            return;
                         }
                     }
+                });
 
-                    float distance = Vector2.Distance(originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
-                    if (distance > farthestDistance)
-                    {
-                        farthestDistance = distance;
-                    }
-                }
+                await task;
 
                 if (j == 0 && !medianYEstablished)
                 {
@@ -193,12 +226,24 @@ public class ClearanceLinesRenderer : MonoBehaviour
             for (int i = 0; i < 361; i++)
             {
                 _selectable.transform.Rotate(new Vector3(0, 0, 1));
-                GetFarthestDistance();
+                await GetFarthestDistance();
+                if (_cancelTask)
+                {
+                    _taskRunning = false;
+                    _cancelTask = false;
+                    return;
+                }
             }
         }
         else
         {
-            GetFarthestDistance();
+            await GetFarthestDistance();
+            if (_cancelTask)
+            {
+                _taskRunning = false;
+                _cancelTask = false;
+                return;
+            }
         }
 
         float localY = medianY - _highestSelectable.transform.position.y;
@@ -216,7 +261,9 @@ public class ClearanceLinesRenderer : MonoBehaviour
         Debug.Log($"Received {positions.Count} vertex positions for line renderer");
         _lineRenderer.positionCount = positions.Count;
         _lineRenderer.SetPositions(positions.ToArray());
+        _taskRunning = false;
         _needsUpdate = false;
+        _cancelTask = false;
     }
     #endregion
 }
