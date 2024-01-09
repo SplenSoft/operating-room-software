@@ -7,6 +7,15 @@ using UnityEngine;
 public class ClearanceLinesRenderer : MonoBehaviour
 {
     #region Non-method Members
+    private class MeshVertsData
+    {
+        public MeshFilter MeshFilter { get; set; }
+        public Quaternion Rotation { get; set; }
+        public Vector3 Position { get; set; }
+        public Vector3[] Vertices { get; set; }
+        public int Rotations { get; set; } = 1;
+    }
+
     private static readonly float _sizeScalar = 0.0035f;
     private static readonly float _sizeScalarOrtho = 0.005f;
     private static readonly float _sizeScalarOrthoMax = 0.05f;
@@ -21,11 +30,15 @@ public class ClearanceLinesRenderer : MonoBehaviour
     /// <summary> Can be null, be sure to check</summary>
     private Selectable _selectable;
     private List<Selectable> _trackedParentSelectables = new();
+    private List<MeshVertsData> _meshVertsDatas;
     private bool _rotateMeshWhenFindingFarthestVert;
-    private bool _needsUpdate = true;
-    private bool _taskRunning = false;
-    private bool _cancelTask = false;
-    private Task _taskUpdateLineRenderer;
+    [SerializeField, ReadOnly] private bool _needsUpdate = true;
+    [SerializeField, ReadOnly] private bool _taskRunning = false;
+    [SerializeField, ReadOnly] private bool _cancelTask = false;
+    bool _medianYEstablished = false;
+    float _highestYValue = float.MinValue;
+    float _lowestYValue = float.MaxValue;
+    float _medianY = 0f;
     #endregion
 
     #region Monobehaviour
@@ -163,107 +176,141 @@ public class ClearanceLinesRenderer : MonoBehaviour
         MeshFilter[] meshFilters = IncludeChildrenInMeasurement ? GetComponentsInChildren<MeshFilter>() : new[] { GetComponent<MeshFilter>() };
 
         float farthestDistance = 0f;
-        bool medianYEstablished = false;
-        float highestYValue = float.MinValue;
-        float lowestYValue = float.MaxValue;
-        float medianY = 0f;
-
-        async Task GetFarthestDistance()
+        
+        if (_meshVertsDatas == null)
         {
+            _meshVertsDatas = new();
+
             for (int j = 0; j < meshFilters.Length; j++)
             {
                 var filter = meshFilters[j];
-                Vector3[] verts = filter.sharedMesh.vertices;
-                Quaternion rotation = filter.transform.rotation;
-                Vector3 position = filter.transform.position;
+                _meshVertsDatas.Add(new MeshVertsData
+                {
+                    MeshFilter = filter,
+                    Rotation = filter.transform.rotation,
+                    Position = filter.transform.position,
+                    Vertices = filter.sharedMesh.vertices,
+                    Rotations = _rotateMeshWhenFindingFarthestVert ? 361 : 1
+                }); ;
+            }
+        }
+        else
+        {
+            foreach (var meshVertsData in _meshVertsDatas)
+            {
+                meshVertsData.Position = meshVertsData.MeshFilter.transform.position;
+                meshVertsData.Rotation = meshVertsData.MeshFilter.transform.rotation;
+            }
+        }
+
+        async Task GetFarthestDistance()
+        {
+            //Vector3[] verts = filter.sharedMesh.vertices;
+            foreach (var meshVertsData in _meshVertsDatas)
+            {
+                bool first = _meshVertsDatas[0] == meshVertsData;
 
                 Task task = Task.Factory.StartNew(() =>
                 {
-                    for (int i = 0; i < verts.Length; i++)
+                    for (int j = 0; j < meshVertsData.Rotations; j++)
                     {
-                        //Vector3 transformedPoint = filter.transform.TransformPoint(verts[i]);
-                        Vector3 vert = verts[i];
-                        vert = rotation * vert;
-                        Vector3 transformedPoint = vert + position;
-                        if (j == 0 && !medianYEstablished)
+                        for (int i = 0; i < meshVertsData.Vertices.Length; i++)
                         {
-                            if (transformedPoint.y > highestYValue)
+                            Vector3 vert = meshVertsData.Vertices[i];
+                            vert = meshVertsData.Rotation * vert;
+                            vert = Quaternion.Euler(0, j, 0) * vert;
+                            Vector3 transformedPoint = vert + meshVertsData.Position;
+
+                            if (first && !_medianYEstablished)
                             {
-                                highestYValue = transformedPoint.y;
+                                if (transformedPoint.y > _highestYValue)
+                                {
+                                    _highestYValue = transformedPoint.y;
+                                }
+
+                                if (transformedPoint.y < _lowestYValue)
+                                {
+                                    _lowestYValue = transformedPoint.y;
+                                }
                             }
 
-                            if (transformedPoint.y < lowestYValue)
+                            float distance = Vector2.Distance(originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
+                            if (distance > farthestDistance)
                             {
-                                lowestYValue = transformedPoint.y;
+                                farthestDistance = distance;
                             }
-                        }
 
-                        float distance = Vector2.Distance(originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
-                        if (distance > farthestDistance)
-                        {
-                            farthestDistance = distance;
-                        }
-
-                        if (_cancelTask)
-                        {
-                            return;
+                            if (_cancelTask)
+                            {
+                                return;
+                            }
                         }
                     }
                 });
 
                 await task;
 
-                if (j == 0 && !medianYEstablished)
-                {
-                    medianY = (highestYValue + lowestYValue) / 2f;
-                    medianYEstablished = true;
-                }
-            }
-        }
-
-        if (_rotateMeshWhenFindingFarthestVert)
-        {
-            for (int i = 0; i < 361; i++)
-            {
-                _selectable.transform.Rotate(new Vector3(0, 0, 1));
-                await GetFarthestDistance();
                 if (_cancelTask)
                 {
-                    _taskRunning = false;
-                    _cancelTask = false;
                     return;
+                }
+
+                if (first && !_medianYEstablished)
+                {
+                    _medianY = (_highestYValue + _lowestYValue) / 2f;
+                    _medianYEstablished = true;
                 }
             }
         }
-        else
-        {
-            await GetFarthestDistance();
-            if (_cancelTask)
-            {
-                _taskRunning = false;
-                _cancelTask = false;
-                return;
-            }
-        }
 
-        float localY = medianY - _highestSelectable.transform.position.y;
         for (int i = 0; i < 361; i++)
         {
             _highestSelectable.transform.Rotate(new Vector3(0, 0, 1));
-            Vector3 pos = _highestSelectable.transform.right * farthestDistance;
-            pos.y = localY;
+            Vector3 pos = _highestSelectable.transform.right;
             positions.Add(pos);
         }
 
         _highestSelectable.transform.rotation = higestOriginalRotation;
         _highestSelectable.RestoreArmAssemblyRotations();
 
-        Debug.Log($"Received {positions.Count} vertex positions for line renderer");
+        await GetFarthestDistance();
+
+        // object was destroyed while task was running
+        if (_lineRenderer == null)
+        {
+            _needsUpdate = false;
+            _taskRunning = false;
+            _cancelTask = false;
+            return;
+        }
+
+        if (_cancelTask)
+        {
+            _taskRunning = false;
+            _cancelTask = false;
+            return;
+        }
+
+        float localY = _medianY - _highestSelectable.transform.position.y;
+        for (int i = 0; i < positions.Count; i++)
+        {
+            Vector3 newPos = positions[i] * farthestDistance;
+            newPos.y = localY;
+            positions[i] = newPos;
+        }
+
+        //Debug.Log($"Received {positions.Count} vertex positions for line renderer");
+        
         _lineRenderer.positionCount = positions.Count;
-        _lineRenderer.SetPositions(positions.ToArray());
+        _lineRenderer.SetPositions(positions.ToArray());      
+        
         _taskRunning = false;
-        _needsUpdate = false;
         _cancelTask = false;
+
+        if (!_cancelTask)
+        {
+            _needsUpdate = false;
+        }
     }
     #endregion
 }
