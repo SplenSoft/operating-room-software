@@ -474,7 +474,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 77486103945529810}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4309211121793958625
 MonoBehaviour:
@@ -935,37 +935,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Target>k__BackingField: {fileID: 5422091562068085787}
---- !u!1 &4486965611410130287
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3406513888274818307}
-  m_Layer: 6
-  m_Name: ClearanceLineMeasuringPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3406513888274818307
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4486965611410130287}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.179, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 77486103945529810}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4554919814966186864
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,6 +1874,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -1915,7 +1886,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!1 &962334343944774261 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2029803716958772472, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
@@ -1933,6 +1904,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -1943,7 +1916,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!114 &6481277586684782023
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2335,6 +2308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -2345,7 +2320,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!4 &2652826095160859343 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -5358983379694394302, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
@@ -2368,6 +2343,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -2378,7 +2355,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!114 &7478680558114796538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2562,6 +2539,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -2572,7 +2551,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!114 &4434613480047354510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2922,6 +2901,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -2932,7 +2913,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!4 &3886556193286540718 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2638678378593694499, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
@@ -2960,6 +2941,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -2971,7 +2954,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!114 &8218428066869754786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3336,6 +3319,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -3346,7 +3331,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!1 &5611219428457407518 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6678455696416938643, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
@@ -3530,6 +3515,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -3540,7 +3527,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!1 &6500573809232739847 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -3799059835318534006, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
@@ -3724,6 +3711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -3734,7 +3723,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!4 &6526822854579980039 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5468008263045937546, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
@@ -3923,6 +3912,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -3933,7 +3924,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!1 &7224865759504807838 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -778476891541714669, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
@@ -4117,6 +4108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -4127,7 +4120,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!4 &7965255161591742342 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9222227563242406155, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
@@ -4165,6 +4158,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -4175,7 +4170,7 @@ MonoBehaviour:
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!114 &5163351766029638870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4342,71 +4337,6 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
---- !u!1001 &2516057304828924062
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 77486103945529810}
-    m_Modifications:
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1528760048597861424, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2342445553743564237, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_UseWorldSpace
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2342445553743564237, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: 2fb26cf900ea7494f93ad51734a84ccb, type: 2}
-    - target: {fileID: 2999278789812950873, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-      propertyPath: m_Name
-      value: ClearanceLinesRenderer
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
 --- !u!1001 &3634994576740152676
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4461,7 +4391,7 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLineMeasuringPosition>k__BackingField
       value: 
-      objectReference: {fileID: 3406513888274818307}
+      objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLinesRenderers>k__BackingField.Array.size
       value: 1
@@ -4550,3 +4480,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 3634994576740152676}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8730165539022225314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8013771317938095565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lineRenderer: {fileID: 0}
+  <IncludeChildrenInMeasurement>k__BackingField: 1
