@@ -4,10 +4,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Net.Mail;
-using Unity.VisualScripting;
 using System;
-using UnityEditor.UI;
 
 public class ConfigurationManager : MonoBehaviour
 {
