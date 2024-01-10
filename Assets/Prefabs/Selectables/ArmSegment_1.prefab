@@ -334,6 +334,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lineRenderer: {fileID: 0}
   <IncludeChildrenInMeasurement>k__BackingField: 0
+  _needsUpdate: 1
+  _taskRunning: 0
+  _cancelTask: 0
 --- !u!1 &8140088957434317375 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5506188084046867964, guid: fd4692e694bb0364f8ee205b2693947f, type: 3}
@@ -608,6 +611,19 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
+--- !u!114 &5855065300949659685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8140088957434317375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94fc7539e629a1d4b9a7176e7b1124a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Id>k__BackingField: ArmSegment_1.001
 --- !u!1001 &8323226777541634887
 PrefabInstance:
   m_ObjectHideFlags: 0
