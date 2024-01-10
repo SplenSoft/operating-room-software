@@ -1,3 +1,4 @@
+using PdfSharpCore.Pdf.Filters;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ public class ClearanceLinesRenderer : MonoBehaviour
         public Quaternion Rotation { get; set; }
         public Vector3 Position { get; set; }
         public Vector3[] Vertices { get; set; }
+        //public Vector3 ForwardVector { get; set; }
         public int Rotations { get; set; } = 1;
     }
 
@@ -39,6 +41,7 @@ public class ClearanceLinesRenderer : MonoBehaviour
     float _highestYValue = float.MinValue;
     float _lowestYValue = float.MaxValue;
     float _medianY = 0f;
+    private object _lockObject = new();
     #endregion
 
     #region Monobehaviour
@@ -166,7 +169,7 @@ public class ClearanceLinesRenderer : MonoBehaviour
         _taskRunning = true;
 
         List<Vector3> positions = new();
-
+        Vector3 forwardVector = transform.forward;
         _highestSelectable.SetAssemblyToDefaultRotations();
         var higestOriginalRotation = _highestSelectable.transform.rotation;
 
@@ -190,7 +193,8 @@ public class ClearanceLinesRenderer : MonoBehaviour
                     Rotation = filter.transform.rotation,
                     Position = filter.transform.position,
                     Vertices = filter.sharedMesh.vertices,
-                    Rotations = _rotateMeshWhenFindingFarthestVert ? 361 : 1
+                    Rotations = _rotateMeshWhenFindingFarthestVert ? 361 : 1,
+                    //ForwardVector = filter.transform.forward
                 }); ;
             }
         }
@@ -200,6 +204,7 @@ public class ClearanceLinesRenderer : MonoBehaviour
             {
                 meshVertsData.Position = meshVertsData.MeshFilter.transform.position;
                 meshVertsData.Rotation = meshVertsData.MeshFilter.transform.rotation;
+                //meshVertsData.ForwardVector = meshVertsData.MeshFilter.transform.forward;
             }
         }
 
@@ -211,17 +216,16 @@ public class ClearanceLinesRenderer : MonoBehaviour
                 bool first = _meshVertsDatas[0] == meshVertsData;
 
                 Task task = Task.Factory.StartNew(() =>
-                {
-                    for (int j = 0; j < meshVertsData.Rotations; j++)
+                {  
+                    Parallel.For(0, meshVertsData.Rotations, j =>
                     {
+                        float farthest = 0f;
                         for (int i = 0; i < meshVertsData.Vertices.Length; i++)
                         {
-                            Vector3 vert = meshVertsData.Vertices[i];
-                            vert = meshVertsData.Rotation * vert;
-                            vert = Quaternion.Euler(0, j, 0) * vert;
+                            Vector3 vert = meshVertsData.Rotation * Quaternion.AngleAxis(j, forwardVector) * meshVertsData.Vertices[i];
                             Vector3 transformedPoint = vert + meshVertsData.Position;
 
-                            if (first && !_medianYEstablished)
+                            if (first && !_medianYEstablished && j == 0)
                             {
                                 if (transformedPoint.y > _highestYValue)
                                 {
@@ -235,9 +239,9 @@ public class ClearanceLinesRenderer : MonoBehaviour
                             }
 
                             float distance = Vector2.Distance(originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
-                            if (distance > farthestDistance)
+                            if (distance > farthest)
                             {
-                                farthestDistance = distance;
+                                farthest = distance;
                             }
 
                             if (_cancelTask)
@@ -245,7 +249,15 @@ public class ClearanceLinesRenderer : MonoBehaviour
                                 return;
                             }
                         }
-                    }
+
+                        lock (_lockObject)
+                        {
+                            if (farthest > farthestDistance)
+                            {
+                                farthestDistance = farthest;
+                            }
+                        }
+                    });
                 });
 
                 await task;
