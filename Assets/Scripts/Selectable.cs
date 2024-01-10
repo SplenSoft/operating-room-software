@@ -194,7 +194,7 @@ public class Selectable : MonoBehaviour
             Vector3 parentOriginalScale = transform.localScale;
             Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, scaleLevel.ScaleZ);
             transform.localScale = newScale;
-
+            
             if (scaleLevel == CurrentScaleLevel)
             {
                 //Debug.Log("Using stored child scales");
@@ -210,6 +210,8 @@ public class Selectable : MonoBehaviour
                 var diffY = newParentScale.y / parentOriginalScale.y;
                 var diffZ = newParentScale.z / parentOriginalScale.z;
 
+                //Debug.Log($"Relative Difference ({diffX}, {diffY}, {diffZ})");
+
                 // This inverts the scale differences
                 var diffVector = new Vector3(1 / diffX, 1 / diffY, 1 / diffZ);
 
@@ -217,9 +219,12 @@ public class Selectable : MonoBehaviour
                 {
                     var child = transform.GetChild(i);
                     Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
+                    //Debug.Log($"{child.name} Current Scale is ({child.transform.localScale.x}, {child.transform.localScale.y}, {child.transform.localScale.z})");
+                    //Debug.Log($"Local Diff after InverseTransformVector for {child.name} is ({localDiff.x}, {localDiff.y}, {localDiff.z})");
                     float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
                     float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
                     float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
+                    //Debug.Log($"Applying new scale of ({x}, {y}, {z})");
                     child.transform.localScale = new Vector3(x, y, z);
                 }
             }
@@ -254,6 +259,7 @@ public class Selectable : MonoBehaviour
         {
             var child = transform.GetChild(i);
             _childScales.Add(child.transform.localScale);
+            Debug.Log($"Storing child scales");
         }
     }
 
@@ -674,7 +680,7 @@ public class Selectable : MonoBehaviour
 
     private void Start()
     {
-        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z) && ScaleLevels.Count > 0)
         {
             CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
             CurrentPreviewScaleLevel = CurrentScaleLevel;
