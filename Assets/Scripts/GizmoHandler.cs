@@ -389,7 +389,23 @@ public class GizmoHandler : MonoBehaviour
 
             float xScale = _localScaleBeforeStartDrag.x * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X) ? gizmo.TotalDragScale.x : 1);
             float yScale = _localScaleBeforeStartDrag.y * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y) ? gizmo.TotalDragScale.y : 1);
-            float zScale = _selectable.ScaleLevels.Count == 0 ? _localScaleBeforeStartDrag.z * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z) ? gizmo.TotalDragScale.z : 1) : _selectable.transform.localScale.z;
+            float zScale = _localScaleBeforeStartDrag.z;
+            if (_selectable.ScaleLevels.Count == 0)
+            {
+                if (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+                {
+                    zScale *= gizmo.TotalDragScale.z;
+
+                    if(_selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting) && !gizmoSetting.Unrestricted)
+                    {
+                        zScale = Mathf.Clamp(zScale, gizmoSetting.GetMinValue, gizmoSetting.GetMaxValue);
+                    }
+                }
+            }
+            else
+            {
+                zScale = _selectable.transform.localScale.z;
+            }
 
             if (UI_ToggleSnapping.SnappingEnabled)
             {
@@ -410,6 +426,14 @@ public class GizmoHandler : MonoBehaviour
             }
 
             _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
+
+            if(_selectable.GetParentSelectable() != null)
+            {
+                if(_selectable.GetParentSelectable().IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+                {
+                    _selectable.GetParentSelectable().StoreChildScales();
+                }
+            }
         }
 
         GizmoDragPostUpdate?.Invoke();

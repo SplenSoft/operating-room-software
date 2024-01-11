@@ -301,12 +301,11 @@ MonoBehaviour:
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <isDestructible>k__BackingField: 0
   <AllowInverseControl>k__BackingField: 0
-  <lockChildrenScale>k__BackingField: 0
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
     <Unrestricted>k__BackingField: 0
-    <MaxValue>k__BackingField: 25
+    <MaxValue>k__BackingField: 8.8392
     <MinValue>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
@@ -403,7 +402,6 @@ MonoBehaviour:
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <isDestructible>k__BackingField: 0
   <AllowInverseControl>k__BackingField: 0
-  <lockChildrenScale>k__BackingField: 1
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
