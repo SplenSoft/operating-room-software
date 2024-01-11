@@ -153,6 +153,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sidelite4FTSingle
       objectReference: {fileID: 0}
+    - target: {fileID: 7826466812584322040, guid: 0f9f1341b3c74484094efd0c0f04c15b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f9f1341b3c74484094efd0c0f04c15b, type: 3}
 --- !u!1 &4471091074157310847 stripped

@@ -153,6 +153,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7826466812584322040, guid: 4087eb0df4a6c6142af2f4a9050d50ea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4087eb0df4a6c6142af2f4a9050d50ea, type: 3}
 --- !u!1 &3945040143271740796 stripped
@@ -353,7 +357,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 6973475671592138804}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7288727450925951383
+--- !u!114 &4853444153274489851
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -371,7 +375,7 @@ MonoBehaviour:
   <DoorStrike>k__BackingField: {fileID: 8576628636380221944}
   <DoorSwingAngle>k__BackingField: 90
   <Type>k__BackingField: 1
---- !u!114 &4853444153274489851
+--- !u!114 &7288727450925951383
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

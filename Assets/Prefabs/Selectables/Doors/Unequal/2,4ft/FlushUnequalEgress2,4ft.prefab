@@ -144,6 +144,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8607392776104831022, guid: 95f51fb464971a74589220b56ceb970f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -6473671827034955788, guid: 95f51fb464971a74589220b56ceb970f, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -384,24 +388,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 6973475671592138804}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4075377053347000930
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4432239046007752861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IncludeChildrenInMeasurement>k__BackingField: 0
-  <BufferSize>k__BackingField: 0
-  <DoorHinge>k__BackingField: {fileID: 5530789194573339982}
-  <DoorStrike>k__BackingField: {fileID: 7397236447651526310}
-  <DoorSwingAngle>k__BackingField: 90
-  <Type>k__BackingField: 1
 --- !u!114 &3899296756044173115
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,6 +403,24 @@ MonoBehaviour:
   <IncludeChildrenInMeasurement>k__BackingField: 0
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 4460983704741664085}
+  <DoorStrike>k__BackingField: {fileID: 7397236447651526310}
+  <DoorSwingAngle>k__BackingField: 90
+  <Type>k__BackingField: 1
+--- !u!114 &4075377053347000930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4432239046007752861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IncludeChildrenInMeasurement>k__BackingField: 0
+  <BufferSize>k__BackingField: 0
+  <DoorHinge>k__BackingField: {fileID: 5530789194573339982}
   <DoorStrike>k__BackingField: {fileID: 7397236447651526310}
   <DoorSwingAngle>k__BackingField: 90
   <Type>k__BackingField: 1

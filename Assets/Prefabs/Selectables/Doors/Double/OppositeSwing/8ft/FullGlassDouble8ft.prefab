@@ -259,24 +259,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 6973475671592138804}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7183748770715737742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4432239046007752861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IncludeChildrenInMeasurement>k__BackingField: 0
-  <BufferSize>k__BackingField: 0
-  <DoorHinge>k__BackingField: {fileID: 6222035061959039640}
-  <DoorStrike>k__BackingField: {fileID: 4590846242709702344}
-  <DoorSwingAngle>k__BackingField: 90
-  <Type>k__BackingField: 1
 --- !u!114 &4862781895753614496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,6 +274,24 @@ MonoBehaviour:
   <IncludeChildrenInMeasurement>k__BackingField: 0
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 48024935166543931}
+  <DoorStrike>k__BackingField: {fileID: 4590846242709702344}
+  <DoorSwingAngle>k__BackingField: 90
+  <Type>k__BackingField: 1
+--- !u!114 &7183748770715737742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4432239046007752861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IncludeChildrenInMeasurement>k__BackingField: 0
+  <BufferSize>k__BackingField: 0
+  <DoorHinge>k__BackingField: {fileID: 6222035061959039640}
   <DoorStrike>k__BackingField: {fileID: 4590846242709702344}
   <DoorSwingAngle>k__BackingField: 90
   <Type>k__BackingField: 1
@@ -375,6 +375,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6550353726179473147, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4973355493202508506, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -385,6 +389,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -4973355493202508506, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
       propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -1128988570036385566, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -178010135617308809, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
@@ -403,6 +411,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FullGlassDoubleDoor8ft
       objectReference: {fileID: 0}
+    - target: {fileID: 4924168009988663033, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5031985201642690442, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -413,6 +425,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5031985201642690442, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
       propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7467437828001574745, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7686578163525485419, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}

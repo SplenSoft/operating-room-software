@@ -172,6 +172,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FullGlassUnequalEgress2,4ft
       objectReference: {fileID: 0}
+    - target: {fileID: 2292574943744981517, guid: 10968879603f73f46980463956e1022b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8476867075034181525, guid: 10968879603f73f46980463956e1022b, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
