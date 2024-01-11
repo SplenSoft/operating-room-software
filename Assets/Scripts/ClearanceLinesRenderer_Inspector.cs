@@ -18,6 +18,8 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
                 _component = target as ClearanceLinesRenderer;
             }
 
+            EditorGUI.BeginChangeCheck();
+
             _component.Type = (RendererType)EditorGUILayout.EnumPopup(
                 label: new GUIContent(
                     text: "Renderer Type"
@@ -53,7 +55,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
                     ),
                     obj: _component.DoorHinge,
                     objType: typeof(Transform),
-                    allowSceneObjects: false
+                    allowSceneObjects: true
                 );
 
                 _component.DoorStrike = (Transform)EditorGUILayout.ObjectField(
@@ -63,7 +65,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
                     ),
                     obj: _component.DoorStrike,
                     objType: typeof(Transform),
-                    allowSceneObjects: false
+                    allowSceneObjects: true
                 );
 
                 _component.DoorSwingAngle = EditorGUILayout.FloatField(
