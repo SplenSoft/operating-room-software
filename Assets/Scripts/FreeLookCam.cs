@@ -6,6 +6,7 @@ using UnityEngine;
 public class FreeLookCam : MonoBehaviour
 {
     public static FreeLookCam Instance { get; private set; }
+    [field: HideInInspector] public bool isLocked = false;
     [field: SerializeField] private Transform Head { get; set; }
     [field: SerializeField] private float LookSensitivityX { get; set; } = 60f;
     [field: SerializeField] private float LookSensitivityY { get; set; } = 33.75f;
@@ -21,6 +22,7 @@ public class FreeLookCam : MonoBehaviour
         Instance = this;
         _collider = GetComponent<Collider>();
         CameraManager.Register(VirtualCamera);
+        CameraManager.SetActiveCamera(VirtualCamera);
         CameraManager.CameraChanged.AddListener(() =>
         {
             bool active = CameraManager.ActiveCamera == VirtualCamera;
@@ -58,7 +60,7 @@ public class FreeLookCam : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsActive || FullScreenMenu.IsOpen) return;
+        if (!IsActive || FullScreenMenu.IsOpen || isLocked) return;
         HandleMovement();
     }
 

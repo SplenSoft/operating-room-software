@@ -11,7 +11,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Add basic selectable - <see href="https://youtu.be/qEaRrGC_MX8?si=kCXNSVa11KxLKRNG"/> 
 /// </summary>
-[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect))]
+[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect), typeof(TrackedObject)), Serializable]
 public class Selectable : MonoBehaviour
 {
     [Serializable]
@@ -32,15 +32,17 @@ public class Selectable : MonoBehaviour
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
+    public UnityEvent ScaleUpdated { get; } = new();
     public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
     public bool IsMouseOver { get; private set; }
     public bool IsDestroyed { get; private set; }
 
     public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
-    public Vector3 OriginalLocalPosition { get; private set; }
+    public Vector3 OriginalLocalPosition { get; set; }
     public Vector3 OriginalLocalRotation { get; private set; }
-
+    public string guid { get; set; }
+    [field: SerializeField] public string GUID { get; private set; }
     [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
@@ -49,6 +51,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
+    [field: SerializeField] public bool isDestructible { get; private set; } = true;
     [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
     [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
@@ -68,7 +71,7 @@ public class Selectable : MonoBehaviour
     private Transform _virtualParent;
     private HighlightEffect _highlightEffect;
     private GizmoHandler _gizmoHandler;
-    private Quaternion _localRotationBeforeElevationPhoto;
+    //private Quaternion _localRotationBeforeElevationPhoto;
     private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
     public static Camera ActiveCameraRenderTextureElevation { get; private set; }
@@ -93,36 +96,6 @@ public class Selectable : MonoBehaviour
             if (SelectedSelectable.GetComponent<GizmoHandler>().GizmoUsedLastFrame) return;
             SelectedSelectable.Deselect();
             //SelectionChanged?.Invoke(null, null);
-        }
-    }
-
-    private void UpdateClearanceLines()
-    {
-        Debug.Log($"Updating clearance lines on Selectable {gameObject.name}");
-        if (ClearanceLinesRenderers.Count > 0 && UI_ToggleClearanceLines.IsActive)
-        {
-            for (int i = 0; i < ClearanceLinesRenderers.Count; i++)
-            {
-                var filter = ClearanceLinesMeshFilters.Count > i ? ClearanceLinesMeshFilters[i] : null;
-                if (filter == null && !_rendererMoved)
-                {
-                    if (TryGetArmAssemblyRoot(out var root))
-                    {
-                        ClearanceLinesRenderers[i].transform.parent = root.transform;
-                        ClearanceLinesRenderers[i].transform.localPosition = Vector3.zero;
-                        ClearanceLinesRenderers[i].transform.localRotation = Quaternion.identity;
-                        _rendererMoved = true;
-                    }
-                    else
-                    {
-                        throw new Exception("Could not find arm assembly root!");
-                    }
-                }
-
-                ClearanceLinesRenderers[i].SetPositions(GetClearanceLinePath(filter));
-            }
-
-            Debug.Log($"Clearance line positions updated for Selectable {gameObject.name}");
         }
     }
 
@@ -187,6 +160,11 @@ public class Selectable : MonoBehaviour
         return exceedsX || exceedsY || exceedsZ;
     }
 
+    public bool HasLights()
+    {
+        if (GetComponent<LightFactory>() != null) return true; else return false;
+    }
+
     public bool IsArmAssembly()
     {
         var rootSelectable = transform.root.GetComponent<Selectable>();
@@ -204,7 +182,7 @@ public class Selectable : MonoBehaviour
         return false;
     }
 
-    private void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
+    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
         CurrentPreviewScaleLevel = scaleLevel;
 
@@ -225,12 +203,14 @@ public class Selectable : MonoBehaviour
             }
             else
             {
-                //Debug.Log("Calculating child scales");
+                // Debug.Log("Calculating child scales");
                 Vector3 newParentScale = newScale;
                 // Get the relative difference to the original scale
                 var diffX = newParentScale.x / parentOriginalScale.x;
                 var diffY = newParentScale.y / parentOriginalScale.y;
                 var diffZ = newParentScale.z / parentOriginalScale.z;
+
+                // Debug.Log($"Relative Difference ({diffX}, {diffY}, {diffZ})");
 
                 // This inverts the scale differences
                 var diffVector = new Vector3(1 / diffX, 1 / diffY, 1 / diffZ);
@@ -239,10 +219,23 @@ public class Selectable : MonoBehaviour
                 {
                     var child = transform.GetChild(i);
                     Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
-                    float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
-                    float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
-                    float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
-                    child.transform.localScale = new Vector3(x, y, z);
+                    // Debug.Log($"{child.name} Current Scale is ({child.transform.localScale.x}, {child.transform.localScale.y}, {child.transform.localScale.z})");
+                    // Debug.Log($"Local Diff after InverseTransformVector for {child.name} is ({localDiff.x}, {localDiff.y}, {localDiff.z})");
+                    if (child.TryGetComponent(out Selectable selectable))
+                    {
+                        if(selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+                        {
+                            child.transform.localScale = Vector3.Scale(child.transform.localScale, diffVector);
+                        }
+                    }
+                    else
+                    {
+                        float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
+                        float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
+                        float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
+                        // Debug.Log($"Applying new scale of ({x}, {y}, {z})");
+                        child.transform.localScale = new Vector3(x, y, z);
+                    }
                 }
             }
         }
@@ -265,9 +258,10 @@ public class Selectable : MonoBehaviour
         ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
         if (closest == CurrentPreviewScaleLevel && !setSelected) return;
         SetScaleLevel(closest, setSelected);
+        ScaleUpdated?.Invoke();
     }
 
-    private void StoreChildScales()
+    public void StoreChildScales()
     {
         _childScales.Clear();
 
@@ -275,76 +269,13 @@ public class Selectable : MonoBehaviour
         {
             var child = transform.GetChild(i);
             _childScales.Add(child.transform.localScale);
+            //Debug.Log($"Storing child scales");
         }
     }
 
-    public List<Vector3> GetClearanceLinePath(MeshFilter meshFilter = null)
+    public Selectable GetParentSelectable()
     {
-        //get highest z-rotating item on the arm hierarchy
-        List<Vector3> positions = new();
-        if (meshFilter != null)
-        {
-            var verts = meshFilter.sharedMesh.vertices;
-            for (int i = 0; i < verts.Length; i++)
-            {
-                //var point = ClearanceLinesMeshFilter.transform.TransformPoint(verts[i]);
-                var point = verts[i];
-                //positions.Add(ClearanceLinesMeshFilter.transform.position + point);
-                positions.Add(point);
-            }
-
-            if (verts.Length > 0)
-            {
-                var point = verts[0];
-                //var point = ClearanceLinesMeshFilter.transform.TransformPoint(verts[0]);
-                positions.Add(point);
-            }
-
-            return positions;
-        }
-
-        Selectable highestSelectable = null;
-        Transform parent = transform.parent;
-        while (parent != null)
-        {
-            if (parent.TryGetComponent<Selectable>(out var selectable))
-            {
-                if (selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
-                {
-                    highestSelectable = selectable;
-                }
-            }
-
-            parent = parent.parent;
-        }
-
-        if (highestSelectable == null)
-        {
-            throw new Exception("Could not get clearance lines - no higher z-rotation in the arm assembly found");
-        }
-
-        SetAssemblyToDefaultRotations();
-        var higestOriginalRotation = highestSelectable.transform.rotation;
-        //Debug.Break();
-        if (TryGetArmAssemblyRoot(out var root))
-        {
-            for (int i = 0; i < 361; i++)
-            {
-                highestSelectable.transform.Rotate(new Vector3(0, 0, 1));
-                //Vector3 worldPoint = ClearanceLineMeasuringPosition.transform.position;
-                ////var point = root.transform.InverseTransformPoint(ClearanceLineMeasuringPosition.transform.position);
-                ////var point = worldPoint - root.transform.position;
-                ////var point = root.transform.InverseTransformDirection(worldPoint);
-                //var point = root.transform.InverseTransformPoint(worldPoint);
-                ////Debug.Log($"Worldpoint = {worldPoint}, localPoint = {point} at {root.name}");
-                positions.Add(ClearanceLineMeasuringPosition.transform.position);
-            }
-        }
-
-        highestSelectable.transform.rotation = higestOriginalRotation;
-        RestoreArmAssemblyRotations();
-
-        return positions;
+        return _parentSelectable;
     }
 
     public bool TryGetGizmoSetting(GizmoType gizmoType, Axis axis, out GizmoSetting gizmoSetting)
@@ -367,7 +298,7 @@ public class Selectable : MonoBehaviour
         else return 0;
     }
 
-    private float GetGizmoSettingMinValue(GizmoType gizmoType, Axis axis)
+    public float GetGizmoSettingMinValue(GizmoType gizmoType, Axis axis)
     {
         if (TryGetGizmoSetting(gizmoType, axis, out GizmoSetting gizmoSetting))
         {
@@ -422,7 +353,7 @@ public class Selectable : MonoBehaviour
     List<Selectable> _assemblySelectables = new();
     Dictionary<Selectable, Quaternion> _originalRotations = new();
 
-    private void SetAssemblyToDefaultRotations()
+    public void SetAssemblyToDefaultRotations()
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
         {
@@ -547,7 +478,7 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    private void RestoreArmAssemblyRotations()
+    public void RestoreArmAssemblyRotations()
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
         {
@@ -664,13 +595,11 @@ public class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
+        guid = Guid.NewGuid().ToString();
+        if (!ConfigurationManager._instance.isDebug && GUID != "") gameObject.name = guid.ToString();
+
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;
-
-        if (ClearanceLinesRenderers.Count > 0)
-        {
-            UI_ToggleClearanceLines.ClearanceLinesToggled.AddListener(UpdateClearanceLines);
-        }
 
         while (parent != null)
         {
@@ -713,42 +642,6 @@ public class Selectable : MonoBehaviour
             GizmoSettings[item.GizmoType][item.Axis] = item;
         });
 
-        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
-        {
-            CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
-            CurrentPreviewScaleLevel = CurrentScaleLevel;
-            CurrentScaleLevel.ScaleZ = transform.localScale.z;
-
-            StoreChildScales();
-
-            ScaleLevels.ForEach(item =>
-            {
-                if (!item.ModelDefault)
-                {
-                    float perc = item.Size / CurrentScaleLevel.Size;
-                    item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
-                }
-            });
-
-            var defaultSelected = ScaleLevels.First(item => item.Selected);
-            SetScaleLevel(defaultSelected, true);
-
-            _gizmoHandler.GizmoDragEnded.AddListener(() =>
-            {
-                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
-                {
-                    UpdateZScaling(true);
-                }
-            });
-
-            _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
-            {
-                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
-                {
-                    UpdateZScaling(false);
-                }
-            });
-        }
         ActiveSelectablesInSceneChanged?.Invoke();
     }
 
@@ -757,18 +650,6 @@ public class Selectable : MonoBehaviour
         if (IsDestroyed) return;
 
         IsDestroyed = true;
-
-        if (ClearanceLinesRenderers.Count > 0)
-        {
-            UI_ToggleClearanceLines.ClearanceLinesToggled.RemoveListener(UpdateClearanceLines);
-            if (_rendererMoved)
-            {
-                ClearanceLinesRenderers.ForEach(item =>
-                {
-                    Destroy(item.gameObject);
-                });
-            }
-        }
 
         ActiveSelectables.Remove(this);
 
@@ -814,14 +695,48 @@ public class Selectable : MonoBehaviour
 
     private void Start()
     {
+        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z) && ScaleLevels.Count > 0)
+        {
+            CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
+            CurrentPreviewScaleLevel = CurrentScaleLevel;
+            CurrentScaleLevel.ScaleZ = transform.localScale.z;
+
+            StoreChildScales();
+
+            ScaleLevels.ForEach(item =>
+            {
+                if (!item.ModelDefault)
+                {
+                    float perc = item.Size / CurrentScaleLevel.Size;
+                    item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
+                }
+            });
+
+            var defaultSelected = ScaleLevels.First(item => item.Selected);
+            SetScaleLevel(defaultSelected, true);
+
+            _gizmoHandler.GizmoDragEnded.AddListener(() =>
+            {
+                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                {
+                    UpdateZScaling(true);
+                }
+            });
+
+            _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
+            {
+                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                {
+                    UpdateZScaling(false);
+                }
+            });
+        }
+
         _originalRotation2 = transform.localRotation;
         OriginalLocalPosition = transform.localPosition;
         //OriginalLocalRotation = transform.localEulerAngles;
         Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
         transform.localPosition += adjustedOffsetVector;
-
-        if (ClearanceLinesRenderers.Count > 0)
-            UpdateClearanceLines();
     }
 
     private void Update()
@@ -1004,7 +919,10 @@ public class Selectable : MonoBehaviour
         }
         else if (e.KeyCode == KeyCode.Delete && e.KeyState == KeyState.ReleasedThisFrame && IsSelected)
         {
+            if (!isDestructible) return;
+
             Deselect();
+
             Destroy(gameObject);
         }
     }
@@ -1046,7 +964,8 @@ public enum SelectableType
     CeilingLight,
     Door,
     ServiceHeadPanel,
-    ServiceHeadShelves
+    ServiceHeadShelves,
+    Tabletop
 }
 
 [Serializable]

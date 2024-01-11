@@ -10,13 +10,14 @@ public class UI_ScalableLength : MonoBehaviour
 
     private void Awake()
     {
-        Selectable.SelectionChanged += SeletableChanged;
+        Selectable.SelectionChanged += SelectableChanged;
         gameObject.SetActive(false);
     }
 
-    private void SeletableChanged(object sender, EventArgs e)
+    private void SelectableChanged(object sender, EventArgs e)
     {
-        gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.ScaleLevels.Count > 0);
+        if (Application.isPlaying && gameObject != null)
+            gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.ScaleLevels.Count > 0);
     }
 
     private void Update()

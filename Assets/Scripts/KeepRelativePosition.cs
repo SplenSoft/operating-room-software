@@ -79,7 +79,7 @@ public class KeepRelativePosition : MonoBehaviour
         RecalculateRelativePosition();
     }
 
-    private async void RoomSizeChanged(object sender, EventArgs e)
+    private async void RoomSizeChanged(RoomDimension dimension)
     {
         if (VirtualParent == null) return;
         await Task.Yield();
@@ -88,6 +88,7 @@ public class KeepRelativePosition : MonoBehaviour
 
     private void OnDestroy()
     {
+        // TODO - this doesn't unsubscribe fast enough when loading a room, clearing pre-existing objects
         RoomSize.RoomSizeChanged -= RoomSizeChanged;
         if (_roomBoundary != null && HideIfSurfaceIsHidden)
         {
