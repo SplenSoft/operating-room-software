@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 using static UnityEngine.ParticleSystem;
 
 public partial class ClearanceLinesRenderer : MonoBehaviour
@@ -44,81 +45,6 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
             }
             return level;
         }
-
-        public void RecordData(int rotationAmount, Vector3 forwardVector)
-        {
-            float farthest = 0f;
-            float localHighestY = float.MinValue;
-            float localLowestY = float.MaxValue;
-
-            for (int j = 0; j < _clearanceLinesRenderer._meshVertsDatas.Count; j++)
-            {
-                MeshVertsData vertData = _clearanceLinesRenderer._meshVertsDatas[j];
-                for (int i = 0; i < Vertices.Length; i++)
-                {
-                    Vector3 vert = Vertices[i];
-                    vert.x *= LossyScale.x;
-                    vert.y *= LossyScale.y;
-                    vert.z *= LossyScale.z;
-                    vert = Rotation * vert;
-
-                    if (j > 0)
-                    {
-                        vert += vertData.GlobalPosition - _clearanceLinesRenderer._meshVertsDatas[0].GlobalPosition;
-                    }
-
-                    vert = Quaternion.AngleAxis(rotationAmount, forwardVector) * vert;
-                    Vector3 transformedPoint = vert + GlobalPosition;
-
-                    if (rotationAmount == 0)
-                    {
-                        if (transformedPoint.y > localHighestY)
-                        {
-                            localHighestY = transformedPoint.y;
-                        }
-
-                        if (transformedPoint.y < localLowestY)
-                        {
-                            localLowestY = transformedPoint.y;
-                        }
-                    }
-
-                    float distance = Vector2.Distance(_clearanceLinesRenderer._originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
-                    if (distance > farthest)
-                    {
-                        farthest = distance;
-                    }
-
-                    if (_clearanceLinesRenderer._cancelTask)
-                    {
-                        return;
-                    }
-                }
-            }
-
-            
-
-            lock (_clearanceLinesRenderer._lockObject)
-            {
-                if (farthest > _clearanceLinesRenderer._farthestDistance)
-                {
-                    _clearanceLinesRenderer._farthestDistance = farthest;
-                }
-
-                if (rotationAmount == 0)
-                {
-                    if (localHighestY > _clearanceLinesRenderer._highestY)
-                    {
-                        _clearanceLinesRenderer._highestY = localHighestY;
-                    }
-
-                    if (localLowestY < _clearanceLinesRenderer._lowestY)
-                    {
-                        _clearanceLinesRenderer._lowestY = localLowestY;
-                    }
-                }
-            }
-        }
     }
 
     public enum RendererType
@@ -130,6 +56,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     private static readonly float _sizeScalar = 0.0035f;
     private static readonly float _sizeScalarOrtho = 0.005f;
     private static readonly float _sizeScalarOrthoMax = 0.05f;
+    private static readonly int _vertOperationsPerThread = 10000;
 
     private static List<Vector3> _circlePositions = new List<Vector3>();
 
@@ -169,7 +96,6 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     private bool _taskRunning = false;
     private bool _cancelTask = false;
     private float MedianY => ((_highestY + _lowestY) / 2f) - _highestSelectable.transform.position.y;
-    private object _lockObject = new();
     #endregion
 
     #region Monobehaviour
@@ -312,6 +238,87 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         _originPointXZ = new Vector2(_highestSelectable.transform.position.x, _highestSelectable.transform.position.z);
     }
 
+    public void RecordData(int rotationAmount, Vector3 forwardVector)
+    {
+        object lockObj = new();
+        float farthest = 0f;
+        float localHighestY = float.MinValue;
+        float localLowestY = float.MaxValue;
+
+        //Parallel.For(0, _meshVertsDatas.Count, j =>
+        for (int j = 0; j < _meshVertsDatas.Count; j++)
+        {
+            MeshVertsData vertData = _meshVertsDatas[j];
+
+            int threads = (int)Mathf.Ceil(vertData.Vertices.Length / _vertOperationsPerThread);
+            Parallel.For(0, threads, n =>
+            {
+                int cap = Mathf.Min(vertData.Vertices.Length, (n + 1) * _vertOperationsPerThread);
+                for (int i = n * _vertOperationsPerThread; i < cap; i++)
+                {
+                    Vector3 vert = vertData.Vertices[i];
+                    vert.x *= vertData.LossyScale.x;
+                    vert.y *= vertData.LossyScale.y;
+                    vert.z *= vertData.LossyScale.z;
+                    vert = vertData.Rotation * vert;
+
+                    if (j > 0)
+                    {
+                        vert += vertData.GlobalPosition - _meshVertsDatas[0].GlobalPosition;
+                    }
+
+                    vert = Quaternion.AngleAxis(rotationAmount, forwardVector) * vert;
+                    Vector3 transformedPoint = vert + _meshVertsDatas[0].GlobalPosition;
+                    float distance = Vector2.Distance(_originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
+
+                    lock (lockObj)
+                    {
+                        if (rotationAmount == 0)
+                        {
+                            if (transformedPoint.y > localHighestY)
+                            {
+                                localHighestY = transformedPoint.y;
+                            }
+
+                            if (transformedPoint.y < localLowestY)
+                            {
+                                localLowestY = transformedPoint.y;
+                            }
+                        }
+
+                        if (distance > farthest)
+                        {
+                            farthest = distance;
+                        }
+                    }
+                    
+                    if (_cancelTask)
+                    {
+                        return;
+                    }
+                }
+            });
+        }//);
+
+        if (farthest > _farthestDistance)
+        {
+            _farthestDistance = farthest;
+        }
+
+        if (rotationAmount == 0)
+        {
+            if (localHighestY > _highestY)
+            {
+                _highestY = localHighestY;
+            }
+
+            if (localLowestY < _lowestY)
+            {
+                _lowestY = localLowestY;
+            }
+        }
+    }
+
     private void ResetMeshVertsData()
     {
         if (_meshVertsDatas == null)
@@ -342,24 +349,20 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         }
     }
 
-    private async Task GetFarthestDistance()
-    {
-        Task task = Task.Factory.StartNew(() =>
-        {
-            Parallel.For(0, _meshVertsDatas[0].Rotations, j =>
-            {
-                _meshVertsDatas[0].RecordData(j, Vector3.down);
-            });
-        });
-
-        await task;
-    }
-
     private async void UpdateLineRendererArmAssembly()
     {
         ResetVariables();
         ResetMeshVertsData();
-        await GetFarthestDistance();
+
+        Task task = Task.Factory.StartNew(() =>
+        {
+            Parallel.For(0, _meshVertsDatas[0].Rotations, j =>
+            {
+                RecordData(j, Vector3.down);
+            });
+        });
+
+        await task;
 
         // object was destroyed while task was running
         if (_lineRenderer == null)
