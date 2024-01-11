@@ -118,14 +118,17 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     {
         Subscribe();
 
-        if (_trackedParentSelectables[0].TryGetArmAssemblyRoot(out GameObject armAssemblyRoot))
+        if (Type == RendererType.ArmAssembly) 
         {
-            _highestSelectable = armAssemblyRoot.GetComponent<Selectable>();
+            if (_trackedParentSelectables[0].TryGetArmAssemblyRoot(out GameObject armAssemblyRoot))
+            {
+                _highestSelectable = armAssemblyRoot.GetComponent<Selectable>();
+            }
+            else throw new Exception("Could not get clearance lines - no higher z-rotation in the arm assembly found");
+
+            _rotateMeshWhenFindingFarthestVert = _selectable != null && _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z);
         }
-        else throw new Exception("Could not get clearance lines - no higher z-rotation in the arm assembly found");
-
-        _rotateMeshWhenFindingFarthestVert = _selectable != null && _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z);
-
+       
         CheckStatus();
     }
 
@@ -207,7 +210,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         if (_lineRenderer == null)
         {
             var prefab = Resources.Load<GameObject>("Prefabs/ClearanceLinesRenderer");
-            var newObj = Instantiate(prefab, _highestSelectable.transform);
+            var newObj = Instantiate(prefab, Type == RendererType.ArmAssembly ? _highestSelectable.transform : transform.root);
             newObj.transform.rotation = Quaternion.identity;
             _lineRenderer = newObj.GetComponent<LineRenderer>();
         }
