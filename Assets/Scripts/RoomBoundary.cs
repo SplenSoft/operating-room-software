@@ -51,7 +51,6 @@ public class RoomBoundary : MonoBehaviour
         {
             basePosition = baseboard.transform.localPosition;
             baseboard.transform.SetParent(null);
-            Debug.Log(basePosition);
         }
 
         switch (RoomBoundaryType)

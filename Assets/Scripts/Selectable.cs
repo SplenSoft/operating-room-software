@@ -207,6 +207,7 @@ public class Selectable : MonoBehaviour
     public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
         CurrentPreviewScaleLevel = scaleLevel;
+        OnScaleChange.Invoke(CurrentPreviewScaleLevel);
 
         Quaternion storedRotation = transform.rotation;
         transform.rotation = _originalRotation;
