@@ -203,12 +203,14 @@ public class Selectable : MonoBehaviour
             }
             else
             {
-                //Debug.Log("Calculating child scales");
+                // Debug.Log("Calculating child scales");
                 Vector3 newParentScale = newScale;
                 // Get the relative difference to the original scale
                 var diffX = newParentScale.x / parentOriginalScale.x;
                 var diffY = newParentScale.y / parentOriginalScale.y;
                 var diffZ = newParentScale.z / parentOriginalScale.z;
+
+                // Debug.Log($"Relative Difference ({diffX}, {diffY}, {diffZ})");
 
                 // This inverts the scale differences
                 var diffVector = new Vector3(1 / diffX, 1 / diffY, 1 / diffZ);
@@ -217,10 +219,23 @@ public class Selectable : MonoBehaviour
                 {
                     var child = transform.GetChild(i);
                     Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
-                    float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
-                    float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
-                    float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
-                    child.transform.localScale = new Vector3(x, y, z);
+                    // Debug.Log($"{child.name} Current Scale is ({child.transform.localScale.x}, {child.transform.localScale.y}, {child.transform.localScale.z})");
+                    // Debug.Log($"Local Diff after InverseTransformVector for {child.name} is ({localDiff.x}, {localDiff.y}, {localDiff.z})");
+                    if (child.TryGetComponent(out Selectable selectable))
+                    {
+                        if(selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+                        {
+                            child.transform.localScale = Vector3.Scale(child.transform.localScale, diffVector);
+                        }
+                    }
+                    else
+                    {
+                        float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
+                        float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
+                        float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
+                        // Debug.Log($"Applying new scale of ({x}, {y}, {z})");
+                        child.transform.localScale = new Vector3(x, y, z);
+                    }
                 }
             }
         }
@@ -246,7 +261,7 @@ public class Selectable : MonoBehaviour
         ScaleUpdated?.Invoke();
     }
 
-    private void StoreChildScales()
+    public void StoreChildScales()
     {
         _childScales.Clear();
 
@@ -254,7 +269,13 @@ public class Selectable : MonoBehaviour
         {
             var child = transform.GetChild(i);
             _childScales.Add(child.transform.localScale);
+            //Debug.Log($"Storing child scales");
         }
+    }
+
+    public Selectable GetParentSelectable()
+    {
+        return _parentSelectable;
     }
 
     public bool TryGetGizmoSetting(GizmoType gizmoType, Axis axis, out GizmoSetting gizmoSetting)
@@ -277,7 +298,7 @@ public class Selectable : MonoBehaviour
         else return 0;
     }
 
-    private float GetGizmoSettingMinValue(GizmoType gizmoType, Axis axis)
+    public float GetGizmoSettingMinValue(GizmoType gizmoType, Axis axis)
     {
         if (TryGetGizmoSetting(gizmoType, axis, out GizmoSetting gizmoSetting))
         {
@@ -674,7 +695,7 @@ public class Selectable : MonoBehaviour
 
     private void Start()
     {
-        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z) && ScaleLevels.Count > 0)
         {
             CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
             CurrentPreviewScaleLevel = CurrentScaleLevel;
@@ -898,7 +919,7 @@ public class Selectable : MonoBehaviour
         }
         else if (e.KeyCode == KeyCode.Delete && e.KeyState == KeyState.ReleasedThisFrame && IsSelected)
         {
-            if(!isDestructible) return;
+            if (!isDestructible) return;
 
             Deselect();
 
