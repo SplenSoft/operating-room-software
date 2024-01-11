@@ -27,14 +27,14 @@ public class Selectable : MonoBehaviour
         public bool TryGetValue(string key, out string value)
         {
             value = metadata.SingleOrDefault(x => x.key == key).value;
-            return value == "" ? false : true; 
+            return value == "" ? false : true;
         }
     }
 
     [Serializable]
     public struct Metadata
     {
-        [field: SerializeField] public string key { get ; private set; }
+        [field: SerializeField] public string key { get; private set; }
         [field: SerializeField] public string value { get; private set; }
 
         public Metadata(string k = "", string v = "")
@@ -250,6 +250,10 @@ public class Selectable : MonoBehaviour
                         {
                             child.transform.localScale = Vector3.Scale(child.transform.localScale, diffVector);
                         }
+                    }
+                    else if (gameObject.TryGetComponent(out BoomHeadScaleHandler headScale))
+                    {
+                        child.transform.localScale = Vector3.Scale(child.transform.localScale, diffVector);
                     }
                     else
                     {
