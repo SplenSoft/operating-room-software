@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public partial class ClearanceLinesRenderer : MonoBehaviour
 {
@@ -403,7 +404,22 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
 
     private void UpdateLineRendererDoor()
     {
+        _positions.Clear();
+        // draw a vector from hinge to strike
+        Vector3 doorLength = DoorStrike.transform.position - DoorHinge.transform.position;
+        Vector3 difference = DoorHinge.transform.position - transform.position;
+        _positions.Add(difference);
+        for (int i = 0; i <= DoorSwingAngle; i++)
+        {
+            Vector3 point = (Quaternion.AngleAxis(i, Vector3.up) * doorLength) + difference;
+            _positions.Add(point);
+        }
+        _positions.Add(difference);
 
+        _lineRenderer.positionCount = _positions.Count;
+        _lineRenderer.SetPositions(_positions.ToArray());
+
+        _needsUpdate = false;
     }
     #endregion
 }
