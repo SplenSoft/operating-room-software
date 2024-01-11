@@ -426,6 +426,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lineRenderer: {fileID: 0}
   <IncludeChildrenInMeasurement>k__BackingField: 1
+  <BufferSize>k__BackingField: 0.04
+  _needsUpdate: 1
+  _taskRunning: 0
+  _cancelTask: 0
 --- !u!1001 &6483683788199807517
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,12 +10,38 @@ public class ClearanceLinesRenderer : MonoBehaviour
     #region Non-method Members
     private class MeshVertsData
     {
-        public MeshFilter MeshFilter { get; set; }
+        public MeshVertsData(MeshFilter meshFilter)
+        {
+            MeshFilter = meshFilter;
+        }
+
+        public MeshFilter MeshFilter { get; }
         public Quaternion Rotation { get; set; }
         public Vector3 Position { get; set; }
         public Vector3[] Vertices { get; set; }
-        //public Vector3 ForwardVector { get; set; }
         public int Rotations { get; set; } = 1;
+        public Vector3 LossyScale { get; set; }
+        private int? _hierarchyNestedLevel;
+        public int HierarchyNestedLevel
+        { 
+            get 
+            { 
+                _hierarchyNestedLevel ??= GetHierarchyNestedLevel();
+                return (int)_hierarchyNestedLevel;
+            }
+        }
+
+        private int GetHierarchyNestedLevel()
+        {
+            int level = 0;
+            Transform parent = MeshFilter.transform.parent;
+            while (parent != null)
+            {
+                parent = parent.parent;
+                level++;
+            }
+            return level;
+        }
     }
 
     private static readonly float _sizeScalar = 0.0035f;
@@ -26,6 +52,18 @@ public class ClearanceLinesRenderer : MonoBehaviour
 
     [field: SerializeField, Tooltip("Should be \"true\" on heads that can have attachements (i.e. boom head that can have added shelves)")] 
     private bool IncludeChildrenInMeasurement { get; set; }
+
+    [field: SerializeField, Tooltip("Adds a buffer amount to clearance lines to account for lossy scale inaccuracies")]
+    private float BufferSize { get; set; }
+
+    [field: SerializeField, Tooltip("Only takes XZ data")]
+    private Transform DoorHinge { get; set; }
+
+    [field: SerializeField, Tooltip("Only takes XZ data")]
+    private Transform DoorStrike { get; set; }
+
+    [field: SerializeField]
+    private float DoorSwingAngle { get; set; } = 90f;
 
     private Selectable _highestSelectable;
 
@@ -187,15 +225,14 @@ public class ClearanceLinesRenderer : MonoBehaviour
             for (int j = 0; j < meshFilters.Length; j++)
             {
                 var filter = meshFilters[j];
-                _meshVertsDatas.Add(new MeshVertsData
+                _meshVertsDatas.Add(new MeshVertsData(filter)
                 {
-                    MeshFilter = filter,
                     Rotation = filter.transform.rotation,
                     Position = filter.transform.position,
                     Vertices = filter.sharedMesh.vertices,
                     Rotations = _rotateMeshWhenFindingFarthestVert ? 361 : 1,
-                    //ForwardVector = filter.transform.forward
-                }); ;
+                    LossyScale = filter.transform.lossyScale,
+                });
             }
         }
         else
@@ -204,7 +241,53 @@ public class ClearanceLinesRenderer : MonoBehaviour
             {
                 meshVertsData.Position = meshVertsData.MeshFilter.transform.position;
                 meshVertsData.Rotation = meshVertsData.MeshFilter.transform.rotation;
-                //meshVertsData.ForwardVector = meshVertsData.MeshFilter.transform.forward;
+                meshVertsData.LossyScale = meshVertsData.MeshFilter.transform.lossyScale;
+            }
+        }
+
+        void RecordData(MeshVertsData meshVertsData, bool first, int rotationAmount)
+        {
+            float farthest = 0f;
+            for (int i = 0; i < meshVertsData.Vertices.Length; i++)
+            {
+                Vector3 vert = meshVertsData.Vertices[i];
+                vert.x *= meshVertsData.LossyScale.x;
+                vert.y *= meshVertsData.LossyScale.y;
+                vert.z *= meshVertsData.LossyScale.z;
+                vert = meshVertsData.Rotation * Quaternion.AngleAxis(rotationAmount, forwardVector) * vert;
+                Vector3 transformedPoint = vert + meshVertsData.Position;
+
+                if (first && !_medianYEstablished && rotationAmount == 0)
+                {
+                    if (transformedPoint.y > _highestYValue)
+                    {
+                        _highestYValue = transformedPoint.y;
+                    }
+
+                    if (transformedPoint.y < _lowestYValue)
+                    {
+                        _lowestYValue = transformedPoint.y;
+                    }
+                }
+
+                float distance = Vector2.Distance(originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
+                if (distance > farthest)
+                {
+                    farthest = distance;
+                }
+
+                if (_cancelTask)
+                {
+                    return;
+                }
+            }
+
+            lock (_lockObject)
+            {
+                if (farthest > farthestDistance)
+                {
+                    farthestDistance = farthest;
+                }
             }
         }
 
@@ -214,50 +297,20 @@ public class ClearanceLinesRenderer : MonoBehaviour
             foreach (var meshVertsData in _meshVertsDatas)
             {
                 bool first = _meshVertsDatas[0] == meshVertsData;
-
                 Task task = Task.Factory.StartNew(() =>
-                {  
-                    Parallel.For(0, meshVertsData.Rotations, j =>
+                {
+                    if (first)
                     {
-                        float farthest = 0f;
-                        for (int i = 0; i < meshVertsData.Vertices.Length; i++)
+                    
+                        Parallel.For(0, meshVertsData.Rotations, j =>
                         {
-                            Vector3 vert = meshVertsData.Rotation * Quaternion.AngleAxis(j, forwardVector) * meshVertsData.Vertices[i];
-                            Vector3 transformedPoint = vert + meshVertsData.Position;
-
-                            if (first && !_medianYEstablished && j == 0)
-                            {
-                                if (transformedPoint.y > _highestYValue)
-                                {
-                                    _highestYValue = transformedPoint.y;
-                                }
-
-                                if (transformedPoint.y < _lowestYValue)
-                                {
-                                    _lowestYValue = transformedPoint.y;
-                                }
-                            }
-
-                            float distance = Vector2.Distance(originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
-                            if (distance > farthest)
-                            {
-                                farthest = distance;
-                            }
-
-                            if (_cancelTask)
-                            {
-                                return;
-                            }
-                        }
-
-                        lock (_lockObject)
-                        {
-                            if (farthest > farthestDistance)
-                            {
-                                farthestDistance = farthest;
-                            }
-                        }
-                    });
+                            RecordData(meshVertsData, first, j);
+                        });
+                    }
+                    else
+                    {
+                        RecordData(meshVertsData, first, 0);
+                    }
                 });
 
                 await task;
@@ -304,6 +357,7 @@ public class ClearanceLinesRenderer : MonoBehaviour
         }
 
         float localY = _medianY - _highestSelectable.transform.position.y;
+        farthestDistance += BufferSize;
         for (int i = 0; i < positions.Count; i++)
         {
             Vector3 newPos = positions[i] * farthestDistance;
