@@ -30,13 +30,13 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
 
             if (_component.Type == RendererType.ArmAssembly)
             {
-                 _component.BufferSize = EditorGUILayout.FloatField(
-                    value: _component.BufferSize,
-                    label: new GUIContent(
-                        text: "Buffer Size",
-                        tooltip: "Added to circular size of clearance lines"
-                    )
-                );
+                // _component.BufferSize = EditorGUILayout.FloatField(
+                //    value: _component.BufferSize,
+                //    label: new GUIContent(
+                //        text: "Buffer Size",
+                //        tooltip: "Added to circular size of clearance lines"
+                //    )
+                //);
 
                 _component.IncludeChildrenInMeasurement = EditorGUILayout.Toggle(
                     value: _component.IncludeChildrenInMeasurement,

@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
-using static UnityEngine.ParticleSystem;
 
 public partial class ClearanceLinesRenderer : MonoBehaviour
 {
@@ -56,23 +55,26 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     private static readonly float _sizeScalar = 0.0035f;
     private static readonly float _sizeScalarOrtho = 0.005f;
     private static readonly float _sizeScalarOrthoMax = 0.05f;
-    private static readonly int _vertOperationsPerThread = 10000;
 
-    private static List<Vector3> _circlePositions = new List<Vector3>();
+    private static List<Vector3> _circlePositions = new();
 
     private LineRenderer _lineRenderer;
 
-    [field: SerializeField, Tooltip("Should be \"true\" on heads that can have attachements (i.e. boom head that can have added shelves)")] 
-    private bool IncludeChildrenInMeasurement { get; set; }
+    /// <summary>
+    /// "Should be \"true\" on heads that can have attachements (i.e. boom head that can have added shelves)"
+    /// </summary>
+    [field: SerializeField] private bool IncludeChildrenInMeasurement { get; set; }
 
-    [field: SerializeField, Tooltip("Adds a buffer amount to clearance lines to account for lossy scale inaccuracies")]
-    private float BufferSize { get; set; }
+    /// <summary>
+    /// Adds a buffer amount to clearance lines to account for inaccuracies
+    /// </summary>
+    [field: SerializeField] private float BufferSize { get; set; }
 
-    [field: SerializeField, Tooltip("Only takes XZ data")]
-    private Transform DoorHinge { get; set; }
+    /// <summary>Only takes XZ data</summary>
+    [field: SerializeField]private Transform DoorHinge { get; set; }
 
-    [field: SerializeField, Tooltip("Only takes XZ data")]
-    private Transform DoorStrike { get; set; }
+    /// <summary>Only takes XZ data</summary>
+    [field: SerializeField] private Transform DoorStrike { get; set; }
 
     [field: SerializeField]
     private float DoorSwingAngle { get; set; } = 90f;
@@ -96,6 +98,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     private bool _taskRunning = false;
     private bool _cancelTask = false;
     private float MedianY => ((_highestY + _lowestY) / 2f) - _highestSelectable.transform.position.y;
+    private object _lockObj = new();
     #endregion
 
     #region Monobehaviour
@@ -188,7 +191,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     [RuntimeInitializeOnLoadMethod]
     private static void OnAppStart()
     {
-        for (int i = 0; i < 360; i++)
+        for (int i = 0; i < 361; i++)
         {
             _circlePositions.Add(Quaternion.AngleAxis(i, Vector3.up) * Vector3.forward);
         }
@@ -196,15 +199,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     #endregion
 
     #region Logic
-    private void SetNeedsUpdate()
-    {
-        _needsUpdate = true;
-        if (_taskRunning)
-        {
-            _cancelTask = true;
-        }
-        CheckStatus();
-    }
+
 
     private void CheckStatus()
     {
@@ -227,94 +222,64 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         }
     }
 
-    private void ResetVariables()
-    {
-        _taskRunning = true;
-        _highestY = float.MinValue;
-        _lowestY = float.MaxValue;
-        _farthestDistance = 0f;
-        _positions = new List<Vector3>(_circlePositions);       
-        _farthestDistance = 0f;
-        _originPointXZ = new Vector2(_highestSelectable.transform.position.x, _highestSelectable.transform.position.z);
-    }
-
     public void RecordData(int rotationAmount, Vector3 forwardVector)
     {
-        object lockObj = new();
         float farthest = 0f;
         float localHighestY = float.MinValue;
         float localLowestY = float.MaxValue;
 
-        //Parallel.For(0, _meshVertsDatas.Count, j =>
         for (int j = 0; j < _meshVertsDatas.Count; j++)
         {
             MeshVertsData vertData = _meshVertsDatas[j];
-
-            int threads = (int)Mathf.Ceil(vertData.Vertices.Length / _vertOperationsPerThread);
-            Parallel.For(0, threads, n =>
+            for (int i = 0; i < vertData.Vertices.Length; i++)
             {
-                int cap = Mathf.Min(vertData.Vertices.Length, (n + 1) * _vertOperationsPerThread);
-                for (int i = n * _vertOperationsPerThread; i < cap; i++)
+                Vector3 vert = vertData.Vertices[i];
+                vert.x *= vertData.LossyScale.x;
+                vert.y *= vertData.LossyScale.y;
+                vert.z *= vertData.LossyScale.z;
+                vert = vertData.Rotation * vert;
+
+                if (j > 0)
                 {
-                    Vector3 vert = vertData.Vertices[i];
-                    vert.x *= vertData.LossyScale.x;
-                    vert.y *= vertData.LossyScale.y;
-                    vert.z *= vertData.LossyScale.z;
-                    vert = vertData.Rotation * vert;
+                    vert += vertData.GlobalPosition - _meshVertsDatas[0].GlobalPosition;
+                }
 
-                    if (j > 0)
+                vert = Quaternion.AngleAxis(rotationAmount, forwardVector) * vert;
+                Vector3 transformedPoint = vert + _meshVertsDatas[0].GlobalPosition;
+
+                float distance = Vector2.Distance(_originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
+                if (distance >= farthest)
+                {
+                    farthest = distance;
+
+                    if (transformedPoint.y > localHighestY)
                     {
-                        vert += vertData.GlobalPosition - _meshVertsDatas[0].GlobalPosition;
+                        localHighestY = transformedPoint.y;
                     }
 
-                    vert = Quaternion.AngleAxis(rotationAmount, forwardVector) * vert;
-                    Vector3 transformedPoint = vert + _meshVertsDatas[0].GlobalPosition;
-                    float distance = Vector2.Distance(_originPointXZ, new Vector2(transformedPoint.x, transformedPoint.z));
-
-                    lock (lockObj)
+                    if (transformedPoint.y < localLowestY)
                     {
-                        if (rotationAmount == 0)
-                        {
-                            if (transformedPoint.y > localHighestY)
-                            {
-                                localHighestY = transformedPoint.y;
-                            }
-
-                            if (transformedPoint.y < localLowestY)
-                            {
-                                localLowestY = transformedPoint.y;
-                            }
-                        }
-
-                        if (distance > farthest)
-                        {
-                            farthest = distance;
-                        }
-                    }
-                    
-                    if (_cancelTask)
-                    {
-                        return;
+                        localLowestY = transformedPoint.y;
                     }
                 }
-            });
-        }//);
+
+                if (_cancelTask)
+                {
+                    return;
+                }
+            }
+        }
 
         if (farthest > _farthestDistance)
         {
-            _farthestDistance = farthest;
-        }
-
-        if (rotationAmount == 0)
-        {
-            if (localHighestY > _highestY)
+            lock (_lockObj)
             {
-                _highestY = localHighestY;
-            }
-
-            if (localLowestY < _lowestY)
-            {
-                _lowestY = localLowestY;
+                if (farthest > _farthestDistance)
+                {
+                    _farthestDistance = farthest;
+                    _highestY = localHighestY;
+                    _lowestY = localLowestY;
+                }
             }
         }
     }
@@ -349,17 +314,52 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         }
     }
 
+    private void ResetVariables()
+    {
+        _taskRunning = true;
+        _highestY = float.MinValue;
+        _lowestY = float.MaxValue;
+        _farthestDistance = 0f;
+        _positions = new List<Vector3>(_circlePositions);
+        _farthestDistance = 0f;
+        _originPointXZ = new Vector2(_highestSelectable.transform.position.x, _highestSelectable.transform.position.z);
+    }
+
+    private void SetNeedsUpdate()
+    {
+        _needsUpdate = true;
+        if (_taskRunning)
+        {
+            _cancelTask = true;
+        }
+        CheckStatus();
+    }
+
+    public void UpdateLineRenderer()
+    {
+        if (Type == RendererType.ArmAssembly)
+        {
+            UpdateLineRendererArmAssembly();
+        }
+        else if (Type == RendererType.Door)
+        {
+            UpdateLineRendererDoor();
+        }
+    }
+
     private async void UpdateLineRendererArmAssembly()
     {
         ResetVariables();
         ResetMeshVertsData();
 
-        Task task = Task.Factory.StartNew(() =>
+        Task task = Task.Run(() =>
         {
-            Parallel.For(0, _meshVertsDatas[0].Rotations, j =>
-            {
-                RecordData(j, Vector3.down);
-            });
+            Parallel.For(0, _meshVertsDatas[0].Rotations,
+                parallelOptions: new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount >= 4 ? Mathf.Max(Environment.ProcessorCount / 2, 1) : Environment.ProcessorCount }, 
+                body: j =>
+                {
+                    RecordData(j, Vector3.down);
+                });
         });
 
         await task;
@@ -389,8 +389,6 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
             _positions[i] = newPos;
         }
 
-        //Debug.Log($"Received {positions.Count} vertex positions for line renderer");
-
         _lineRenderer.positionCount = _positions.Count;
         _lineRenderer.SetPositions(_positions.ToArray());
 
@@ -405,19 +403,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
 
     private void UpdateLineRendererDoor()
     {
-        
-    }
 
-    public void UpdateLineRenderer()
-    {
-        if (Type == RendererType.ArmAssembly) 
-        {
-            UpdateLineRendererArmAssembly();
-        }
-        else if (Type == RendererType.Door)
-        {
-            UpdateLineRendererDoor();
-        }
     }
     #endregion
 }
