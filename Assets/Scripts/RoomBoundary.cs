@@ -1,4 +1,5 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ public class RoomBoundary : MonoBehaviour
     private bool VirtualCameraActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
     public MeshRenderer MeshRenderer { get; private set; }
     public Collider Collider { get; private set; }
+    [field: SerializeField] public GameObject baseboard { get; private set; }
     private CinemachineTransposer _transposer;
     private static Dictionary<RoomBoundaryType, RoomBoundary> RoomBoundariesByType { get; set; } = new();
 
@@ -43,6 +45,14 @@ public class RoomBoundary : MonoBehaviour
         float height = dimension.Height.ToMeters();
         float width = dimension.Width.ToMeters();
         float depth = dimension.Depth.ToMeters();
+
+        Vector3 basePosition = new Vector3(0, 0, 0);
+        if (baseboard != null)
+        {
+            basePosition = baseboard.transform.localPosition;
+            baseboard.transform.SetParent(null);
+            Debug.Log(basePosition);
+        }
 
         switch (RoomBoundaryType)
         {
@@ -70,6 +80,22 @@ public class RoomBoundary : MonoBehaviour
                 transform.localScale = new Vector3(width, height, DefaultWallThickness);
                 transform.position = new Vector3(0, height / 2f, 0 + (depth / 2f) + (transform.localScale.z / 2));
                 break;
+        }
+
+        if (baseboard != null)
+        {
+            baseboard.transform.SetParent(this.transform);
+            Debug.Log(basePosition);
+            baseboard.transform.localPosition = basePosition;
+            Debug.Log(baseboard.transform.localPosition);
+            baseboard.transform.SetParent(null);
+
+            float highest = Math.Max(depth, width);
+
+            baseboard.transform.localScale = new Vector3(
+                baseboard.transform.localScale.x,
+                baseboard.transform.localScale.y + (highest / 4f),
+                baseboard.transform.localScale.z);
         }
     }
 

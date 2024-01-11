@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 829156518035098477}
   - component: {fileID: 6912853055511600860}
   - component: {fileID: 4767647742572128758}
+  - component: {fileID: 29952435}
   m_Layer: 0
   m_Name: WallProtector
   m_TagString: Untagged
@@ -339,6 +340,25 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.018421128, y: 4.3216996, z: 0.0741364}
   m_Center: {x: -0.009025041, y: -0.0007550718, z: 0.037022438}
+--- !u!114 &29952435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6845259902817249984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7bd3faa4e32a34db16a4c0117799c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <elements>k__BackingField:
+  - <_zeroStart>k__BackingField: 1
+    materials:
+    - {fileID: 2100000, guid: 208da722be131604ebe6085ca6bc3a53, type: 2}
+    - {fileID: 2100000, guid: cc7eefe28fc3e1e45b68af3d8fe19822, type: 2}
+    - {fileID: 2100000, guid: d50d4a6b91f677e42a2d0f6a3b6b2cd3, type: 2}
+  <meshRenderer>k__BackingField: {fileID: 0}
 --- !u!1 &7434035695294010010
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +376,7 @@ GameObject:
   - component: {fileID: 6729615449892881894}
   - component: {fileID: 2652773253107530719}
   - component: {fileID: 8675017663722371601}
+  - component: {fileID: 575744590}
   m_Layer: 6
   m_Name: Baseboard
   m_TagString: Untagged
@@ -709,3 +730,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.03757384, y: 4.3217025, z: 0.0741363}
   m_Center: {x: -0.018552689, y: 0, z: 0.036956057}
+--- !u!114 &575744590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434035695294010010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7bd3faa4e32a34db16a4c0117799c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <elements>k__BackingField:
+  - <_zeroStart>k__BackingField: 1
+    materials:
+    - {fileID: 2100000, guid: cc7eefe28fc3e1e45b68af3d8fe19822, type: 2}
+    - {fileID: 2100000, guid: 208da722be131604ebe6085ca6bc3a53, type: 2}
+    - {fileID: 2100000, guid: d50d4a6b91f677e42a2d0f6a3b6b2cd3, type: 2}
+  <meshRenderer>k__BackingField: {fileID: 0}
