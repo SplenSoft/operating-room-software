@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class ClearanceLinesRenderer : MonoBehaviour
+public partial class ClearanceLinesRenderer : MonoBehaviour
 {
     #region Non-method Members
     private class MeshVertsData
@@ -44,11 +44,17 @@ public class ClearanceLinesRenderer : MonoBehaviour
         }
     }
 
+    public enum RendererType
+    {
+        ArmAssembly,
+        Door
+    }
+
     private static readonly float _sizeScalar = 0.0035f;
     private static readonly float _sizeScalarOrtho = 0.005f;
     private static readonly float _sizeScalarOrthoMax = 0.05f;
 
-    [SerializeField, ReadOnly] private LineRenderer _lineRenderer;
+    private LineRenderer _lineRenderer;
 
     [field: SerializeField, Tooltip("Should be \"true\" on heads that can have attachements (i.e. boom head that can have added shelves)")] 
     private bool IncludeChildrenInMeasurement { get; set; }
@@ -65,6 +71,9 @@ public class ClearanceLinesRenderer : MonoBehaviour
     [field: SerializeField]
     private float DoorSwingAngle { get; set; } = 90f;
 
+    [field: SerializeField]
+    private RendererType Type { get; set; }
+
     private Selectable _highestSelectable;
 
     /// <summary> Can be null, be sure to check</summary>
@@ -72,9 +81,9 @@ public class ClearanceLinesRenderer : MonoBehaviour
     private List<Selectable> _trackedParentSelectables = new();
     private List<MeshVertsData> _meshVertsDatas;
     private bool _rotateMeshWhenFindingFarthestVert;
-    [SerializeField, ReadOnly] private bool _needsUpdate = true;
-    [SerializeField, ReadOnly] private bool _taskRunning = false;
-    [SerializeField, ReadOnly] private bool _cancelTask = false;
+    private bool _needsUpdate = true;
+    private bool _taskRunning = false;
+    private bool _cancelTask = false;
     bool _medianYEstablished = false;
     float _highestYValue = float.MinValue;
     float _lowestYValue = float.MaxValue;
