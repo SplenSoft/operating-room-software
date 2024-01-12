@@ -1,6 +1,24 @@
-function exportPdf(json) {
+function getPdfJson(callback) {
+    var searchParams = new URLSearchParams(window.location.search);
+    var id = searchParams.get('id');
+    var url = "http://www.splensoft.com/ors/php/json/" + id + ".json";
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status === 200) {
+        callback(null, xhr.response);
+      } else {
+        callback(status, xhr.response);
+      }
+    };
+    xhr.send();
+}
 
-    var data = JSON.parse(json);
+function exportPdf(data) {
+
+    //var data = JSON.parse(json);
     const pageWidthPx = 1583;
     const pageHeightPx = 1123;
     const doc = new jsPDF({
@@ -74,3 +92,9 @@ function getBase64Image(imgUrl, callback) {
     img.src = imgUrl;
 
 }
+
+getPdfJson((status, json) => {
+    console.log(status);
+    console.log(json);
+    exportPdf(json);
+});
