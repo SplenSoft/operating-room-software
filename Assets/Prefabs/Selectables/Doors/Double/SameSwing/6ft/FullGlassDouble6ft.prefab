@@ -427,6 +427,10 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GUID>k__BackingField
+      value: C709833B-3978-4CD5-8686-8407A779DD43
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
       value: FullGlass Double 6ft
       objectReference: {fileID: 0}
@@ -581,24 +585,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 6973475671592138804}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7519392179438398858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4432239046007752861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IncludeChildrenInMeasurement>k__BackingField: 0
-  <BufferSize>k__BackingField: 0
-  <DoorHinge>k__BackingField: {fileID: 3017709448153834260}
-  <DoorStrike>k__BackingField: {fileID: 2729007806516137629}
-  <DoorSwingAngle>k__BackingField: 90
-  <Type>k__BackingField: 1
 --- !u!114 &3349714833204302257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -614,6 +600,24 @@ MonoBehaviour:
   <IncludeChildrenInMeasurement>k__BackingField: 0
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 3905397443523466137}
+  <DoorStrike>k__BackingField: {fileID: 2729007806516137629}
+  <DoorSwingAngle>k__BackingField: 90
+  <Type>k__BackingField: 1
+--- !u!114 &7519392179438398858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4432239046007752861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <IncludeChildrenInMeasurement>k__BackingField: 0
+  <BufferSize>k__BackingField: 0
+  <DoorHinge>k__BackingField: {fileID: 3017709448153834260}
   <DoorStrike>k__BackingField: {fileID: 2729007806516137629}
   <DoorSwingAngle>k__BackingField: 90
   <Type>k__BackingField: 1

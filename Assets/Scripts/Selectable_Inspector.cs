@@ -22,11 +22,14 @@ public partial class Selectable : MonoBehaviour
             {
                 if(GUILayout.Button("Generate GUID"))
                 {
-                    _component.GUID = System.Guid.NewGuid().ToString();
+                    _component.GUID = System.Guid.NewGuid().ToString().ToUpper();
                 }
             }
 
-            EditorGUI.EndChangeCheck();
+            if(EditorGUI.EndChangeCheck())
+            {
+                EditorUtility.SetDirty(target);
+            }
 
             DrawDefaultInspector();
         }

@@ -316,17 +316,19 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
-  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
-  <ClearanceLinesRenderers>k__BackingField: []
-  <ClearanceLinesMeshFilters>k__BackingField: []
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &4767647742572128758
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -412,7 +414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <GUID>k__BackingField: 
+  <GUID>k__BackingField: E12BD8EB-402B-44B3-8B85-C2DD1D12CD62
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: 
@@ -434,35 +436,42 @@ MonoBehaviour:
   - <Size>k__BackingField: 0.0762
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 1
+    metadata: []
   - <Size>k__BackingField: 0.1016
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.127
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.1524
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.1778
     <Selected>k__BackingField: 1
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
-  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
-  <ClearanceLinesRenderers>k__BackingField: []
-  <ClearanceLinesMeshFilters>k__BackingField: []
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2201210435872393541
 MonoBehaviour:
   m_ObjectHideFlags: 0
