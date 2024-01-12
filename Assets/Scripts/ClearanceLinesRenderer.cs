@@ -215,6 +215,13 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
 
         _lineRenderer.gameObject.SetActive(UI_ToggleClearanceLines.IsActive);
 
+#if UNITY_EDITOR
+        if (Type == RendererType.Door)
+        {
+            _needsUpdate = true;
+        }
+#endif
+
         if (UI_ToggleClearanceLines.IsActive && _needsUpdate)
         {
             if (!_taskRunning)
