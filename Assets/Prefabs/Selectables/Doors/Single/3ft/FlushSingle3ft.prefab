@@ -71,7 +71,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6565122453228016778, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: rmsCount
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
@@ -244,7 +244,7 @@ MonoBehaviour:
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 6190824230238589}
   <DoorStrike>k__BackingField: {fileID: 2762734012412520687}
-  <DoorSwingAngle>k__BackingField: 90
+  <DoorSwingAngle>k__BackingField: -90
   <Type>k__BackingField: 1
 --- !u!4 &6027947500981273730 stripped
 Transform:

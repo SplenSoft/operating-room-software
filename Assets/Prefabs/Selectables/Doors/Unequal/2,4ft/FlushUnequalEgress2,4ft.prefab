@@ -404,7 +404,7 @@ MonoBehaviour:
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 4460983704741664085}
   <DoorStrike>k__BackingField: {fileID: 7397236447651526310}
-  <DoorSwingAngle>k__BackingField: 90
+  <DoorSwingAngle>k__BackingField: -90
   <Type>k__BackingField: 1
 --- !u!114 &4075377053347000930
 MonoBehaviour:
