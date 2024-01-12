@@ -8,7 +8,7 @@ public class UI_ButtonExportObj : MonoBehaviour
     {
         Selectable.SelectionChanged += (o, e) =>
         {
-            gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly());
+            gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly);
         };
 
         gameObject.SetActive(false);

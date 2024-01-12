@@ -187,7 +187,6 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
                 selectable.ScaleUpdated.RemoveListener(SetNeedsUpdate);
             }
         });
-
         UI_ToggleClearanceLines.ClearanceLinesToggled.RemoveListener(CheckStatus);
     }
 
@@ -355,7 +354,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         ResetVariables();
         ResetMeshVertsData();
 
-#if UNITY_WEBGL
+#if UNITY_WEBGL && !UNITY_EDITOR
         for (int i = 0; i < _meshVertsDatas[0].Rotations; i++)
         {
             RecordData(i, Vector3.down);

@@ -34,6 +34,7 @@ public class Selectable : MonoBehaviour
     public UnityEvent SelectableDestroyed { get; } = new();
     public UnityEvent ScaleUpdated { get; } = new();
     public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
+    public Selectable ParentSelectable { get; private set; }
 
     public bool IsMouseOver { get; private set; }
     public bool IsDestroyed { get; private set; }
@@ -62,13 +63,14 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
     [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
 
+    private List<Selectable> _assemblySelectables = new();
+    private Dictionary<Selectable, Quaternion> _originalRotations = new();
+    private Dictionary<Measurable, bool> _measurableActiveStates = new();
     private List<Vector3> _childScales = new();
-    private Quaternion _originalRotation;
-    private Selectable _parentSelectable;
+    private Quaternion _originalRotation; 
     private Transform _virtualParent;
     private HighlightEffect _highlightEffect;
     private GizmoHandler _gizmoHandler;
-    //private Quaternion _localRotationBeforeElevationPhoto;
     private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
     public static Camera ActiveCameraRenderTextureElevation { get; private set; }
@@ -77,13 +79,14 @@ public class Selectable : MonoBehaviour
     /// If true, this is probably a ceiling mount
     /// </summary>
     private bool IsAssemblyRoot => Types.Contains(SelectableType.Mount);
+    public bool IsArmAssembly => transform.root.TryGetComponent(out Selectable rootSelectable) && rootSelectable.IsAssemblyRoot;
+    public bool IsSelected => SelectedSelectable == this;
 
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentScaleLevel { get; private set; }
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentPreviewScaleLevel { get; private set; }
 
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
-    private bool _rendererMoved;
     #endregion
 
     public static void DeselectAll()
@@ -96,11 +99,8 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    public bool IsSelected => SelectedSelectable == this;
-
     private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
     {
-        //if (maxVal == 0 && minVal == 0) return false;
         float diff = currentVal - originalVal;
         excess = diff > maxVal ? diff - maxVal : diff < minVal ? diff - minVal : 0f;
         return excess != 0;
@@ -157,24 +157,13 @@ public class Selectable : MonoBehaviour
         return exceedsX || exceedsY || exceedsZ;
     }
 
-    public bool HasLights()
-    {
-        if (GetComponent<LightFactory>() != null) return true; else return false;
-    }
-
-    public bool IsArmAssembly()
-    {
-        var rootSelectable = transform.root.GetComponent<Selectable>();
-        return rootSelectable != null && rootSelectable.Types.Contains(SelectableType.Mount);
-    }
-
     public bool TryGetArmAssemblyRoot(out GameObject rootObj)
     {
         rootObj = null;
         if (transform.root.TryGetComponent<Selectable>(out var rootSelectable))
         {
             rootObj = rootSelectable.gameObject;
-            return rootSelectable.Types.Contains(SelectableType.Mount);
+            return rootSelectable.IsAssemblyRoot;
         }
         return false;
     }
@@ -270,11 +259,6 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    public Selectable GetParentSelectable()
-    {
-        return _parentSelectable;
-    }
-
     public bool TryGetGizmoSetting(GizmoType gizmoType, Axis axis, out GizmoSetting gizmoSetting)
     {
         gizmoSetting = default;
@@ -346,10 +330,6 @@ public class Selectable : MonoBehaviour
 
         return bounds;
     }
-
-    List<Selectable> _assemblySelectables = new();
-    Dictionary<Selectable, Quaternion> _originalRotations = new();
-    Dictionary<Measurable, bool> _measurableActiveStates = new();
 
     public void SetAssemblyToDefaultRotations()
     {
@@ -625,7 +605,7 @@ public class Selectable : MonoBehaviour
 
             if (parent.TryGetComponent<Selectable>(out var selectable))
             {
-                _parentSelectable = selectable;
+                ParentSelectable = selectable;
                 break;
             }
 
@@ -675,9 +655,9 @@ public class Selectable : MonoBehaviour
             ParentAttachmentPoint.DetachSelectable(this);
         }
 
-        if (_parentSelectable != null)
+        if (ParentSelectable != null)
         {
-            Destroy(_parentSelectable.gameObject);
+            Destroy(ParentSelectable.gameObject);
         }
 
         SelectableDestroyed?.Invoke();
@@ -977,36 +957,4 @@ public enum SelectableType
     ServiceHeadPanel,
     ServiceHeadShelves,
     Tabletop
-}
-
-[Serializable]
-public class GizmoSetting
-{
-    [field: SerializeField] public Axis Axis { get; private set; }
-    [field: SerializeField] public GizmoType GizmoType { get; private set; }
-    [field: SerializeField] public bool Unrestricted { get; private set; } = true;
-    [field: SerializeField] private float MaxValue { get; set; }
-    [field: SerializeField] private float MinValue { get; set; }
-
-    /// <summary>
-    /// When calculating max and min heights for elevation photos, treats min as max and vice versa (fixes some issues with y-axis rotations)
-    /// </summary>
-    [field: SerializeField] public bool Invert { get; private set; }
-
-    public float GetMaxValue => Unrestricted ? float.MaxValue : MaxValue;
-    public float GetMinValue => Unrestricted ? float.MinValue : MinValue;
-}
-
-public enum Axis
-{
-    X,
-    Y,
-    Z
-}
-
-public enum GizmoType
-{
-    Move,
-    Rotate,
-    Scale
 }

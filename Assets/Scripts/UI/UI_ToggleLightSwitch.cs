@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class UI_ToggleLightSwitch : MonoBehaviour
 {
     Toggle _toggle; // internal reference to the toggle object
-    LightFactory selectedLight = null; // internal reference to the current selected light, to reduce getcomponent calls
+    LightFactory _selectedLight = null; // internal reference to the current selected light, to reduce getcomponent calls
 
     private void Awake()
     {
@@ -18,13 +18,13 @@ public class UI_ToggleLightSwitch : MonoBehaviour
 
         Selectable.SelectionChanged += (o, e) =>
         {
-            bool b = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.HasLights(); // store result of the selectable & light checks for multiple uses
+            bool b = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.GetComponent<LightFactory>(); // store result of the selectable & light checks for multiple uses
             gameObject.SetActive(b); // if there is a current selectable and it is a light, we display the UI
 
             if(b)
             {
-                selectedLight = Selectable.SelectedSelectable.gameObject.GetComponent<LightFactory>(); // store the value for reuse
-                _toggle.isOn = selectedLight.isOn(); // set the toggle to match the current state of the light (ON/OFF)
+                _selectedLight = Selectable.SelectedSelectable.gameObject.GetComponent<LightFactory>(); // store the value for reuse
+                _toggle.isOn = _selectedLight.isOn(); // set the toggle to match the current state of the light (ON/OFF)
             }
         };
 
@@ -33,9 +33,9 @@ public class UI_ToggleLightSwitch : MonoBehaviour
         // lambda delegate for the toggle's value changing. 
         // This is done instead of the Editor to avoid an edge-case of the value applying to subsequently clicked lights
         _toggle.onValueChanged.AddListener((x) => {
-            if(_toggle.isOn != selectedLight.isOn())
+            if(_toggle.isOn != _selectedLight.isOn())
             {
-                selectedLight.SwitchLight();
+                _selectedLight.SwitchLight();
             }
         });
     }
