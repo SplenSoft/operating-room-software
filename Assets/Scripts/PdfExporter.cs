@@ -4,7 +4,6 @@ using UnityEngine;
 using System;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
-using static UnityEditor.Progress;
 
 public class PdfExporter : MonoBehaviour
 {
