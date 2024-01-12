@@ -468,7 +468,7 @@ MonoBehaviour:
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 7415888038460695280}
   <DoorStrike>k__BackingField: {fileID: 4373710828504235159}
-  <DoorSwingAngle>k__BackingField: 90
+  <DoorSwingAngle>k__BackingField: -90
   <Type>k__BackingField: 1
 --- !u!114 &5619253158417475248
 MonoBehaviour:
@@ -486,7 +486,7 @@ MonoBehaviour:
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 7827829292080497214}
   <DoorStrike>k__BackingField: {fileID: 4373710828504235159}
-  <DoorSwingAngle>k__BackingField: 90
+  <DoorSwingAngle>k__BackingField: -90
   <Type>k__BackingField: 1
 --- !u!4 &6027947500981273730 stripped
 Transform:

@@ -200,7 +200,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6565122453228016778, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: rmsCount
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GUID>k__BackingField
@@ -377,25 +377,7 @@ MonoBehaviour:
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 6626248316584082334}
   <DoorStrike>k__BackingField: {fileID: 8576628636380221944}
-  <DoorSwingAngle>k__BackingField: 90
-  <Type>k__BackingField: 1
---- !u!114 &7288727450925951383
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4432239046007752861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <IncludeChildrenInMeasurement>k__BackingField: 0
-  <BufferSize>k__BackingField: 0
-  <DoorHinge>k__BackingField: {fileID: 6626248316584082334}
-  <DoorStrike>k__BackingField: {fileID: 8576628636380221944}
-  <DoorSwingAngle>k__BackingField: 90
+  <DoorSwingAngle>k__BackingField: -90
   <Type>k__BackingField: 1
 --- !u!4 &6027947500981273730 stripped
 Transform:

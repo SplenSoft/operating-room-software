@@ -419,10 +419,6 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <GUID>k__BackingField
-      value: C5B200E7-3694-4A73-A017-E61F2F629A4E
-      objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
       value: SideLite Double6ft
       objectReference: {fileID: 0}
@@ -611,7 +607,7 @@ MonoBehaviour:
   <BufferSize>k__BackingField: 0
   <DoorHinge>k__BackingField: {fileID: 7448750997464492458}
   <DoorStrike>k__BackingField: {fileID: 3713538012971393480}
-  <DoorSwingAngle>k__BackingField: 90
+  <DoorSwingAngle>k__BackingField: -90
   <Type>k__BackingField: 1
 --- !u!4 &6027947500981273730 stripped
 Transform:
