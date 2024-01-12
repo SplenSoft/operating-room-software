@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +22,26 @@ public class Selectable : MonoBehaviour
         [field: SerializeField] public bool Selected { get; set; }
         [field: SerializeField] public bool ModelDefault { get; set; }
         public float ScaleZ { get; set; }
+        [field: SerializeField] public Metadata[] metadata;
+
+        public bool TryGetValue(string key, out string value)
+        {
+            value = metadata.SingleOrDefault(x => x.key == key).value;
+            return value == "" ? false : true;
+        }
+    }
+
+    [Serializable]
+    public struct Metadata
+    {
+        [field: SerializeField] public string key { get; private set; }
+        [field: SerializeField] public string value { get; private set; }
+
+        public Metadata(string k = "", string v = "")
+        {
+            key = "";
+            value = "";
+        }
     }
 
     #region Fields and Properties
@@ -83,6 +104,7 @@ public class Selectable : MonoBehaviour
 
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentScaleLevel { get; private set; }
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentPreviewScaleLevel { get; private set; }
+    [field: HideInInspector] public UnityEvent<ScaleLevel> OnScaleChange;
 
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
@@ -185,6 +207,7 @@ public class Selectable : MonoBehaviour
     public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
         CurrentPreviewScaleLevel = scaleLevel;
+        OnScaleChange.Invoke(CurrentPreviewScaleLevel);
 
         Quaternion storedRotation = transform.rotation;
         transform.rotation = _originalRotation;
@@ -223,10 +246,14 @@ public class Selectable : MonoBehaviour
                     // Debug.Log($"Local Diff after InverseTransformVector for {child.name} is ({localDiff.x}, {localDiff.y}, {localDiff.z})");
                     if (child.TryGetComponent(out Selectable selectable))
                     {
-                        if(selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+                        if (selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
                         {
                             child.transform.localScale = Vector3.Scale(child.transform.localScale, diffVector);
                         }
+                    }
+                    else if (gameObject.TryGetComponent(out BoomHeadScaleHandler headScale))
+                    {
+                        child.transform.localScale = Vector3.Scale(child.transform.localScale, diffVector);
                     }
                     else
                     {
@@ -245,6 +272,7 @@ public class Selectable : MonoBehaviour
             ScaleLevels.ForEach((item) => item.Selected = false);
             scaleLevel.Selected = true;
             CurrentScaleLevel = scaleLevel;
+            OnScaleChange.Invoke(CurrentScaleLevel);
             StoreChildScales();
         }
 

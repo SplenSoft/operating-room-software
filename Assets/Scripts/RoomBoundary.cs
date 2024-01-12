@@ -51,7 +51,6 @@ public class RoomBoundary : MonoBehaviour
         {
             basePosition = baseboard.transform.localPosition;
             baseboard.transform.SetParent(null);
-            Debug.Log(basePosition);
         }
 
         switch (RoomBoundaryType)
@@ -85,9 +84,7 @@ public class RoomBoundary : MonoBehaviour
         if (baseboard != null)
         {
             baseboard.transform.SetParent(this.transform);
-            Debug.Log(basePosition);
             baseboard.transform.localPosition = basePosition;
-            Debug.Log(baseboard.transform.localPosition);
             baseboard.transform.SetParent(null);
 
             float highest = Math.Max(depth, width);
