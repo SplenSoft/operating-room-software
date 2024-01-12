@@ -134,6 +134,8 @@ public class GizmoHandler : MonoBehaviour
         if (_gizmosInitialized) return;
 
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
+        if(Selectable.SelectedSelectable.AllowInverseControl)
+            _translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
         _translateGizmo.SetTargetObject(gameObject);
         //_translateGizmo.Gizmo.MoveGizmo.SetVertexSnapTargetObjects(new List<GameObject> { gameObject });
         _translateGizmo.SetTransformSpace(GizmoSpace.Local);
@@ -327,7 +329,6 @@ public class GizmoHandler : MonoBehaviour
 
             if (verticalComponent.ExceedsMaxRotation(out Vector3 totalExcess1))
             {
-                // Debug.Log("Doin stuffs");
                 verticalComponent.transform.localRotation *= Quaternion.Euler(-totalExcess1.x, -totalExcess1.y, -totalExcess1.z);
             }
         }
