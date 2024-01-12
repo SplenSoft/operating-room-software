@@ -61,9 +61,6 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public List<Measurable> Measurables { get; private set; }
     [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
     [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
-    [field: SerializeField] private Transform ClearanceLineMeasuringPosition { get; set; }
-    [field: SerializeField] private List<ClearanceLinesRenderer> ClearanceLinesRenderers { get; set; }
-    [field: SerializeField] private List<MeshFilter> ClearanceLinesMeshFilters { get; set; } = new();
 
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;
@@ -352,6 +349,7 @@ public class Selectable : MonoBehaviour
 
     List<Selectable> _assemblySelectables = new();
     Dictionary<Selectable, Quaternion> _originalRotations = new();
+    Dictionary<Measurable, bool> _measurableActiveStates = new();
 
     public void SetAssemblyToDefaultRotations()
     {
@@ -379,102 +377,109 @@ public class Selectable : MonoBehaviour
         }
     }
 
+    private void ToggleMeasurableActiveStates(bool active)
+    {
+        if (active)
+        {
+            _assemblySelectables.ForEach(item =>
+            {
+                if (item.Measurables.Count > 0)
+                {
+                    item.Measurables.ForEach(measurable =>
+                    {
+                        measurable.ArmAssemblyActiveInElevationPhotoMode = true;
+                        _measurableActiveStates[measurable] = measurable.IsActive;
+                        measurable.SetActive(true);
+                    });
+                }
+            });
+        }
+        else
+        {
+            _measurableActiveStates.Keys.ToList().ForEach(item =>
+            {
+                item.ArmAssemblyActiveInElevationPhotoMode = false;
+                item.SetActive(_measurableActiveStates[item]);
+                float _ = 0;
+                item.UpdateMeasurements(ref _);
+            });
+        }
+    }
+
+    private List<PdfExporter.PdfImageData> GetAssemblyPDFImageData(Camera camera) 
+    {
+        var imageDatas = new List<PdfExporter.PdfImageData>();
+        for (int i = 0; i < 2; i++)
+        {
+            foreach (Selectable selectable in _assemblySelectables.Where(x => x.ChangeHeightForElevationPhoto))
+            {
+                var newAngles = selectable.transform.localEulerAngles;
+                var gizmoSetting = selectable.GizmoSettings[GizmoType.Rotate][Axis.Y];
+
+                if (i == 0)
+                {
+                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue : gizmoSetting.GetMinValue;
+                }
+                else
+                {
+                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMinValue : gizmoSetting.GetMaxValue;
+                }
+
+                selectable.transform.localEulerAngles = newAngles;
+            }
+
+            _assemblySelectables.Where(x => x.ZAlwaysFacesGround || x.ZAlwaysFacesGroundElevationOnly).ToList().ForEach(item =>
+            {
+                item.FaceZTowardGround();
+            });
+
+            var bounds = GetAssemblyBounds();
+
+            //take the photo
+            imageDatas.Add(new PdfExporter.PdfImageData()
+            {
+                Path = GetElevationPhoto(camera, bounds, _assemblySelectables, out var imageWidth, out var imageHeight, i),
+                Width = imageWidth,
+                Height = imageHeight
+            });
+        }
+
+        return imageDatas;
+    }
+
     public void ExportElevationPdf()
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
         {
-            if (rootObj == gameObject)
-            {// this obj is the ceiling mount
-                IsInElevationPhotoMode = true;
-                var camera = GetComponentInChildren<Camera>();
-                ActiveCameraRenderTextureElevation = camera;
-
-                SetAssemblyToDefaultRotations();
-
-                Dictionary<Measurable, bool> measurableActiveStates = new();
-                _assemblySelectables.ForEach(item =>
-                {
-                    if (item.Measurables.Count > 0)
-                    {
-                        item.Measurables.ForEach(measurable =>
-                        {
-                            measurable.ArmAssemblyActiveInElevationPhotoMode = true;
-                            measurableActiveStates[measurable] = measurable.IsActive;
-                            measurable.SetActive(true);
-                        });
-                    }
-                });
-
-                //store visibility states of all selectables in scene for later
-                List<bool> visibilityStates = ActiveSelectables.ConvertAll(item => item.gameObject.activeSelf);
-                //shut off all selectables in the scene except for the ones in this arm assembly
-                ActiveSelectables.Where(item => !_assemblySelectables.Contains(item)).ToList().ForEach(item => item.gameObject.SetActive(false));
-                List<Selectable> heightChangingSelectables = _assemblySelectables.Where(x => x.ChangeHeightForElevationPhoto).ToList();
-                var imageDatas = new List<PdfExporter.PdfImageData>();
-                for (int i = 0; i < 2; i++)
-                {
-                    foreach (Selectable item in heightChangingSelectables)
-                    {
-                        var newAngles = item.transform.localEulerAngles;
-                        var gizmoSetting = item.GizmoSettings[GizmoType.Rotate][Axis.Y];
-
-                        if (i == 0)
-                        {
-                            newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue : gizmoSetting.GetMinValue;
-                        }
-                        else
-                        {
-                            newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMinValue : gizmoSetting.GetMaxValue;
-                        }
-
-                        item.transform.localEulerAngles = newAngles;
-                    }
-
-                    _assemblySelectables.Where(x => x.ZAlwaysFacesGround || x.ZAlwaysFacesGroundElevationOnly).ToList().ForEach(item =>
-                    {
-                        item.FaceZTowardGround();
-                    });
-
-                    var bounds = GetAssemblyBounds();
-
-                    //take the photo
-                    imageDatas.Add(new PdfExporter.PdfImageData()
-                    {
-                        Path = GetElevationPhoto(camera, bounds, _assemblySelectables, out var imageWidth, out var imageHeight, i),
-                        Width = imageWidth,
-                        Height = imageHeight
-                    });
-                }
-
-                PdfExporter.ExportElevationPdf(imageDatas, _assemblySelectables);
-
-                for (int i = 0; i < ActiveSelectables.Count; i++)
-                {
-                    ActiveSelectables[i].gameObject.SetActive(visibilityStates[i]);
-                }
-
-                RestoreArmAssemblyRotations();
-
-                _assemblySelectables.Where(x => x.ZAlwaysFacesGround).ToList().ForEach(item =>
-                {
-                    item.FaceZTowardGround();
-                });
-
-                IsInElevationPhotoMode = false;
-
-                measurableActiveStates.Keys.ToList().ForEach(item =>
-                {
-                    item.ArmAssemblyActiveInElevationPhotoMode = false;
-                    item.SetActive(measurableActiveStates[item]);
-                    float _ = 0;
-                    item.UpdateMeasurements(ref _);
-                });
-            }
-            else
+            if (rootObj != gameObject)
             {
                 rootObj.GetComponent<Selectable>().ExportElevationPdf();
                 return;
             }
+
+            // this obj is the ceiling mount
+            IsInElevationPhotoMode = true;
+            var camera = GetComponentInChildren<Camera>();
+            ActiveCameraRenderTextureElevation = camera;
+
+            SetAssemblyToDefaultRotations();
+            _measurableActiveStates.Clear();
+            ToggleMeasurableActiveStates(true);
+
+            //store visibility states of all selectables in scene for later
+            List<bool> visibilities = ActiveSelectables.ConvertAll(x => x.gameObject.activeSelf);
+
+            //shut off all selectables in the scene except for the ones in this arm assembly
+            ActiveSelectables.Where(x => !_assemblySelectables.Contains(x)).ToList().ForEach(x => x.gameObject.SetActive(false));
+
+            PdfExporter.ExportElevationPdf(GetAssemblyPDFImageData(camera), _assemblySelectables);
+
+            for (int i = 0; i < ActiveSelectables.Count; i++) ActiveSelectables[i].gameObject.SetActive(visibilities[i]);
+
+            RestoreArmAssemblyRotations();
+            _assemblySelectables.ForEach(x => x.FaceZTowardGround());
+            IsInElevationPhotoMode = false;
+            ToggleMeasurableActiveStates(false);
         }
     }
 

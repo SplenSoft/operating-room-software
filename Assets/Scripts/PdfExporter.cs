@@ -179,11 +179,6 @@ public class PdfExporter : MonoBehaviour
             }
         }
 
-        //MemoryStream stream = new MemoryStream();
-        //document.Save(stream, false);
-        //byte[] bytes = stream.ToArray();
-        //string bitString = BitConverter.ToString(bytes);
-        //WebGLExtern.SaveStringToFile(bitString, "pdf");
         SimpleJSON.JSONObject node = new();
         node.Add("image1", image1);
         node.Add("image2", image2);
@@ -199,7 +194,7 @@ public class PdfExporter : MonoBehaviour
             }
         });
         node.Add("selectableData", selectableArray);
-        //Debug.Log(node);
+
 #if UNITY_WEBGL && !UNITY_EDITOR
         WebGLExtern.SaveElevationPDF(node.ToString());
 #endif
