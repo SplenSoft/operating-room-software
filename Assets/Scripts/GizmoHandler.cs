@@ -134,6 +134,8 @@ public class GizmoHandler : MonoBehaviour
         if (_gizmosInitialized) return;
 
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
+        if(Selectable.SelectedSelectable.AllowInverseControl)
+            _translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
         _translateGizmo.SetTargetObject(gameObject);
         //_translateGizmo.Gizmo.MoveGizmo.SetVertexSnapTargetObjects(new List<GameObject> { gameObject });
         _translateGizmo.SetTransformSpace(GizmoSpace.Local);
@@ -180,7 +182,7 @@ public class GizmoHandler : MonoBehaviour
 
     private async void OnGizmoPostDragEnd(Gizmo gizmo, int handleId)
     {
-        if(TryGetComponent(out KeepRelativePosition k))
+        if (TryGetComponent(out KeepRelativePosition k))
         {
             k.SelectablePositionChanged();
         }
@@ -260,184 +262,221 @@ public class GizmoHandler : MonoBehaviour
 
         if (gizmo.ObjectTransformGizmo == _translateGizmo && _selectable.ExeedsMaxTranslation(out Vector3 totalExcess))
         {
-            Debug.Log("Entered DragUpdate IF");
-            transform.localPosition -= totalExcess;
-            Transform parent = transform.parent;
-
-            //do vertical component first
-            if (gizmo.RelativeDragOffset.y != 0)
-            {
-                Selectable verticalComponent = null;
-
-                while (parent != null && verticalComponent == null && _selectable.AllowInverseControl)
-                {
-                    var parentSelectable = parent.GetComponent<Selectable>();
-                    if (parentSelectable != null && parentSelectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y))
-                    {
-                        verticalComponent = parentSelectable;
-                        break;
-                    }
-                    parent = parent.parent;
-                }
-
-                if (verticalComponent != null)
-                {
-                    Vector3 desiredPosition = new Vector3(_positionBeforeStartDrag.x, _positionBeforeStartDrag.y + gizmo.TotalDragOffset.y, _positionBeforeStartDrag.z);
-                    Vector3 currentPos = new Vector3(_positionBeforeStartDrag.x, transform.position.y, _positionBeforeStartDrag.z);
-                    float angle = Vector3.Angle(desiredPosition, currentPos);
-                    float distance = Vector3.Distance(desiredPosition, currentPos);
-
-                    verticalComponent.transform.Rotate(0, angle, 0);
-                    Debug.Log($"Found Vertical Component {angle}");
-                    currentPos = new Vector3(_positionBeforeStartDrag.x, transform.position.y, _positionBeforeStartDrag.z);
-                    float distance2 = Vector3.Distance(desiredPosition, currentPos);
-                    if (distance2 > distance)
-                    { // we went the wrong way, flip the angle
-                        verticalComponent.transform.Rotate(0, -angle * 2f, 0);
-                    }
-
-                    if (verticalComponent.ExceedsMaxRotation(out Vector3 totalExcess1))
-                    {
-                        // Debug.Log("Doin stuffs");
-                        verticalComponent.transform.localRotation *= Quaternion.Euler(-totalExcess1.x, -totalExcess1.y, -totalExcess1.z);
-                    }
-                }
-            }
-
-            //try a two-bone triangle movement
-            Transform closestBone = null;
-            Transform farthestBone = null;
-            parent = transform.parent;
-            while (parent != null && (closestBone == null || farthestBone == null))
-            {
-                var parentSelectable = parent.GetComponent<Selectable>();
-                if (parentSelectable != null && parentSelectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
-                {
-                    if (closestBone == null)
-                    {
-                        closestBone = parent;
-                    }
-                    else
-                    {
-                        farthestBone = parent;
-                        break;
-                    }
-                }
-                parent = parent.parent;
-            }
-
-            if (closestBone != null && farthestBone != null && _selectable.AllowInverseControl)
-            {
-                Vector3 farthestBoneXZ = new Vector3(farthestBone.transform.position.x, 0, farthestBone.transform.position.z);
-                Vector3 closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
-                Vector3 thisTransformXZ = new Vector3(transform.position.x + gizmo.RelativeDragOffset.x, 0, transform.position.z + gizmo.RelativeDragOffset.z);
-                //Debug.Log(thisTransformXZ);
-                float circle1Radius = Vector3.Distance(farthestBoneXZ, closestBoneXZ);
-                float circle2Radius = Vector3.Distance(closestBoneXZ, new Vector3(transform.position.x, 0, transform.position.z));
-                int intersects = FindCircleCircleIntersections(farthestBoneXZ.x, farthestBoneXZ.z, circle1Radius, thisTransformXZ.x, thisTransformXZ.z, circle2Radius, out PointF intersection1, out PointF intersection2);
-
-                if (intersects > 0)
-                {
-
-                    Vector3 intersect1 = new Vector3(intersection1.X, 0, intersection1.Y);
-                    Vector3 intersect = intersect1;
-                    if (intersects > 1)
-                    {
-                        Vector3 intersect2 = new Vector3(intersection2.X, 0, intersection2.Y);
-                        float distance1, distance2;
-                        if (_lastCircleIntersectPoint == default)
-                        {
-                            // use intersect closest to destination
-                            distance1 = Vector3.Distance(intersect1, thisTransformXZ);
-                            distance2 = Vector3.Distance(intersect2, thisTransformXZ);
-                        }
-                        else
-                        {
-                            // get point closest to last intersect
-                            distance1 = Vector3.Distance(intersect1, _lastCircleIntersectPoint);
-                            distance2 = Vector3.Distance(intersect2, _lastCircleIntersectPoint);
-                        }
-
-                        intersect = distance1 < distance2 ? intersect1 : intersect2;
-                        _lastCircleIntersectPoint = intersect;
-                    }
-
-                    //Quaternion originalFacing = _translateGizmo.Gizmo.Transform.Rotation3D;
-                    float angleBetween = -Vector3.SignedAngle(farthestBone.right, intersect - farthestBoneXZ, Vector3.up);
-                    farthestBone.transform.Rotate(new Vector3(0, 0, angleBetween));
-                    closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
-                    angleBetween = -Vector3.SignedAngle(closestBone.right, thisTransformXZ - closestBoneXZ, Vector3.up);
-                    closestBone.transform.Rotate(new Vector3(0, 0, angleBetween));
-                    //transform.rotation = originalFacing;
-                    //_translateGizmo.Gizmo.Transform.Rotation3D = originalFacing;
-                }
-            }
-
-            _translateGizmo.Gizmo.Transform.Position3D = transform.position;
-            //Debug.Log(gizmo.TotalDragOffset);
+            HandleTranslationGizmo(gizmo, totalExcess);
         }
 
         if (gizmo.ObjectTransformGizmo == _rotateGizmo && _selectable.ExceedsMaxRotation(out totalExcess))
         {
-            transform.localRotation *= Quaternion.Euler(-totalExcess.x, -totalExcess.y, -totalExcess.z);
-            _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+            HandleRotationGizmo(gizmo, totalExcess);
         }
 
         if (gizmo.ObjectTransformGizmo == _scaleGizmo)
         {
-            CurrentScaleDrag = new Vector3(_localScaleBeforeStartDrag.x * gizmo.TotalDragScale.x, _localScaleBeforeStartDrag.y * gizmo.TotalDragScale.y, _localScaleBeforeStartDrag.z * gizmo.TotalDragScale.z);
-
-            float xScale = _localScaleBeforeStartDrag.x * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X) ? gizmo.TotalDragScale.x : 1);
-            float yScale = _localScaleBeforeStartDrag.y * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y) ? gizmo.TotalDragScale.y : 1);
-            float zScale = _localScaleBeforeStartDrag.z;
-            if (_selectable.ScaleLevels.Count == 0)
-            {
-                if (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
-                {
-                    zScale *= gizmo.TotalDragScale.z;
-
-                    if(_selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting) && !gizmoSetting.Unrestricted)
-                    {
-                        zScale = Mathf.Clamp(zScale, gizmoSetting.GetMinValue, gizmoSetting.GetMaxValue);
-                    }
-                }
-            }
-            else
-            {
-                zScale = _selectable.transform.localScale.z;
-            }
-
-            if (UI_ToggleSnapping.SnappingEnabled)
-            {
-                if (xScale != _localScaleBeforeStartDrag.x)
-                {
-                    xScale = Selectable.RoundToNearestHalfInch(xScale);
-                }
-
-                if (yScale != _localScaleBeforeStartDrag.y)
-                {
-                    yScale = Selectable.RoundToNearestHalfInch(yScale);
-                }
-
-                if (_selectable.ScaleLevels.Count == 0 && zScale != _localScaleBeforeStartDrag.z)
-                {
-                    zScale = Selectable.RoundToNearestHalfInch(zScale);
-                }
-            }
-
-            _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
-
-            if (_selectable.ParentSelectable != null)
-            {
-                if (_selectable.ParentSelectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
-                {
-                    _selectable.ParentSelectable.StoreChildScales();
-                }
-            }
+            HandleScaleGizmo(gizmo);
         }
 
         GizmoDragPostUpdate?.Invoke();
     }
+
+    private void HandleTranslationGizmo(Gizmo gizmo, Vector3 totalExcess)
+    {
+        transform.localPosition -= totalExcess;
+        Transform parent = transform.parent;
+
+        //do vertical component first
+        if (gizmo.RelativeDragOffset.y != 0)
+        {
+            HandleVerticalComponent(gizmo, parent);
+        }
+
+        //try a two-bone triangle movement
+        HandleTwoBoneTriangleMovement(gizmo, parent);
+
+        _translateGizmo.Gizmo.Transform.Position3D = transform.position;
+    }
+
+    private void HandleVerticalComponent(Gizmo gizmo, Transform parent)
+    {
+        // Debug.Log($"Inside the vertical if with offset {gizmo.RelativeDragOffset.y}");
+        Selectable verticalComponent = null;
+
+        while (parent != null && verticalComponent == null && _selectable.AllowInverseControl)
+        {
+            var parentSelectable = parent.GetComponent<Selectable>();
+            if (parentSelectable != null && parentSelectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y))
+            {
+                verticalComponent = parentSelectable;
+                break;
+            }
+            parent = parent.parent;
+        }
+
+        if (verticalComponent != null)
+        {
+            Vector3 desiredPosition = new Vector3(_positionBeforeStartDrag.x, _positionBeforeStartDrag.y + gizmo.TotalDragOffset.y, _positionBeforeStartDrag.z);
+            Vector3 currentPos = new Vector3(_positionBeforeStartDrag.x, transform.position.y, _positionBeforeStartDrag.z);
+            float angle = Vector3.Angle(desiredPosition, currentPos);
+            float distance = Vector3.Distance(desiredPosition, currentPos);
+
+            verticalComponent.transform.Rotate(0, angle, 0);
+            // Debug.Log($"Found Vertical Component {angle}");
+            currentPos = new Vector3(_positionBeforeStartDrag.x, transform.position.y, _positionBeforeStartDrag.z);
+            float distance2 = Vector3.Distance(desiredPosition, currentPos);
+            if (distance2 > distance)
+            { // we went the wrong way, flip the angle
+                verticalComponent.transform.Rotate(0, -angle * 2f, 0);
+            }
+
+            if (verticalComponent.ExceedsMaxRotation(out Vector3 totalExcess1))
+            {
+                verticalComponent.transform.localRotation *= Quaternion.Euler(-totalExcess1.x, -totalExcess1.y, -totalExcess1.z);
+            }
+        }
+    }
+
+    private void HandleTwoBoneTriangleMovement(Gizmo gizmo, Transform parent)
+    {
+        Transform closestBone = null;
+        Transform farthestBone = null;
+        parent = transform.parent;
+        while (parent != null && (closestBone == null || farthestBone == null))
+        {
+            var parentSelectable = parent.GetComponent<Selectable>();
+            if (parentSelectable != null && parentSelectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
+            {
+                if (closestBone == null)
+                {
+                    closestBone = parent;
+                }
+                else
+                {
+                    farthestBone = parent;
+                    break;
+                }
+            }
+            parent = parent.parent;
+        }
+
+        if (closestBone != null && farthestBone != null && _selectable.AllowInverseControl)
+        {
+            Vector3 farthestBoneXZ = new Vector3(farthestBone.transform.position.x, 0, farthestBone.transform.position.z);
+            Vector3 closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
+            Vector3 thisTransformXZ = new Vector3(transform.position.x + gizmo.RelativeDragOffset.x, 0, transform.position.z + gizmo.RelativeDragOffset.z);
+            //Debug.Log(thisTransformXZ);
+            float circle1Radius = Vector3.Distance(farthestBoneXZ, closestBoneXZ);
+            float circle2Radius = Vector3.Distance(closestBoneXZ, new Vector3(transform.position.x, 0, transform.position.z));
+            int intersects = FindCircleCircleIntersections(farthestBoneXZ.x, farthestBoneXZ.z, circle1Radius, thisTransformXZ.x, thisTransformXZ.z, circle2Radius, out PointF intersection1, out PointF intersection2);
+
+            if (intersects > 0)
+            {
+
+                Vector3 intersect1 = new Vector3(intersection1.X, 0, intersection1.Y);
+                Vector3 intersect = intersect1;
+                if (intersects > 1)
+                {
+                    Vector3 intersect2 = new Vector3(intersection2.X, 0, intersection2.Y);
+                    float distance1, distance2;
+                    if (_lastCircleIntersectPoint == default)
+                    {
+                        // use intersect closest to destination
+                        distance1 = Vector3.Distance(intersect1, thisTransformXZ);
+                        distance2 = Vector3.Distance(intersect2, thisTransformXZ);
+                    }
+                    else
+                    {
+                        // get point closest to last intersect
+                        distance1 = Vector3.Distance(intersect1, _lastCircleIntersectPoint);
+                        distance2 = Vector3.Distance(intersect2, _lastCircleIntersectPoint);
+                    }
+
+                    intersect = distance1 < distance2 ? intersect1 : intersect2;
+                    _lastCircleIntersectPoint = intersect;
+                }
+
+                //Quaternion originalFacing = _translateGizmo.Gizmo.Transform.Rotation3D;
+                float angleBetween = -Vector3.SignedAngle(farthestBone.right, intersect - farthestBoneXZ, Vector3.up);
+                farthestBone.transform.Rotate(new Vector3(0, 0, angleBetween));
+                closestBoneXZ = new Vector3(closestBone.transform.position.x, 0, closestBone.transform.position.z);
+                angleBetween = -Vector3.SignedAngle(closestBone.right, thisTransformXZ - closestBoneXZ, Vector3.up);
+                closestBone.transform.Rotate(new Vector3(0, 0, angleBetween));
+                //transform.rotation = originalFacing;
+                //_translateGizmo.Gizmo.Transform.Rotation3D = originalFacing;
+            }
+        }
+    }
+
+    private void HandleRotationGizmo(Gizmo gizmo, Vector3 totalExcess)
+    {
+        transform.localRotation *= Quaternion.Euler(-totalExcess.x, -totalExcess.y, -totalExcess.z);
+        _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+    }
+
+    private void HandleScaleGizmo(Gizmo gizmo)
+    {
+        CurrentScaleDrag = new Vector3(_localScaleBeforeStartDrag.x * gizmo.TotalDragScale.x, _localScaleBeforeStartDrag.y * gizmo.TotalDragScale.y, _localScaleBeforeStartDrag.z * gizmo.TotalDragScale.z);
+
+        float xScale = _localScaleBeforeStartDrag.x * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X) ? gizmo.TotalDragScale.x : 1);
+        float yScale = _localScaleBeforeStartDrag.y * (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y) ? gizmo.TotalDragScale.y : 1);
+        float zScale = CalculateZScale(gizmo);
+
+        if (UI_ToggleSnapping.SnappingEnabled)
+        {
+            ApplySnapping(ref xScale, ref yScale, ref zScale);
+        }
+
+        _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
+
+        if (_selectable.ParentSelectable != null)
+        {
+            if (_selectable.ParentSelectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+            {
+                _selectable.ParentSelectable.StoreChildScales();
+            }
+        }
+    }
+
+    private float CalculateZScale(Gizmo gizmo)
+    {
+        float zScale = _localScaleBeforeStartDrag.z;
+        if (_selectable.ScaleLevels.Count == 0)
+        {
+            if (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+            {
+                zScale *= gizmo.TotalDragScale.z;
+
+                if (_selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting) && !gizmoSetting.Unrestricted)
+                {
+                    zScale = Mathf.Clamp(zScale, gizmoSetting.GetMinValue, gizmoSetting.GetMaxValue);
+                }
+            }
+        }
+        else
+        {
+            zScale = _selectable.transform.localScale.z;
+        }
+
+        return zScale;
+    }
+
+    private void ApplySnapping(ref float xScale, ref float yScale, ref float zScale)
+    {
+        if (xScale != _localScaleBeforeStartDrag.x)
+        {
+            xScale = Selectable.RoundToNearestHalfInch(xScale);
+        }
+
+        if (yScale != _localScaleBeforeStartDrag.y)
+        {
+            yScale = Selectable.RoundToNearestHalfInch(yScale);
+        }
+
+        if (_selectable.ScaleLevels.Count == 0 && zScale != _localScaleBeforeStartDrag.z)
+        {
+            zScale = Selectable.RoundToNearestHalfInch(zScale);
+        }
+    }
+
+    // Additional methods for handling specific parts of the gizmo handling logic would go here.
 }
 
 public enum GizmoMode

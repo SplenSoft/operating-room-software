@@ -8392,7 +8392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <AllowInverseControl>k__BackingField
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.data[0]
@@ -8832,8 +8832,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lineRenderer: {fileID: 0}
   <IncludeChildrenInMeasurement>k__BackingField: 1
-  _needsUpdate: 1
-  _taskRunning: 0
-  _cancelTask: 0
+  <BufferSize>k__BackingField: 0
+  <DoorHinge>k__BackingField: {fileID: 0}
+  <DoorStrike>k__BackingField: {fileID: 0}
+  <DoorSwingAngle>k__BackingField: 90
+  <Type>k__BackingField: 0
