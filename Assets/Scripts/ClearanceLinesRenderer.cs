@@ -359,6 +359,10 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         for (int i = 0; i < _meshVertsDatas[0].Rotations; i++)
         {
             RecordData(i, Vector3.down);
+            if (i % 6 == 0)
+            {
+                await Task.Yield();
+            }         
         }
 #else
         Task task = Task.Run(() =>

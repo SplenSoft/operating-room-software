@@ -438,7 +438,7 @@ public class Selectable : MonoBehaviour
             //take the photo
             imageDatas.Add(new PdfExporter.PdfImageData()
             {
-                Path = GetElevationPhoto(camera, bounds, _assemblySelectables, out var imageWidth, out var imageHeight, i),
+                Path = GetElevationPhoto(camera, bounds, out var imageWidth, out var imageHeight, i),
                 Width = imageWidth,
                 Height = imageHeight
             });
@@ -503,7 +503,7 @@ public class Selectable : MonoBehaviour
         }
     }
 
-    private string GetElevationPhoto(Camera camera, Bounds bounds, List<Selectable> assemblySelectables, out int imageWidth, out int imageHeight, int fileIndex)
+    private string GetElevationPhoto(Camera camera, Bounds bounds, out int imageWidth, out int imageHeight, int fileIndex)
     {
         camera.enabled = true;
         camera.orthographic = true;
@@ -514,7 +514,7 @@ public class Selectable : MonoBehaviour
         camera.orthographicSize = bounds.extents.y;
 
         float addedHeight = 0.1f;
-        assemblySelectables.ForEach(item =>
+        _assemblySelectables.ForEach(item =>
         {
             if (item.Measurables.Count > 0)
             {
@@ -528,8 +528,14 @@ public class Selectable : MonoBehaviour
                         validMeasurements.ForEach(measurement =>
                         {
                             measurement.Measurer.MeasurementText.UpdateVisibilityAndPosition(camera, force: true);
+                            measurement.Measurer.UpdateTransform(camera);
                             bounds.Encapsulate(measurement.Measurer.Renderer.bounds);
-                            bounds.Encapsulate(measurement.Measurer.TextPosition + (Vector3.up * (0.3f + addedHeight)));
+                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.up * 0.3f);
+                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.down * 0.3f);
+                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.right * 0.3f);
+                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.left * 0.3f);
+                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.forward * 0.3f);
+                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.back * 0.3f);
                         });
                     }
                 });
