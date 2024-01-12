@@ -11,7 +11,7 @@ public class AttachmentPoint : MonoBehaviour
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
-    [field: SerializeField] public string guid { get; set; }
+    [field: SerializeField, HideInInspector] public string guid { get; set; }
     [field: SerializeField] public string GUID { get; private set; }
     [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;

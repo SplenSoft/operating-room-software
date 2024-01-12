@@ -18,6 +18,7 @@ public class TrackedObject : MonoBehaviour
         public Vector3 scale;
         public string parent;
         public Selectable.ScaleLevel scaleLevel;
+        public List<string> materialNames;
     }
 
     private Data data;
@@ -36,6 +37,17 @@ public class TrackedObject : MonoBehaviour
             if (s.ScaleLevels.Count() == 0) data.scaleLevel = null;
             else
                 data.scaleLevel = s.CurrentScaleLevel;
+        }
+
+        if(gameObject.TryGetComponent(out MaterialPalette palette))
+        {
+            data.materialNames = new List<string>();
+            Material[] materials = palette.meshRenderer.materials;
+
+            foreach(Material material in materials)
+            {
+                data.materialNames.Add(material.name);
+            }
         }
 
         return data;
@@ -65,10 +77,21 @@ public class TrackedObject : MonoBehaviour
         return data.scale;
     }
 
+    public List<string> GetMaterials()
+    {
+        return data.materialNames;
+    }
+
     public void StoreValues(TrackedObject.Data d)
     {
         if (d.scaleLevel != null)
             data.scaleLevel = d.scaleLevel;
+
+        if(d.materialNames != null)
+        {
+            data.materialNames = d.materialNames;
+        }
+
         data.pos = d.pos;
         data.rot = d.rot;
         data.scale = d.scale;

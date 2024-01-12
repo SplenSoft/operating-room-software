@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Unity.VisualScripting;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -185,7 +186,7 @@ public class ConfigurationManager : MonoBehaviour
         TrackedObject[] existingObjects = FindObjectsOfType<TrackedObject>(); // we need to clear the current room (default objects in scene) to load our new one
         foreach (TrackedObject to in existingObjects)
         {
-            if (to.transform == to.transform.root) Destroy(to.gameObject);
+            if (to.transform == to.transform.root && !isRoomBoundary(to.GetData())) Destroy(to.gameObject);
         }
 
         Debug.Log($"Loading Room at {file}");
@@ -221,6 +222,15 @@ public class ConfigurationManager : MonoBehaviour
         foreach (TrackedObject.Data to in trackedObjects)
         {
             GameObject go = null;
+
+            if(isRoomBoundary(to))
+            {
+                go = GetRoomBoundary(to);
+                LogData(go.GetComponent<Selectable>(), to);
+                ResetMaterialPalettes(go.GetComponent<TrackedObject>());
+                continue;
+            }
+
             if (to.global_guid != attachPointGUID && !string.IsNullOrEmpty(to.global_guid)) // if it is not an AttachPoint, we need to place the Selectable
             {
                 go = InstantiateObject(to);
@@ -258,7 +268,7 @@ public class ConfigurationManager : MonoBehaviour
         go.transform.SetPositionAndRotation(to.pos, to.rot);
         go.name = to.instance_guid;
         go.GetComponent<Selectable>().guid = to.instance_guid;
-        LogScale(go.GetComponent<Selectable>(), to);
+        LogData(go.GetComponent<Selectable>(), to);
         return go;
     }
 
@@ -284,7 +294,7 @@ public class ConfigurationManager : MonoBehaviour
         {
             GameObject go = GameObject.Find(to.parent);
             go.GetComponent<Selectable>().guid = to.instance_guid;
-            LogScale(go.GetComponent<Selectable>(), to);
+            LogData(go.GetComponent<Selectable>(), to);
             go.transform.rotation = to.rot;
             return go;
         }
@@ -303,11 +313,12 @@ public class ConfigurationManager : MonoBehaviour
     /// <param name="to">The JSON structure of this object</param>
     void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
     {
+        Debug.Log(to.parent);
         AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
         ap.SetAttachedSelectable(go.GetComponent<Selectable>());
         go.transform.SetParent(ap.gameObject.transform);
         go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
-        LogScale(go.GetComponent<Selectable>(), to);
+        LogData(go.GetComponent<Selectable>(), to);
     }
 
     /// <summary>
@@ -327,6 +338,7 @@ public class ConfigurationManager : MonoBehaviour
         foreach (TrackedObject obj in newObjects)
         {
             ResetLocalPosition(obj);
+            ResetMaterialPalettes(obj);
         }
     }
 
@@ -384,12 +396,24 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
+    void ResetMaterialPalettes(TrackedObject obj)
+    {
+        if (obj.TryGetComponent(out MaterialPalette palette))
+        {
+            for (int i = 0; i < obj.GetMaterials().Count(); i++)
+            {
+                string modifiedName = obj.GetMaterials()[i].Replace(" (Instance)", "");
+                palette.Assign(modifiedName, i);
+            }
+        }
+    }
+
     /// <summary>
     /// Logs the JSON structure of the object scale to be applied at a later point in execution by ResetScaleLevels()
     /// </summary>
     /// <param name="s">The object's selectable component</param>
     /// <param name="to">The JSON structure of this object</param>
-    void LogScale(Selectable s, TrackedObject.Data to)
+    void LogData(Selectable s, TrackedObject.Data to)
     {
         s.GetComponent<TrackedObject>().StoreValues(to);
     }
@@ -401,6 +425,25 @@ public class ConfigurationManager : MonoBehaviour
     GameObject GetRoot()
     {
         return newObjects.Single(x => x.transform == x.transform.root).gameObject;
+    }
+
+    public bool isRoomBoundary(string guid)
+    {
+        if (guid == "Wall_N" || guid == "Wall_S" ||
+            guid == "Wall_E" || guid == "Wall_W" ||
+            guid == "Ceil" || guid == "Floor")
+            return true;
+        else return false;
+    }
+
+    public bool isRoomBoundary(TrackedObject.Data to)
+    {
+        return isRoomBoundary(to.global_guid);
+    }
+
+    GameObject GetRoomBoundary(TrackedObject.Data to)
+    {
+        return GameObject.Find("RoomBoundary_" + to.global_guid);
     }
 
     /// <summary>
