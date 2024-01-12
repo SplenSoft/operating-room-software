@@ -260,13 +260,13 @@ public class GizmoHandler : MonoBehaviour
 
         if (gizmo.ObjectTransformGizmo == _translateGizmo && _selectable.ExeedsMaxTranslation(out Vector3 totalExcess))
         {
-            Debug.Log("Entered DragUpdate IF");
             transform.localPosition -= totalExcess;
             Transform parent = transform.parent;
 
             //do vertical component first
             if (gizmo.RelativeDragOffset.y != 0)
             {
+                Debug.Log($"Inside the vertical if with offset {gizmo.RelativeDragOffset.y}");
                 Selectable verticalComponent = null;
 
                 while (parent != null && verticalComponent == null && _selectable.AllowInverseControl)
