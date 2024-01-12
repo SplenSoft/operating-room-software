@@ -640,7 +640,7 @@ public partial class Selectable : MonoBehaviour
     private void Awake()
     {
         guid = Guid.NewGuid().ToString();
-        if (!ConfigurationManager._instance.isDebug && GUID != "") gameObject.name = guid.ToString();
+        if (!ConfigurationManager._instance.isDebug && GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID)) gameObject.name = guid.ToString();
 
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;

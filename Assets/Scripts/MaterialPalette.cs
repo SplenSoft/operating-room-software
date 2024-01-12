@@ -20,9 +20,9 @@ public class MaterialPalette : MonoBehaviour
 
     void Start()
     {
-        for(int i = 0; i < elements.Count(); i++)
+        for (int i = 0; i < elements.Count(); i++)
         {
-            if(elements[i]._zeroStart)
+            if (elements[i]._zeroStart)
             {
                 Assign(elements[i].materials[0], i);
             }
@@ -34,11 +34,31 @@ public class MaterialPalette : MonoBehaviour
         Material[] mats = meshRenderer.materials;
         mats[i] = material;
         meshRenderer.materials = mats;
-        
+
         if (TryGetComponent<ScaleMaterialTextureWithTransform>(out ScaleMaterialTextureWithTransform s))
         {
             s.Scale();
         }
+    }
+
+    public void Assign(string material, int i)
+    {
+        Material[] mats = meshRenderer.materials;
+        try
+        {
+            mats[i] = elements[i].materials.Single(x => x.name == material);
+            meshRenderer.materials = mats;
+
+            if (TryGetComponent<ScaleMaterialTextureWithTransform>(out ScaleMaterialTextureWithTransform s))
+            {
+                s.Scale();
+            }
+        }
+        catch(InvalidOperationException exception)
+        {
+            Debug.LogError($"Failed to find material \"{material}\" within element array {i}");
+        }
+
     }
 }
 
