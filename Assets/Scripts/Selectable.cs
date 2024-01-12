@@ -13,7 +13,7 @@ using UnityEngine.Events;
 /// Add basic selectable - <see href="https://youtu.be/qEaRrGC_MX8?si=kCXNSVa11KxLKRNG"/> 
 /// </summary>
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect), typeof(TrackedObject)), Serializable]
-public class Selectable : MonoBehaviour
+public partial class Selectable : MonoBehaviour
 {
     [Serializable]
     public class ScaleLevel
