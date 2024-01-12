@@ -358,6 +358,16 @@ public class ConfigurationManager : MonoBehaviour
         {
             obj.GetComponent<Selectable>().ScaleLevels.ForEach((item) => item.Selected = false);
             obj.GetScaleLevel().Selected = true;
+
+            obj.transform.localScale = new Vector3(
+                obj.GetScale().x,
+                obj.GetScale().y,
+                obj.transform.localScale.z
+            );
+        }
+        else
+        {
+            obj.transform.localScale = obj.GetScale();
         }
     }
 
@@ -381,10 +391,7 @@ public class ConfigurationManager : MonoBehaviour
     /// <param name="to">The JSON structure of this object</param>
     void LogScale(Selectable s, TrackedObject.Data to)
     {
-        if (to.scaleLevel.Selected && to.scaleLevel != s.CurrentScaleLevel)
-        {
-            s.GetComponent<TrackedObject>().StoreValues(to);
-        }
+        s.GetComponent<TrackedObject>().StoreValues(to);
     }
 
     /// <summary>
