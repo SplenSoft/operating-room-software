@@ -297,7 +297,7 @@ public class GizmoHandler : MonoBehaviour
 
     private void HandleVerticalComponent(Gizmo gizmo, Transform parent)
     {
-        Debug.Log($"Inside the vertical if with offset {gizmo.RelativeDragOffset.y}");
+        // Debug.Log($"Inside the vertical if with offset {gizmo.RelativeDragOffset.y}");
         Selectable verticalComponent = null;
 
         while (parent != null && verticalComponent == null && _selectable.AllowInverseControl)
@@ -319,7 +319,7 @@ public class GizmoHandler : MonoBehaviour
             float distance = Vector3.Distance(desiredPosition, currentPos);
 
             verticalComponent.transform.Rotate(0, angle, 0);
-            Debug.Log($"Found Vertical Component {angle}");
+            // Debug.Log($"Found Vertical Component {angle}");
             currentPos = new Vector3(_positionBeforeStartDrag.x, transform.position.y, _positionBeforeStartDrag.z);
             float distance2 = Vector3.Distance(desiredPosition, currentPos);
             if (distance2 > distance)
