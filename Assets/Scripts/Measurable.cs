@@ -49,7 +49,6 @@ public class Measurable : MonoBehaviour
     private void Awake()
     {
         MeasurementTypes = MeasurementTypes.Distinct().ToList();
-        
     }
 
     private void Start()
@@ -188,6 +187,14 @@ public class Measurable : MonoBehaviour
         {
             mask = LayerMask.GetMask("Wall");
         }
+
+        bool floorIsOn = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Floor).gameObject.activeSelf;
+
+        if (!floorIsOn)
+        {
+            RoomBoundary.GetRoomBoundary(RoomBoundaryType.Floor).gameObject.SetActive(true);
+        }
+
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 1000f, mask))
         {
             var obj = raycastHit.collider.gameObject;
@@ -196,6 +203,11 @@ public class Measurable : MonoBehaviour
                 measurement.Origin = ray.origin;
                 measurement.HitPoint = raycastHit.point;
             }
+        }
+
+        if (!floorIsOn)
+        {
+            RoomBoundary.GetRoomBoundary(RoomBoundaryType.Floor).gameObject.SetActive(false);
         }
     }
 

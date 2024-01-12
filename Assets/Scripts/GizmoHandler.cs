@@ -427,11 +427,11 @@ public class GizmoHandler : MonoBehaviour
 
             _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
 
-            if(_selectable.GetParentSelectable() != null)
+            if (_selectable.ParentSelectable != null)
             {
-                if(_selectable.GetParentSelectable().IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+                if (_selectable.ParentSelectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
                 {
-                    _selectable.GetParentSelectable().StoreChildScales();
+                    _selectable.ParentSelectable.StoreChildScales();
                 }
             }
         }

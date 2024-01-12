@@ -1364,10 +1364,15 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &838407527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1633,10 +1638,15 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &866518823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2376,10 +2386,15 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1043442561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3151,10 +3166,15 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1246402713
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7460,10 +7480,15 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1619817539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7723,10 +7748,15 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1632520742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11322,7 +11352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3808924356805802442, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000030517578
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4135108817545400510, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -11434,7 +11464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5978337217099215731, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_Size
-      value: 0.96055466
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5978337217099215731, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: m_Value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6746164118843962508, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchorMax.x

@@ -147,17 +147,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
---- !u!114 &1188588256429599199 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4362353305424586502, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-  m_PrefabInstance: {fileID: 3239363081213218521}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &6430066050972297948
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -300,7 +289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <AllowInverseControl>k__BackingField
@@ -337,7 +326,7 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLinesRenderers>k__BackingField.Array.data[0]
       value: 
-      objectReference: {fileID: 1188588256429599199}
+      objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[1].<Axis>k__BackingField
       value: 1
