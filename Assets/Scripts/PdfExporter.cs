@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using static UnityEditor.Progress;
 
 public class PdfExporter : MonoBehaviour
 {
@@ -38,6 +39,17 @@ public class PdfExporter : MonoBehaviour
         node.Add("image1", image1);
         node.Add("image2", image2);
         SimpleJSON.JSONArray selectableArray = new();
+
+        SimpleJSON.JSONObject selectableData = new();
+        selectableData.Add("Item", "Break System");
+        selectableData.Add("Value", "Electric");
+        selectableArray.Add(selectableData);
+
+        SimpleJSON.JSONObject selectableData2 = new();
+        selectableData2.Add("Item", "Arm Type");
+        selectableData2.Add("Value", "MediLift Spring Arm");
+        selectableArray.Add(selectableData2);
+
         selectables.ForEach(item =>
         {
             if (item.ScaleLevels.Count > 0) 

@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -95,8 +94,6 @@ public class Selectable : MonoBehaviour
     private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
     public static Camera ActiveCameraRenderTextureElevation { get; private set; }
-    //private List<Collider> _colliders;
-
 
     /// <summary>
     /// If true, this is probably a ceiling mount
