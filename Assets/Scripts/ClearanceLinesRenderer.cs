@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public partial class ClearanceLinesRenderer : MonoBehaviour
 {
@@ -188,7 +187,6 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
                 selectable.ScaleUpdated.RemoveListener(SetNeedsUpdate);
             }
         });
-
         UI_ToggleClearanceLines.ClearanceLinesToggled.RemoveListener(CheckStatus);
     }
 
@@ -356,6 +354,16 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         ResetVariables();
         ResetMeshVertsData();
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        for (int i = 0; i < _meshVertsDatas[0].Rotations; i++)
+        {
+            RecordData(i, Vector3.down);
+            if (i % 6 == 0)
+            {
+                await Task.Yield();
+            }         
+        }
+#else
         Task task = Task.Run(() =>
         {
             Parallel.For(0, _meshVertsDatas[0].Rotations,
@@ -367,6 +375,7 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
         });
 
         await task;
+#endif
 
         // object was destroyed while task was running
         if (_lineRenderer == null)
