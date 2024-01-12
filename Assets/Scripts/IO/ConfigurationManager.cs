@@ -313,6 +313,7 @@ public class ConfigurationManager : MonoBehaviour
     /// <param name="to">The JSON structure of this object</param>
     void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
     {
+        Debug.Log(to.parent);
         AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
         ap.SetAttachedSelectable(go.GetComponent<Selectable>());
         go.transform.SetParent(ap.gameObject.transform);

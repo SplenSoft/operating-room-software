@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 6562998353812398397}
   - component: {fileID: 2415867761661642735}
   - component: {fileID: 6462583564701765492}
+  - component: {fileID: 564135747767920101}
   m_Layer: 6
   m_Name: SHP_LV_Knob1
   m_TagString: Untagged
@@ -152,9 +153,6 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
-  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
-  <ClearanceLinesRenderers>k__BackingField: []
-  <ClearanceLinesMeshFilters>k__BackingField: []
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -373,3 +371,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.14650857, y: 0.029517371, z: 0.19151878}
   m_Center: {x: 0.0036181398, y: 0.0006764336, z: -0.002955377}
+--- !u!114 &564135747767920101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3197086238112897237}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
