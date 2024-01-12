@@ -89,9 +89,9 @@ public class ConfigurationManager : MonoBehaviour
         Debug.Log($"Saved Config: {path}");
 
         ObjectMenu.Instance.AddCustomMenuItem(path); // add this configuration to the ObjectMenu
-        foreach(TrackedObject obj in foundObjects)
+        foreach (TrackedObject obj in foundObjects)
         {
-            if(obj.TryGetComponent(out Selectable s))
+            if (obj.TryGetComponent(out Selectable s))
             {
                 s.guid = Guid.NewGuid().ToString();
                 s.name = s.guid;
@@ -163,7 +163,7 @@ public class ConfigurationManager : MonoBehaviour
 
         if (File.Exists(file))
         {
-            CreateTracker(); 
+            CreateTracker();
             string json = File.ReadAllText(file);
             tracker = JsonConvert.DeserializeObject<Tracker>(json);
 
@@ -183,7 +183,7 @@ public class ConfigurationManager : MonoBehaviour
     {
         Debug.Log($"Clearing default room objects");
         TrackedObject[] existingObjects = FindObjectsOfType<TrackedObject>(); // we need to clear the current room (default objects in scene) to load our new one
-        foreach (TrackedObject to in existingObjects) 
+        foreach (TrackedObject to in existingObjects)
         {
             if (to.transform == to.transform.root) Destroy(to.gameObject);
         }
@@ -280,11 +280,20 @@ public class ConfigurationManager : MonoBehaviour
     /// <returns>The populated selectable's gameobject is returned</returns>
     GameObject ProcessEmbeddedSelectable(TrackedObject.Data to)
     {
-        GameObject go = GameObject.Find(to.parent);
-        go.GetComponent<Selectable>().guid = to.instance_guid;
-        LogScale(go.GetComponent<Selectable>(), to);
-        go.transform.rotation = to.rot;
-        return go;
+        try
+        {
+            GameObject go = GameObject.Find(to.parent);
+            go.GetComponent<Selectable>().guid = to.instance_guid;
+            LogScale(go.GetComponent<Selectable>(), to);
+            go.transform.rotation = to.rot;
+            return go;
+        }
+        catch (NullReferenceException nullException)
+        {
+            Debug.LogError($"ProcessEmbeddedSelectable failed to find {to.parent}");
+            Debug.LogError(nullException);
+            return null;
+        }
     }
 
     /// <summary>
@@ -326,13 +335,13 @@ public class ConfigurationManager : MonoBehaviour
     /// </summary>
     void RandomizeInstanceGUIDs()
     {
-        foreach(AttachmentPoint ap in newPoints)
+        foreach (AttachmentPoint ap in newPoints)
         {
             ap.guid = Guid.NewGuid().ToString();
             ap.gameObject.name = ap.guid;
         }
 
-        foreach(TrackedObject to in newObjects)
+        foreach (TrackedObject to in newObjects)
         {
             to.gameObject.GetComponent<Selectable>().guid = Guid.NewGuid().ToString();
             to.gameObject.name = to.gameObject.GetComponent<Selectable>().guid;

@@ -322,8 +322,8 @@ namespace RTG
 
             //if (UseSnapEnableHotkey)
                 //SetSnapEnabled(Hotkeys.EnableSnapping.IsActive());
-            if (Use2DModeEnableHotkey)
-                Set2DModeEnabled(Hotkeys.Enable2DMode.IsActive());
+            // if (Use2DModeEnableHotkey)
+            //     Set2DModeEnabled(Hotkeys.Enable2DMode.IsActive());
 
             if (!_is2DModeEnabled)
             {
