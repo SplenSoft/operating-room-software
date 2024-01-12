@@ -15,6 +15,7 @@ public class TrackedObject : MonoBehaviour
         public string global_guid;
         public Vector3 pos;
         public Quaternion rot;
+        public Vector3 scale;
         public string parent;
         public Selectable.ScaleLevel scaleLevel;
     }
@@ -28,10 +29,13 @@ public class TrackedObject : MonoBehaviour
 
         data.pos = transform.position;
         data.rot = transform.rotation;
+        data.scale = transform.localScale;
 
-        if(gameObject.TryGetComponent<Selectable>(out Selectable s))
+        if (gameObject.TryGetComponent<Selectable>(out Selectable s))
         {
-            data.scaleLevel = s.CurrentScaleLevel;
+            if (s.ScaleLevels.Count() == 0) data.scaleLevel = null;
+            else
+                data.scaleLevel = s.CurrentScaleLevel;
         }
 
         return data;
@@ -39,7 +43,7 @@ public class TrackedObject : MonoBehaviour
 
     public Selectable.ScaleLevel GetScaleLevel()
     {
-        if(data.scaleLevel == null) return null;
+        if (data.scaleLevel == null) return null;
 
         List<Selectable.ScaleLevel> scales = GetComponent<Selectable>().ScaleLevels;
 
@@ -56,19 +60,26 @@ public class TrackedObject : MonoBehaviour
         return data.rot;
     }
 
+    public Vector3 GetScale()
+    {
+        return data.scale;
+    }
+
     public void StoreValues(TrackedObject.Data d)
     {
-        data.scaleLevel = d.scaleLevel;
+        if (d.scaleLevel != null)
+            data.scaleLevel = d.scaleLevel;
         data.pos = d.pos;
         data.rot = d.rot;
+        data.scale = d.scale;
     }
 
     void GetGUIDs(GameObject go)
     {
-        if(gameObject.TryGetComponent<Selectable>(out Selectable s))
+        if (gameObject.TryGetComponent<Selectable>(out Selectable s))
         {
             data.instance_guid = s.guid.ToString();
-            if(s.GUID == "" || s.GUID == null)
+            if (s.GUID == "" || s.GUID == null)
             {
                 data.parent = ConfigurationManager.GetGameObjectPath(gameObject);
             }
@@ -77,7 +88,7 @@ public class TrackedObject : MonoBehaviour
                 data.global_guid = s.GUID;
             }
 
-            if(s.ParentAttachmentPoint != null) // This selectable is a child of a configuration, assign AttachmentPoint guid to it's parent ref
+            if (s.ParentAttachmentPoint != null) // This selectable is a child of a configuration, assign AttachmentPoint guid to it's parent ref
             {
                 data.parent = s.ParentAttachmentPoint.guid.ToString();
             }
