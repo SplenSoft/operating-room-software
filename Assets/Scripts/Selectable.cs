@@ -4,8 +4,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,7 +27,7 @@ public class Selectable : MonoBehaviour
         public bool TryGetValue(string key, out string value)
         {
             value = metadata.SingleOrDefault(x => x.key == key).value;
-            return value == "" ? false : true;
+            return value != "";
         }
     }
 
@@ -95,6 +95,8 @@ public class Selectable : MonoBehaviour
     private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
     public static Camera ActiveCameraRenderTextureElevation { get; private set; }
+    //private List<Collider> _colliders;
+
 
     /// <summary>
     /// If true, this is probably a ceiling mount
@@ -275,6 +277,23 @@ public class Selectable : MonoBehaviour
         ScaleUpdated?.Invoke();
     }
 
+    private bool IsHittingCeiling()
+    {
+        RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
+
+        var bounds = ceiling.MeshRenderer.bounds;
+        if (!TryGetComponent<MeshFilter>(out var meshFilter)) return false;
+
+        var verts = meshFilter.sharedMesh.vertices;
+
+        foreach (var vert in verts)
+        {
+            if (bounds.Contains(transform.TransformPoint(vert))) return true;
+        }
+
+        return false;
+    }
+
     public void StoreChildScales()
     {
         _childScales.Clear();
@@ -427,6 +446,15 @@ public class Selectable : MonoBehaviour
                 if (i == 0)
                 {
                     newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue : gizmoSetting.GetMinValue;
+                    selectable.transform.localEulerAngles = newAngles;
+                    var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
+                    while (childList.FirstOrDefault(x => x.IsHittingCeiling()) != default)
+                    {
+                        float abs = Mathf.Abs(newAngles.y) - 1f;
+                        if (abs < 0f) break;
+                        newAngles.y = abs * Mathf.Sign(newAngles.y);
+                        selectable.transform.localEulerAngles = newAngles;
+                    }
                 }
                 else
                 {
