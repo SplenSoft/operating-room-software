@@ -46,16 +46,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <guid>k__BackingField: 
+  <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField: []
   _attachmentPointHovered: 0
   <HighlightHovered>k__BackingField: {fileID: 5845676070605507926}
   <AllowedSelectableTypes>k__BackingField: 0b000000
-  <AllowedSelectables>k__BackingField: []
+  <AllowedSelectables>k__BackingField:
+  - {fileID: 2914812437011079698, guid: f689c7e04d6db0f4abe8e0378028291d, type: 3}
   <MoveUpOnAttach>k__BackingField: 0
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0
   <MultiLimit>k__BackingField: 3
-  _originalParent: {fileID: 0}
+  <_originalParent>k__BackingField: {fileID: 0}
 --- !u!114 &5845676070605507926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,7 +409,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 8977195231291679562, guid: b1a1e53582bdfff409dee4605fbdddd8, type: 3}
 --- !u!114 &7317815019496671554
