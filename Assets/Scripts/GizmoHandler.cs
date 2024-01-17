@@ -134,7 +134,7 @@ public class GizmoHandler : MonoBehaviour
         if (_gizmosInitialized) return;
 
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
-        if(Selectable.SelectedSelectable.AllowInverseControl)
+        if (Selectable.SelectedSelectable.AllowInverseControl)
             _translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
         _translateGizmo.SetTargetObject(gameObject);
         //_translateGizmo.Gizmo.MoveGizmo.SetVertexSnapTargetObjects(new List<GameObject> { gameObject });
@@ -426,6 +426,18 @@ public class GizmoHandler : MonoBehaviour
 
         _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
 
+        if (_selectable.useLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
+        {
+            if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
+            {
+                _selectable.transform.localScale = Vector3.one;
+                _selectable.transform.localScale = new Vector3(
+                    1,
+                    1,
+                    zScale / _selectable.transform.lossyScale.z);
+            }
+        }
+
         if (_selectable.ParentSelectable != null)
         {
             if (_selectable.ParentSelectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
@@ -434,6 +446,8 @@ public class GizmoHandler : MonoBehaviour
             }
         }
     }
+
+
 
     private float CalculateZScale(Gizmo gizmo)
     {
