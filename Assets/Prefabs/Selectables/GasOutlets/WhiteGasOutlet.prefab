@@ -170,6 +170,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a45baddd607c42141a5c763c6207e0c1, type: 3}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: 2100000, guid: 610363d412b86974cb141b67fee57e25, type: 2}
     - target: {fileID: 919132149155446097, guid: a45baddd607c42141a5c763c6207e0c1, type: 3}
       propertyPath: m_Name
       value: WhiteGasOutlet
