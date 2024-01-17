@@ -306,10 +306,11 @@ MonoBehaviour:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
     <Unrestricted>k__BackingField: 0
-    <MaxValue>k__BackingField: 8.8392
+    <MaxValue>k__BackingField: 20.62
     <MinValue>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
+  <useLossyScale>k__BackingField: 1
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -453,6 +454,7 @@ MonoBehaviour:
     <Selected>k__BackingField: 1
     <ModelDefault>k__BackingField: 0
     metadata: []
+  <useLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0

@@ -76,6 +76,7 @@ public partial class Selectable : MonoBehaviour
     [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
     [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
+    [field: SerializeField] public bool useLossyScale { get; private set; }
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] private bool ZAlwaysFacesGroundElevationOnly { get; set; }
     [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
