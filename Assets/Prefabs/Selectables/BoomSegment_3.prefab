@@ -163,38 +163,58 @@ MonoBehaviour:
   - <Size>k__BackingField: 0.12
     <Selected>k__BackingField: 1
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.2
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.4
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 1
+    metadata: []
   - <Size>k__BackingField: 0.6
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.8
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 1
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
-  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
-  <ClearanceLinesRenderers>k__BackingField: []
-  <ClearanceLinesMeshFilters>k__BackingField: []
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1900462973109131472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8989538764398302107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3577282033252816624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,18 +393,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1900462973109131472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8989538764398302107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5576360667614525261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -551,6 +559,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1627928882040947910}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectables>k__BackingField.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectables>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 4071444685171297898, guid: 101b5e4b9ae6778419e042621236a1e9, type: 3}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectables>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 4071444685171297898, guid: 101b5e4b9ae6778419e042621236a1e9, type: 3}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectableTypes>k__BackingField.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -560,7 +580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectableTypes>k__BackingField.Array.data[1]
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4686421761804208745, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: m_Name
