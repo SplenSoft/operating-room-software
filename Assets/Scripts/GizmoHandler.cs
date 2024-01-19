@@ -437,11 +437,6 @@ public class GizmoHandler : MonoBehaviour
                     1,
                     newZScale);
             }
-
-            if(TryGetComponent(out ScaleGroup group))
-            {
-                ScaleGroupManager.OnZScaleLevelChanged?.Invoke(group.id, newZScale);
-            }
         }
 
         if (_selectable.ParentSelectable != null)
@@ -450,6 +445,11 @@ public class GizmoHandler : MonoBehaviour
             {
                 _selectable.ParentSelectable.StoreChildScales();
             }
+        }
+
+        if (TryGetComponent(out ScaleGroup group))
+        {
+            ScaleGroupManager.OnZScaleChanged?.Invoke(group.id, _selectable.transform.localScale.z);
         }
     }
 

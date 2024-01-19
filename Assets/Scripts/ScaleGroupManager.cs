@@ -7,6 +7,6 @@ public class ScaleGroupManager : MonoBehaviour
 {
     public static ScaleGroupManager Instance; 
     public static Action<string, Selectable.ScaleLevel> OnScaleLevelChanged;
-    public static Action<string, float> OnZScaleLevelChanged;
+    public static Action<string, float> OnZScaleChanged;
 
 }

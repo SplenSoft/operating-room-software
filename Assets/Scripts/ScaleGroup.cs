@@ -15,7 +15,7 @@ public class ScaleGroup : MonoBehaviour
     void DelayedListeners()
     {
         ScaleGroupManager.OnScaleLevelChanged += ScaleLevel;
-        ScaleGroupManager.OnZScaleLevelChanged += ScaleZ;
+        ScaleGroupManager.OnZScaleChanged += ScaleZ;
     }
 
     void ScaleLevel(string changedID, Selectable.ScaleLevel scaleLevel)
@@ -27,8 +27,10 @@ public class ScaleGroup : MonoBehaviour
 
     void ScaleZ(string changedID, float z)
     {
-        if (changedID != id || transform.localScale.z == z || z == float.NaN) return;
+        Debug.Log($"new value: {z} ||| current value: {transform.localScale.z} ||| isNan = {float.IsNaN(z)}");
+        if (changedID != id || transform.localScale.z == z || float.IsNaN(z)) return;
 
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, z);
+        Debug.Log("Updated object");
     }
 }
