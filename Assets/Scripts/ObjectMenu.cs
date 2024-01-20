@@ -91,6 +91,8 @@ public class ObjectMenu : MonoBehaviour
             }
         }
 
+        AddCustomMenuItem(Application.streamingAssetsPath + "/Sample_Arm_Config.json");
+
         ItemTemplate.SetActive(false);
     }
 
