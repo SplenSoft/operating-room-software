@@ -16,8 +16,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2979467412140193410}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
-      propertyPath: <AllowedSelectableTypes>k__BackingField.Array.size
+      propertyPath: <AllowedSelectables>k__BackingField.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectables>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 1229852259138092875, guid: 8a9d70475b8764042ac5cbac8ec9360d, type: 3}
+    - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
+      propertyPath: <AllowedSelectableTypes>k__BackingField.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4575778834203773398, guid: 88e0c686581f7184d9d10350c342bcc3, type: 3}
       propertyPath: <AllowedSelectableTypes>k__BackingField.Array.data[1]
