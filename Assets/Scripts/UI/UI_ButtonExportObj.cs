@@ -6,12 +6,19 @@ public class UI_ButtonExportObj : MonoBehaviour
 {
     private void Awake()
     {
-        Selectable.SelectionChanged += (o, e) =>
-        {
-            gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly);
-        };
+        Selectable.SelectionChanged += UpdateActiveState;
 
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        Selectable.SelectionChanged -= UpdateActiveState;
+    }
+
+    private void UpdateActiveState()
+    {
+        gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly);
     }
 
     public void ExportObj()

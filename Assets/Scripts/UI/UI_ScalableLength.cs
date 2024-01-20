@@ -14,10 +14,13 @@ public class UI_ScalableLength : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void SelectableChanged(object sender, EventArgs e)
+    private void OnDestroy()
     {
-        if (!Application.isPlaying || ApplicationQuitHandler.AppIsQuitting || gameObject == null) return;
+        Selectable.SelectionChanged -= SelectableChanged;
+    }
 
+    private void SelectableChanged()
+    {
         gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.ScaleLevels.Count > 0);
     }
 

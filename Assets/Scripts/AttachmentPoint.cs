@@ -132,7 +132,7 @@ public class AttachmentPoint : MonoBehaviour
         }
     }
 
-    private void SelectionChanged(object sender, EventArgs e)
+    private void SelectionChanged()
     {
         if (ParentSelectables.Contains(Selectable.SelectedSelectable))
             UpdateComponentStatus();

@@ -46,7 +46,7 @@ public partial class Selectable : MonoBehaviour
     #region Fields and Properties
     public static List<Selectable> ActiveSelectables { get; } = new List<Selectable>();
 
-    public static EventHandler SelectionChanged;
+    public static Action SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
     public static bool IsInElevationPhotoMode { get; private set; }
     public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
@@ -987,7 +987,7 @@ public partial class Selectable : MonoBehaviour
 
         if (fireEvent) {
             Deselected?.Invoke();
-            SelectionChanged?.Invoke(this, null);
+            SelectionChanged?.Invoke();
         }
     }
 
@@ -1000,7 +1000,7 @@ public partial class Selectable : MonoBehaviour
         }
         SelectedSelectable = this;
         _highlightEffect.highlighted = true;
-        SelectionChanged?.Invoke(this, null);
+        SelectionChanged?.Invoke();
         _gizmoHandler.SelectableSelected();
     }
 }

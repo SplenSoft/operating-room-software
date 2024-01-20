@@ -7,52 +7,52 @@ using UnityEngine.UI;
 
 public class UI_ButtonMaterialPallete : MonoBehaviour
 {
-    Button button;
-    MaterialPalette palette; // internal reference to the material palette object
+    Button _button;
+    MaterialPalette _palette; // internal reference to the material palette object
     public UI_MaterialPallete ui_pallete;
     public TMP_Text label;
-    private int elementIncrement;
+    private int _elementIncrement;
 
     private void Awake()
     {
-        button = GetComponent<Button>();
-
-        Selectable.SelectionChanged += (o, e) =>
-        {
-            bool b = false;
-            palette = null;
-            ui_pallete.ClearPalleteOptions();
-            try
-            {
-                b = Selectable.SelectedSelectable.gameObject.TryGetComponent<MaterialPalette>(out MaterialPalette m);
-                palette = m;
-                elementIncrement = 0;
-                label.text = "Show Material Palette";
-            }
-            catch
-            {
-                b = false;
-            }
-
-            gameObject.SetActive(b);
-        };
-
-        button.onClick.AddListener(() => DisplayPallete());
-
+        _button = GetComponent<Button>();
+        Selectable.SelectionChanged += UpdateSelectedPallete;
+        _button.onClick.AddListener(DisplayPallete);
         gameObject.SetActive(false);
     }
 
-    void DisplayPallete()
+    private void UpdateSelectedPallete()
     {
-        elementIncrement++;
-        if (elementIncrement > palette.elements.Count())
+        bool objectActive;
+        _palette = null;
+        ui_pallete.ClearPalleteOptions();
+
+        if (Selectable.SelectedSelectable != null)
+        {
+            objectActive = Selectable.SelectedSelectable.gameObject.TryGetComponent(out MaterialPalette m);
+            _palette = m;
+            _elementIncrement = 0;
+            label.text = "Show Material Palette";
+        }
+        else 
+        {
+            objectActive = false;
+        } 
+
+        gameObject.SetActive(objectActive);
+    }
+
+    private void DisplayPallete()
+    {
+        _elementIncrement++;
+        if (_elementIncrement > _palette.elements.Count())
         {
             ui_pallete.ClearPalleteOptions();
             label.text = "Show Material Palette";
-            elementIncrement = 0;
+            _elementIncrement = 0;
             return;
         }
-        else if(elementIncrement < palette.elements.Count())
+        else if(_elementIncrement < _palette.elements.Count())
         {
             label.text = "Next Material Region";
         }
@@ -61,6 +61,6 @@ public class UI_ButtonMaterialPallete : MonoBehaviour
             label.text = "Hide Material Palette";
         }
 
-        ui_pallete.LoadPalleteOptions(palette.elements[elementIncrement - 1].materials, elementIncrement - 1);
+        ui_pallete.LoadPalleteOptions(_palette.elements[_elementIncrement - 1].materials, _elementIncrement - 1);
     }
 }

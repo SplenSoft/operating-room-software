@@ -14,24 +14,28 @@ public class UI_MeasurementButton : MonoBehaviour
     private void Awake()
     {
         _toggle = GetComponent<Toggle>();
-        Selectable.SelectionChanged += (o, e) =>
-        {
-            if (!Application.isPlaying || ApplicationQuitHandler.AppIsQuitting) return;
-            if (gameObject == null) return;
-
-            bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.Measurables.Count > 0;
-            gameObject.SetActive(active);
-            if (active)
-            {
-                _currentMeasurables = Selectable.SelectedSelectable.Measurables;
-                _toggle.SetIsOnWithoutNotify(active && Selectable.SelectedSelectable.Measurables[0].IsActive);
-            }
-            else
-            {
-                _currentMeasurables = null;
-            }
-        };
+        Selectable.SelectionChanged += UpdateLogic;
         gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        Selectable.SelectionChanged -= UpdateLogic;
+    }
+
+    private void UpdateLogic()
+    {
+        bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.Measurables.Count > 0;
+        gameObject.SetActive(active);
+        if (active)
+        {
+            _currentMeasurables = Selectable.SelectedSelectable.Measurables;
+            _toggle.SetIsOnWithoutNotify(active && Selectable.SelectedSelectable.Measurables[0].IsActive);
+        }
+        else
+        {
+            _currentMeasurables = null;
+        }
     }
 
     public void OnToggle(bool isOn)
@@ -42,7 +46,6 @@ public class UI_MeasurementButton : MonoBehaviour
             {
                 item.SetActive(isOn);
             });
-            
         }
 
         Toggled?.Invoke();

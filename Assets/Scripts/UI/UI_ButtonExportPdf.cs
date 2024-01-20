@@ -16,7 +16,7 @@ public class UI_ButtonExportPdf : MonoBehaviour
         Selectable.SelectionChanged -= OnSelectionChanged;
     }
 
-    private void OnSelectionChanged(object sender, EventArgs e)
+    private void OnSelectionChanged()
     {
         gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly);
     }

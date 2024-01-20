@@ -21,20 +21,22 @@ public class OrbitCamera : MonoBehaviour
 
         CameraManager.Register(VirtualCamera);
 
-        RoomSize.RoomSizeChanged += x =>
-        {
-            if (ApplicationQuitHandler.AppIsQuitting) return;
-            orbitTarget.transform.position = new Vector3(0, 0, 0);
-        };
-
-        Selectable.SelectionChanged += (obj, arg) =>
-        {
-            if (ApplicationQuitHandler.AppIsQuitting) return;
-            if (orbitMode == OrbitMode.SelectableLocked) UpdateTarget();
-        };
+        RoomSize.RoomSizeChanged += ResetPosition;
+        Selectable.SelectionChanged += UpdateTarget;
     }
 
-    void FixedUpdate()
+    private void OnDestroy()
+    {
+        RoomSize.RoomSizeChanged -= ResetPosition;
+        Selectable.SelectionChanged -= UpdateTarget;
+    }
+
+    private void ResetPosition(RoomDimension roomDimension)
+    {
+        orbitTarget.transform.position = new Vector3(0, 0, 0);
+    }
+
+    private void FixedUpdate()
     {
         if (CameraManager.ActiveCamera != VirtualCamera || GizmoHandler.GizmoBeingUsed) return;
 
@@ -69,8 +71,10 @@ public class OrbitCamera : MonoBehaviour
         VirtualCamera.m_Lens.OrthographicSize = fov;
     }
 
-    void UpdateTarget()
+    private void UpdateTarget()
     {
+        if (orbitMode != OrbitMode.SelectableLocked) return;
+
         if (Selectable.SelectedSelectable == null)
         {
             if (previousPosition == null) previousPosition = new Vector3(0, 0, 0);
