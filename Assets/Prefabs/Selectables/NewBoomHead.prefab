@@ -3892,6 +3892,7 @@ GameObject:
   - component: {fileID: 8002773653265241670}
   - component: {fileID: 4460034532636006353}
   - component: {fileID: 8218428066869754786}
+  - component: {fileID: 477840139158347197}
   m_Layer: 0
   m_Name: RailPlate
   m_TagString: Untagged
@@ -3978,7 +3979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <guid>k__BackingField: 
-  <GUID>k__BackingField: 
+  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -4157,90 +4158,18 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
---- !u!1 &4375329232587856545
-GameObject:
+--- !u!114 &477840139158347197
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7093450597173909688}
-  - component: {fileID: 5598132838470845903}
-  - component: {fileID: 3404080670324241249}
-  m_Layer: 0
-  m_Name: ShelfRails
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &7093450597173909688
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4375329232587856545}
-  m_LocalRotation: {x: -2.130022e-14, y: -0, z: 1, w: 0.0000000754979}
-  m_LocalPosition: {x: 0, y: -0.11549984, z: 0.3259998}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 77486103945529810}
-  m_RootOrder: 23
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5598132838470845903
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4375329232587856545}
-  m_Mesh: {fileID: -6632839478929003510, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
---- !u!23 &3404080670324241249
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4375329232587856545}
+  m_GameObject: {fileID: 4012165859919355181}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 6464301627233545063, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
-  - {fileID: -7290614265167908019, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4554919814966186864
 GameObject:
   m_ObjectHideFlags: 0
@@ -8351,7 +8280,7 @@ GameObject:
   - component: {fileID: 8908644420964670810}
   - component: {fileID: 4631372285957422310}
   - component: {fileID: 5163351766029638870}
-  - component: {fileID: 8458640265017234352}
+  - component: {fileID: 2532729397794992239}
   m_Layer: 0
   m_Name: Panel12
   m_TagString: Untagged
@@ -8616,6 +8545,18 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
+--- !u!114 &2532729397794992239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175750293698271371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1827062799832849634
 PrefabInstance:
   m_ObjectHideFlags: 0
