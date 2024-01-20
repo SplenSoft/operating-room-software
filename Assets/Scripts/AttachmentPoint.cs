@@ -51,6 +51,29 @@ public class AttachmentPoint : MonoBehaviour
     public void SetAttachedSelectable(Selectable selectable)
     {
         AttachedSelectable.Add(selectable);
+        EndHoverStateIfHovered();
+        UpdateComponentStatus();
+    }
+
+    public void DetachSelectable(Selectable selectable)
+    {
+        if (_isDestroyed) return;
+        AttachedSelectable.Remove(selectable);
+        AttachedSelectable.TrimExcess();
+        SetToOriginalParent();
+        UpdateComponentStatus();
+    }
+
+    public void SetToOriginalParent()
+    {
+        if (MoveUpOnAttach)
+        {
+            transform.parent = _originalParent;
+        }
+    }
+
+    public void SetToProperParent()
+    {
         if (MoveUpOnAttach)
         {
             Transform parent = transform.parent;
@@ -63,21 +86,6 @@ public class AttachmentPoint : MonoBehaviour
 
             transform.parent = attachmentPoint.transform.parent;
         }
-
-        EndHoverStateIfHovered();
-        UpdateComponentStatus();
-    }
-
-    public void DetachSelectable(Selectable selectable)
-    {
-        if (_isDestroyed) return;
-        AttachedSelectable.Remove(selectable);
-        AttachedSelectable.TrimExcess();
-        if (MoveUpOnAttach)
-        {
-            transform.parent = _originalParent;
-        }
-        UpdateComponentStatus();
     }
 
     private void Awake()
@@ -121,6 +129,11 @@ public class AttachmentPoint : MonoBehaviour
         Selectable.SelectionChanged += SelectionChanged;
         ObjectMenu.ActiveStateChanged.AddListener(EndHoverStateIfHovered);
         UpdateComponentStatus();
+    }
+
+    private void Start()
+    {
+        SetToProperParent();
     }
 
     private void EndHoverState()

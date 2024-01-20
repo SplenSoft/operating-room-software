@@ -62,6 +62,14 @@ public class ConfigurationManager : MonoBehaviour
 
         foreach (TrackedObject obj in foundObjects)
         {
+            if (obj.TryGetComponent(out AttachmentPoint attachmentPoint))
+            {
+                attachmentPoint.SetToOriginalParent(); // for multi-arm configurations
+            }
+        }
+
+        foreach (TrackedObject obj in foundObjects)
+        {
             tracker.objects.Add(obj.GetData()); // Add each tracked object, add to our local tracker instance
         }
 
@@ -100,7 +108,12 @@ public class ConfigurationManager : MonoBehaviour
             else
             {
                 obj.GetComponent<AttachmentPoint>().guid = Guid.NewGuid().ToString();
-                obj.gameObject.name = obj.GetComponent<AttachmentPoint>().guid;
+                //obj.gameObject.name = obj.GetComponent<AttachmentPoint>().guid;
+            }
+
+            if (obj.TryGetComponent(out AttachmentPoint attachmentPoint))
+            {
+                attachmentPoint.SetToProperParent(); // for multi-arm configurations
             }
         }
     }
@@ -113,6 +126,14 @@ public class ConfigurationManager : MonoBehaviour
         roomConfiguration.roomDimension = RoomSize.Instance.currentDimensions; // grabs the current dimensions of the RoomSize to be applied on load
 
         TrackedObject[] foundObjects = FindObjectsOfType<TrackedObject>();
+
+        foreach (TrackedObject obj in foundObjects) // We need to go through each object
+        {
+            if (obj.TryGetComponent(out AttachmentPoint attachmentPoint))
+            {
+                attachmentPoint.SetToOriginalParent(); // for multi-arm configurations
+            }
+        }
 
         foreach (TrackedObject obj in foundObjects) // We need to go through each object
         {
@@ -154,6 +175,14 @@ public class ConfigurationManager : MonoBehaviour
         Debug.Log($"Saved Room: {path}");
 
         RoomConfigLoader.Instance.GenerateRoomItem(path);
+
+        foreach (TrackedObject obj in foundObjects) // We need to go through each object
+        {
+            if (obj.TryGetComponent(out AttachmentPoint attachmentPoint))
+            {
+                attachmentPoint.SetToProperParent(); // for multi-arm configurations
+            }
+        }
     }
 
     private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E"; // this is the prefab GUID for ALL attachment points. DO NOT CHANGE.
@@ -350,7 +379,7 @@ public class ConfigurationManager : MonoBehaviour
         foreach (AttachmentPoint ap in newPoints)
         {
             ap.guid = Guid.NewGuid().ToString();
-            ap.gameObject.name = ap.guid;
+            //ap.gameObject.name = ap.guid;
         }
 
         foreach (TrackedObject to in newObjects)
