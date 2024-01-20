@@ -23,11 +23,13 @@ public class OrbitCamera : MonoBehaviour
 
         RoomSize.RoomSizeChanged += x =>
         {
+            if (ApplicationQuitHandler.AppIsQuitting) return;
             orbitTarget.transform.position = new Vector3(0, 0, 0);
         };
 
         Selectable.SelectionChanged += (obj, arg) =>
         {
+            if (ApplicationQuitHandler.AppIsQuitting) return;
             if (orbitMode == OrbitMode.SelectableLocked) UpdateTarget();
         };
     }

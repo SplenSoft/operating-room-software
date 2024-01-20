@@ -6,16 +6,17 @@ using UnityEngine.UI;
 
 public class UI_MeasurementButton : MonoBehaviour
 {
+    public static UnityEvent Toggled = new();
+
     private Toggle _toggle;
     private List<Measurable> _currentMeasurables = new();
-    public static UnityEvent Toggled = new();
 
     private void Awake()
     {
         _toggle = GetComponent<Toggle>();
         Selectable.SelectionChanged += (o, e) =>
         {
-            if (!Application.isPlaying) return;
+            if (!Application.isPlaying || ApplicationQuitHandler.AppIsQuitting) return;
             if (gameObject == null) return;
 
             bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.Measurables.Count > 0;

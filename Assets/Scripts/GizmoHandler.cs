@@ -33,6 +33,7 @@ public class GizmoHandler : MonoBehaviour
     private void Awake()
     {
         _selectable = GetComponent<Selectable>();
+        _selectable.Deselected.AddListener(EnableGizmo);
         GizmoSelector.GizmoModeChanged += GizmoModeChanged;
         UI_ToggleSnapping.SnappingToggled.AddListener(EnableGizmo);
         CameraManager.CameraChanged.AddListener(EnableGizmo);
@@ -45,6 +46,10 @@ public class GizmoHandler : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (_selectable != null) 
+        {
+            _selectable.Deselected.RemoveListener(EnableGizmo);
+        }
         GizmoSelector.GizmoModeChanged -= GizmoModeChanged;
         UI_ToggleSnapping.SnappingToggled.RemoveListener(EnableGizmo);
         CameraManager.CameraChanged.RemoveListener(EnableGizmo);

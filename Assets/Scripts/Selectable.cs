@@ -49,11 +49,12 @@ public partial class Selectable : MonoBehaviour
     public static EventHandler SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
     public static bool IsInElevationPhotoMode { get; private set; }
+    public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
     public UnityEvent ScaleUpdated { get; } = new();
-    public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
+    public UnityEvent Deselected { get; } = new();
     public Selectable ParentSelectable { get; private set; }
 
     public bool IsMouseOver { get; private set; }
@@ -983,10 +984,11 @@ public partial class Selectable : MonoBehaviour
         if (!IsSelected) return;
         SelectedSelectable = null;
         _highlightEffect.highlighted = false;
-        SendMessage("SelectableDeselected");
 
-        if (fireEvent)
+        if (fireEvent) {
+            Deselected?.Invoke();
             SelectionChanged?.Invoke(this, null);
+        }
     }
 
     public void Select()
