@@ -27,7 +27,7 @@ public class ObjectMenu_Inspector : Editor
             {
                 List<string> validStrings = new List<string>
                 {
-                    "Resources/Selectables"
+                    "Selectables"
                 };
 
                 string[] foundPaths = Directory.GetDirectories(
@@ -40,7 +40,7 @@ public class ObjectMenu_Inspector : Editor
                 {
                     if (str.Contains("Deprecated")) continue;
 
-                    string corrected = str.Substring(str.IndexOf("Resources")).Replace("\\", "/");
+                    string corrected = str.Substring(str.IndexOf("Resources")).Replace("\\", "/").Replace("Resources/", "");
                     validStrings.Add(corrected);
                 }
 
