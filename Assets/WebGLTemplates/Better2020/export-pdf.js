@@ -19,8 +19,8 @@ function getPdfJson(callback) {
 function exportPdf(data) {
 
     //var data = JSON.parse(json);
-    const pageWidthPx = 1583;
-    const pageHeightPx = 1123;
+    const pageWidthPx = 1191;
+    const pageHeightPx = 842;
     const doc = new jsPDF({
         unit: 'px',
         orientation: 'landscape',
@@ -32,23 +32,71 @@ function exportPdf(data) {
 
     //console.log(image1Data);
 
-    var maxImageHeight = pageHeightPx * 0.5;
+    var maxImageHeight = pageHeightPx * 0.4;
     var startingPos = 10;
-    printImage(doc, data.image1, startingPos, 10, image1Data.width, image1Data.height, maxImageHeight, pageWidthPx * 0.33, "image1", actualPrintedWidth => startingPos = actualPrintedWidth + 30);
-    printImage(doc, data.image2, startingPos, 10, image2Data.width, image2Data.height, maxImageHeight, pageWidthPx * 0.33, "image2");
+    doc.setFillColor(0, 0, 255); // blue fill
+    doc.rect(20, 20, pageWidthPx - 350, 50, "F");
+    doc.setTextColor(255);
+    doc.setFontSize(36);
+    doc.text("Medical City Plano OR6 and OR7 Expansion", 30, 50);
+    doc.setFontSize(12);
+    doc.text("Anesthesia Boom", 40, 65);
+    printImage(doc, data.image1, startingPos, 90, image1Data.width, image1Data.height, maxImageHeight, pageWidthPx * 0.33, "image1", actualPrintedWidth => startingPos = actualPrintedWidth + 30);
+    printImage(doc, data.image2, startingPos, 90, image2Data.width, image2Data.height, maxImageHeight, pageWidthPx * 0.33, "image2");
     getBase64Image("floor_finish.png", floorFinishImageData => {
         //var floorFinishImageProperties = doc.getImageProperties(floorFinishImageData);
-        doc.addImage(floorFinishImageData, 'png', 0, maxImageHeight + 10, pageWidthPx, 50, "floor_finish", "none", 0);
+        doc.addImage(floorFinishImageData, 'png', 0, maxImageHeight + 90, pageWidthPx - 300, 20, "floor_finish", "none", 0);
 
         for (const element of data.selectableData) {
             console.log(element);
         }
         //var headers = ["Item 1", "Item 2"];
-        doc.table(10, maxImageHeight + 50, data.selectableData, null, {
+        doc.setTextColor(0);
+        doc.setFontSize(12);
+        doc.table(10, maxImageHeight + 130, data.selectableData, null, {
             autoSize: true
         });
-    
-        doc.save("a3.pdf");
+        
+        getBase64Image("logo.png", logoImageData => {
+            var lowerRightAreaWidth = 200;
+            var lowerRightAreaX = pageWidthPx - 520;
+            var lowerRightAreaYStart = pageHeightPx - 400;
+            var lowerRightAreaCurrentY = lowerRightAreaYStart + 70;
+            var textXStart = lowerRightAreaX + 5;
+            var textCurrentYOffset = 9;
+            var rectHeight = 12;
+
+            doc.addImage(logoImageData, 'png', lowerRightAreaX, lowerRightAreaYStart, lowerRightAreaWidth, 70, "logo", "none", 0);
+            doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
+            doc.text("Account Name: Medical City Plano", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+
+            lowerRightAreaCurrentY += rectHeight;
+            doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
+            doc.text("Account Address: 3901 W. 15th St.", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+
+            lowerRightAreaCurrentY += rectHeight;
+            doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
+            doc.text("                        Plano, TX 75075", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+
+            lowerRightAreaCurrentY += rectHeight;
+            doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
+            doc.text("Project Name: OR6 and OR7 Expansion", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+
+            lowerRightAreaCurrentY += rectHeight;
+            doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
+            doc.text("Project #: IU-10362", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+
+            lowerRightAreaCurrentY += rectHeight;
+            doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
+            doc.text("Quote Reference #: 1275", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+
+            // lowerRightAreaCurrentY += rectHeight;
+            // doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
+            // //doc.text("Quote Reference #: 1275", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+
+            doc.save("a3.pdf");
+        });
+        
     });
 }
 

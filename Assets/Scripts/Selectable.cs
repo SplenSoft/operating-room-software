@@ -4,7 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,7 +12,7 @@ using UnityEngine.Events;
 /// Add basic selectable - <see href="https://youtu.be/qEaRrGC_MX8?si=kCXNSVa11KxLKRNG"/> 
 /// </summary>
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect), typeof(TrackedObject)), Serializable]
-public class Selectable : MonoBehaviour
+public partial class Selectable : MonoBehaviour
 {
     [Serializable]
     public class ScaleLevel
@@ -27,7 +26,7 @@ public class Selectable : MonoBehaviour
         public bool TryGetValue(string key, out string value)
         {
             value = metadata.SingleOrDefault(x => x.key == key).value;
-            return value == "" ? false : true;
+            return value != "";
         }
     }
 
@@ -77,6 +76,7 @@ public class Selectable : MonoBehaviour
     [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
     [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
+    [field: SerializeField] public bool useLossyScale { get; private set; }
     [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
     [field: SerializeField] private bool ZAlwaysFacesGroundElevationOnly { get; set; }
     [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
@@ -259,6 +259,12 @@ public class Selectable : MonoBehaviour
             scaleLevel.Selected = true;
             CurrentScaleLevel = scaleLevel;
             OnScaleChange.Invoke(CurrentScaleLevel);
+            
+            if(TryGetComponent(out ScaleGroup group))
+            {
+                ScaleGroupManager.OnScaleLevelChanged?.Invoke(group.id, CurrentScaleLevel);
+            }
+
             StoreChildScales();
         }
 
@@ -273,6 +279,23 @@ public class Selectable : MonoBehaviour
         if (closest == CurrentPreviewScaleLevel && !setSelected) return;
         SetScaleLevel(closest, setSelected);
         ScaleUpdated?.Invoke();
+    }
+
+    private bool IsHittingCeiling()
+    {
+        RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
+
+        var bounds = ceiling.MeshRenderer.bounds;
+        if (!TryGetComponent<MeshFilter>(out var meshFilter)) return false;
+
+        var verts = meshFilter.sharedMesh.vertices;
+
+        foreach (var vert in verts)
+        {
+            if (bounds.Contains(transform.TransformPoint(vert))) return true;
+        }
+
+        return false;
     }
 
     public void StoreChildScales()
@@ -427,6 +450,15 @@ public class Selectable : MonoBehaviour
                 if (i == 0)
                 {
                     newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue : gizmoSetting.GetMinValue;
+                    selectable.transform.localEulerAngles = newAngles;
+                    var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
+                    while (childList.FirstOrDefault(x => x.IsHittingCeiling()) != default)
+                    {
+                        float abs = Mathf.Abs(newAngles.y) - 1f;
+                        if (abs < 0f) break;
+                        newAngles.y = abs * Mathf.Sign(newAngles.y);
+                        selectable.transform.localEulerAngles = newAngles;
+                    }
                 }
                 else
                 {
@@ -615,7 +647,7 @@ public class Selectable : MonoBehaviour
     private void Awake()
     {
         guid = Guid.NewGuid().ToString();
-        if (!ConfigurationManager._instance.isDebug && GUID != "") gameObject.name = guid.ToString();
+        if (!ConfigurationManager._instance.isDebug && GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID)) gameObject.name = guid.ToString();
 
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;

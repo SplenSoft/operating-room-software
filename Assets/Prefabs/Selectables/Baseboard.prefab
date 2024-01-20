@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6912853055511600860}
   - component: {fileID: 4767647742572128758}
   - component: {fileID: 29952435}
+  - component: {fileID: 3625238998407065597}
   m_Layer: 0
   m_Name: WallProtector
   m_TagString: Untagged
@@ -306,27 +307,30 @@ MonoBehaviour:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
     <Unrestricted>k__BackingField: 0
-    <MaxValue>k__BackingField: 8.8392
+    <MaxValue>k__BackingField: 20.62
     <MinValue>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
+  <useLossyScale>k__BackingField: 1
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
-  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
-  <ClearanceLinesRenderers>k__BackingField: []
-  <ClearanceLinesMeshFilters>k__BackingField: []
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!65 &4767647742572128758
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -359,6 +363,19 @@ MonoBehaviour:
     - {fileID: 2100000, guid: cc7eefe28fc3e1e45b68af3d8fe19822, type: 2}
     - {fileID: 2100000, guid: d50d4a6b91f677e42a2d0f6a3b6b2cd3, type: 2}
   <meshRenderer>k__BackingField: {fileID: 0}
+--- !u!114 &3625238998407065597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6845259902817249984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086f805cfbf23de4d80dd5e05fd488d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: 879875454
 --- !u!1 &7434035695294010010
 GameObject:
   m_ObjectHideFlags: 0
@@ -377,6 +394,7 @@ GameObject:
   - component: {fileID: 2652773253107530719}
   - component: {fileID: 8675017663722371601}
   - component: {fileID: 575744590}
+  - component: {fileID: 8406298688095421773}
   m_Layer: 6
   m_Name: Baseboard
   m_TagString: Untagged
@@ -412,7 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <GUID>k__BackingField: 
+  <GUID>k__BackingField: E12BD8EB-402B-44B3-8B85-C2DD1D12CD62
   <ParentAttachmentPoint>k__BackingField: {fileID: 0}
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: 
@@ -434,35 +452,43 @@ MonoBehaviour:
   - <Size>k__BackingField: 0.0762
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 1
+    metadata: []
   - <Size>k__BackingField: 0.1016
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.127
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.1524
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   - <Size>k__BackingField: 0.1778
     <Selected>k__BackingField: 1
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  <useLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
-  <ClearanceLineMeasuringPosition>k__BackingField: {fileID: 0}
-  <ClearanceLinesRenderers>k__BackingField: []
-  <ClearanceLinesMeshFilters>k__BackingField: []
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2201210435872393541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -749,3 +775,16 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 208da722be131604ebe6085ca6bc3a53, type: 2}
     - {fileID: 2100000, guid: d50d4a6b91f677e42a2d0f6a3b6b2cd3, type: 2}
   <meshRenderer>k__BackingField: {fileID: 0}
+--- !u!114 &8406298688095421773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7434035695294010010}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086f805cfbf23de4d80dd5e05fd488d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: 51654811
