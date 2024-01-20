@@ -984,9 +984,9 @@ public partial class Selectable : MonoBehaviour
         if (!IsSelected) return;
         SelectedSelectable = null;
         _highlightEffect.highlighted = false;
+        Deselected?.Invoke();
 
         if (fireEvent) {
-            Deselected?.Invoke();
             SelectionChanged?.Invoke();
         }
     }
