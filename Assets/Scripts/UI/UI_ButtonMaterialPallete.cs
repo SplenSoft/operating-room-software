@@ -21,6 +21,12 @@ public class UI_ButtonMaterialPallete : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        Selectable.SelectionChanged -= UpdateSelectedPallete;
+        _button.onClick.RemoveListener(DisplayPallete);
+    }
+
     private void UpdateSelectedPallete()
     {
         bool objectActive;

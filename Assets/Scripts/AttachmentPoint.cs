@@ -5,13 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(TrackedObject))]
 public class AttachmentPoint : MonoBehaviour
 {
     public static AttachmentPoint HoveredAttachmentPoint { get; private set; }
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
+    /// <summary>
+    /// Local GUID
+    /// </summary>
     [field: SerializeField, HideInInspector] public string guid { get; set; }
+    /// <summary>
+    /// Global GUID
+    /// </summary>
     [field: SerializeField] public string GUID { get; private set; }
     [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;

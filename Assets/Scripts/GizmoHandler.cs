@@ -458,8 +458,6 @@ public class GizmoHandler : MonoBehaviour
         }
     }
 
-
-
     private float CalculateZScale(Gizmo gizmo)
     {
         float zScale = _localScaleBeforeStartDrag.z;
