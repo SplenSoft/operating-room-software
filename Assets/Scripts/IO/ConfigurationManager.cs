@@ -15,6 +15,10 @@ public class ConfigurationManager : MonoBehaviour
     private Tracker tracker; // The tracker for individual configurations
     private RoomConfiguration roomConfiguration; // overall room configuration, contains collection of trackers
 
+    private readonly string _lastNukedSavesPlayerPrefsKey = "lastNukedSaves";
+
+    private readonly string _nukeBelowVersion = "0.0.42";
+
     void Awake()
     {
         if (_instance != null)
@@ -24,6 +28,78 @@ public class ConfigurationManager : MonoBehaviour
 
         CreateTracker();
         NewRoomSave();
+        HandleBackwardsCompatibility();
+    }
+
+    private void HandleBackwardsCompatibility()
+    {
+        Version nukeBelowVersion = Version.Parse(_nukeBelowVersion);
+        
+        if (!PlayerPrefs.HasKey(_lastNukedSavesPlayerPrefsKey))
+        {
+            DeleteAllSaves();
+        }
+        else
+        {
+            string lastNukedString = PlayerPrefs.GetString(_lastNukedSavesPlayerPrefsKey);
+            Version lastNukedVersion = Version.Parse(lastNukedString);
+
+            if (lastNukedVersion.Revision < nukeBelowVersion.Revision) 
+            {
+                DeleteAllSaves();
+            }
+        }
+
+        //future use
+        //string[] files = Directory.GetFiles(path);
+        //foreach (string file in files.Where(x => x.EndsWith(".json")))
+        //{
+        //    if (File.Exists(file))
+        //    {
+        //        string json = File.ReadAllText(file);
+        //        var roomConfiguration = JsonConvert.DeserializeObject<RoomConfiguration>(json);
+        //    }
+        //}
+    }
+
+    /// <summary>
+    /// Replace later with a system that checks indiviudal serialized json versions, and even when that happens we should move the deprecated versions into a folder called "Deprecated" just in case
+    /// </summary>
+    private void DeleteAllSaves()
+    {
+        string path = Application.persistentDataPath + "/Saved/";
+        DeleteAllInDirectory(path);        
+        Debug.Log("Nuked all saved rooms");
+        string configsPath = path + "Configs/";
+        DeleteAllInDirectory(configsPath);
+        Debug.Log("Nuked all saved arm configurations");
+        PlayerPrefs.SetString(_lastNukedSavesPlayerPrefsKey, Application.version);
+    }
+
+    private void DeleteAllInDirectory(string path)
+    {
+        if (Directory.Exists(path))
+        {
+            string[] files = Directory.GetFiles(path);
+            foreach (string file in files.Where(x => x.EndsWith(".json")))
+            {
+                if (File.Exists(file))
+                {
+                    try
+                    {
+                        File.Delete(file);
+                    }
+                    catch (IOException ex) // file is in use, or theres an open handle on the file
+                    {
+                        Debug.LogException(ex);
+                    }
+                    catch
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -43,7 +119,7 @@ public class ConfigurationManager : MonoBehaviour
     /// </summary>
     RoomConfiguration NewRoomSave()
     {
-        roomConfiguration = new RoomConfiguration
+        roomConfiguration = new RoomConfiguration()
         {
             collections = new List<Tracker>()
         };
