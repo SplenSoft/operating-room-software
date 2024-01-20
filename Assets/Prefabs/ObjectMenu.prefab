@@ -246,7 +246,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000030884836}
+  m_AnchoredPosition: {x: 0, y: 0.00035000916}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4500082523908294456
@@ -1215,6 +1215,25 @@ MonoBehaviour:
   - {fileID: 3197086238112897237, guid: 1d7d6954e148df94d9e6aaefbfd85fe1, type: 3}
   - {fileID: 5835877249260335974, guid: 5d18bbab28e9d3346bb992c27d307a92, type: 3}
   - {fileID: 6803247741917885339, guid: c68c39c95251a364599e9000b451686f, type: 3}
+  <BuiltInFolders>k__BackingField:
+  - Resources/Selectables
+  - Resources/Selectables/Doors
+  - Resources/Selectables/GasOutlets
+  - Resources/Selectables/Doors/Double
+  - Resources/Selectables/Doors/Single
+  - Resources/Selectables/Doors/Unequal
+  - Resources/Selectables/Doors/Double/OppositeSwing
+  - Resources/Selectables/Doors/Double/SameSwing
+  - Resources/Selectables/Doors/Single/3ft
+  - Resources/Selectables/Doors/Single/4ft
+  - Resources/Selectables/Doors/Unequal/1,4ft
+  - Resources/Selectables/Doors/Unequal/2,4ft
+  - Resources/Selectables/Doors/Double/OppositeSwing/6ft
+  - Resources/Selectables/Doors/Double/OppositeSwing/7ft
+  - Resources/Selectables/Doors/Double/OppositeSwing/8ft
+  - Resources/Selectables/Doors/Double/SameSwing/6ft
+  - Resources/Selectables/Doors/Double/SameSwing/7ft
+  - Resources/Selectables/Doors/Double/SameSwing/8ft
 --- !u!114 &3340290244935651647
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -16,7 +16,8 @@ public class ObjectMenu : MonoBehaviour
 
     [field: SerializeField] private GameObject ItemTemplate { get; set; }
     [field: SerializeField] private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }
-    [field: SerializeField] private List<GameObject> BuiltInSelectablePrefabs { get; set; } = new();
+    [field: SerializeField, HideInInspector] private List<GameObject> BuiltInSelectablePrefabs { get; set; } = new();
+    [field: SerializeField] public string[] BuiltInFolders { get; set; }
     private AttachmentPoint _attachmentPoint;
     private List<ObjectMenuItem> ObjectMenuItems { get; set; } = new();
 
@@ -30,13 +31,26 @@ public class ObjectMenu : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        InstantiateMenuItems();
+        PopulateBuiltIns();
         gameObject.SetActive(false);
     }
 
     public GameObject GetPrefabByGUID(string guid)
     {
         return BuiltInSelectablePrefabs.Single(s => s.GetComponent<Selectable>().GUID == guid);
+    }
+
+    private void PopulateBuiltIns()
+    {
+        foreach(string path in BuiltInFolders)
+        {
+            Debug.Log(path);
+            GameObject[] foundBuiltIns = Resources.LoadAll(path, typeof(GameObject)).Cast<GameObject>().ToArray();
+            Debug.Log(foundBuiltIns.Length);
+            BuiltInSelectablePrefabs.AddRange(foundBuiltIns);
+        }
+
+        InstantiateMenuItems();
     }
 
     private void InstantiateMenuItems()
