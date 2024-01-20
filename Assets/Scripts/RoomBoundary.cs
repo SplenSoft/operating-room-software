@@ -193,12 +193,12 @@ public class RoomBoundary : MonoBehaviour
         MeshRenderer.enabled = toggle;
         Collider.enabled = toggle;
 
-        ToggleBaseboardRenderer(toggle);
-
         if (toggle != oldStatus)
         {
             VisibilityStatusChanged?.Invoke();
         }
+
+        ToggleBaseboardRenderer(toggle);
     }
 
     private void ToggleBaseboardRenderer(bool toggle)
@@ -208,6 +208,8 @@ public class RoomBoundary : MonoBehaviour
         MeshRenderer[] baseRender = baseboard.GetComponentsInChildren<MeshRenderer>();
         foreach(MeshRenderer mesh in baseRender)
         {
+            if(MeshRenderer.enabled != toggle) continue;
+
             mesh.enabled = toggle;
         }
     }
