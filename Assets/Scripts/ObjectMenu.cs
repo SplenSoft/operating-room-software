@@ -45,9 +45,7 @@ public class ObjectMenu : MonoBehaviour
     {
         foreach(string path in BuiltInFolders)
         {
-            Debug.Log(path);
             GameObject[] foundBuiltIns = Resources.LoadAll<GameObject>(path);
-            Debug.Log(foundBuiltIns.Length);
             BuiltInSelectablePrefabs.AddRange(foundBuiltIns);
         }
 

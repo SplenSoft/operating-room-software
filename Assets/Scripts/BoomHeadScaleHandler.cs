@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -11,6 +10,7 @@ public class BoomHeadScaleHandler : MonoBehaviour
     [field: SerializeField] public Row[] attachRow;
     [field: SerializeField] public ColumnAtScale[] attachOffsets;
     private Selectable selectable;
+    // [field: SerializeField] public Transform railAttachPoint;
 
     void Awake()
     {
@@ -48,6 +48,8 @@ public class BoomHeadScaleHandler : MonoBehaviour
                 }
             }
         }
+
+        // SetRailScale(scaleLevel);
     }
 
     void SetHeight(GameObject go, int i, int rowCount)
@@ -58,6 +60,14 @@ public class BoomHeadScaleHandler : MonoBehaviour
                 attachOffsets[rowCount - 1].zPosition[i]
             );
     }
+
+    // void SetRailScale(Selectable.ScaleLevel scaleLevel)
+    // {
+    //     if(railAttachPoint.childCount == 1) return; 
+
+    //     Selectable rail = railAttachPoint.GetChild(1).GetComponent<Selectable>();
+    //     rail.SetScaleLevel(scaleLevel, true);
+    // }
 }
 
 [Serializable]

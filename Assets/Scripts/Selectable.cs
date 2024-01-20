@@ -227,6 +227,9 @@ public partial class Selectable : MonoBehaviour
                 for (int i = 0; i < transform.childCount; i++)
                 {
                     var child = transform.GetChild(i);
+
+                    if(child.TryGetComponent(out IgnoreInverseScaling ignore)) continue;
+
                     Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
                     // Debug.Log($"{child.name} Current Scale is ({child.transform.localScale.x}, {child.transform.localScale.y}, {child.transform.localScale.z})");
                     // Debug.Log($"Local Diff after InverseTransformVector for {child.name} is ({localDiff.x}, {localDiff.y}, {localDiff.z})");

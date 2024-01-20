@@ -3893,6 +3893,7 @@ GameObject:
   - component: {fileID: 4460034532636006353}
   - component: {fileID: 8218428066869754786}
   - component: {fileID: 477840139158347197}
+  - component: {fileID: 7455131317765360263}
   m_Layer: 0
   m_Name: RailPlate
   m_TagString: Untagged
@@ -4168,6 +4169,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7455131317765360263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4012165859919355181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7341218db4454408a6eeaf67a70a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4554919814966186864
