@@ -428,13 +428,14 @@ public class GizmoHandler : MonoBehaviour
 
         if (_selectable.useLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
         {
+            float newZScale = zScale / _selectable.transform.lossyScale.z;
             if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
             {
                 _selectable.transform.localScale = Vector3.one;
                 _selectable.transform.localScale = new Vector3(
                     1,
                     1,
-                    zScale / _selectable.transform.lossyScale.z);
+                    newZScale);
             }
         }
 
@@ -444,6 +445,11 @@ public class GizmoHandler : MonoBehaviour
             {
                 _selectable.ParentSelectable.StoreChildScales();
             }
+        }
+
+        if (TryGetComponent(out ScaleGroup group))
+        {
+            ScaleGroupManager.OnZScaleChanged?.Invoke(group.id, _selectable.transform.localScale.z);
         }
     }
 

@@ -259,6 +259,12 @@ public partial class Selectable : MonoBehaviour
             scaleLevel.Selected = true;
             CurrentScaleLevel = scaleLevel;
             OnScaleChange.Invoke(CurrentScaleLevel);
+            
+            if(TryGetComponent(out ScaleGroup group))
+            {
+                ScaleGroupManager.OnScaleLevelChanged?.Invoke(group.id, CurrentScaleLevel);
+            }
+
             StoreChildScales();
         }
 
