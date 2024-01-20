@@ -8351,7 +8351,6 @@ GameObject:
   - component: {fileID: 8908644420964670810}
   - component: {fileID: 4631372285957422310}
   - component: {fileID: 5163351766029638870}
-  - component: {fileID: 8458640265017234352}
   m_Layer: 0
   m_Name: Panel12
   m_TagString: Untagged
@@ -9489,7 +9488,7 @@ PrefabInstance:
     - target: {fileID: 1395880532183747930, guid: aa3ace270f8a81d488510dd64f8aef97, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f7436ee039c551344925072161a64c8e, type: 2}
+      objectReference: {fileID: 2100000, guid: 34c23478b5e345e4c822859fc5f1a8e1, type: 2}
     - target: {fileID: 6589417256002456153, guid: aa3ace270f8a81d488510dd64f8aef97, type: 3}
       propertyPath: m_Name
       value: BoomHeadDetail
