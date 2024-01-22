@@ -11,9 +11,27 @@ public class GizmoSelector : MonoBehaviour
     private void Awake()
     {
         _dropdown = GetComponent<TMP_Dropdown>();
-        _dropdown.onValueChanged.AddListener(selection => SetGizmoMode((GizmoMode)selection));
+
+        _dropdown.onValueChanged.AddListener(UpdateGizmoMode);
+        Selectable.SelectionChanged += UpdateActiveState;
+
         gameObject.SetActive(false);
-        Selectable.SelectionChanged += (o, e) => gameObject.SetActive(Selectable.SelectedSelectable != null);
+    }
+
+    private void OnDestroy()
+    {
+        _dropdown.onValueChanged.RemoveListener(UpdateGizmoMode);
+        Selectable.SelectionChanged -= UpdateActiveState;
+    }
+
+    private void UpdateGizmoMode(int selection)
+    {
+        SetGizmoMode((GizmoMode)selection);
+    }
+
+    private void UpdateActiveState()
+    {
+        gameObject.SetActive(Selectable.SelectedSelectable != null);
     }
 
     public void SetGizmoMode(GizmoMode gizmoMode)

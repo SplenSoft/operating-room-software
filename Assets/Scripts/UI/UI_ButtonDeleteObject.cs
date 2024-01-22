@@ -12,7 +12,7 @@ public class UI_ButtonDeleteObject : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void UpdateActiveState(object sender, EventArgs e)
+    private void UpdateActiveState()
     {
         if (!Application.isPlaying) return;
         if (this == null || gameObject == null) return;

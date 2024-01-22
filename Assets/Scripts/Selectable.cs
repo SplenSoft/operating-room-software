@@ -46,14 +46,15 @@ public partial class Selectable : MonoBehaviour
     #region Fields and Properties
     public static List<Selectable> ActiveSelectables { get; } = new List<Selectable>();
 
-    public static EventHandler SelectionChanged;
+    public static Action SelectionChanged;
     public static Selectable SelectedSelectable { get; private set; }
     public static bool IsInElevationPhotoMode { get; private set; }
+    public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
     public UnityEvent ScaleUpdated { get; } = new();
-    public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
+    public UnityEvent Deselected { get; } = new();
     public Selectable ParentSelectable { get; private set; }
 
     public bool IsMouseOver { get; private set; }
@@ -986,10 +987,11 @@ public partial class Selectable : MonoBehaviour
         if (!IsSelected) return;
         SelectedSelectable = null;
         _highlightEffect.highlighted = false;
-        SendMessage("SelectableDeselected");
+        Deselected?.Invoke();
 
-        if (fireEvent)
-            SelectionChanged?.Invoke(this, null);
+        if (fireEvent) {
+            SelectionChanged?.Invoke();
+        }
     }
 
     public void Select()
@@ -1001,7 +1003,7 @@ public partial class Selectable : MonoBehaviour
         }
         SelectedSelectable = this;
         _highlightEffect.highlighted = true;
-        SelectionChanged?.Invoke(this, null);
+        SelectionChanged?.Invoke();
         _gizmoHandler.SelectableSelected();
     }
 }

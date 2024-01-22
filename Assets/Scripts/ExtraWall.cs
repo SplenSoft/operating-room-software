@@ -15,16 +15,16 @@ public class ExtraWall : MonoBehaviour
 
     private void Awake()
     {
-        Selectable.SelectionChanged += SelectableChanged;
+        Selectable.SelectionChanged += SelectedSelectableChanged;
     }
 
     private void OnDestroy()
     {
-        Selectable.SelectionChanged -= SelectableChanged;
+        Selectable.SelectionChanged -= SelectedSelectableChanged;
         SelectedExtraWalls.Remove(this);
     }
 
-    private void SelectableChanged(object sender, EventArgs e)
+    private void SelectedSelectableChanged()
     {
         SetActive(Selectable.SelectedSelectable == Selectable);
     }

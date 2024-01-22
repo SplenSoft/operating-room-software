@@ -16,27 +16,38 @@ public class UI_ToggleLightSwitch : MonoBehaviour
     {
         _toggle = GetComponent<Toggle>();
 
-        Selectable.SelectionChanged += (o, e) =>
-        {
-            bool b = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.GetComponent<LightFactory>(); // store result of the selectable & light checks for multiple uses
-            gameObject.SetActive(b); // if there is a current selectable and it is a light, we display the UI
-
-            if(b)
-            {
-                _selectedLight = Selectable.SelectedSelectable.gameObject.GetComponent<LightFactory>(); // store the value for reuse
-                _toggle.isOn = _selectedLight.isOn(); // set the toggle to match the current state of the light (ON/OFF)
-            }
-        };
+        Selectable.SelectionChanged += UpdateActiveState;
 
         gameObject.SetActive(false); // turn off the UI element on awake, as nothing is selected
 
         // lambda delegate for the toggle's value changing. 
         // This is done instead of the Editor to avoid an edge-case of the value applying to subsequently clicked lights
-        _toggle.onValueChanged.AddListener((x) => {
-            if(_toggle.isOn != _selectedLight.isOn())
-            {
-                _selectedLight.SwitchLight();
-            }
-        });
+        _toggle.onValueChanged.AddListener(UpdateLightState);
+    }
+
+    private void UpdateLightState(bool isOn)
+    {
+        if (isOn != _selectedLight.isOn())
+        {
+            _selectedLight.SwitchLight();
+        }
+    }
+
+    private void UpdateActiveState()
+    {
+        bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.GetComponent<LightFactory>(); // store result of the selectable & light checks for multiple uses
+        gameObject.SetActive(active); // if there is a current selectable and it is a light, we display the UI
+
+        if (active)
+        {
+            _selectedLight = Selectable.SelectedSelectable.gameObject.GetComponent<LightFactory>(); // store the value for reuse
+            _toggle.isOn = _selectedLight.isOn(); // set the toggle to match the current state of the light (ON/OFF)
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Selectable.SelectionChanged -= UpdateActiveState;
+        _toggle.onValueChanged.RemoveListener(UpdateLightState);
     }
 }

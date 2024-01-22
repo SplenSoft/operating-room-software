@@ -5,13 +5,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(TrackedObject))]
 public class AttachmentPoint : MonoBehaviour
 {
     public static AttachmentPoint HoveredAttachmentPoint { get; private set; }
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
+    /// <summary>
+    /// Local GUID
+    /// </summary>
     [field: SerializeField, HideInInspector] public string guid { get; set; }
+    /// <summary>
+    /// Global GUID
+    /// </summary>
     [field: SerializeField] public string GUID { get; private set; }
     [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
@@ -44,6 +51,29 @@ public class AttachmentPoint : MonoBehaviour
     public void SetAttachedSelectable(Selectable selectable)
     {
         AttachedSelectable.Add(selectable);
+        EndHoverStateIfHovered();
+        UpdateComponentStatus();
+    }
+
+    public void DetachSelectable(Selectable selectable)
+    {
+        if (_isDestroyed) return;
+        AttachedSelectable.Remove(selectable);
+        AttachedSelectable.TrimExcess();
+        SetToOriginalParent();
+        UpdateComponentStatus();
+    }
+
+    public void SetToOriginalParent()
+    {
+        if (MoveUpOnAttach)
+        {
+            transform.parent = _originalParent;
+        }
+    }
+
+    public void SetToProperParent()
+    {
         if (MoveUpOnAttach)
         {
             Transform parent = transform.parent;
@@ -56,21 +86,6 @@ public class AttachmentPoint : MonoBehaviour
 
             transform.parent = attachmentPoint.transform.parent;
         }
-
-        EndHoverStateIfHovered();
-        UpdateComponentStatus();
-    }
-
-    public void DetachSelectable(Selectable selectable)
-    {
-        if (_isDestroyed) return;
-        AttachedSelectable.Remove(selectable);
-        AttachedSelectable.TrimExcess();
-        if (MoveUpOnAttach)
-        {
-            transform.parent = _originalParent;
-        }
-        UpdateComponentStatus();
     }
 
     private void Awake()
@@ -116,6 +131,11 @@ public class AttachmentPoint : MonoBehaviour
         UpdateComponentStatus();
     }
 
+    private void Start()
+    {
+        SetToProperParent();
+    }
+
     private void EndHoverState()
     {
         HoveredAttachmentPoint = null;
@@ -132,7 +152,7 @@ public class AttachmentPoint : MonoBehaviour
         }
     }
 
-    private void SelectionChanged(object sender, EventArgs e)
+    private void SelectionChanged()
     {
         if (ParentSelectables.Contains(Selectable.SelectedSelectable))
             UpdateComponentStatus();

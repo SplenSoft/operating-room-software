@@ -177,6 +177,8 @@ public class RoomBoundary : MonoBehaviour
         Color c = MeshRenderer.material.color;
         c.a = toggle ? 1 : 0;
         MeshRenderer.material.color = c;
+
+       ToggleBaseboardRenderer(toggle);
     }
 
     private void OnMouseUpAsButton()
@@ -194,6 +196,21 @@ public class RoomBoundary : MonoBehaviour
         if (toggle != oldStatus)
         {
             VisibilityStatusChanged?.Invoke();
+        }
+
+        ToggleBaseboardRenderer(toggle);
+    }
+
+    private void ToggleBaseboardRenderer(bool toggle)
+    {
+        if(baseboard == null) return;
+
+        MeshRenderer[] baseRender = baseboard.GetComponentsInChildren<MeshRenderer>();
+        foreach(MeshRenderer mesh in baseRender)
+        {
+            if(MeshRenderer.enabled != toggle) continue;
+
+            mesh.enabled = toggle;
         }
     }
 

@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class TrackedObject : MonoBehaviour
 {
@@ -26,20 +24,20 @@ public class TrackedObject : MonoBehaviour
     public Data GetData()
     {
         data.objectName = gameObject.name;
-        GetGUIDs(gameObject);
+        GetGUIDs();
 
         data.pos = transform.position;
         data.rot = transform.rotation;
         data.scale = transform.localScale;
 
-        if (gameObject.TryGetComponent<Selectable>(out Selectable s))
+        if (gameObject.TryGetComponent(out Selectable s))
         {
             if (s.ScaleLevels.Count() == 0) data.scaleLevel = null;
             else
                 data.scaleLevel = s.CurrentScaleLevel;
         }
 
-        if(gameObject.TryGetComponent(out MaterialPalette palette))
+        if (gameObject.TryGetComponent(out MaterialPalette palette))
         {
             data.materialNames = new List<string>();
             Material[] materials = palette.meshRenderer.materials;
@@ -97,9 +95,9 @@ public class TrackedObject : MonoBehaviour
         data.scale = d.scale;
     }
 
-    void GetGUIDs(GameObject go)
+    void GetGUIDs()
     {
-        if (gameObject.TryGetComponent<Selectable>(out Selectable s))
+        if (gameObject.TryGetComponent(out Selectable s))
         {
             data.instance_guid = s.guid.ToString();
             if (s.GUID == "" || s.GUID == null)
