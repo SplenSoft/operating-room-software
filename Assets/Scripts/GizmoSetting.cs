@@ -11,6 +11,7 @@ public class GizmoSetting
     [field: SerializeField] public bool Unrestricted { get; private set; } = true;
     [field: SerializeField] private float MaxValue { get; set; }
     [field: SerializeField] private float MinValue { get; set; }
+    [field: SerializeField] public bool IgnoreScale { get; private set; } = false;
 
     /// <summary>
     /// When calculating max and min heights for elevation photos, treats min as max and vice versa (fixes some issues with y-axis rotations)
@@ -19,6 +20,13 @@ public class GizmoSetting
 
     public float GetMaxValue => Unrestricted ? float.MaxValue : MaxValue;
     public float GetMinValue => Unrestricted ? float.MinValue : MinValue;
+
+    public void SetMinMaxValues(float min, float max)
+    {
+        Unrestricted = false;
+        MinValue = min;
+        MaxValue = max;
+    }
 }
 
 public enum Axis

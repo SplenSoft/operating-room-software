@@ -89,7 +89,7 @@ public partial class Selectable : MonoBehaviour
     private Dictionary<Selectable, Quaternion> _originalRotations = new();
     private Dictionary<Measurable, bool> _measurableActiveStates = new();
     private List<Vector3> _childScales = new();
-    private Quaternion _originalRotation; 
+    private Quaternion _originalRotation;
     private Transform _virtualParent;
     private HighlightEffect _highlightEffect;
     private GizmoHandler _gizmoHandler;
@@ -133,20 +133,37 @@ public partial class Selectable : MonoBehaviour
     {
         Vector3 adjustedTransform = transform.localRotation * transform.localPosition;
 
+        float ignoreScale = GetGizmoSettingTranslateIgnoreBool() ? 1 : transform.localScale.z;
+
         float maxTranslationX = GetGizmoSettingMaxValue(GizmoType.Move, Axis.X) * transform.localScale.x;
         float maxTranslationY = GetGizmoSettingMaxValue(GizmoType.Move, Axis.Y) * transform.localScale.y;
-        float maxTranslationZ = GetGizmoSettingMaxValue(GizmoType.Move, Axis.Z) * transform.localScale.z;
+        float maxTranslationZ = GetGizmoSettingMaxValue(GizmoType.Move, Axis.Z) * ignoreScale;
 
         float minTranslationX = GetGizmoSettingMinValue(GizmoType.Move, Axis.X) * transform.localScale.x;
         float minTranslationY = GetGizmoSettingMinValue(GizmoType.Move, Axis.Y) * transform.localScale.y;
-        float minTranslationZ = GetGizmoSettingMinValue(GizmoType.Move, Axis.Z) * transform.localScale.z;
+        float minTranslationZ = GetGizmoSettingMinValue(GizmoType.Move, Axis.Z) * ignoreScale;
 
         Vector3 adjustedMaxTranslation = new Vector3(maxTranslationX, maxTranslationY, maxTranslationZ);
         Vector3 adjustedMinTranslation = new Vector3(minTranslationX, minTranslationY, minTranslationZ);
         totalExcess = default;
-        bool exceedsX = IsGizmoSettingAllowed(GizmoType.Move, Axis.X) && CheckConstraints(adjustedTransform.x, OriginalLocalPosition.x, adjustedMaxTranslation.x, adjustedMinTranslation.x, out totalExcess.x);
-        bool exceedsY = IsGizmoSettingAllowed(GizmoType.Move, Axis.Y) && CheckConstraints(adjustedTransform.y, OriginalLocalPosition.y, adjustedMaxTranslation.y, adjustedMinTranslation.y, out totalExcess.y);
-        bool exceedsZ = IsGizmoSettingAllowed(GizmoType.Move, Axis.Z) && CheckConstraints(adjustedTransform.z, OriginalLocalPosition.z, adjustedMaxTranslation.z, adjustedMinTranslation.z, out totalExcess.z);
+        bool exceedsX = IsGizmoSettingAllowed(GizmoType.Move, Axis.X)
+                        && CheckConstraints(adjustedTransform.x,
+                                            OriginalLocalPosition.x,
+                                            adjustedMaxTranslation.x,
+                                            adjustedMinTranslation.x,
+                        out totalExcess.x);
+        bool exceedsY = IsGizmoSettingAllowed(GizmoType.Move, Axis.Y) 
+                        && CheckConstraints(adjustedTransform.y, 
+                                            OriginalLocalPosition.y, 
+                                            adjustedMaxTranslation.y, 
+                                            adjustedMinTranslation.y, 
+                        out totalExcess.y);
+        bool exceedsZ = IsGizmoSettingAllowed(GizmoType.Move, Axis.Z) 
+                        && CheckConstraints(adjustedTransform.z, 
+                                            OriginalLocalPosition.z, 
+                                            adjustedMaxTranslation.z, 
+                                            adjustedMinTranslation.z, 
+                        out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
     }
 
@@ -229,7 +246,7 @@ public partial class Selectable : MonoBehaviour
                 {
                     var child = transform.GetChild(i);
 
-                    if(child.TryGetComponent(out IgnoreInverseScaling ignore)) continue;
+                    if (child.TryGetComponent(out IgnoreInverseScaling ignore)) continue;
 
                     Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
                     // Debug.Log($"{child.name} Current Scale is ({child.transform.localScale.x}, {child.transform.localScale.y}, {child.transform.localScale.z})");
@@ -263,8 +280,8 @@ public partial class Selectable : MonoBehaviour
             scaleLevel.Selected = true;
             CurrentScaleLevel = scaleLevel;
             OnScaleChange.Invoke(CurrentScaleLevel);
-            
-            if(TryGetComponent(out ScaleGroup group))
+
+            if (TryGetComponent(out ScaleGroup group))
             {
                 ScaleGroupManager.OnScaleLevelChanged?.Invoke(group.id, CurrentScaleLevel);
             }
@@ -341,6 +358,15 @@ public partial class Selectable : MonoBehaviour
             return gizmoSetting.GetMinValue;
         }
         else return 0;
+    }
+
+    public bool GetGizmoSettingTranslateIgnoreBool()
+    {
+        if(TryGetGizmoSetting(GizmoType.Move, Axis.Z, out GizmoSetting gizmoSetting))
+        {
+            return gizmoSetting.IgnoreScale;
+        }
+        else return false;
     }
 
     private int GetParentCount()
@@ -441,7 +467,7 @@ public partial class Selectable : MonoBehaviour
         }
     }
 
-    private List<PdfExporter.PdfImageData> GetAssemblyPDFImageData(Camera camera) 
+    private List<PdfExporter.PdfImageData> GetAssemblyPDFImageData(Camera camera)
     {
         var imageDatas = new List<PdfExporter.PdfImageData>();
         for (int i = 0; i < 2; i++)
@@ -750,7 +776,7 @@ public partial class Selectable : MonoBehaviour
 
     private void Start()
     {
-        if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z) && ScaleLevels.Count > 0)
+        if (ScaleLevels.Count > 0)
         {
             CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
             CurrentPreviewScaleLevel = CurrentScaleLevel;
@@ -770,7 +796,9 @@ public partial class Selectable : MonoBehaviour
             var defaultSelected = ScaleLevels.First(item => item.Selected);
             SetScaleLevel(defaultSelected, true);
 
-            _gizmoHandler.GizmoDragEnded.AddListener(() =>
+            if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+            {
+                _gizmoHandler.GizmoDragEnded.AddListener(() =>
             {
                 if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
                 {
@@ -778,13 +806,14 @@ public partial class Selectable : MonoBehaviour
                 }
             });
 
-            _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
-            {
-                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
                 {
-                    UpdateZScaling(false);
-                }
-            });
+                    if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                    {
+                        UpdateZScaling(false);
+                    }
+                });
+            }
         }
 
         _originalRotation2 = transform.localRotation;
@@ -989,7 +1018,8 @@ public partial class Selectable : MonoBehaviour
         _highlightEffect.highlighted = false;
         Deselected?.Invoke();
 
-        if (fireEvent) {
+        if (fireEvent)
+        {
             SelectionChanged?.Invoke();
         }
     }
