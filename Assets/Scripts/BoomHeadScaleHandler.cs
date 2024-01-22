@@ -98,7 +98,6 @@ public class BoomHeadScaleHandler : MonoBehaviour
             child.shelf.SetParent(point);
             child.shelf.localPosition = child.localPosition;
             child.shelf.SetWorldScale(new Vector3(1,1,1));
-            child.shelf.gameObject.GetComponent<StoredValuesMinMax>().SetMinMax();
         }
     }
 }
