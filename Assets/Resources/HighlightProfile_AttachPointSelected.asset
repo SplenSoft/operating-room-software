@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e9253636bf2648bd813257f451f8486, type: 3}
-  m_Name: HighlightProfile_SelectableSelected
+  m_Name: HighlightProfile_AttachPointSelected
   m_EditorClassIdentifier: 
   effectGroup: 0
   effectGroupLayer:
@@ -26,7 +26,7 @@ MonoBehaviour:
   cameraDistanceFade: 0
   cameraDistanceFadeNear: 0
   cameraDistanceFadeFar: 1000
-  constantWidth: 1
+  constantWidth: 0
   overlay: 0
   overlayMode: 0
   overlayColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -38,7 +38,7 @@ MonoBehaviour:
   overlayTextureScale: 1
   overlayVisibility: 0
   outline: 1
-  outlineColor: {r: 0, g: 0, b: 0, a: 1}
+  outlineColor: {r: 0.045186214, g: 0.3467041, b: 0.10224175, a: 1}
   outlineColorStyle: 0
   outlineGradient:
     serializedVersion: 2
@@ -70,10 +70,10 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   outlineGradientInLocalSpace: 0
-  outlineWidth: 0.45
+  outlineWidth: 0.83
   outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   outlineIndependent: 0
   glow: 0
   glowWidth: 0.4

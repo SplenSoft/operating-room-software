@@ -1281,7 +1281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888380afc233049ce9e618f9f36c8ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 0}
+  profile: {fileID: 11400000, guid: e33bb565c9ab7f445a0646199c7f0fb3, type: 2}
   profileSync: 0
   previewInEditor: 1
   camerasLayerMask:
@@ -1308,7 +1308,7 @@ MonoBehaviour:
   fadeInDuration: 0
   fadeOutDuration: 0
   flipY: 0
-  constantWidth: 1
+  constantWidth: 0
   subMeshMask: -1
   overlay: 0
   overlayMode: 0
@@ -1354,15 +1354,15 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   outlineGradientInLocalSpace: 0
   outlineWidth: 0.45
-  outlineQuality: 3
+  outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
   glow: 0
   glowWidth: 0.4
-  glowQuality: 3
+  glowQuality: 1
   glowDownsampling: 2
   glowHQColor: {r: 0.64, g: 1, b: 0, a: 1}
   glowDithering: 1
@@ -1397,10 +1397,10 @@ MonoBehaviour:
   targetFXRotationSpeed: 50
   targetFXInitialScale: 4
   targetFXEndScale: 1.5
-  targetFXScaleToRenderBounds: 1
+  targetFXScaleToRenderBounds: 0
   targetFXAlignToGround: 0
   targetFXFadePower: 32
-  targetFXGroundMaxDistance: 10
+  targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1411,7 +1411,7 @@ MonoBehaviour:
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  seeThroughOccluderThreshold: 0.3
+  seeThroughOccluderThreshold: 0.4
   seeThroughOccluderMaskAccurate: 0
   seeThroughOccluderCheckInterval: 1
   seeThroughOccluderCheckIndividualObjects: 0
@@ -1843,7 +1843,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
+  m_LocalRotation: {x: -1.7e-44, y: -0.7071068, z: -2.8e-44, w: 0.7071068}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2075,7 +2075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888380afc233049ce9e618f9f36c8ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 0}
+  profile: {fileID: 11400000, guid: e33bb565c9ab7f445a0646199c7f0fb3, type: 2}
   profileSync: 0
   previewInEditor: 1
   camerasLayerMask:
@@ -2102,7 +2102,7 @@ MonoBehaviour:
   fadeInDuration: 0
   fadeOutDuration: 0
   flipY: 0
-  constantWidth: 1
+  constantWidth: 0
   subMeshMask: -1
   overlay: 0
   overlayMode: 0
@@ -2148,15 +2148,15 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   outlineGradientInLocalSpace: 0
   outlineWidth: 0.45
-  outlineQuality: 3
+  outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
   glow: 0
   glowWidth: 0.4
-  glowQuality: 3
+  glowQuality: 1
   glowDownsampling: 2
   glowHQColor: {r: 0.64, g: 1, b: 0, a: 1}
   glowDithering: 1
@@ -2191,10 +2191,10 @@ MonoBehaviour:
   targetFXRotationSpeed: 50
   targetFXInitialScale: 4
   targetFXEndScale: 1.5
-  targetFXScaleToRenderBounds: 1
+  targetFXScaleToRenderBounds: 0
   targetFXAlignToGround: 0
   targetFXFadePower: 32
-  targetFXGroundMaxDistance: 10
+  targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2205,7 +2205,7 @@ MonoBehaviour:
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  seeThroughOccluderThreshold: 0.3
+  seeThroughOccluderThreshold: 0.4
   seeThroughOccluderMaskAccurate: 0
   seeThroughOccluderCheckInterval: 1
   seeThroughOccluderCheckIndividualObjects: 0
@@ -2822,7 +2822,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888380afc233049ce9e618f9f36c8ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 0}
+  profile: {fileID: 11400000, guid: e33bb565c9ab7f445a0646199c7f0fb3, type: 2}
   profileSync: 0
   previewInEditor: 1
   camerasLayerMask:
@@ -2849,7 +2849,7 @@ MonoBehaviour:
   fadeInDuration: 0
   fadeOutDuration: 0
   flipY: 0
-  constantWidth: 1
+  constantWidth: 0
   subMeshMask: -1
   overlay: 0
   overlayMode: 0
@@ -2895,15 +2895,15 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   outlineGradientInLocalSpace: 0
   outlineWidth: 0.45
-  outlineQuality: 3
+  outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
   glow: 0
   glowWidth: 0.4
-  glowQuality: 3
+  glowQuality: 1
   glowDownsampling: 2
   glowHQColor: {r: 0.64, g: 1, b: 0, a: 1}
   glowDithering: 1
@@ -2938,10 +2938,10 @@ MonoBehaviour:
   targetFXRotationSpeed: 50
   targetFXInitialScale: 4
   targetFXEndScale: 1.5
-  targetFXScaleToRenderBounds: 1
+  targetFXScaleToRenderBounds: 0
   targetFXAlignToGround: 0
   targetFXFadePower: 32
-  targetFXGroundMaxDistance: 10
+  targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2952,7 +2952,7 @@ MonoBehaviour:
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  seeThroughOccluderThreshold: 0.3
+  seeThroughOccluderThreshold: 0.4
   seeThroughOccluderMaskAccurate: 0
   seeThroughOccluderCheckInterval: 1
   seeThroughOccluderCheckIndividualObjects: 0
@@ -3846,7 +3846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888380afc233049ce9e618f9f36c8ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 0}
+  profile: {fileID: 11400000, guid: e33bb565c9ab7f445a0646199c7f0fb3, type: 2}
   profileSync: 0
   previewInEditor: 1
   camerasLayerMask:
@@ -3873,7 +3873,7 @@ MonoBehaviour:
   fadeInDuration: 0
   fadeOutDuration: 0
   flipY: 0
-  constantWidth: 1
+  constantWidth: 0
   subMeshMask: -1
   overlay: 0
   overlayMode: 0
@@ -3919,15 +3919,15 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   outlineGradientInLocalSpace: 0
   outlineWidth: 0.45
-  outlineQuality: 3
+  outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
   glow: 0
   glowWidth: 0.4
-  glowQuality: 3
+  glowQuality: 1
   glowDownsampling: 2
   glowHQColor: {r: 0.64, g: 1, b: 0, a: 1}
   glowDithering: 1
@@ -3962,10 +3962,10 @@ MonoBehaviour:
   targetFXRotationSpeed: 50
   targetFXInitialScale: 4
   targetFXEndScale: 1.5
-  targetFXScaleToRenderBounds: 1
+  targetFXScaleToRenderBounds: 0
   targetFXAlignToGround: 0
   targetFXFadePower: 32
-  targetFXGroundMaxDistance: 10
+  targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -3976,7 +3976,7 @@ MonoBehaviour:
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  seeThroughOccluderThreshold: 0.3
+  seeThroughOccluderThreshold: 0.4
   seeThroughOccluderMaskAccurate: 0
   seeThroughOccluderCheckInterval: 1
   seeThroughOccluderCheckIndividualObjects: 0
@@ -4127,7 +4127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 888380afc233049ce9e618f9f36c8ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profile: {fileID: 0}
+  profile: {fileID: 11400000, guid: e33bb565c9ab7f445a0646199c7f0fb3, type: 2}
   profileSync: 0
   previewInEditor: 1
   camerasLayerMask:
@@ -4154,7 +4154,7 @@ MonoBehaviour:
   fadeInDuration: 0
   fadeOutDuration: 0
   flipY: 0
-  constantWidth: 1
+  constantWidth: 0
   subMeshMask: -1
   overlay: 0
   overlayMode: 0
@@ -4200,15 +4200,15 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   outlineGradientInLocalSpace: 0
   outlineWidth: 0.45
-  outlineQuality: 3
+  outlineQuality: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
   glow: 0
   glowWidth: 0.4
-  glowQuality: 3
+  glowQuality: 1
   glowDownsampling: 2
   glowHQColor: {r: 0.64, g: 1, b: 0, a: 1}
   glowDithering: 1
@@ -4243,10 +4243,10 @@ MonoBehaviour:
   targetFXRotationSpeed: 50
   targetFXInitialScale: 4
   targetFXEndScale: 1.5
-  targetFXScaleToRenderBounds: 1
+  targetFXScaleToRenderBounds: 0
   targetFXAlignToGround: 0
   targetFXFadePower: 32
-  targetFXGroundMaxDistance: 10
+  targetFXGroundMaxDistance: 15
   targetFXGroundLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -4257,7 +4257,7 @@ MonoBehaviour:
   seeThroughOccluderMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  seeThroughOccluderThreshold: 0.3
+  seeThroughOccluderThreshold: 0.4
   seeThroughOccluderMaskAccurate: 0
   seeThroughOccluderCheckInterval: 1
   seeThroughOccluderCheckIndividualObjects: 0
@@ -4362,7 +4362,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633508577}
-  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
+  m_LocalRotation: {x: -1.7e-44, y: -0.7071068, z: -2.8e-44, w: 0.7071068}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7212,6 +7212,10 @@ PrefabInstance:
     - target: {fileID: 2400326843376180108, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -11.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2826999259101470967, guid: c4644318a08dda94d84351842d025450, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3054181751024467757, guid: c4644318a08dda94d84351842d025450, type: 3}
       propertyPath: <BuiltInSelectablePrefabs>k__BackingField.Array.size
