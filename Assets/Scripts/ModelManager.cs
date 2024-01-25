@@ -55,7 +55,8 @@ public static class ModelManager
         }
         catch (Exception ex)
         {
-            Debug.LogException(ex);
+            Debug.Log($"Model adjustment failed: {ex.Message}");
+            //Debug.Log(ex);
         }
     }
 }

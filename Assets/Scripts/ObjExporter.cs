@@ -9,6 +9,9 @@ using System;
 using Object = UnityEngine.Object;
 using Debug = UnityEngine.Debug;
 using static UnityEditor.PlayerSettings;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine.Networking;
+using System.Threading.Tasks;
 
 public class ObjExporterScript
 {
@@ -23,7 +26,7 @@ public class ObjExporterScript
         StartIndex = 0;
     }
 
-    public static string MeshToString(MeshFilter mf, Transform t, List<Material> materials, StringBuilder mtlStringBuilder)
+    public static async Task<string> MeshToString(MeshFilter mf, Transform t, List<Material> materials, StringBuilder mtlStringBuilder, Loading.LoadingToken loadingToken)
     {
         Vector3 s = t.localScale;
         Vector3 p = t.localPosition;
@@ -94,6 +97,9 @@ public class ObjExporterScript
                 sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
                     triangles[i] + 1 + StartIndex, triangles[i + 1] + 1 + StartIndex, triangles[i + 2] + 1 + StartIndex));
             }
+
+            loadingToken.SetProgress((float)subMesh / (m.subMeshCount + 1));
+            await Task.Yield();
         }
 
         StartIndex += numVertices;
@@ -117,115 +123,165 @@ public static class ObjExporter
 
     
 
-    public static void DoExport(bool makeSubmeshes, GameObject obj)
+    public static async void DoExport(bool makeSubmeshes, GameObject obj)
     {
-        string meshName = obj.name;
-        //string fileName = EditorUtility.SaveFilePanel("Export .obj file", "", meshName, "obj");
-
+        var loadingTokenOverall = Loading.GetLoadingToken();
+        var loadingTokenCombiningMeshes = Loading.GetLoadingToken();
+        var loadingTokenUpload = Loading.GetLoadingToken();
+        var loadingTokenWaitForResponse = Loading.GetLoadingToken();
+        var loadingTokenWriteObj = Loading.GetLoadingToken();
         ObjExporterScript.Start();
 
-        StringBuilder meshString = new StringBuilder();
-
-        meshString.Append("#" + meshName + ".obj"
-            + "\n#" + System.DateTime.Now.ToLongDateString()
-            + "\n#" + System.DateTime.Now.ToLongTimeString()
-            + "\n#-------"
-            + "\n\n");
-
-        Vector3 oldPos = obj.transform.position;
-        obj.transform.position = Vector3.zero;
-        MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>().Where(item => item.enabled).ToList().ConvertAll(item => item.gameObject.GetComponent<MeshFilter>()).ToArray();
-        UnityEngine.Debug.Log($"Found {meshFilters.Length} meshfilters");
-        //CombineInstance[] combine = new CombineInstance[meshFilters.Length];
-        List<CombineInstance> combineInstances = new List<CombineInstance>();
-        List<Material> materials = new();
-        int i = 0;
-        while (i < meshFilters.Length)
+        try
         {
-            var filter = meshFilters[i];
-            var meshRenderer = filter.gameObject.GetComponent<MeshRenderer>();
-            for (int j = 0; j < filter.sharedMesh.subMeshCount; j++)
-            {
-                CombineInstance instance = new();
-                instance.mesh = filter.sharedMesh;
-                instance.transform = filter.transform.localToWorldMatrix;
-                instance.subMeshIndex = j;
+            string meshName = obj.name;
+            //string fileName = EditorUtility.SaveFilePanel("Export .obj file", "", meshName, "obj");
 
-                if (meshRenderer.sharedMaterials.Length > j)
+            StringBuilder meshString = new StringBuilder();
+
+            meshString.Append("#" + meshName + ".obj"
+                + "\n#" + System.DateTime.Now.ToLongDateString()
+                + "\n#" + System.DateTime.Now.ToLongTimeString()
+                + "\n#-------"
+                + "\n\n");
+
+            Vector3 oldPos = obj.transform.position;
+            obj.transform.position = Vector3.zero;
+            MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>().Where(item => item.enabled).ToList().ConvertAll(item => item.gameObject.GetComponent<MeshFilter>()).ToArray();
+            UnityEngine.Debug.Log($"Found {meshFilters.Length} meshfilters");
+            //CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+            List<CombineInstance> combineInstances = new List<CombineInstance>();
+            List<Material> materials = new();
+            int i = 0;
+            while (i < meshFilters.Length)
+            {
+                var filter = meshFilters[i];
+                var meshRenderer = filter.gameObject.GetComponent<MeshRenderer>();
+                for (int j = 0; j < filter.sharedMesh.subMeshCount; j++)
                 {
-                    materials.Add(meshRenderer.sharedMaterials[j]);
+                    CombineInstance instance = new();
+                    instance.mesh = filter.sharedMesh;
+                    instance.transform = filter.transform.localToWorldMatrix;
+                    instance.subMeshIndex = j;
+
+                    if (meshRenderer.sharedMaterials.Length > j)
+                    {
+                        materials.Add(meshRenderer.sharedMaterials[j]);
+                    }
+                    else
+                    {
+                        materials.Add(null);
+                    }
+                    combineInstances.Add(instance);
                 }
-                else
-                {
-                    materials.Add(null);
-                }
-                combineInstances.Add(instance);
+
+                i++;
+                loadingTokenCombiningMeshes.SetProgress((float)i / (meshFilters.Length + 1));
+                await Task.Yield();
+            }
+            Debug.Log($"Combining {combineInstances.Count} combine instances ...");
+            CombineInstance[] combine = combineInstances.ToArray();
+
+            Mesh mesh = new();
+            mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+            mesh.CombineMeshes(combine, mergeSubMeshes: false, useMatrices: true);
+            loadingTokenOverall.SetProgress(0.25f);
+            await Task.Yield();
+            obj.transform.position = oldPos;
+
+            obj = new GameObject("Mesh", typeof(MeshFilter)/*, typeof(MeshRenderer)*/);
+            //obj.GetComponent<MeshRenderer>()
+            obj.GetComponent<MeshFilter>().sharedMesh = mesh;
+
+            Transform t = obj.transform;
+
+            Vector3 originalPosition = t.position;
+            t.position = Vector3.zero;
+
+            if (!makeSubmeshes)
+            {
+                meshString.Append("g ").Append(t.name).Append("\n");
+            }
+            StringBuilder mtlStringBuilder = new StringBuilder();
+            var task = ProcessTransform(t, makeSubmeshes, materials, mtlStringBuilder, loadingTokenWriteObj);
+            await task;
+            meshString.Append(task.Result);
+            loadingTokenOverall.SetProgress(0.75f);
+            string id = Guid.NewGuid().ToString();
+
+            meshString.Append($"mtllib {id}.mtl");
+
+            Dictionary<string, string> formFields = new()
+            {
+                { "objData", meshString.ToString() },
+                { "mtlData", mtlStringBuilder.ToString() },
+                { "app_password", "qweasdv413240897fvhw" },
+                { "id", id }
+            };
+
+            using UnityWebRequest request = UnityWebRequest.Post("http://www.splensoft.com/ors/php/export-obj.php", formFields);
+            request.SendWebRequest();
+
+            while (!request.isDone)
+            {
+                loadingTokenUpload.SetProgress(request.uploadProgress / 1.01f);
+                float waitingProgress = Mathf.Min(loadingTokenWaitForResponse.Progress + (0.01f * Time.deltaTime), 0.9f);
+                loadingTokenWaitForResponse.SetProgress(waitingProgress);
+                await Task.Yield();
+                if (!Application.isPlaying) return;
             }
 
-            i++;
+            loadingTokenUpload.SetProgress(1f / 1.01f);
+
+            Debug.Log(request.downloadHandler.text);
+
+            if (request.responseCode != 200)
+            {
+                Debug.LogError(request.responseCode);
+            }
+
+            if (request.error != null)
+            {
+                Debug.LogError(request.error);
+                return;
+            }
+
+            if (request.downloadHandler.text.StartsWith("bad password"))
+            {
+                Debug.LogError("Bad app password");
+                return;
+            }
+
+            if (request.downloadHandler.text == "success")
+            {
+                Application.OpenURL("http://www.splensoft.com/ors/obj.html?id=" + id);
+            }
+            else
+            {
+                Debug.LogError("Something went wrong while getting PDF URL");
+                Debug.LogError(request);
+            }
+
+            
+            Object.Destroy(mesh);
+            Object.Destroy(obj);
         }
-        Debug.Log($"Combining {combineInstances.Count} combine instances ...");
-        CombineInstance[] combine = combineInstances.ToArray();
-
-        Mesh mesh = new();
-        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-        mesh.CombineMeshes(combine, mergeSubMeshes: false, useMatrices: true);
-        obj.transform.position = oldPos;
-
-        obj = new GameObject("Mesh", typeof(MeshFilter)/*, typeof(MeshRenderer)*/);
-        //obj.GetComponent<MeshRenderer>()
-        obj.GetComponent<MeshFilter>().sharedMesh = mesh;
-
-        Transform t = obj.transform;
-
-        Vector3 originalPosition = t.position;
-        t.position = Vector3.zero;
-
-        if (!makeSubmeshes)
+        catch (Exception e) 
         {
-            meshString.Append("g ").Append(t.name).Append("\n");
+            Debug.LogException(e);
         }
-        StringBuilder mtlStringBuilder = new StringBuilder();
-        meshString.Append(ProcessTransform(t, makeSubmeshes, materials, mtlStringBuilder));
-
-        
-
-#if UNITY_EDITOR
-        string fileName = EditorUtility.SaveFilePanel("Export .obj file", "", meshName, "obj");
-        //WriteToFile(meshString.ToString(), Application.persistentDataPath + "/exportedObj.obj");
-        string mtlFilePath = fileName.Replace(".obj", ".mtl");
-        int pos = mtlFilePath.LastIndexOf("/") + 1;
-        string mtlFileName = mtlFilePath.Substring(pos, mtlFilePath.Length - pos);
-        meshString.Append($"mtllib {mtlFileName}");
-        WriteToFile(meshString.ToString(), fileName);
-        WriteToFile(mtlStringBuilder.ToString(), mtlFilePath);
-        UnityEngine.Debug.Log("Exported Mesh: " + fileName);
-#elif UNITY_WEBGL
-        WebGLExtern.SaveStringToFile(meshString.ToString(), "obj");
-#elif UNITY_STANDALONE_WIN
-        string fileName = Application.persistentDataPath + $"/ExportedArmAssemblyElevationOBJ_{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}.obj";
-        WriteToFile(meshString.ToString(), fileName);
-        ProcessStartInfo startInfo = new ProcessStartInfo
+        finally
         {
-            UseShellExecute = true,
-            Verb = "open",
-            FileName = Application.persistentDataPath,
-        };
-
-        Process.Start(startInfo);
-#else
-        throw new System.Exception("Not supported on this platform");
-#endif
-
-        t.position = originalPosition;
-
-        ObjExporterScript.End();
-        
-        Object.Destroy(mesh);
-        Object.Destroy(obj);
+            loadingTokenOverall.Done();
+            loadingTokenCombiningMeshes.Done();
+            loadingTokenUpload.Done();
+            loadingTokenWaitForResponse.Done();
+            loadingTokenWriteObj.Done();
+            ObjExporterScript.End();
+        }
     }
 
-    static string ProcessTransform(Transform t, bool makeSubmeshes, List<Material> materials, StringBuilder mtlStringBuilder)
+    private static async Task<string> ProcessTransform(Transform t, bool makeSubmeshes, List<Material> materials, StringBuilder mtlStringBuilder, Loading.LoadingToken loadingToken)
     {
         StringBuilder meshString = new StringBuilder();
 
@@ -241,12 +297,16 @@ public static class ObjExporter
             {
                 meshString.Append("g ").Append(t.name).Append("\n");
             }
-            meshString.Append(ObjExporterScript.MeshToString(mf, t, materials, mtlStringBuilder));
+            var task = ObjExporterScript.MeshToString(mf, t, materials, mtlStringBuilder, loadingToken);
+            await task;
+            meshString.Append(task.Result);
         }
 
         for (int i = 0; i < t.childCount; i++)
         {
-            meshString.Append(ProcessTransform(t.GetChild(i), makeSubmeshes, materials, mtlStringBuilder));
+            var task = ProcessTransform(t.GetChild(i), makeSubmeshes, materials, mtlStringBuilder, loadingToken);
+            await task;
+            meshString.Append(task.Result);
         }
 
         return meshString.ToString();
