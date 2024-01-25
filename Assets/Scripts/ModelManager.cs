@@ -10,13 +10,13 @@ using UnityEngine;
 /// <summary>
 /// Automatically manages models to make them properly configured for ORS
 /// </summary>
-public static class MeshManager
+public static class ModelManager
 {
     /// <summary>
-    /// Finds all meshes in the project and marks them as read/write
+    /// Finds all models in the project and marks them as read/write
     /// </summary>
-    [MenuItem("ORS/Mark all meshes as read-write")]
-    public static void MarkAllMeshesAsReadWrite()
+    [MenuItem("ORS/Mark all models as read-write")]
+    public static void MarkAllModelsAsReadWrite()
     {
         string[] guids = AssetDatabase.FindAssets("t: model");
 
@@ -63,12 +63,12 @@ public static class MeshManager
 /// <summary>
 /// Checks paths on save. If path is a model asset, will be processed to be properly configuerd for ORS
 /// </summary>
-public class CheckMeshesOnSave : AssetModificationProcessor
+public class CheckModelsOnSave : AssetModificationProcessor
 {
     private static string[] OnWillSaveAssets(string[] paths)
     {
         foreach (string path in paths)
-            MeshManager.HandleModel(path);
+            ModelManager.HandleModel(path);
         return paths;
     }
 }
@@ -76,12 +76,12 @@ public class CheckMeshesOnSave : AssetModificationProcessor
 /// <summary>
 /// Ensures all model files are properly configured before the app is built
 /// </summary>
-class CheckMeshesOnPreBuild : IPreprocessBuildWithReport
+class CheckModelsOnPreBuild : IPreprocessBuildWithReport
 {
     public int callbackOrder { get { return 0; } }
     public void OnPreprocessBuild(BuildReport report)
     {
-        MeshManager.MarkAllMeshesAsReadWrite();
+        ModelManager.MarkAllModelsAsReadWrite();
     }
 }
 #endif
