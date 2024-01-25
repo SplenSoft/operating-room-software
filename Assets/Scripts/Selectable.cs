@@ -92,6 +92,7 @@ public partial class Selectable : MonoBehaviour
     private Quaternion _originalRotation;
     private Transform _virtualParent;
     private HighlightEffect _highlightEffect;
+    private HighlightProfile _highlightProfileSelected;
     private GizmoHandler _gizmoHandler;
     private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
@@ -676,6 +677,8 @@ public partial class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
+        
+
         guid = Guid.NewGuid().ToString();
         if (!ConfigurationManager._instance.isDebug && GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID)) gameObject.name = guid.ToString();
 
@@ -711,6 +714,13 @@ public partial class Selectable : MonoBehaviour
         _originalRotation = transform.rotation;
         //OriginalLocalRotation = transform.localEulerAngles;
         _highlightEffect = GetComponent<HighlightEffect>();
+        _highlightProfileSelected = Resources.Load<HighlightProfile>("HighlightProfile_SelectableSelected");
+
+        if (_highlightEffect.profile != _highlightProfileSelected)
+        {
+            _highlightEffect.ProfileLoad(_highlightProfileSelected);
+        }
+
         _gizmoHandler = GetComponent<GizmoHandler>();
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
 
