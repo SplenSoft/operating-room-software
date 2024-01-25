@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System;
 using Object = UnityEngine.Object;
 using Debug = UnityEngine.Debug;
+using static UnityEditor.PlayerSettings;
 
 public class ObjExporterScript
 {
@@ -22,7 +23,7 @@ public class ObjExporterScript
         StartIndex = 0;
     }
 
-    public static string MeshToString(MeshFilter mf, Transform t)
+    public static string MeshToString(MeshFilter mf, Transform t, List<Material> materials, StringBuilder mtlStringBuilder)
     {
         Vector3 s = t.localScale;
         Vector3 p = t.localPosition;
@@ -55,17 +56,38 @@ public class ObjExporterScript
         {
             sb.Append(string.Format("vt {0} {1}\n", v.x, v.y));
         }
-
-        //Material[] mats = mf.GetComponent<Renderer>().sharedMaterials;
+        
         //Material[] mats = m.sub
         Debug.Log($"GameObject {t.gameObject.name} has {m.subMeshCount} submeshes");
-        for (int material = 0; material < m.subMeshCount; material++)
+        for (int subMesh = 0; subMesh < m.subMeshCount; subMesh++)
         {
             sb.Append("\n");
-            //sb.Append("usemtl ").Append(mats[material].name).Append("\n");
-            //sb.Append("usemap ").Append(mats[material].name).Append("\n");
 
-            int[] triangles = m.GetTriangles(material);
+            //Debug.Log($"Submesh {t.name} meshRenderer == null -> {meshRenderer == null}");
+
+            if (materials[subMesh + 1] != null)
+            {
+                string name = materials[subMesh + 1].name;
+                sb.Append("usemtl ").Append(materials[subMesh + 1].name).Append("\n");
+                mtlStringBuilder.Append($"newmtl {name}").Append("\n");
+                //sb.Append("usemap ").Append(materials[subMesh].name).Append("\n");
+
+                var color = materials[subMesh + 1].color;
+                mtlStringBuilder.Append($"Ka {color.r} {color.g} {color.b}").Append("\n");
+                mtlStringBuilder.Append($"Kd {color.r} {color.g} {color.b}").Append("\n");
+            }
+            else
+            {
+                sb.Append("usemtl ").Append("Empty").Append("\n");
+                mtlStringBuilder.Append($"newmtl Empty").Append("\n");
+                //sb.Append("usemap ").Append(materials[subMesh].name).Append("\n");
+
+                //var color = materials[subMesh].color;
+                mtlStringBuilder.Append($"Ka 1 1 1").Append("\n");
+                mtlStringBuilder.Append($"Kd 1 1 1").Append("\n");
+            }
+
+            int[] triangles = m.GetTriangles(subMesh);
             //Debug.Log($"Material {mats[material].name} on obj {t.gameObject.name} has {triangles.Length} triangles");
             for (int i = 0; i < triangles.Length; i += 3)
             {
@@ -93,6 +115,8 @@ public static class ObjExporter
     //    DoExport(false);
     //}
 
+    
+
     public static void DoExport(bool makeSubmeshes, GameObject obj)
     {
         string meshName = obj.name;
@@ -114,26 +138,36 @@ public static class ObjExporter
         UnityEngine.Debug.Log($"Found {meshFilters.Length} meshfilters");
         //CombineInstance[] combine = new CombineInstance[meshFilters.Length];
         List<CombineInstance> combineInstances = new List<CombineInstance>();
-
+        List<Material> materials = new();
         int i = 0;
         while (i < meshFilters.Length)
         {
             var filter = meshFilters[i];
+            var meshRenderer = filter.gameObject.GetComponent<MeshRenderer>();
             for (int j = 0; j < filter.sharedMesh.subMeshCount; j++)
             {
-                CombineInstance instance = new CombineInstance();
+                CombineInstance instance = new();
                 instance.mesh = filter.sharedMesh;
                 instance.transform = filter.transform.localToWorldMatrix;
                 instance.subMeshIndex = j;
+
+                if (meshRenderer.sharedMaterials.Length > j)
+                {
+                    materials.Add(meshRenderer.sharedMaterials[j]);
+                }
+                else
+                {
+                    materials.Add(null);
+                }
                 combineInstances.Add(instance);
             }
 
             i++;
         }
-
+        Debug.Log($"Combining {combineInstances.Count} combine instances ...");
         CombineInstance[] combine = combineInstances.ToArray();
 
-        Mesh mesh = new Mesh();
+        Mesh mesh = new();
         mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         mesh.CombineMeshes(combine, mergeSubMeshes: false, useMatrices: true);
         obj.transform.position = oldPos;
@@ -151,14 +185,20 @@ public static class ObjExporter
         {
             meshString.Append("g ").Append(t.name).Append("\n");
         }
-        meshString.Append(ProcessTransform(t, makeSubmeshes));
+        StringBuilder mtlStringBuilder = new StringBuilder();
+        meshString.Append(ProcessTransform(t, makeSubmeshes, materials, mtlStringBuilder));
 
         
 
 #if UNITY_EDITOR
         string fileName = EditorUtility.SaveFilePanel("Export .obj file", "", meshName, "obj");
         //WriteToFile(meshString.ToString(), Application.persistentDataPath + "/exportedObj.obj");
+        string mtlFilePath = fileName.Replace(".obj", ".mtl");
+        int pos = mtlFilePath.LastIndexOf("/") + 1;
+        string mtlFileName = mtlFilePath.Substring(pos, mtlFilePath.Length - pos);
+        meshString.Append($"mtllib {mtlFileName}");
         WriteToFile(meshString.ToString(), fileName);
+        WriteToFile(mtlStringBuilder.ToString(), mtlFilePath);
         UnityEngine.Debug.Log("Exported Mesh: " + fileName);
 #elif UNITY_WEBGL
         WebGLExtern.SaveStringToFile(meshString.ToString(), "obj");
@@ -185,7 +225,7 @@ public static class ObjExporter
         Object.Destroy(obj);
     }
 
-    static string ProcessTransform(Transform t, bool makeSubmeshes)
+    static string ProcessTransform(Transform t, bool makeSubmeshes, List<Material> materials, StringBuilder mtlStringBuilder)
     {
         StringBuilder meshString = new StringBuilder();
 
@@ -201,12 +241,12 @@ public static class ObjExporter
             {
                 meshString.Append("g ").Append(t.name).Append("\n");
             }
-            meshString.Append(ObjExporterScript.MeshToString(mf, t));
+            meshString.Append(ObjExporterScript.MeshToString(mf, t, materials, mtlStringBuilder));
         }
 
         for (int i = 0; i < t.childCount; i++)
         {
-            meshString.Append(ProcessTransform(t.GetChild(i), makeSubmeshes));
+            meshString.Append(ProcessTransform(t.GetChild(i), makeSubmeshes, materials, mtlStringBuilder));
         }
 
         return meshString.ToString();
