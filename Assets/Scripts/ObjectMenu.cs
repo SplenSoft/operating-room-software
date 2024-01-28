@@ -58,6 +58,11 @@ public class ObjectMenu : MonoBehaviour
     {
         BuiltInSelectablePrefabs.ForEach(prefab =>
         {
+            if(prefab.TryGetComponent(out ObjectMenuIgnore ignore))
+            {
+                return;
+            }
+
             var selectable = prefab.GetComponent<Selectable>();
             ItemTemplateTextObjectName.text = selectable.Name;
             var newMenuItem = Instantiate(ItemTemplate, ItemTemplate.transform.parent);
