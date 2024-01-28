@@ -34,7 +34,8 @@ namespace RTG
         private GizmoObjectVertexSnapDrag3D _vertexSnapDrag = new GizmoObjectVertexSnapDrag3D();
         private Vector3 _postVSnapPosRestore;
 
-        private bool _is2DModeEnabled;
+        [HideInInspector]
+        public bool _is2DModeEnabled;
         private GizmoLineSlider2D _p2DModeXSlider;
         private GizmoLineSlider2D _p2DModeYSlider;
         private GizmoLineSlider2D _n2DModeXSlider;
