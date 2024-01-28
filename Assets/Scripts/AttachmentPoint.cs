@@ -13,13 +13,9 @@ public class AttachmentPoint : MonoBehaviour
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
     /// <summary>
-    /// Local GUID
-    /// </summary>
-    [field: SerializeField, HideInInspector] public string guid { get; set; }
-    /// <summary>
     /// Global GUID
     /// </summary>
-    [field: SerializeField] public string GUID { get; private set; }
+    [field: SerializeField] public string GUID { get; private set; } = "_AP";
     [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
     [field: SerializeField] private HighlightEffect HighlightHovered { get; set; }
@@ -91,8 +87,6 @@ public class AttachmentPoint : MonoBehaviour
     private void Awake()
     {
         EmptyNullList();
-
-        guid = Guid.NewGuid().ToString();
 
         _collider = GetComponentInChildren<Collider>();
         _renderer = GetComponentInChildren<MeshRenderer>();

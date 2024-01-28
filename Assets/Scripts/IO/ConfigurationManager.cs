@@ -34,7 +34,7 @@ public class ConfigurationManager : MonoBehaviour
     private void HandleBackwardsCompatibility()
     {
         Version nukeBelowVersion = Version.Parse(_nukeBelowVersion);
-        
+
         if (!PlayerPrefs.HasKey(_lastNukedSavesPlayerPrefsKey))
         {
             DeleteAllSaves();
@@ -44,7 +44,7 @@ public class ConfigurationManager : MonoBehaviour
             string lastNukedString = PlayerPrefs.GetString(_lastNukedSavesPlayerPrefsKey);
             Version lastNukedVersion = Version.Parse(lastNukedString);
 
-            if (lastNukedVersion.Revision < nukeBelowVersion.Revision) 
+            if (lastNukedVersion.Revision < nukeBelowVersion.Revision)
             {
                 DeleteAllSaves();
             }
@@ -68,7 +68,7 @@ public class ConfigurationManager : MonoBehaviour
     private void DeleteAllSaves()
     {
         string path = Application.persistentDataPath + "/Saved/";
-        DeleteAllInDirectory(path);        
+        DeleteAllInDirectory(path);
         Debug.Log("Nuked all saved rooms");
         string configsPath = path + "Configs/";
         DeleteAllInDirectory(configsPath);
@@ -178,13 +178,11 @@ public class ConfigurationManager : MonoBehaviour
         {
             if (obj.TryGetComponent(out Selectable s))
             {
-                s.guid = Guid.NewGuid().ToString();
-                s.name = s.guid;
-            }
-            else
-            {
-                obj.GetComponent<AttachmentPoint>().guid = Guid.NewGuid().ToString();
-                //obj.gameObject.name = obj.GetComponent<AttachmentPoint>().guid;
+                if (!string.IsNullOrEmpty(s.guid))
+                {
+                    s.guid = Guid.NewGuid().ToString();
+                    s.name = s.guid;
+                }
             }
 
             if (obj.TryGetComponent(out AttachmentPoint attachmentPoint))
@@ -261,7 +259,7 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    private string attachPointGUID = "C9614497-545A-414A-8452-3B7CF50EE43E"; // this is the prefab GUID for ALL attachment points. DO NOT CHANGE.
+    private string attachPointGUID = "_AP"; // this is the prefab GUID for ALL attachment points. DO NOT CHANGE.
 
     public async Task<GameObject> LoadConfig(string file)
     {
@@ -328,7 +326,7 @@ public class ConfigurationManager : MonoBehaviour
         {
             GameObject go = null;
 
-            if(isRoomBoundary(to))
+            if (isRoomBoundary(to))
             {
                 go = GetRoomBoundary(to);
                 LogData(go.GetComponent<Selectable>(), to);
@@ -371,7 +369,8 @@ public class ConfigurationManager : MonoBehaviour
     {
         GameObject go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid));
         go.transform.SetPositionAndRotation(to.pos, to.rot);
-        go.name = to.instance_guid;
+        if (!string.IsNullOrEmpty(to.instance_guid))
+            go.name = to.instance_guid;
         go.GetComponent<Selectable>().guid = to.instance_guid;
         LogData(go.GetComponent<Selectable>(), to);
         return go;
@@ -384,7 +383,7 @@ public class ConfigurationManager : MonoBehaviour
     void ProcessAttachmentPoint(TrackedObject.Data to)
     {
         GameObject myself = GameObject.Find(to.parent);
-        myself.GetComponent<AttachmentPoint>().guid = to.instance_guid;
+        myself.GetComponent<TrackedObject>().StoreValues(to);
         newPoints.Add(myself.GetComponent<AttachmentPoint>());
     }
 
@@ -418,8 +417,7 @@ public class ConfigurationManager : MonoBehaviour
     /// <param name="to">The JSON structure of this object</param>
     void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
     {
-        Debug.Log(to.parent);
-        AttachmentPoint ap = newPoints.Single(s => s.guid == to.parent);
+        AttachmentPoint ap = newPoints.Single(s => ConfigurationManager.GetGameObjectPath(s.gameObject) == to.parent);
         ap.SetAttachedSelectable(go.GetComponent<Selectable>());
         go.transform.SetParent(ap.gameObject.transform);
         go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
@@ -445,6 +443,11 @@ public class ConfigurationManager : MonoBehaviour
             ResetLocalPosition(obj);
             ResetMaterialPalettes(obj);
         }
+
+        foreach(AttachmentPoint ap in newPoints)
+        {
+            ap.gameObject.transform.position = ap.GetComponent<TrackedObject>().GetPosition();
+        }
     }
 
     /// <summary>
@@ -452,16 +455,13 @@ public class ConfigurationManager : MonoBehaviour
     /// </summary>
     void RandomizeInstanceGUIDs()
     {
-        foreach (AttachmentPoint ap in newPoints)
-        {
-            ap.guid = Guid.NewGuid().ToString();
-            //ap.gameObject.name = ap.guid;
-        }
-
         foreach (TrackedObject to in newObjects)
         {
-            to.gameObject.GetComponent<Selectable>().guid = Guid.NewGuid().ToString();
-            to.gameObject.name = to.gameObject.GetComponent<Selectable>().guid;
+            if (to.transform.root == to.transform)
+            {
+                to.gameObject.GetComponent<Selectable>().guid = Guid.NewGuid().ToString();
+                to.gameObject.name = to.gameObject.GetComponent<Selectable>().guid;
+            }
         }
     }
 
