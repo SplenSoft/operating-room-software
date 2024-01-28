@@ -153,17 +153,17 @@ public partial class Selectable : MonoBehaviour
                                             adjustedMaxTranslation.x,
                                             adjustedMinTranslation.x,
                         out totalExcess.x);
-        bool exceedsY = IsGizmoSettingAllowed(GizmoType.Move, Axis.Y) 
-                        && CheckConstraints(adjustedTransform.y, 
-                                            OriginalLocalPosition.y, 
-                                            adjustedMaxTranslation.y, 
-                                            adjustedMinTranslation.y, 
+        bool exceedsY = IsGizmoSettingAllowed(GizmoType.Move, Axis.Y)
+                        && CheckConstraints(adjustedTransform.y,
+                                            OriginalLocalPosition.y,
+                                            adjustedMaxTranslation.y,
+                                            adjustedMinTranslation.y,
                         out totalExcess.y);
-        bool exceedsZ = IsGizmoSettingAllowed(GizmoType.Move, Axis.Z) 
-                        && CheckConstraints(adjustedTransform.z, 
-                                            OriginalLocalPosition.z, 
-                                            adjustedMaxTranslation.z, 
-                                            adjustedMinTranslation.z, 
+        bool exceedsZ = IsGizmoSettingAllowed(GizmoType.Move, Axis.Z)
+                        && CheckConstraints(adjustedTransform.z,
+                                            OriginalLocalPosition.z,
+                                            adjustedMaxTranslation.z,
+                                            adjustedMinTranslation.z,
                         out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
     }
@@ -363,7 +363,7 @@ public partial class Selectable : MonoBehaviour
 
     public bool GetGizmoSettingTranslateIgnoreBool()
     {
-        if(TryGetGizmoSetting(GizmoType.Move, Axis.Z, out GizmoSetting gizmoSetting))
+        if (TryGetGizmoSetting(GizmoType.Move, Axis.Z, out GizmoSetting gizmoSetting))
         {
             return gizmoSetting.IgnoreScale;
         }
@@ -677,10 +677,7 @@ public partial class Selectable : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
-        
-
-        guid = Guid.NewGuid().ToString();
-        if (!ConfigurationManager._instance.isDebug && GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID)) gameObject.name = guid.ToString();
+        //if (!ConfigurationManager._instance.isDebug && GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID)) gameObject.name = guid.ToString();
 
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;
@@ -786,6 +783,12 @@ public partial class Selectable : MonoBehaviour
 
     private void Start()
     {
+        if (GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID) && transform.parent == null)
+        {
+            guid = Guid.NewGuid().ToString();
+            gameObject.name = guid.ToString();
+        }
+
         if (ScaleLevels.Count > 0)
         {
             CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);

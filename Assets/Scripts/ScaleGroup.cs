@@ -18,6 +18,12 @@ public class ScaleGroup : MonoBehaviour
         ScaleGroupManager.OnZScaleChanged += ScaleZ;
     }
 
+    void OnDestroy()
+    {
+        ScaleGroupManager.OnScaleLevelChanged -= ScaleLevel;
+        ScaleGroupManager.OnZScaleChanged -= ScaleZ;
+    }
+
     void ScaleLevel(string changedID, Selectable.ScaleLevel scaleLevel)
     {
         if (changedID != id || GetComponent<Selectable>().CurrentScaleLevel == scaleLevel) return;

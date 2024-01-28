@@ -22,6 +22,8 @@ public class RoomBoundary : MonoBehaviour
     [field: SerializeField] public GameObject baseboard { get; private set; }
     private CinemachineTransposer _transposer;
     private static Dictionary<RoomBoundaryType, RoomBoundary> RoomBoundariesByType { get; set; } = new();
+    Vector3 baseboardPosition;
+    Quaternion baseboardRotation;
 
     private void Awake()
     {
@@ -37,6 +39,14 @@ public class RoomBoundary : MonoBehaviour
             _transposer = VirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         }
 
+        if (baseboard != null)
+        {
+            baseboard.transform.SetParent(this.transform);
+            baseboardPosition = baseboard.transform.localPosition;
+            baseboardRotation = baseboard.transform.localRotation;
+            baseboard.transform.SetParent(null);
+        }
+
         RoomSize.RoomSizeChanged += SetSize;
     }
 
@@ -45,13 +55,6 @@ public class RoomBoundary : MonoBehaviour
         float height = dimension.Height.ToMeters();
         float width = dimension.Width.ToMeters();
         float depth = dimension.Depth.ToMeters();
-
-        Vector3 basePosition = new Vector3(0, 0, 0);
-        if (baseboard != null)
-        {
-            basePosition = baseboard.transform.localPosition;
-            baseboard.transform.SetParent(null);
-        }
 
         switch (RoomBoundaryType)
         {
@@ -81,18 +84,44 @@ public class RoomBoundary : MonoBehaviour
                 break;
         }
 
+        if(ReferenceEquals(baseboard, null) ? false : (baseboard ? false : true))
+        {
+            baseboard = null;
+            CheckReferenceToBaseboard();
+        }
+
         if (baseboard != null)
         {
             baseboard.transform.SetParent(this.transform);
-            baseboard.transform.localPosition = basePosition;
-            baseboard.transform.SetParent(null);
+            baseboard.transform.SetLocalPositionAndRotation(baseboardPosition, baseboardRotation);
 
             float highest = Math.Max(depth, width);
 
             baseboard.transform.localScale = new Vector3(
                 baseboard.transform.localScale.x,
-                baseboard.transform.localScale.y + (highest / 4f),
+                0.24f,
                 baseboard.transform.localScale.z);
+
+            baseboard.transform.SetParent(null);
+        }
+    }
+
+    void CheckReferenceToBaseboard()
+    {
+        if(baseboard != null || RoomBoundaryType == RoomBoundaryType.Ceiling || RoomBoundaryType == RoomBoundaryType.Floor) return;
+
+        Collider[] hitColliders = Physics.OverlapSphere(baseboardPosition, 5);
+        Collider[] orderedColliders = hitColliders.OrderBy(x => (baseboardPosition - x.transform.position).sqrMagnitude).ToArray();
+        foreach (Collider hit in orderedColliders)
+        {
+            if (hit.TryGetComponent(out Selectable selectable))
+            {
+                if (selectable.SubPartName == "Baseboard")
+                {
+                    baseboard = hit.gameObject;
+                    break;
+                }
+            }
         }
     }
 
@@ -178,7 +207,7 @@ public class RoomBoundary : MonoBehaviour
         c.a = toggle ? 1 : 0;
         MeshRenderer.material.color = c;
 
-       ToggleBaseboardRenderer(toggle);
+        ToggleBaseboardRenderer(toggle);
     }
 
     private void OnMouseUpAsButton()
@@ -203,12 +232,12 @@ public class RoomBoundary : MonoBehaviour
 
     private void ToggleBaseboardRenderer(bool toggle)
     {
-        if(baseboard == null) return;
+        if (baseboard == null) return;
 
         MeshRenderer[] baseRender = baseboard.GetComponentsInChildren<MeshRenderer>();
-        foreach(MeshRenderer mesh in baseRender)
+        foreach (MeshRenderer mesh in baseRender)
         {
-            if(MeshRenderer.enabled != toggle) continue;
+            if (MeshRenderer.enabled != toggle) continue;
 
             mesh.enabled = toggle;
         }

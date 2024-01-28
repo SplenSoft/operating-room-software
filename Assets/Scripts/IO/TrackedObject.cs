@@ -42,7 +42,7 @@ public class TrackedObject : MonoBehaviour
             data.materialNames = new List<string>();
             Material[] materials = palette.meshRenderer.materials;
 
-            foreach(Material material in materials)
+            foreach (Material material in materials)
             {
                 data.materialNames.Add(material.name);
             }
@@ -85,7 +85,7 @@ public class TrackedObject : MonoBehaviour
         if (d.scaleLevel != null)
             data.scaleLevel = d.scaleLevel;
 
-        if(d.materialNames != null)
+        if (d.materialNames != null)
         {
             data.materialNames = d.materialNames;
         }
@@ -99,25 +99,21 @@ public class TrackedObject : MonoBehaviour
     {
         if (gameObject.TryGetComponent(out Selectable s))
         {
-            data.instance_guid = s.guid.ToString();
-            if (s.GUID == "" || s.GUID == null)
+            if (s.guid != null)
             {
-                data.parent = ConfigurationManager.GetGameObjectPath(gameObject);
+                data.instance_guid = s.guid.ToString();
             }
-            else
-            {
-                data.global_guid = s.GUID;
-            }
+
+            data.global_guid = s.GUID;
 
             if (s.ParentAttachmentPoint != null) // This selectable is a child of a configuration, assign AttachmentPoint guid to it's parent ref
             {
-                data.parent = s.ParentAttachmentPoint.guid.ToString();
+                data.parent = ConfigurationManager.GetGameObjectPath(s.ParentAttachmentPoint.gameObject);
             }
         }
         else
         {
             AttachmentPoint ap = gameObject.GetComponent<AttachmentPoint>();
-            data.instance_guid = ap.guid.ToString();
             data.global_guid = ap.GUID;
 
             data.parent = ConfigurationManager.GetGameObjectPath(gameObject);

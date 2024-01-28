@@ -265,8 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -611,8 +610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -901,8 +899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -1413,8 +1410,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -1980,8 +1976,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -2539,8 +2534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -2774,8 +2768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -3176,8 +3169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -3632,8 +3624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -3979,8 +3970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -4559,8 +4549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -4850,8 +4839,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -5251,8 +5239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -5459,8 +5446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -6026,8 +6012,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -6316,8 +6301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -6606,8 +6590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -7008,8 +6991,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -7244,8 +7226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -8033,8 +8014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -8379,8 +8359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
-  <GUID>k__BackingField: C9614497-545A-414A-8452-3B7CF50EE43E
+  <GUID>k__BackingField: _AP
   <AttachedSelectable>k__BackingField:
   - {fileID: 0}
   _attachmentPointHovered: 0
@@ -9216,6 +9195,11 @@ MonoBehaviour:
     - 0.463
     - 0.579
   railAttachPoint: {fileID: 6526822854579980039}
+  scale:
+    <Size>k__BackingField: 0
+    <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
+    metadata: []
 --- !u!114 &8730165539022225314
 MonoBehaviour:
   m_ObjectHideFlags: 0
