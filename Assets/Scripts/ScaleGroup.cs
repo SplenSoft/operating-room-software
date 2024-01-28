@@ -27,7 +27,6 @@ public class ScaleGroup : MonoBehaviour
 
     void ScaleZ(string changedID, float z)
     {
-        Debug.Log($"new value: {z} ||| current value: {transform.localScale.z} ||| isNan = {float.IsNaN(z)}");
         if (changedID != id || transform.localScale.z == z || float.IsNaN(z) || GetComponent<Selectable>().ScaleLevels.Count != 0) return;
 
         transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, z);

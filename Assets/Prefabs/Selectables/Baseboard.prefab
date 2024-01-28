@@ -308,7 +308,8 @@ MonoBehaviour:
     <GizmoType>k__BackingField: 2
     <Unrestricted>k__BackingField: 0
     <MaxValue>k__BackingField: 20.62
-    <MinValue>k__BackingField: 0
+    <MinValue>k__BackingField: 1
+    <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
   <useLossyScale>k__BackingField: 1
@@ -447,6 +448,7 @@ MonoBehaviour:
     <Unrestricted>k__BackingField: 0
     <MaxValue>k__BackingField: 0
     <MinValue>k__BackingField: 0
+    <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.0762

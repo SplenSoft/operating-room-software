@@ -46,7 +46,7 @@ public class GizmoHandler : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_selectable != null) 
+        if (_selectable != null)
         {
             _selectable.Deselected.RemoveListener(EnableGizmo);
         }
@@ -429,20 +429,30 @@ public class GizmoHandler : MonoBehaviour
             ApplySnapping(ref xScale, ref yScale, ref zScale);
         }
 
-        _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
-
         if (_selectable.useLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
         {
             float newZScale = zScale / _selectable.transform.lossyScale.z;
             if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
             {
-                _selectable.transform.localScale = Vector3.one;
+                //_selectable.transform.localScale = Vector3.one;
+                Vector3 oldScale = _selectable.transform.localScale;
+
                 _selectable.transform.localScale = new Vector3(
                     1,
                     1,
-                    newZScale);
+                    zScale);
+
+                if(_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
+                {
+                    _selectable.transform.localScale = oldScale;
+                    return;
+                }
+
+                return;
             }
         }
+
+        _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
 
         if (_selectable.ParentSelectable != null)
         {
