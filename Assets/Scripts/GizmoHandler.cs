@@ -12,7 +12,7 @@ using Color = UnityEngine.Color;
 //[RequireComponent(typeof(Selectable))]
 public class GizmoHandler : MonoBehaviour
 {
-    private ObjectTransformGizmo _translateGizmo;
+    [field: SerializeField, HideInInspector] public ObjectTransformGizmo _translateGizmo { get; private set; }
     private ObjectTransformGizmo _rotateGizmo;
     private ObjectTransformGizmo _scaleGizmo;
     private ObjectTransformGizmo _universalGizmo;
@@ -139,8 +139,8 @@ public class GizmoHandler : MonoBehaviour
         if (_gizmosInitialized) return;
 
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
-        if (Selectable.SelectedSelectable.AllowInverseControl)
-            _translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
+        // if (Selectable.SelectedSelectable.AllowInverseControl)
+        //     _translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
         _translateGizmo.SetTargetObject(gameObject);
         //_translateGizmo.Gizmo.MoveGizmo.SetVertexSnapTargetObjects(new List<GameObject> { gameObject });
         _translateGizmo.SetTransformSpace(GizmoSpace.Local);
