@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEditor;
 using System.IO;
 using System.Text;
 using System.Linq;
@@ -8,8 +7,6 @@ using System.Diagnostics;
 using System;
 using Object = UnityEngine.Object;
 using Debug = UnityEngine.Debug;
-using static UnityEditor.PlayerSettings;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 
