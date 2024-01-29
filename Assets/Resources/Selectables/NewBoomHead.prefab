@@ -8790,7 +8790,7 @@ PrefabInstance:
       objectReference: {fileID: 4309211121793958625}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.size
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLineMeasuringPosition>k__BackingField
@@ -8910,7 +8910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[3].<GizmoType>k__BackingField
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[4].<GizmoType>k__BackingField
@@ -9200,6 +9200,21 @@ MonoBehaviour:
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
     metadata: []
+--- !u!114 &4411223521005290547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8013771317938095565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b8cd685223618243ae50d83fd282fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tooltip: {fileID: 77486103945529810}
+  Target: {fileID: 0}
+  joints: []
 --- !u!114 &8730165539022225314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9218,6 +9233,20 @@ MonoBehaviour:
   <DoorStrike>k__BackingField: {fileID: 0}
   <DoorSwingAngle>k__BackingField: 90
   <Type>k__BackingField: 0
+--- !u!114 &5514988272501047125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8013771317938095565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f733d6ab4c83c241bcc911cb27fe1eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  axis: {x: 0, y: 0, z: 1}
+  maxAngle: 180
 --- !u!1001 &4042682913782016963
 PrefabInstance:
   m_ObjectHideFlags: 0
