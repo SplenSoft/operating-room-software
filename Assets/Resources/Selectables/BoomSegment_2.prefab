@@ -272,7 +272,7 @@ PrefabInstance:
       objectReference: {fileID: 2030379160130919909}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<Axis>k__BackingField
@@ -356,20 +356,6 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 
   <ForwardOnly>k__BackingField: 0
   <ShowInElevationPhoto>k__BackingField: 0
---- !u!114 &4765013329965049452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4539726008913472782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f733d6ab4c83c241bcc911cb27fe1eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  axis: {x: 0, y: 0, z: 1}
-  maxAngle: 180
 --- !u!4 &5847277044198170897 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
@@ -841,7 +827,14 @@ MonoBehaviour:
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <isDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
-  <GizmoSettingsList>k__BackingField: []
+  <GizmoSettingsList>k__BackingField:
+  - <Axis>k__BackingField: 1
+    <GizmoType>k__BackingField: 1
+    <Unrestricted>k__BackingField: 0
+    <MaxValue>k__BackingField: 20
+    <MinValue>k__BackingField: -30
+    <IgnoreScale>k__BackingField: 0
+    <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
   <useLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
@@ -863,20 +856,6 @@ MonoBehaviour:
   OnScaleChange:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6643708000037922868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1865586499689401200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f733d6ab4c83c241bcc911cb27fe1eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  axis: {x: 0, y: 1, z: 0}
-  maxAngle: 30
 --- !u!114 &7511422527843455098
 MonoBehaviour:
   m_ObjectHideFlags: 0

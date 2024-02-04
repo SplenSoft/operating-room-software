@@ -183,6 +183,11 @@ public class GizmoHandler : MonoBehaviour
         CurrentScaleDrag = transform.localScale;
         //_lastCircleIntersectPoint = default;
         IsBeingUsed = true;
+
+        if(TryGetComponent(out CCDIK ik))
+        {
+            ik.enabled = true;
+        }
     }
 
     private void OnGizmoPreDragUpdate(Gizmo gizmo, int handleId)
@@ -203,6 +208,11 @@ public class GizmoHandler : MonoBehaviour
         await Task.Yield();
         GizmoUsedLastFrame = false;
         _translateGizmo.Gizmo.Transform.Position3D = transform.position;
+
+        if(TryGetComponent(out CCDIK ik))
+        {
+            ik.enabled = false;
+        }
     }
 
     private void OnGizmoPostDragBegin(Gizmo gizmo, int handleId)
