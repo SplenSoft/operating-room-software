@@ -141,7 +141,12 @@ public class GizmoHandler : MonoBehaviour
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
         // if (Selectable.SelectedSelectable.AllowInverseControl)
         //     _translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
-        _translateGizmo.SetTargetObject(gameObject);
+        if (_selectable.AllowInverseControl)
+        {
+            _translateGizmo.SetTargetObject(_selectable.GetComponent<CCDIK>().Target.gameObject);
+        }
+        else
+            _translateGizmo.SetTargetObject(gameObject);
         //_translateGizmo.Gizmo.MoveGizmo.SetVertexSnapTargetObjects(new List<GameObject> { gameObject });
         _translateGizmo.SetTransformSpace(GizmoSpace.Local);
         _translateGizmo.Gizmo.PostDragUpdate += OnGizmoPostDragUpdate;
@@ -178,6 +183,11 @@ public class GizmoHandler : MonoBehaviour
         CurrentScaleDrag = transform.localScale;
         //_lastCircleIntersectPoint = default;
         IsBeingUsed = true;
+
+        if(TryGetComponent(out CCDIK ik))
+        {
+            ik.enabled = true;
+        }
     }
 
     private void OnGizmoPreDragUpdate(Gizmo gizmo, int handleId)
@@ -191,11 +201,18 @@ public class GizmoHandler : MonoBehaviour
         {
             k.SelectablePositionChanged();
         }
+
         GizmoBeingUsed = false;
         IsBeingUsed = false;
         GizmoDragEnded?.Invoke();
         await Task.Yield();
         GizmoUsedLastFrame = false;
+        _translateGizmo.Gizmo.Transform.Position3D = transform.position;
+
+        if(TryGetComponent(out CCDIK ik))
+        {
+            ik.enabled = false;
+        }
     }
 
     private void OnGizmoPostDragBegin(Gizmo gizmo, int handleId)
@@ -285,6 +302,12 @@ public class GizmoHandler : MonoBehaviour
 
     private void HandleTranslationGizmo(Gizmo gizmo, Vector3 totalExcess)
     {
+        if (_selectable.AllowInverseControl)
+        {
+            _translateGizmo.Gizmo.Transform.Position3D = transform.position;
+            return;
+        }
+
         transform.localPosition -= totalExcess;
         Transform parent = transform.parent;
 
@@ -442,7 +465,7 @@ public class GizmoHandler : MonoBehaviour
                     1,
                     zScale);
 
-                if(_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
+                if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
                 {
                     _selectable.transform.localScale = oldScale;
                     return;

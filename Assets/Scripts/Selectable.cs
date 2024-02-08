@@ -343,7 +343,7 @@ public partial class Selectable : MonoBehaviour
 
     public bool IsGizmoSettingAllowed(GizmoType gizmoType, Axis axis) => TryGetGizmoSetting(gizmoType, axis, out _);
 
-    private float GetGizmoSettingMaxValue(GizmoType gizmoType, Axis axis)
+    public float GetGizmoSettingMaxValue(GizmoType gizmoType, Axis axis)
     {
         if (TryGetGizmoSetting(gizmoType, axis, out GizmoSetting gizmoSetting))
         {
@@ -678,6 +678,14 @@ public partial class Selectable : MonoBehaviour
     private void Awake()
     {
         //if (!ConfigurationManager._instance.isDebug && GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID)) gameObject.name = guid.ToString();
+
+        if(AllowInverseControl)
+        {
+            if(GetComponent<CCDIK>() == null)
+            {
+                this.gameObject.AddComponent<CCDIK>();
+            }
+        }
 
         ActiveSelectables.Add(this);
         Transform parent = transform.parent;
