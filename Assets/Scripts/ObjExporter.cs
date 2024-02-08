@@ -65,14 +65,16 @@ public class ObjExporterScript
 
             //Debug.Log($"Submesh {t.name} meshRenderer == null -> {meshRenderer == null}");
 
-            if (materials[subMesh + 1] != null)
+            //int submeshIndex = subMesh + 1;
+            int submeshIndex = subMesh;
+            if (materials[submeshIndex] != null)
             {
-                string name = materials[subMesh + 1].name;
-                sb.Append("usemtl ").Append(materials[subMesh + 1].name).Append("\n");
+                string name = materials[submeshIndex].name;
+                sb.Append("usemtl ").Append(materials[submeshIndex].name).Append("\n");
                 mtlStringBuilder.Append($"newmtl {name}").Append("\n");
                 //sb.Append("usemap ").Append(materials[subMesh].name).Append("\n");
 
-                var color = materials[subMesh + 1].color;
+                var color = materials[submeshIndex].color;
                 mtlStringBuilder.Append($"Ka {color.r} {color.g} {color.b}").Append("\n");
                 mtlStringBuilder.Append($"Kd {color.r} {color.g} {color.b}").Append("\n");
             }
@@ -105,21 +107,7 @@ public class ObjExporterScript
 }
 
 public static class ObjExporter
-{
-    //[MenuItem("File/Export/Wavefront OBJ")]
-    //static void DoExportWSubmeshes()
-    //{
-    //    DoExport(true);
-    //}
-
-    //[MenuItem("File/Export/Wavefront OBJ (No Submeshes)")]
-    //static void DoExportWOSubmeshes()
-    //{
-    //    DoExport(false);
-    //}
-
-    
-
+{  
     public static async void DoExport(bool makeSubmeshes, GameObject obj)
     {
         var loadingTokenOverall = Loading.GetLoadingToken();
@@ -132,8 +120,6 @@ public static class ObjExporter
         try
         {
             string meshName = obj.name;
-            //string fileName = EditorUtility.SaveFilePanel("Export .obj file", "", meshName, "obj");
-
             StringBuilder meshString = new StringBuilder();
 
             meshString.Append("#" + meshName + ".obj"
@@ -144,32 +130,35 @@ public static class ObjExporter
 
             Vector3 oldPos = obj.transform.position;
             obj.transform.position = Vector3.zero;
-            MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>().Where(item => item.enabled).ToList().ConvertAll(item => item.gameObject.GetComponent<MeshFilter>()).ToArray();
+
+            MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>()
+                .Where(item => item.enabled)
+                .ToList()
+                .ConvertAll(item => item.gameObject.GetComponent<MeshFilter>())
+                .ToArray();
+
             UnityEngine.Debug.Log($"Found {meshFilters.Length} meshfilters");
-            //CombineInstance[] combine = new CombineInstance[meshFilters.Length];
             List<CombineInstance> combineInstances = new List<CombineInstance>();
             List<Material> materials = new();
             int i = 0;
             while (i < meshFilters.Length)
             {
                 var filter = meshFilters[i];
-                var meshRenderer = filter.gameObject.GetComponent<MeshRenderer>();
-                for (int j = 0; j < filter.sharedMesh.subMeshCount; j++)
+                
+                if (filter.sharedMesh.vertexCount > 0)
                 {
-                    CombineInstance instance = new();
-                    instance.mesh = filter.sharedMesh;
-                    instance.transform = filter.transform.localToWorldMatrix;
-                    instance.subMeshIndex = j;
-
-                    if (meshRenderer.sharedMaterials.Length > j)
+                    var meshRenderer = filter.gameObject.GetComponent<MeshRenderer>();
+                    for (int j = 0; j < meshRenderer.sharedMaterials.Length; j++)
                     {
+                        CombineInstance instance = new()
+                        {
+                            mesh = filter.sharedMesh,
+                            transform = filter.transform.localToWorldMatrix,
+                            subMeshIndex = j
+                        };
                         materials.Add(meshRenderer.sharedMaterials[j]);
+                        combineInstances.Add(instance);
                     }
-                    else
-                    {
-                        materials.Add(null);
-                    }
-                    combineInstances.Add(instance);
                 }
 
                 i++;
@@ -187,7 +176,6 @@ public static class ObjExporter
             obj.transform.position = oldPos;
 
             obj = new GameObject("Mesh", typeof(MeshFilter)/*, typeof(MeshRenderer)*/);
-            //obj.GetComponent<MeshRenderer>()
             obj.GetComponent<MeshFilter>().sharedMesh = mesh;
 
             Transform t = obj.transform;
@@ -282,14 +270,12 @@ public static class ObjExporter
     {
         StringBuilder meshString = new StringBuilder();
 
-        MeshFilter mf = t.GetComponent<MeshFilter>();
-        //MeshRenderer mr = t.GetComponent<MeshRenderer>();
-
-        if (mf != null /*&& mr != null && mr.enabled*/)
+        if (t.TryGetComponent<MeshFilter>(out var mf))
         {
             meshString.Append("#" + t.name
-                          + "\n#-------"
-                          + "\n");
+                + "\n#-------"
+                + "\n");
+
             if (makeSubmeshes)
             {
                 meshString.Append("g ").Append(t.name).Append("\n");
