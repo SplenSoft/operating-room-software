@@ -45,13 +45,24 @@ public class CCDIK : MonoBehaviour
         }
 
         CCDIKJoint joint = null;
-        if (selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
+        if (selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z) || selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y))
         {
           joint = selectable.gameObject.AddComponent<CCDIKJoint>();
-          joint.axis = new Vector3(0, 0, 1);
 
-          float min = selectable.GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z);
-          float max = selectable.GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z);
+          float min = 0;
+          float max = 0;
+          if (selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
+          {
+            joint.axis = new Vector3(0, 0, 1);
+            min = selectable.GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z);
+            max = selectable.GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z);
+          }
+          else
+          {
+            joint.axis = new Vector3(0, 1, 0);
+            min = selectable.GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Y);
+            max = selectable.GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Y);
+          }
 
           joint.maxAngle = Math.Abs(min) + Math.Abs(max);
 
