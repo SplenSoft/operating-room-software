@@ -301,6 +301,7 @@ MonoBehaviour:
     <Unrestricted>k__BackingField: 1
     <MaxValue>k__BackingField: 0
     <MinValue>k__BackingField: 0
+    <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.6
@@ -316,6 +317,14 @@ MonoBehaviour:
     <ModelDefault>k__BackingField: 1
     metadata: []
   - <Size>k__BackingField: 1.2
+    <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
+    metadata: []
+  - <Size>k__BackingField: 1.4
+    <Selected>k__BackingField: 0
+    <ModelDefault>k__BackingField: 0
+    metadata: []
+  - <Size>k__BackingField: 1.6
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
     metadata: []
@@ -351,6 +360,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &8237175297323335363
 MonoBehaviour:
   m_ObjectHideFlags: 0

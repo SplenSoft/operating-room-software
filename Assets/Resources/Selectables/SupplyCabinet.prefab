@@ -25,19 +25,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b010440a3028c64697d49604a9eec97, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.70710695
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b010440a3028c64697d49604a9eec97, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000057601163
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b010440a3028c64697d49604a9eec97, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710665
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b010440a3028c64697d49604a9eec97, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.000000057601138
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3b010440a3028c64697d49604a9eec97, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -138,11 +138,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.data[0]
-      value: 8
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.size
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.size
@@ -150,23 +150,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.data[0]
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.data[1]
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.data[2]
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.data[3]
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.data[4]
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[1].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<Axis>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<GizmoType>k__BackingField
