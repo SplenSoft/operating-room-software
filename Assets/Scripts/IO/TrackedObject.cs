@@ -110,6 +110,10 @@ public class TrackedObject : MonoBehaviour
             {
                 data.parent = ConfigurationManager.GetGameObjectPath(s.ParentAttachmentPoint.gameObject);
             }
+            else if (gameObject.transform != gameObject.transform.root)
+            {
+                data.parent = ConfigurationManager.GetGameObjectPath(this.gameObject);
+            }
         }
         else
         {

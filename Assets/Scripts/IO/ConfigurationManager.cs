@@ -360,6 +360,14 @@ public class ConfigurationManager : MonoBehaviour
                     newObjects.Add(go.GetComponent<TrackedObject>());
                 }
             }
+            else
+            {
+                if (to.global_guid == null || to.global_guid == "") // embedded selectable component
+                {
+                    go = ProcessEmbeddedSelectable(to);
+                    newObjects.Add(go.GetComponent<TrackedObject>());
+                }
+            }
         }
     }
 
@@ -400,7 +408,6 @@ public class ConfigurationManager : MonoBehaviour
         try
         {
             GameObject go = GameObject.Find(to.parent);
-            go.GetComponent<Selectable>().guid = to.instance_guid;
             LogData(go.GetComponent<Selectable>(), to);
             go.transform.rotation = to.rot;
             return go;
@@ -436,6 +443,7 @@ public class ConfigurationManager : MonoBehaviour
         newObjects.Reverse(); // The list needs to be reversed so that the hierarchy is root downwards. 
         foreach (TrackedObject obj in newObjects)
         {
+            //Debug.Log(obj.gameObject.name);
             ResetScaleLevels(obj);
         }
 
@@ -492,6 +500,7 @@ public class ConfigurationManager : MonoBehaviour
         }
         else
         {
+            Debug.Log($"No scale level found for {obj.name}, applying default scale.");
             obj.transform.localScale = obj.GetScale();
         }
     }
