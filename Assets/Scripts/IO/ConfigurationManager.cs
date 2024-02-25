@@ -286,11 +286,14 @@ public class ConfigurationManager : MonoBehaviour
     public void LoadRoom(string file)
     {
         Debug.Log($"Clearing default room objects");
-        TrackedObject[] existingObjects = FindObjectsOfType<TrackedObject>(); // we need to clear the current room (default objects in scene) to load our new one
+        List<TrackedObject> existingObjects = FindObjectsOfType<TrackedObject>().ToList(); // we need to clear the current room (default objects in scene) to load our new one
         foreach (TrackedObject to in existingObjects)
         {
+            if (to == null) continue;
             if (to.transform == to.transform.root && !isRoomBoundary(to.GetData())) Destroy(to.gameObject);
         }
+        existingObjects.Clear();
+        existingObjects.TrimExcess();
 
         Debug.Log($"Loading Room at {file}");
 
@@ -444,8 +447,13 @@ public class ConfigurationManager : MonoBehaviour
             ResetMaterialPalettes(obj);
         }
 
-        foreach(AttachmentPoint ap in newPoints)
+        foreach (AttachmentPoint ap in newPoints)
         {
+            if (ap == null)
+            {
+                Debug.LogWarning("Attempted to reset a missing Attachment Point reference.");
+                return;
+            }
             ap.gameObject.transform.position = ap.GetComponent<TrackedObject>().GetPosition();
         }
     }
@@ -494,6 +502,12 @@ public class ConfigurationManager : MonoBehaviour
     /// <param name="obj">The JSON structure of the object</param>
     void ResetLocalPosition(TrackedObject obj)
     {
+        if (obj == null)
+        {
+            Debug.LogWarning("Attempted to reset local position of a missing TrackedObject reference.");
+            return;
+        }
+
         if (!string.IsNullOrEmpty(obj.GetComponent<Selectable>().GUID) && obj.transform != obj.transform.root)
         {
             obj.transform.localPosition = Vector3.zero;
@@ -503,6 +517,12 @@ public class ConfigurationManager : MonoBehaviour
 
     void ResetMaterialPalettes(TrackedObject obj)
     {
+        if (obj == null)
+        {
+            Debug.LogWarning("Attempted to reset local position of a missing TrackedObject reference.");
+            return;
+        }
+
         if (obj.TryGetComponent(out MaterialPalette palette))
         {
             for (int i = 0; i < obj.GetMaterials().Count(); i++)
