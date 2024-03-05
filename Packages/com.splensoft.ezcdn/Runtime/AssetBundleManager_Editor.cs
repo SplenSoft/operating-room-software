@@ -480,6 +480,35 @@ namespace SplenSoft.AssetBundles
             var importer = AssetImporter.GetAtPath(path);
 
             HandleAssetImporter(obj, importer, guid);
+            HandlePreprocessing(obj);
+        }
+
+        private static void HandlePreprocessing(UnityEngine.Object obj)
+        {
+            bool needsDirty = false;
+            if (obj is IPreprocessAssetBundle preprocessAssetBundle)
+            {
+                preprocessAssetBundle.OnPreprocessAssetBundle();
+                needsDirty = true;
+            }
+            else if (obj is GameObject gameObj)
+            {
+                var components = gameObj.GetComponents<Component>();
+                
+                foreach (var component in components)
+                {
+                    if (component is IPreprocessAssetBundle preprocessAssetBundle1)
+                    {
+                        preprocessAssetBundle1.OnPreprocessAssetBundle();
+                        needsDirty = true;
+                    }
+                }
+            }
+
+            if (needsDirty)
+            {
+                EditorUtility.SetDirty(obj);
+            }
         }
 
         private static void UpdateAssetForBundling(string path)

@@ -1,6 +1,6 @@
 {
     "name": "com.splensoft.ezcdn",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "displayName": "Easy CDN",
     "description": "An addressables-free suite that automatically handles the Unity Cloud Content Delivery API and packaging/deploying assetbundles while providing several tools to make asset management easy",
     "unity": "2021.3",

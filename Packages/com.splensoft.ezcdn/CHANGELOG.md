@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2024-03-05
+
+### Added
+- IPreprocessAssetBundle interface added, following existing semantics in Unity. Implements OnPreprocessAssetBundle, which allows custom processing before the asset bundle is packaged and uploaded by EZ-CDN. IPreprocessAssetBundle should only be added to root-level components on prefabs or to ScriptableObjects that are managed by EZ-CDN (ManagedAsset attribute or added in Settings)
+
 ## [1.1.0] - 2024-03-04
 
 ### Added
