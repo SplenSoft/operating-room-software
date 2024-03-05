@@ -498,7 +498,6 @@ MonoBehaviour:
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: 
   <SubPartName>k__BackingField: 
-  <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
@@ -601,7 +600,6 @@ MonoBehaviour:
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: 
   <SubPartName>k__BackingField: 
-  <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}

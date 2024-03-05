@@ -56,7 +56,6 @@ MonoBehaviour:
   <Thumbnail>k__BackingField: {fileID: 21300000, guid: 9aebd705574f9e642aef1e5f59b3e4d8, type: 3}
   <Name>k__BackingField: Low Voltage Dual Knob
   <SubPartName>k__BackingField: 
-  <Description>k__BackingField: Unknown
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 09000000
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
@@ -64,6 +63,7 @@ MonoBehaviour:
   <AllowInverseControl>k__BackingField: 0
   <GizmoSettingsList>k__BackingField: []
   <ScaleLevels>k__BackingField: []
+  <useLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -261,6 +261,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &6711917481924586588
 MonoBehaviour:
   m_ObjectHideFlags: 0

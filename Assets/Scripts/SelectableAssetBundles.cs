@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -13,18 +14,21 @@ using UnityEngine;
 /// </summary>
 [ManagedAsset]
 [CreateAssetMenu(
-    fileName = "SelectableAssetBundles", 
-    menuName = "ScriptableObjects/SelectableAssetBundles", 
+    fileName = "SelectableAssetBundles",
+    menuName = "ScriptableObjects/SelectableAssetBundles",
     order = 1)]
-public class SelectableAssetBundles : ScriptableObject
+public class SelectableAssetBundles : ScriptableObject, IPreprocessAssetBundle
 {
     public static bool Initialized { get; private set; }
 
     private static List<SelectableData> SelectableData { get; } = new();
 
-    [field: SerializeField] 
+    public static IReadOnlyList<SelectableData> 
+        GetSelectableData() => SelectableData.AsReadOnly();
+
+    [field: SerializeField]
     private List<string> RelativePaths { get; set; } = new();
-    
+
     [SerializeField]
     private List<SelectableData> _selectableData = new();
 
@@ -42,7 +46,7 @@ public class SelectableAssetBundles : ScriptableObject
     /// </summary>
     private static async void GetDatas()
     {
-        var loadingToken = Loading.GetLoadingToken(); 
+        var loadingToken = Loading.GetLoadingToken();
 
         // get all SelectableAssetBundles asset bundles from CDN
         var task = AssetBundleManager.GetAssetBundleNames(nameof(SelectableAssetBundles));
@@ -59,7 +63,7 @@ public class SelectableAssetBundles : ScriptableObject
             // track download/load progress for loadingToken
             var progress = new Progress<AssetRetrievalProgress>();
             int index = i;
-            progress.ProgressChanged += (_, p) => 
+            progress.ProgressChanged += (_, p) =>
             {
                 progresses[index] = p.Progress;
                 float prog = progresses.Sum() / task.Result.Length;
@@ -85,7 +89,6 @@ public class SelectableAssetBundles : ScriptableObject
         loadingToken.Done();
     }
 
-
     /// <param name="query">Can be SaveLoadGuid or AssetBundleName</param>
     public bool TryGetSelectableData(string query, out SelectableData data)
     {
@@ -95,5 +98,43 @@ public class SelectableAssetBundles : ScriptableObject
                 string.Compare(x.AssetBundleName, query, true) == 0);
 
         return data != default;
+    }
+
+    public void OnPreprocessAssetBundle()
+    {
+#if UNITY_EDITOR
+        Debug.Log("Processing SelectableAssetBundles ScriptableObject");
+
+        _selectableData.Clear();
+
+        var folders = new string[] { "Assets/Prefabs/Selectables" };
+        string[] assetGuids = AssetDatabase.FindAssets("t: prefab", folders);
+
+        foreach (string guid in assetGuids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+
+            var go = (GameObject)AssetDatabase
+                .LoadAssetAtPath(path, typeof(GameObject));
+
+            
+            if (!go.TryGetComponent<Selectable>(out var selectable))
+                continue;
+
+            if (!AssetBundleManager.TryGetAssetBundleName
+                (go, out string assetBundleName))
+                continue;
+
+            var data = new SelectableData
+            {
+                AssetBundleName = assetBundleName,
+                SaveLoadGuid = selectable.GUID,
+                PrefabName = go.name
+            };
+
+            _selectableData.Add(data);
+        }
+#endif
+
     }
 }

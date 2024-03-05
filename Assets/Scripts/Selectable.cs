@@ -60,29 +60,64 @@ public partial class Selectable : MonoBehaviour
     public bool IsMouseOver { get; private set; }
     public bool IsDestroyed { get; private set; }
 
+    /// <summary>
+    /// Serialized directly to/from online database. 
+    /// Pre-filled data (in Editor) will be considered "seed" data
+    /// </summary>
+    [Serializable]
+    public class SelectableMetaData
+    {
+        [field: SerializeField] public string ThumbnailBase64 { get; set; }
+        [field: SerializeField] public string Name { get; set; }
+        [field: SerializeField] public string SubPartName { get; set; }
+        [field: SerializeField] public List<SpecialSelectableType> SpecialTypes { get; set; } = new();
+        [field: SerializeField] public List<RoomBoundaryType> WallRestrictions { get; set; } = new();
+        [field: SerializeField] public List<GizmoSetting> GizmoSettingsList { get; set; } = new();
+    }
+
     public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
     public Vector3 OriginalLocalPosition { get; set; }
     public Vector3 OriginalLocalRotation { get; private set; }
     public string guid { get; set; }
     [field: SerializeField] public string GUID { get; private set; }
-    [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
-    [field: SerializeField] public Sprite Thumbnail { get; private set; }
-    [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField] public string SubPartName { get; private set; }
-    [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
-    [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
+    public AttachmentPoint ParentAttachmentPoint { get; set; }
+    
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
     [field: SerializeField] public bool isDestructible { get; private set; } = true;
-    [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
-    [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
+    [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;  
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] public bool useLossyScale { get; private set; }
-    [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
-    [field: SerializeField] private bool ZAlwaysFacesGroundElevationOnly { get; set; }
+
+    [field: SerializeField, 
+    Tooltip("True if this object will rotate " +
+    "along its y-axis automatically to make its " +
+    "z-axis (forward) parallel to the world " +
+    "y-axis (up-down)")] 
+    private bool ZAlwaysFacesGround { get; set; }
+
+    [field: SerializeField, 
+    Tooltip("True if this object will rotate " +
+    "along its y-axis automatically to make its " +
+    "z-axis (forward) parallel to the world " +
+    "y-axis (up-down), but only when taking " +
+    "elevation photos for PDF output")] 
+    private bool ZAlwaysFacesGroundElevationOnly { get; set; }
+
     [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
     [field: SerializeField] public List<Measurable> Measurables { get; private set; }
-    [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
-    [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
+
+    [field: SerializeField, 
+    Tooltip("True if this object will rotate to its " +
+    "default rotation when taking an elevation " +
+    "photo for the PDF")] 
+    private bool AlignForElevationPhoto { get; set; }
+
+    [field: SerializeField, 
+    Tooltip("True if this object will rotate along " +
+    "its Y-axis (vertical rotation) to its lowest " +
+    "and highest possible positions for an " +
+    "elevation photo.")] 
+    private bool ChangeHeightForElevationPhoto { get; set; }
 
     private List<Selectable> _assemblySelectables = new();
     private Dictionary<Selectable, Quaternion> _originalRotations = new();
@@ -100,7 +135,7 @@ public partial class Selectable : MonoBehaviour
     /// <summary>
     /// If true, this is probably a ceiling mount
     /// </summary>
-    private bool IsAssemblyRoot => Types.Contains(SelectableType.Mount);
+    private bool IsAssemblyRoot => Types.Contains(SpecialSelectableType.Mount);
     public bool IsArmAssembly => transform.root.TryGetComponent(out Selectable rootSelectable) && rootSelectable.IsAssemblyRoot;
     public bool IsSelected => SelectedSelectable == this;
 
@@ -914,7 +949,7 @@ public partial class Selectable : MonoBehaviour
                     normal *= -1;
                 }
 
-                if (Types.Contains(SelectableType.Door))
+                if (Types.Contains(SpecialSelectableType.Door))
                 {
                     RoomBoundaryType roomBoundaryType = hit.collider.gameObject.GetComponent<RoomBoundary>().RoomBoundaryType;
 
@@ -939,7 +974,6 @@ public partial class Selectable : MonoBehaviour
                         destination.x = hit.collider.transform.position.x - halfThickness;
                         normal = -Vector3.right;
                     }
-
 
                     destination.y = 0;
                 }
@@ -1056,20 +1090,4 @@ public partial class Selectable : MonoBehaviour
         SelectionChanged?.Invoke();
         _gizmoHandler.SelectableSelected();
     }
-}
-
-public enum SelectableType
-{
-    DropTube,
-    Mount,
-    Furniture,
-    ArmSegment,
-    BoomSegment,
-    BoomHead,
-    Wall,
-    CeilingLight,
-    Door,
-    ServiceHeadPanel,
-    ServiceHeadShelves,
-    Tabletop
 }

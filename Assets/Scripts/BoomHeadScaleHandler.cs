@@ -80,7 +80,7 @@ public class BoomHeadScaleHandler : MonoBehaviour
 
         foreach(Selectable child in point.GetComponentsInChildren<Selectable>())
         {
-            if(child.Types.Contains(SelectableType.ServiceHeadShelves))
+            if (child.Types.Contains(SpecialSelectableType.ServiceHeadShelves))
             {
                 shelves.Add(new AttachedShelf(child.transform));
             }

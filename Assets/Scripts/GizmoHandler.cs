@@ -455,7 +455,7 @@ public class GizmoHandler : MonoBehaviour
         if (_selectable.useLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
         {
             float newZScale = zScale / _selectable.transform.lossyScale.z;
-            if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
+            if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())
             {
                 //_selectable.transform.localScale = Vector3.one;
                 Vector3 oldScale = _selectable.transform.localScale;
@@ -465,7 +465,7 @@ public class GizmoHandler : MonoBehaviour
                     1,
                     zScale);
 
-                if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
+                if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())
                 {
                     _selectable.transform.localScale = oldScale;
                     return;

@@ -1,21 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+/// <summary>
+/// Singleton object that displays a menu to instantiate selectables.
+/// </summary>
 public class ObjectMenu : MonoBehaviour
 {
     public static ObjectMenu Instance { get; private set; }
     public static UnityEvent ActiveStateChanged { get; } = new();
+    private static bool _initialized;
 
-    [field: SerializeField] private GameObject ItemTemplate { get; set; }
-    [field: SerializeField] private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }
-    [field: SerializeField] private List<GameObject> BuiltInSelectablePrefabs { get; set; }
-    [field: SerializeField] public string[] BuiltInFolders { get; set; }
+    [field: SerializeField] 
+    private GameObject ItemTemplate { get; set; }
+
+    [field: SerializeField] 
+    private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }
+
     private AttachmentPoint _attachmentPoint;
     private List<ObjectMenuItem> ObjectMenuItems { get; set; } = new();
 
@@ -26,47 +34,75 @@ public class ObjectMenu : MonoBehaviour
         public string customFile { get; set; }
     }
 
+    #region Monobehaviour
+
     private void Awake()
     {
-        BuiltInSelectablePrefabs = new List<GameObject>();
         Instance = this;
-        PopulateBuiltIns();
         gameObject.SetActive(false);
     }
 
-    public GameObject GetPrefabByGUID(string guid)
+    private void OnDestroy()
     {
-        return BuiltInSelectablePrefabs.Single(s => s.GetComponent<Selectable>().GUID == guid);
+        _initialized = false;
     }
 
-    private void PopulateBuiltIns()
+    private IEnumerator Start()
     {
-        foreach (string path in BuiltInFolders)
-        {
-            //Debug.Log(path);
-            GameObject[] foundBuiltIns = Resources.LoadAll<GameObject>(path);
-            //Debug.Log(foundBuiltIns.Length);
-            BuiltInSelectablePrefabs.AddRange(foundBuiltIns);
-        }
+        var loadingToken = Loading.GetLoadingToken();
 
-        InstantiateMenuItems();
+        yield return new WaitUntil
+            (() => SelectableAssetBundles.Initialized);
+
+        Initialize();
+        loadingToken.Done();
     }
 
-    private void InstantiateMenuItems()
+    private void OnDisable()
     {
-        BuiltInSelectablePrefabs.ForEach(prefab =>
-        {
-            if (prefab.TryGetComponent(out ObjectMenuIgnore ignore))
-            {
-                return;
-            }
+        ActiveStateChanged?.Invoke();
+    }
 
-            var selectable = prefab.GetComponent<Selectable>();
-            ItemTemplateTextObjectName.text = selectable.Name;
+    private void OnEnable()
+    {
+        ActiveStateChanged?.Invoke();
+    }
+
+    #endregion
+
+    private async void Initialize()
+    {
+        var loadingToken = Loading.GetLoadingToken();
+
+        while (!SelectableAssetBundles.Initialized) 
+            await Task.Yield();
+
+        if (!Application.isPlaying) return;
+
+        foreach (var data in SelectableAssetBundles.GetSelectableData())
+        {
+            // if we still need this, we can add it to SelectableData
+            //if (prefab.TryGetComponent(out ObjectMenuIgnore ignore))
+            //{
+            //    return;
+            //}
+
+            // todo: Get data from database
+
+            //var selectable = prefab.GetComponent<Selectable>();
+            ItemTemplateTextObjectName.text = data.PrefabName;
             var newMenuItem = Instantiate(ItemTemplate, ItemTemplate.transform.parent);
-            newMenuItem.GetComponentInChildren<Button>().onClick.AddListener(() =>
+            newMenuItem.GetComponentInChildren<Button>().onClick.AddListener(async () =>
             {
                 gameObject.SetActive(false);
+
+                var task = data.GetPrefab();
+                await task;
+
+                if (!Application.isPlaying) return;
+
+                GameObject prefab = task.Result;
+
                 var newSelectableGameObject = Instantiate(prefab);
                 var selectable2 = newSelectableGameObject.GetComponent<Selectable>();
                 if (_attachmentPoint != null)
@@ -83,11 +119,15 @@ public class ObjectMenu : MonoBehaviour
             });
 
             ObjectMenuItems.Add(new ObjectMenuItem { Selectable = selectable, GameObject = newMenuItem });
-        });
+        }
 
         AddSavedRoomConfigs();
 
         ItemTemplate.SetActive(false);
+
+        _initialized = true;
+
+        loadingToken.Done();
     }
 
     private void AddSavedRoomConfigs()
@@ -126,16 +166,6 @@ public class ObjectMenu : MonoBehaviour
 
         ObjectMenuItems.Add(new ObjectMenuItem { GameObject = newMenuItem, customFile = f });
         ItemTemplate.SetActive(false);
-    }
-
-    private void OnDisable()
-    {
-        ActiveStateChanged?.Invoke();
-    }
-
-    private void OnEnable()
-    {
-        ActiveStateChanged?.Invoke();
     }
 
     private void FilterMenuItems(AttachmentPoint attachmentPoint)
@@ -182,24 +212,34 @@ public class ObjectMenu : MonoBehaviour
                 return;
             }
 
-            bool isMount = item.Selectable.Types.Contains(SelectableType.Mount);
-            bool isFurniture = item.Selectable.Types.Contains(SelectableType.Furniture);
-            bool isWall = item.Selectable.Types.Contains(SelectableType.Wall);
-            bool isCeilingLight = item.Selectable.Types.Contains(SelectableType.CeilingLight);
-            bool isDoor = item.Selectable.Types.Contains(SelectableType.Door);
+            bool isMount = item.Selectable.Types.Contains(SpecialSelectableType.Mount);
+            bool isFurniture = item.Selectable.Types.Contains(SpecialSelectableType.Furniture);
+            bool isWall = item.Selectable.Types.Contains(SpecialSelectableType.Wall);
+            bool isCeilingLight = item.Selectable.Types.Contains(SpecialSelectableType.CeilingLight);
+            bool isDoor = item.Selectable.Types.Contains(SpecialSelectableType.Door);
             item.GameObject.SetActive(isMount || isFurniture || isWall || isCeilingLight || isDoor);
         });
     }
 
-    public void Open()
+    public async void Open()
     {
+        while (!_initialized) 
+            await Task.Yield();
+
+        if (!Application.isPlaying) return;
+
         ClearMenuFilter();
         _attachmentPoint = null;
         gameObject.SetActive(true);
     }
 
-    public static void Open(AttachmentPoint attachmentPoint)
+    public static async void Open(AttachmentPoint attachmentPoint)
     {
+        while (!_initialized)
+            await Task.Yield();
+
+        if (!Application.isPlaying) return;
+
         Instance._attachmentPoint = attachmentPoint;
         Instance.FilterMenuItems(attachmentPoint);
         Instance.gameObject.SetActive(true);

@@ -575,7 +575,6 @@ MonoBehaviour:
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: Monitor & Mount
   <SubPartName>k__BackingField: Screen
-  <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
@@ -587,8 +586,10 @@ MonoBehaviour:
     <Unrestricted>k__BackingField: 0
     <MaxValue>k__BackingField: 165
     <MinValue>k__BackingField: 0
+    <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
+  <useLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -599,10 +600,15 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    metadata: []
+  OnScaleChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3510550298773078445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,6 +633,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &7722675866272846105
 MonoBehaviour:
   m_ObjectHideFlags: 0

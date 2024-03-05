@@ -113,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <RoomBoundaryType>k__BackingField: 0
   <VirtualCamera>k__BackingField: {fileID: 0}
+  <baseboard>k__BackingField: {fileID: 0}
 --- !u!1 &2183912130177328532
 GameObject:
   m_ObjectHideFlags: 0

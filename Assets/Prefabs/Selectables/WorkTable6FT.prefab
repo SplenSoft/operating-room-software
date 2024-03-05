@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6933008662350446083}
   - component: {fileID: 4034947308909874208}
   - component: {fileID: 6767177462637301524}
+  - component: {fileID: 5609099658193758835}
   m_Layer: 0
   m_Name: AttachmentPoint
   m_TagString: Untagged
@@ -46,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <guid>k__BackingField: 
   <GUID>k__BackingField: 
   <AttachedSelectable>k__BackingField: []
   _attachmentPointHovered: 0
@@ -225,6 +225,18 @@ MonoBehaviour:
   hitFxFadeOutDuration: 0.25
   hitFxColor: {r: 1, g: 1, b: 1, a: 1}
   hitFxRadius: 0.5
+--- !u!114 &5609099658193758835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1382188950047372938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1670828507990043557
 GameObject:
   m_ObjectHideFlags: 0

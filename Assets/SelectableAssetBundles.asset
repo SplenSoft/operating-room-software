@@ -1,0 +1,394 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 634b5ee963570ec46a9ab76741aad47e, type: 3}
+  m_Name: SelectableAssetBundles
+  m_EditorClassIdentifier: 
+  <RelativePaths>k__BackingField: []
+  _selectableData:
+  - <PrefabName>k__BackingField: 1000SH_XXL_BoomArm _2
+    <SaveLoadGuid>k__BackingField: B85CA2CC-1BA8-4BE5-8D5C-7FF384B63539
+    <AssetBundleName>k__BackingField: gameobject_e3e3a1e5fa4b99746b87c07a4b354023
+  - <PrefabName>k__BackingField: 1000SH_XXL_BoomArm_1
+    <SaveLoadGuid>k__BackingField: 0B21735B-2F3E-41EE-A987-17D9239DBD67
+    <AssetBundleName>k__BackingField: gameobject_516b2fd2a2c3df54a82980b5c6eccd92
+  - <PrefabName>k__BackingField: 1000SH_XXL_SpringBottom _3
+    <SaveLoadGuid>k__BackingField: 527B08E8-71A6-4151-A3FD-21C3D32D7268
+    <AssetBundleName>k__BackingField: gameobject_a0e0174daef6ca044b29c0ec45861b42
+  - <PrefabName>k__BackingField: ArmDropTube
+    <SaveLoadGuid>k__BackingField: 7DDAA2E6-742E-48EC-9F5F-8FC4E32AE16A
+    <AssetBundleName>k__BackingField: gameobject_8d1c540de7b95ef45bd0a0379fd6550c
+  - <PrefabName>k__BackingField: ArmLightMount
+    <SaveLoadGuid>k__BackingField: FBB8CDFC-6160-4DD1-A170-06A6FBD14A8F
+    <AssetBundleName>k__BackingField: gameobject_ebe209fad8b3c7b41b4aab780f8a96dd
+  - <PrefabName>k__BackingField: ArmMonitorMount
+    <SaveLoadGuid>k__BackingField: 72810D86-C2FA-429F-B661-F003F7372531
+    <AssetBundleName>k__BackingField: gameobject_3088a94855e29094180835380d0b93b6
+  - <PrefabName>k__BackingField: ArmSegment_1
+    <SaveLoadGuid>k__BackingField: 2AF955E3-1E04-4240-BAB4-92F534FDF0B3
+    <AssetBundleName>k__BackingField: gameobject_d5dacc51c29d78143b1fe2a7553376e1
+  - <PrefabName>k__BackingField: ArmSegment_1_Cardanic
+    <SaveLoadGuid>k__BackingField: 336C14B8-B377-4A92-9F67-3062DF962676
+    <AssetBundleName>k__BackingField: gameobject_7d2dca5fe2bd0304c97016a775a10cee
+  - <PrefabName>k__BackingField: ArmSegment_2
+    <SaveLoadGuid>k__BackingField: B20E7318-2141-411E-9295-955E076FD3D0
+    <AssetBundleName>k__BackingField: gameobject_5bb6da0aca83dfc458175dadb423b2db
+  - <PrefabName>k__BackingField: Baseboard
+    <SaveLoadGuid>k__BackingField: E12BD8EB-402B-44B3-8B85-C2DD1D12CD62
+    <AssetBundleName>k__BackingField: gameobject_d4c54a4ad1f67144db29628f39fd23f5
+  - <PrefabName>k__BackingField: BoomDropTube
+    <SaveLoadGuid>k__BackingField: 92B75922-A802-4CFD-9D8F-5BD3F17E8527
+    <AssetBundleName>k__BackingField: gameobject_8a9d70475b8764042ac5cbac8ec9360d
+  - <PrefabName>k__BackingField: BoomSegment_1
+    <SaveLoadGuid>k__BackingField: 89B34AE1-8252-46D4-8405-F5CD532F0CFE
+    <AssetBundleName>k__BackingField: gameobject_489bf8b9c4f4e1d46b78a9534b9c434e
+  - <PrefabName>k__BackingField: BoomSegment_2
+    <SaveLoadGuid>k__BackingField: B12C8360-E6F8-4699-8401-6E97CE61068D
+    <AssetBundleName>k__BackingField: gameobject_16a9b6546d2960f48beb4a95fe98b7f0
+  - <PrefabName>k__BackingField: BoomSegment_3
+    <SaveLoadGuid>k__BackingField: EFE89B04-B239-4107-A353-53E0A2144E07
+    <AssetBundleName>k__BackingField: gameobject_6935fe97e09de22468b27e8fe6ba08a1
+  - <PrefabName>k__BackingField: BoxOfGloves
+    <SaveLoadGuid>k__BackingField: 78576E91-4C81-42A6-9F35-1B2BF5064F8B
+    <AssetBundleName>k__BackingField: gameobject_b402b7c35d9a34c4f91e8bbba9d7cd45
+  - <PrefabName>k__BackingField: CArmMonitor
+    <SaveLoadGuid>k__BackingField: D8B701E3-0AB9-4311-AC5E-20E731570626
+    <AssetBundleName>k__BackingField: gameobject_6839eba8a5392a547a39c06e4472bd97
+  - <PrefabName>k__BackingField: CArmRobot
+    <SaveLoadGuid>k__BackingField: CDBF7034-5032-4D6D-AB81-E476C3A5F0DA
+    <AssetBundleName>k__BackingField: gameobject_063ec944f6e103242a814ac7f1ab231f
+  - <PrefabName>k__BackingField: CartWithElectronics
+    <SaveLoadGuid>k__BackingField: 337B3044-ADC0-427E-8570-5A78AA3D2E66
+    <AssetBundleName>k__BackingField: gameobject_f715a7888caee88438155507eb21792a
+  - <PrefabName>k__BackingField: CeilingAirSupplyDiffuser
+    <SaveLoadGuid>k__BackingField: 0D014549-E7D8-4506-9596-DC65D4327E14
+    <AssetBundleName>k__BackingField: gameobject_e097a80c307555a468cf6195cebf5537
+  - <PrefabName>k__BackingField: CeilingCamera
+    <SaveLoadGuid>k__BackingField: A7BE2AF4-8EA0-4068-86FF-DB63DFCB039E
+    <AssetBundleName>k__BackingField: gameobject_35143732a7a35184980e78446a7f684b
+  - <PrefabName>k__BackingField: CeilingFireAlarm
+    <SaveLoadGuid>k__BackingField: 605B87A6-861F-4D9D-BC57-852029980143
+    <AssetBundleName>k__BackingField: gameobject_d850b1e94616db74da4d31fb3f83129a
+  - <PrefabName>k__BackingField: CeilingHatch 18x18
+    <SaveLoadGuid>k__BackingField: FCC78DD2-27F6-47D6-8D8C-F5017AB231AD
+    <AssetBundleName>k__BackingField: gameobject_f287ae6ccc4ab9f43af4a41b88db333f
+  - <PrefabName>k__BackingField: CeilingHatch 24x24
+    <SaveLoadGuid>k__BackingField: 22587D86-E5F4-4792-BCF6-F4965CE0B58C
+    <AssetBundleName>k__BackingField: gameobject_2456da8b8aab26d45add7c5509a2187a
+  - <PrefabName>k__BackingField: CeilingHatchLock
+    <SaveLoadGuid>k__BackingField: B0701245-7587-48B0-9810-636667B16EF9
+    <AssetBundleName>k__BackingField: gameobject_6a73caed9b923724ca518916a8950532
+  - <PrefabName>k__BackingField: CeilingLight2x2
+    <SaveLoadGuid>k__BackingField: 7A89B581-7F85-49D3-B9E9-A42214355318
+    <AssetBundleName>k__BackingField: gameobject_b1d48ea8c00220d489829f557c9da483
+  - <PrefabName>k__BackingField: CeilingLightFixture
+    <SaveLoadGuid>k__BackingField: 4D70C3EA-FE43-4E56-AB17-0D4452784DBD
+    <AssetBundleName>k__BackingField: gameobject_ada2137b3a434a54fbc11fd0fb37f568
+  - <PrefabName>k__BackingField: CeilingMount_Circle
+    <SaveLoadGuid>k__BackingField: 7CF30F0D-BFAF-44B0-A77E-851C2833F2C2
+    <AssetBundleName>k__BackingField: gameobject_6392e0719e2439a4d9fb17527a809783
+  - <PrefabName>k__BackingField: CeilingMount_Circle_Slim
+    <SaveLoadGuid>k__BackingField: 17E43D2A-9597-45FD-9E77-272ABD3194ED
+    <AssetBundleName>k__BackingField: gameobject_8a9b81863b672cd4eb723d457e25000a
+  - <PrefabName>k__BackingField: CeilingMount_Double
+    <SaveLoadGuid>k__BackingField: 6E04D795-2F9E-484A-9DA5-343C193BB306
+    <AssetBundleName>k__BackingField: gameobject_1af1fe4afc2e2534eabe00d9793c25d4
+  - <PrefabName>k__BackingField: CeilingMount_Single
+    <SaveLoadGuid>k__BackingField: 54EA5A4F-1679-4E1E-9906-EADDD82609B7
+    <AssetBundleName>k__BackingField: gameobject_6ced0f3653094ef46a674087d015ebe0
+  - <PrefabName>k__BackingField: CeilingSpeaker
+    <SaveLoadGuid>k__BackingField: 41BE0D52-BB5A-483C-83B0-07285CEB037F
+    <AssetBundleName>k__BackingField: gameobject_0a200b4ca2943a14f96f86dc4f876a34
+  - <PrefabName>k__BackingField: CeilingSprinkler
+    <SaveLoadGuid>k__BackingField: E01754F9-A461-467D-BE31-EA85D52EA791
+    <AssetBundleName>k__BackingField: gameobject_f7e901bac67abbf44a967af4c6a04dac
+  - <PrefabName>k__BackingField: CeilingSprinkler2
+    <SaveLoadGuid>k__BackingField: E4C75BD7-5D65-4AC6-9C43-1F2993FF4857
+    <AssetBundleName>k__BackingField: gameobject_e61aafb3fbb975e4ba89534d00ef265a
+  - <PrefabName>k__BackingField: DellComputer
+    <SaveLoadGuid>k__BackingField: C0857734-B093-46B7-8A74-818D21F1ED72
+    <AssetBundleName>k__BackingField: gameobject_f689c7e04d6db0f4abe8e0378028291d
+  - <PrefabName>k__BackingField: Desk4ft
+    <SaveLoadGuid>k__BackingField: 690C180A-9CA3-4510-B5C3-443FC22ED6E8
+    <AssetBundleName>k__BackingField: gameobject_52d500dcea02da849a42fa3aa02fd092
+  - <PrefabName>k__BackingField: Desk5.5ft
+    <SaveLoadGuid>k__BackingField: A3F9E8A6-E136-4318-95DE-2529ACBEEF91
+    <AssetBundleName>k__BackingField: gameobject_c4e096e7abf960642a16196d4b62c2d3
+  - <PrefabName>k__BackingField: Desk7ft
+    <SaveLoadGuid>k__BackingField: 34B2E994-976E-48D4-9966-8B932F3A1EFA
+    <AssetBundleName>k__BackingField: gameobject_8f6f6e74114b05c41ad95d0c94d0cda5
+  - <PrefabName>k__BackingField: DeskAddon3ft
+    <SaveLoadGuid>k__BackingField: 47738661-574A-4DBB-889B-E0351ED04400
+    <AssetBundleName>k__BackingField: gameobject_ff5264034dbff1d4eb63a42266ebac07
+  - <PrefabName>k__BackingField: DeskAddon4.5ft
+    <SaveLoadGuid>k__BackingField: EF9D44E7-5FE9-4ABB-8C95-09E749F5347D
+    <AssetBundleName>k__BackingField: gameobject_3884db7e083d7f24f9df8bd8089cc149
+  - <PrefabName>k__BackingField: DeskAddon6ft
+    <SaveLoadGuid>k__BackingField: 9D9DE90D-84D7-4C33-88EE-0485A3FA01AF
+    <AssetBundleName>k__BackingField: gameobject_3dccdc8000bee9b4fb3291123042b243
+  - <PrefabName>k__BackingField: DigitalWallClock
+    <SaveLoadGuid>k__BackingField: 28627FB7-445E-4829-9F69-52BFEC7183A5
+    <AssetBundleName>k__BackingField: gameobject_f14ae3a315bfa98469559e34321255d2
+  - <PrefabName>k__BackingField: FlushDouble6ftOSwing
+    <SaveLoadGuid>k__BackingField: 74046680-DAAD-4FFC-A518-1581B112FAE6
+    <AssetBundleName>k__BackingField: gameobject_5a53a79e2c5575d48bf386d9a6776605
+  - <PrefabName>k__BackingField: FullGlassDouble6ftOSwing
+    <SaveLoadGuid>k__BackingField: 21393F75-7F73-442F-9269-B4A18CF641C1
+    <AssetBundleName>k__BackingField: gameobject_f1785588f1716884abdd4c46f3568d03
+  - <PrefabName>k__BackingField: SideliteDouble6ftOSwing
+    <SaveLoadGuid>k__BackingField: 2EBC66F1-794C-4175-AE61-D78B6D9F16CC
+    <AssetBundleName>k__BackingField: gameobject_ca247c7c2702c6643bccfa050bdee7cd
+  - <PrefabName>k__BackingField: FlushDouble7ftOSwing
+    <SaveLoadGuid>k__BackingField: D5785CBF-260D-40C3-B4DB-15D066D7A940
+    <AssetBundleName>k__BackingField: gameobject_68992c295e647b6459392001fe9730ec
+  - <PrefabName>k__BackingField: FullGlassDouble7ftOSwing
+    <SaveLoadGuid>k__BackingField: 96938081-FD95-4FF7-99C1-B4F1E972B0E0
+    <AssetBundleName>k__BackingField: gameobject_6993f1510d06bbf4b89926b6278c9e14
+  - <PrefabName>k__BackingField: SideeliteDouble7ftOSwing
+    <SaveLoadGuid>k__BackingField: 8C8E6A71-EE3E-47CE-AB18-EAE031EF6766
+    <AssetBundleName>k__BackingField: gameobject_4636fea92a4290041bb686bfee209681
+  - <PrefabName>k__BackingField: FlushDouble8ftOSwing
+    <SaveLoadGuid>k__BackingField: 30F5EEAF-5C4C-4647-8054-A5454A2538C6
+    <AssetBundleName>k__BackingField: gameobject_6d5f1d4094c3dbe4eb8ce6b73bae877e
+  - <PrefabName>k__BackingField: FullGlassDouble8ftOSwing
+    <SaveLoadGuid>k__BackingField: FC90FD78-3F16-4C7E-A1CB-E784E6872F19
+    <AssetBundleName>k__BackingField: gameobject_c6d4346efe1073b44ab1831aa9481009
+  - <PrefabName>k__BackingField: SideliteDouble8ftOSwing
+    <SaveLoadGuid>k__BackingField: 16DB9EB9-6733-450E-B6FC-E6916AF083A6
+    <AssetBundleName>k__BackingField: gameobject_04f6779662c76fb45b81f6d50089c0ef
+  - <PrefabName>k__BackingField: FlushDouble6ft
+    <SaveLoadGuid>k__BackingField: 3D6E3518-1E57-4EEF-90D1-CA516EDE15F1
+    <AssetBundleName>k__BackingField: gameobject_b7e3a852d7769bb498c8ec55db354b64
+  - <PrefabName>k__BackingField: FullGlassDouble6ft
+    <SaveLoadGuid>k__BackingField: 
+    <AssetBundleName>k__BackingField: gameobject_b525bec99f47f274cac98790b6364121
+  - <PrefabName>k__BackingField: SideliteDouble6ft
+    <SaveLoadGuid>k__BackingField: 
+    <AssetBundleName>k__BackingField: gameobject_24c22dcbe2a7034409e36c2f9f2ace8d
+  - <PrefabName>k__BackingField: FlushDouble7ft
+    <SaveLoadGuid>k__BackingField: 50BF8D94-0E71-4F37-B109-2140E1D1C71A
+    <AssetBundleName>k__BackingField: gameobject_c7d5013837d9ccf4faeed845b609cb32
+  - <PrefabName>k__BackingField: FullGlassDouble7ft
+    <SaveLoadGuid>k__BackingField: 2F4C667A-3E95-4D35-9F0C-7CBDCAF17BB5
+    <AssetBundleName>k__BackingField: gameobject_095c184e889b57745a4fe14a394f62fd
+  - <PrefabName>k__BackingField: SideeliteDouble7ft
+    <SaveLoadGuid>k__BackingField: E72E4F38-8357-4E0D-98A7-7F7342425CB9
+    <AssetBundleName>k__BackingField: gameobject_7137cfe7e282bc847ba1f5976aad6fa3
+  - <PrefabName>k__BackingField: FlushDouble8ft
+    <SaveLoadGuid>k__BackingField: 6D0AB91B-76E5-40EE-99F7-A2187BE7C71B
+    <AssetBundleName>k__BackingField: gameobject_79f79a709c766894fba6314f338eb820
+  - <PrefabName>k__BackingField: FullGlassDouble8ft
+    <SaveLoadGuid>k__BackingField: 95C83D03-9205-4061-AE08-A7A0E52EF3B7
+    <AssetBundleName>k__BackingField: gameobject_416c922b14d2d074e96e53f4b6a1ccf7
+  - <PrefabName>k__BackingField: SideliteDouble8ft
+    <SaveLoadGuid>k__BackingField: 6D0C2964-F8B7-4CBD-A133-F1F55B55F143
+    <AssetBundleName>k__BackingField: gameobject_b8441a7045cf56f4b8eb2445a2f47001
+  - <PrefabName>k__BackingField: FlushSingle3ft
+    <SaveLoadGuid>k__BackingField: 1CD59BA3-7ABD-4C7F-A329-6A2A88160BAC
+    <AssetBundleName>k__BackingField: gameobject_1fb550a24ff26004792905caa427ffb8
+  - <PrefabName>k__BackingField: FullGlassSingle3ft
+    <SaveLoadGuid>k__BackingField: 962FAF19-1110-4FB7-9072-40922E448983
+    <AssetBundleName>k__BackingField: gameobject_a8e8217e95c359c4182e36475a5dc45c
+  - <PrefabName>k__BackingField: SideliteSingle3ft
+    <SaveLoadGuid>k__BackingField: E5CECEA5-B85B-43D8-972B-E277389A2794
+    <AssetBundleName>k__BackingField: gameobject_9e17c931795005b4f86e23075b0a62b4
+  - <PrefabName>k__BackingField: FlushSingle4ft
+    <SaveLoadGuid>k__BackingField: 695F0805-1CC6-4254-ABF4-0F1A466473E6
+    <AssetBundleName>k__BackingField: gameobject_34a2a90f863bf5040a97808b5329a46b
+  - <PrefabName>k__BackingField: FullGlassSingle4ft
+    <SaveLoadGuid>k__BackingField: EC1E744F-BDBC-41CA-A5D6-620E0C049884
+    <AssetBundleName>k__BackingField: gameobject_84d9af1953c064c458b912a76f9378cd
+  - <PrefabName>k__BackingField: SideliteSingle4ft
+    <SaveLoadGuid>k__BackingField: B758A367-447A-4D03-9739-2AA9B047D2F3
+    <AssetBundleName>k__BackingField: gameobject_4693636ca28103e4ca7422625616deaa
+  - <PrefabName>k__BackingField: FlushUnequalEgress1,4ft
+    <SaveLoadGuid>k__BackingField: 41062C7A-8ABC-4F4F-8B23-553281C5D449
+    <AssetBundleName>k__BackingField: gameobject_2587e735277529c4bbc12578a6362110
+  - <PrefabName>k__BackingField: FullyGlassUnequalEgress1,4ft
+    <SaveLoadGuid>k__BackingField: E6AA983D-4B10-4DAB-A881-CF17D32592CF
+    <AssetBundleName>k__BackingField: gameobject_2e6fdd61ad730904db211d247b8f135a
+  - <PrefabName>k__BackingField: FlushUnequalEgress2,4ft
+    <SaveLoadGuid>k__BackingField: AD4D2C15-520E-46C3-9680-84957B859BD6
+    <AssetBundleName>k__BackingField: gameobject_4010245dbed847046bd9a628cbadaac7
+  - <PrefabName>k__BackingField: FullGlassUnequalEgress2,4ft
+    <SaveLoadGuid>k__BackingField: 81A1E84E-E542-47F4-967F-4DC03CF4BEFD
+    <AssetBundleName>k__BackingField: gameobject_2ffd71fc2cc9b4341b8f585d0f1d3f7b
+  - <PrefabName>k__BackingField: Doors
+    <SaveLoadGuid>k__BackingField: 
+    <AssetBundleName>k__BackingField: gameobject_84d3ed2003c3a584d91ffaa2fc5bf80b
+  - <PrefabName>k__BackingField: ExtraWall
+    <SaveLoadGuid>k__BackingField: 4C2191AD-CBC5-46F2-BB93-283B075C4550
+    <AssetBundleName>k__BackingField: gameobject_7bd757a57385ced4cae53c023bdd860d
+  - <PrefabName>k__BackingField: FireAlarm
+    <SaveLoadGuid>k__BackingField: 9075C669-0D30-41C4-B34C-8D9C07BFDDF6
+    <AssetBundleName>k__BackingField: gameobject_c4ade69b6de9d6c4c953221a21239842
+  - <PrefabName>k__BackingField: FireAlarm2
+    <SaveLoadGuid>k__BackingField: 1BD5EC0A-AE58-4EF7-97C1-02F41A17B545
+    <AssetBundleName>k__BackingField: gameobject_80c2a63dc1e82994e86a0b7acaf57ecf
+  - <PrefabName>k__BackingField: FirstAidBox
+    <SaveLoadGuid>k__BackingField: 491D595D-E482-48F1-ADD9-BDE74BAEDF13
+    <AssetBundleName>k__BackingField: gameobject_937e986bb1fb12f45b7209345b406e84
+  - <PrefabName>k__BackingField: BlueGasOutlet
+    <SaveLoadGuid>k__BackingField: 53CA27AA-C81C-4C55-BB6A-DB9E11508A7C
+    <AssetBundleName>k__BackingField: gameobject_b5e64f03d7ec19e4e8748874910a5f6e
+  - <PrefabName>k__BackingField: CopperGasOutlet
+    <SaveLoadGuid>k__BackingField: 3E2E2682-697E-4F63-BF1A-52CBFADD675B
+    <AssetBundleName>k__BackingField: gameobject_096de37a2bc085841bacb392a21e1c86
+  - <PrefabName>k__BackingField: GrayGasOutlet
+    <SaveLoadGuid>k__BackingField: 7B905F53-ABD6-4FB8-8D01-F55238AD323B
+    <AssetBundleName>k__BackingField: gameobject_a8d8ea68aef76b84b8848d37ce501f7a
+  - <PrefabName>k__BackingField: WhiteGasOutlet
+    <SaveLoadGuid>k__BackingField: 044755F8-0B73-4933-9E94-A7E719A6E0EB
+    <AssetBundleName>k__BackingField: gameobject_1c0450c034b831946a1904bd961b299e
+  - <PrefabName>k__BackingField: KickBucketEmpty
+    <SaveLoadGuid>k__BackingField: BBD73EC1-51E6-4805-B56B-0C2E02B1013A
+    <AssetBundleName>k__BackingField: gameobject_38e3197bc9f895142866313e7e024079
+  - <PrefabName>k__BackingField: KickBucketWithBag
+    <SaveLoadGuid>k__BackingField: 8E1B81DD-C1D9-4133-B438-7B8648DC3A42
+    <AssetBundleName>k__BackingField: gameobject_d1f6e2f8317ad8041bd01240375961e5
+  - <PrefabName>k__BackingField: LargeMonitorBoomHead
+    <SaveLoadGuid>k__BackingField: 661E658B-47FB-4FCC-B134-6B235AC5EADB
+    <AssetBundleName>k__BackingField: gameobject_6272f7ab3a37f89459ca15ac2ac57f37
+  - <PrefabName>k__BackingField: MayoStand
+    <SaveLoadGuid>k__BackingField: 14A75D3F-7510-468C-AC59-95E539D55575
+    <AssetBundleName>k__BackingField: gameobject_280e7eeaff1f5304492a3d7223887c84
+  - <PrefabName>k__BackingField: Neptune
+    <SaveLoadGuid>k__BackingField: 4092C3F2-E0B5-48B0-9B02-E9CF60A10163
+    <AssetBundleName>k__BackingField: gameobject_88490db2a629f9c42bf53ac8c2f423b8
+  - <PrefabName>k__BackingField: NewBoomHead
+    <SaveLoadGuid>k__BackingField: 0739A8CB-5E31-48E7-AB9A-A122571A2E9B
+    <AssetBundleName>k__BackingField: gameobject_101b5e4b9ae6778419e042621236a1e9
+  - <PrefabName>k__BackingField: OR_Table_0
+    <SaveLoadGuid>k__BackingField: 4FE733DD-825D-4B77-A830-9A94E08AECEB
+    <AssetBundleName>k__BackingField: gameobject_839a064b625fb724ab496f21e46986e7
+  - <PrefabName>k__BackingField: PerfusionMachine
+    <SaveLoadGuid>k__BackingField: 45379E1E-3CE9-439C-AA8E-AC1AFE208092
+    <AssetBundleName>k__BackingField: gameobject_69082596913b21a4bbace01ac76613ae
+  - <PrefabName>k__BackingField: RollingLaptopStand
+    <SaveLoadGuid>k__BackingField: AF90F2D7-6ECA-4533-B12F-35E4A9268ED5
+    <AssetBundleName>k__BackingField: gameobject_d25f56e329ebb534fb916608def0be88
+  - <PrefabName>k__BackingField: RollingStool
+    <SaveLoadGuid>k__BackingField: 6C22ED3A-B4D8-4C76-81A9-B80497EE2C2F
+    <AssetBundleName>k__BackingField: gameobject_3c99d6d388f90ba4eb5d70546b279a16
+  - <PrefabName>k__BackingField: S6100AnesthesiaMarchine
+    <SaveLoadGuid>k__BackingField: D333A4F1-5ED2-433E-AC29-BCC81FCFF24D
+    <AssetBundleName>k__BackingField: gameobject_f2ad85d2706e88d4d8b6f02f1f5d8777
+  - <PrefabName>k__BackingField: ScrubSinkDouble
+    <SaveLoadGuid>k__BackingField: 2EF926D4-A585-425E-8A8B-E88F30F05919
+    <AssetBundleName>k__BackingField: gameobject_94d4e858c692e82488c45d43e93fbdd4
+  - <PrefabName>k__BackingField: ScrubSinkSingle
+    <SaveLoadGuid>k__BackingField: 3786931D-38E4-475D-AEE4-2464CB03719E
+    <AssetBundleName>k__BackingField: gameobject_46039af55eb1adc47b48d34964e1ecff
+  - <PrefabName>k__BackingField: Selectable
+    <SaveLoadGuid>k__BackingField: 
+    <AssetBundleName>k__BackingField: gameobject_85d8679646b1a2140b71e2dbe4709489
+  - <PrefabName>k__BackingField: SH_Shelf_1
+    <SaveLoadGuid>k__BackingField: 72ACA320-FC41-4251-A073-11BB5F3351E4
+    <AssetBundleName>k__BackingField: gameobject_53aa01dc8e396914b80e891824927678
+  - <PrefabName>k__BackingField: SH_Shelf_2
+    <SaveLoadGuid>k__BackingField: 2022E9A8-4F4D-4A42-A377-8C80EFC371B8
+    <AssetBundleName>k__BackingField: gameobject_6578fb191fa8907439062b3a3ddc08dc
+  - <PrefabName>k__BackingField: SHP_HV_Outlets
+    <SaveLoadGuid>k__BackingField: 6EFBF1B1-479C-4DB5-B489-E9166ED2282D
+    <AssetBundleName>k__BackingField: gameobject_e14354f76b9c38e448fd7c8fe7f2e526
+  - <PrefabName>k__BackingField: SHP_LV_Knob1
+    <SaveLoadGuid>k__BackingField: 3B7902B0-3CFE-43D2-8793-0DBF0264FD08
+    <AssetBundleName>k__BackingField: gameobject_1d7d6954e148df94d9e6aaefbfd85fe1
+  - <PrefabName>k__BackingField: SHP_LV_Knob2
+    <SaveLoadGuid>k__BackingField: 7C46DC68-31C9-4E20-A386-0D8DF02F675C
+    <AssetBundleName>k__BackingField: gameobject_5d18bbab28e9d3346bb992c27d307a92
+  - <PrefabName>k__BackingField: SHP_Rails
+    <SaveLoadGuid>k__BackingField: 8BDA2B5F-E16D-47E5-A992-9740EF6A88FB
+    <AssetBundleName>k__BackingField: gameobject_c68c39c95251a364599e9000b451686f
+  - <PrefabName>k__BackingField: Simeon_Light_7000
+    <SaveLoadGuid>k__BackingField: 5A4653EC-38B8-4757-BFA2-5410AB62E811
+    <AssetBundleName>k__BackingField: gameobject_9548e43dbf80de84fa9980537b084d38
+  - <PrefabName>k__BackingField: SimFLEXTube
+    <SaveLoadGuid>k__BackingField: 03EB8774-4B94-4E81-AF33-95367B8176D6
+    <AssetBundleName>k__BackingField: gameobject_e5197c46d3c0e9f4a880d6ff931ae8bf
+  - <PrefabName>k__BackingField: SmallCart
+    <SaveLoadGuid>k__BackingField: 9321A68C-6613-4A04-A4E6-95BAE870E958
+    <AssetBundleName>k__BackingField: gameobject_4470415feca38344182b5af7ac8d7f41
+  - <PrefabName>k__BackingField: Storage1
+    <SaveLoadGuid>k__BackingField: 8A4A120E-33B8-4E16-BE7C-A60714D8A35E
+    <AssetBundleName>k__BackingField: gameobject_5023ee75eff13904ea709322369c0295
+  - <PrefabName>k__BackingField: Storage2
+    <SaveLoadGuid>k__BackingField: F59DEA63-077B-4F3D-9E65-C2E34EEF3439
+    <AssetBundleName>k__BackingField: gameobject_c1be11a56054f34419f1883b4696b23c
+  - <PrefabName>k__BackingField: Storage3
+    <SaveLoadGuid>k__BackingField: A6AE523E-57DC-4E81-BDC9-67DA5A72EB57
+    <AssetBundleName>k__BackingField: gameobject_218c14cc91d04b847a375fc6ccc69d26
+  - <PrefabName>k__BackingField: Storage4
+    <SaveLoadGuid>k__BackingField: 80C4A9CF-8B32-47B6-99D7-740799FF6785
+    <AssetBundleName>k__BackingField: gameobject_ad626fd4c890a374cb53b4da30b290a7
+  - <PrefabName>k__BackingField: SupplyCabinet
+    <SaveLoadGuid>k__BackingField: A4AF1574-6387-4A13-A013-78C321AC4C2C
+    <AssetBundleName>k__BackingField: gameobject_a7114a97ef964ce4abab229fd52c0c15
+  - <PrefabName>k__BackingField: Surgeon_1
+    <SaveLoadGuid>k__BackingField: 4A0041E4-C5CC-40D2-B034-6584733E1E84
+    <AssetBundleName>k__BackingField: gameobject_b643eb8e65251c14ca579fe6c8450c6a
+  - <PrefabName>k__BackingField: Surgeon_2
+    <SaveLoadGuid>k__BackingField: 8E2FEC60-46CB-418F-A009-3E97A33549B0
+    <AssetBundleName>k__BackingField: gameobject_62ddef570adae4d488ad63e5223aea77
+  - <PrefabName>k__BackingField: SurgicalChair
+    <SaveLoadGuid>k__BackingField: 6F435E41-7AC2-4D9A-B7DE-196E80301850
+    <AssetBundleName>k__BackingField: gameobject_529b83f464e2cdf4fa9fbee601e35d3a
+  - <PrefabName>k__BackingField: SurgicalRobot
+    <SaveLoadGuid>k__BackingField: D2B60462-D80E-4126-B342-B1DA44E28E7A
+    <AssetBundleName>k__BackingField: gameobject_fe4fb5c927996944ca9561376bc521f9
+  - <PrefabName>k__BackingField: SurgicalRobotStation
+    <SaveLoadGuid>k__BackingField: D54D8CF7-1035-410A-8336-DFD35EA9D96A
+    <AssetBundleName>k__BackingField: gameobject_30c01c1628016b24abd31ee1fc2e9eef
+  - <PrefabName>k__BackingField: SurgicalVisionSystem
+    <SaveLoadGuid>k__BackingField: DD7FD706-B215-4AB0-BBBB-8473276F331E
+    <AssetBundleName>k__BackingField: gameobject_7b27f390bb8ee1e43922cfae6f85c6da
+  - <PrefabName>k__BackingField: TrashBagEmpty
+    <SaveLoadGuid>k__BackingField: 2C898100-2E07-42CA-889A-DF7905F0041C
+    <AssetBundleName>k__BackingField: gameobject_542c427e16b16b84cb81ac8371ea567b
+  - <PrefabName>k__BackingField: TrashBagFull
+    <SaveLoadGuid>k__BackingField: 0593619D-DED6-4B17-B7C7-A939FDA45503
+    <AssetBundleName>k__BackingField: gameobject_216e62328cb19bc498b735a9a2b79435
+  - <PrefabName>k__BackingField: TrashCan
+    <SaveLoadGuid>k__BackingField: AF5A81EA-E463-4441-B9E1-4F98A765C9F3
+    <AssetBundleName>k__BackingField: gameobject_ce313b0543691ce4db78cd838a80294d
+  - <PrefabName>k__BackingField: WallClock
+    <SaveLoadGuid>k__BackingField: 6F7EB26A-4ACA-428E-B21B-68ECCE4D4176
+    <AssetBundleName>k__BackingField: gameobject_9ffe86020fe567948b80a4aa24d7b4db
+  - <PrefabName>k__BackingField: WallMonitor55
+    <SaveLoadGuid>k__BackingField: CAFC49B8-A6CA-492D-B2E3-A816415B3B3B
+    <AssetBundleName>k__BackingField: gameobject_f8b369d29d2d7d24db3588e77d0786d8
+  - <PrefabName>k__BackingField: WallMonitor60
+    <SaveLoadGuid>k__BackingField: E9956B7A-1EC0-4EC2-B0DD-2BCAFE9CE853
+    <AssetBundleName>k__BackingField: gameobject_3296d3045c5e2a547bb4cc84de060879
+  - <PrefabName>k__BackingField: WallMonitor85
+    <SaveLoadGuid>k__BackingField: 13778986-6D84-43A3-9E40-16D491880600
+    <AssetBundleName>k__BackingField: gameobject_e9944693de72fcc4aa9a7d20aa10aa78
+  - <PrefabName>k__BackingField: WhiteBoard
+    <SaveLoadGuid>k__BackingField: 9DBFE38F-10A3-4D5F-A4BB-DD1A2E628706
+    <AssetBundleName>k__BackingField: gameobject_65d2952c28dea0545bdf59e9551d8e0f
+  - <PrefabName>k__BackingField: WindowSingle2x2
+    <SaveLoadGuid>k__BackingField: BB20BDDE-52DD-48F2-BBB2-4F1E4AEF350D
+    <AssetBundleName>k__BackingField: gameobject_1416b2378bfdc4d4192d14c00656f39c
+  - <PrefabName>k__BackingField: WindowSingle4x2
+    <SaveLoadGuid>k__BackingField: D6EE3929-3123-4093-A8BF-0A1E9BCC31DC
+    <AssetBundleName>k__BackingField: gameobject_b7dfe12ff190c844ca5457256d07f7c0
+  - <PrefabName>k__BackingField: WindowSingle8x4
+    <SaveLoadGuid>k__BackingField: DF551401-12AC-495F-B49A-DCECA3BA7311
+    <AssetBundleName>k__BackingField: gameobject_7e971d4f82d87e24089bb5852125e5c1
+  - <PrefabName>k__BackingField: WorkTable2FT
+    <SaveLoadGuid>k__BackingField: F71801C9-FB27-4296-9CEE-BD32C48AB738
+    <AssetBundleName>k__BackingField: gameobject_9d21063aab0f7d449b919deeb26acc96
+  - <PrefabName>k__BackingField: WorkTable4FT
+    <SaveLoadGuid>k__BackingField: 300213DD-22EB-42DC-9705-B28748B6CB8C
+    <AssetBundleName>k__BackingField: gameobject_ec4f75b7f4c695e4da5c8f18a6efbd11
+  - <PrefabName>k__BackingField: WorkTable6FT
+    <SaveLoadGuid>k__BackingField: E5AADFA8-8B57-4D3F-ABC2-34EB145F61F0
+    <AssetBundleName>k__BackingField: gameobject_f5c11c24a214f604f91538a3d2d35084

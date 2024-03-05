@@ -102,6 +102,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &2763326451925524032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -297,7 +302,6 @@ MonoBehaviour:
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: 
   <SubPartName>k__BackingField: 
-  <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
@@ -436,7 +440,6 @@ MonoBehaviour:
   <Thumbnail>k__BackingField: {fileID: 0}
   <Name>k__BackingField: 
   <SubPartName>k__BackingField: Baseboard
-  <Description>k__BackingField: 
   <WallRestrictions>k__BackingField: 
   <Types>k__BackingField: 
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
@@ -669,6 +672,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &8369786192166557419
 MonoBehaviour:
   m_ObjectHideFlags: 0

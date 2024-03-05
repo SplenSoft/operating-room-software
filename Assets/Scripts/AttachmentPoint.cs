@@ -19,7 +19,7 @@ public class AttachmentPoint : MonoBehaviour
     [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
     [field: SerializeField] private HighlightEffect HighlightHovered { get; set; }
-    [field: SerializeField] public List<SelectableType> AllowedSelectableTypes { get; private set; } = new();
+    [field: SerializeField] public List<SpecialSelectableType> AllowedSelectableTypes { get; private set; } = new();
     [field: SerializeField] public List<Selectable> AllowedSelectables { get; private set; } = new();
     /// <summary>
     /// Moves up in transform hierarchy to same parent as first parent attachment point. Used to keep rotations separate for multiple arm assemblies

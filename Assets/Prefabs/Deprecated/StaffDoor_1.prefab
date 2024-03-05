@@ -210,17 +210,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
---- !u!114 &3853519530113828590 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4362353305424586502, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
-  m_PrefabInstance: {fileID: 716145662116389352}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68425babe0141945b7bb62bfa707421, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &7394686828361568334
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -251,7 +240,7 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLinesRenderer>k__BackingField
       value: 
-      objectReference: {fileID: 3853519530113828590}
+      objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Measurables>k__BackingField.Array.size
       value: 3
@@ -307,7 +296,7 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLinesRenderers>k__BackingField.Array.data[0]
       value: 
-      objectReference: {fileID: 3853519530113828590}
+      objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLinesMeshFilters>k__BackingField.Array.data[0]
       value: 
