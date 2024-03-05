@@ -1,5 +1,13 @@
 {
   "dependencies": {
+    "com.splensoft.ezcdn": {
+      "version": "file:com.splensoft.ezcdn",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      }
+    },
     "com.unity.burst": {
       "version": "1.8.2",
       "depth": 1,
