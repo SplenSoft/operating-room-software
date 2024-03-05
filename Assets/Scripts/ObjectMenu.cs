@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -43,7 +41,7 @@ public class ObjectMenu : MonoBehaviour
 
     private void PopulateBuiltIns()
     {
-        foreach(string path in BuiltInFolders)
+        foreach (string path in BuiltInFolders)
         {
             //Debug.Log(path);
             GameObject[] foundBuiltIns = Resources.LoadAll<GameObject>(path);
@@ -58,7 +56,7 @@ public class ObjectMenu : MonoBehaviour
     {
         BuiltInSelectablePrefabs.ForEach(prefab =>
         {
-            if(prefab.TryGetComponent(out ObjectMenuIgnore ignore))
+            if (prefab.TryGetComponent(out ObjectMenuIgnore ignore))
             {
                 return;
             }
@@ -87,6 +85,13 @@ public class ObjectMenu : MonoBehaviour
             ObjectMenuItems.Add(new ObjectMenuItem { Selectable = selectable, GameObject = newMenuItem });
         });
 
+        AddSavedRoomConfigs();
+
+        ItemTemplate.SetActive(false);
+    }
+
+    private void AddSavedRoomConfigs()
+    {
         if (Directory.Exists(Application.persistentDataPath + "/Saved/Configs/"))
         {
             string[] files = Directory.GetFiles(Application.persistentDataPath + "/Saved/Configs/");
@@ -97,8 +102,6 @@ public class ObjectMenu : MonoBehaviour
         }
 
         AddCustomMenuItem(Application.streamingAssetsPath + "/Sample_Arm_Config.json");
-
-        ItemTemplate.SetActive(false);
     }
 
     public async void AddCustomMenuItem(string f)
