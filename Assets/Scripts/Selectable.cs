@@ -69,7 +69,6 @@ public partial class Selectable : MonoBehaviour
     [field: SerializeField] public Sprite Thumbnail { get; private set; }
     [field: SerializeField] public string Name { get; private set; }
     [field: SerializeField] public string SubPartName { get; private set; }
-    [field: SerializeField] public string Description { get; private set; }
     [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
