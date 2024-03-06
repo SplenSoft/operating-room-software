@@ -52,8 +52,10 @@ MonoBehaviour:
   - {fileID: 0}
   _attachmentPointHovered: 0
   <HighlightHovered>k__BackingField: {fileID: 7052096847261562413}
-  <AllowedSelectableTypes>k__BackingField: 
-  <AllowedSelectables>k__BackingField: []
+  <MetaData>k__BackingField:
+    <Guid>k__BackingField: NOT APPLICABLE - PREFAB ASSET
+    <AllowedSelectableCategories>k__BackingField: []
+    <AllowedSelectableAssetBundleNames>k__BackingField: []
   <MoveUpOnAttach>k__BackingField: 0
   <TreatAsTopMost>k__BackingField: 0
   <MultiAttach>k__BackingField: 0

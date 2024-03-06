@@ -199,6 +199,7 @@ namespace SplenSoft.AssetBundles
         {
             if (!Initialized && !IsInitializing)
             {
+                Log.Write(LogLevel.Log, $"Asset bundle manager initializing ...");
                 IsInitializing = true;
                 // first get master manifest. This is used for dependencies.
                 // Note: Not needed for in-editor playmode and will
@@ -220,6 +221,8 @@ namespace SplenSoft.AssetBundles
             AssetBundleManagerSettings settings = AssetBundleManagerSettings.Get();
             if (settings.UseEditorAssetsIfAble && Application.isEditor)
             {
+                Log.Write(LogLevel.Log, $"Asset bundle manager initialized (Editor Mode)");
+
                 Initialized = true;
                 IsInitializing = false;
                 return;
@@ -263,6 +266,7 @@ namespace SplenSoft.AssetBundles
 
             Initialized = true;
             IsInitializing = false;
+            Log.Write(LogLevel.Log, $"Asset bundle manager initialized");
         }
 
         /// <summary>

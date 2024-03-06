@@ -231,6 +231,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1385621738500226972}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Name>k__BackingField
+      value: BoomHead_400mm_NoRailsNoShelves
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLinesRenderers>k__BackingField.Array.size
       value: 1
       objectReference: {fileID: 0}

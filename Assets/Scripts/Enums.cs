@@ -1,4 +1,6 @@
-﻿public enum Axis
+﻿using System;
+
+public enum Axis
 {
     X,
     Y,
@@ -14,7 +16,36 @@ public enum GizmoType
 
 public enum SpecialSelectableType
 {
+    [Obsolete]
+    DropTube,
+
     Mount,
+
+    [Obsolete]
+    Furniture,
+
+    [Obsolete]
+    ArmSegment,
+
+    [Obsolete]
+    BoomSegment,
+
+    [Obsolete]
+    BoomHead,
+
+    [Obsolete]
+    Wall,
+
+    [Obsolete]
+    CeilingLight,
+
     Door,
-    ServiceHeadShelves
+
+    [Obsolete]
+    ServiceHeadPanel,
+
+    ServiceHeadShelves,
+
+    [Obsolete]
+    Tabletop
 }

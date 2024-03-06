@@ -34,7 +34,7 @@ public static class ModelManager
         try
         {
             string path = AssetDatabase.GUIDToAssetPath(guidOrPath);
-            if (string.IsNullOrEmpty(path)) 
+            if (string.IsNullOrEmpty(path))
             {
                 path = guidOrPath;
             }
@@ -53,10 +53,11 @@ public static class ModelManager
                 modelImporter.SaveAndReimport();
             }
         }
+        catch (InvalidCastException) { }
         catch (Exception ex)
         {
-            Debug.Log($"Model adjustment failed: {ex.Message}");
-            //Debug.Log(ex);
+            //Debug.Log($"Model adjustment failed: {ex.Message}");
+            Debug.LogException(ex);
         }
     }
 }

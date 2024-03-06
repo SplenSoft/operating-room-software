@@ -29,7 +29,7 @@ public class ObjectMenu : MonoBehaviour
 
     private class ObjectMenuItem
     {
-        public Selectable Selectable { get; set; }
+        public SelectableData SelectableData { get; set; }
         public GameObject GameObject { get; set; }
         public string customFile { get; set; }
     }
@@ -39,7 +39,6 @@ public class ObjectMenu : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        gameObject.SetActive(false);
     }
 
     private void OnDestroy()
@@ -56,6 +55,7 @@ public class ObjectMenu : MonoBehaviour
 
         Initialize();
         loadingToken.Done();
+        gameObject.SetActive(false);
     }
 
     private void OnDisable()
@@ -109,7 +109,12 @@ public class ObjectMenu : MonoBehaviour
                 {
                     _attachmentPoint.SetAttachedSelectable(selectable2);
                     selectable2.ParentAttachmentPoint = _attachmentPoint;
-                    newSelectableGameObject.transform.SetPositionAndRotation(_attachmentPoint.transform.position, _attachmentPoint.transform.rotation);
+
+                    newSelectableGameObject.transform
+                        .SetPositionAndRotation
+                        (_attachmentPoint.transform.position, 
+                        _attachmentPoint.transform.rotation);
+                    
                     newSelectableGameObject.transform.parent = _attachmentPoint.transform;
                 }
                 else
@@ -118,7 +123,7 @@ public class ObjectMenu : MonoBehaviour
                 }
             });
 
-            ObjectMenuItems.Add(new ObjectMenuItem { Selectable = selectable, GameObject = newMenuItem });
+            ObjectMenuItems.Add(new ObjectMenuItem { SelectableData = data, GameObject = newMenuItem });
         }
 
         AddSavedRoomConfigs();
@@ -172,32 +177,31 @@ public class ObjectMenu : MonoBehaviour
     {
         ObjectMenuItems.ForEach(item =>
         {
-            //if (attachmentPoint.AllowedSelectableTypes.Count == 0 && attachmentPoint.AllowedSelectables.Count == 0)
-            //{
-            //    item.GameObject.SetActive(false);
-            //    return;
-            //}
-
-            if (item.Selectable == null)
+            if (item.SelectableData == null)
             {
                 item.GameObject.SetActive(false);
                 return;
             }
 
-            foreach (var type in item.Selectable.Types)
+            foreach (var category in item.SelectableData
+                .MetaData.Categories)
             {
-                if (attachmentPoint.AllowedSelectableTypes.Contains(type))
+                if (attachmentPoint.MetaData
+                    .AllowedSelectableCategories.Contains(category))
                 {
                     item.GameObject.SetActive(true);
                     return;
                 }
             }
 
-            if (attachmentPoint.AllowedSelectables.Contains(item.Selectable))
+            if (attachmentPoint.MetaData
+                .AllowedSelectableAssetBundleNames
+                .Contains(item.SelectableData.AssetBundleName))
             {
                 item.GameObject.SetActive(true);
                 return;
             }
+
             item.GameObject.SetActive(false);
         });
     }
@@ -206,18 +210,15 @@ public class ObjectMenu : MonoBehaviour
     {
         ObjectMenuItems.ForEach(item =>
         {
-            if (item.Selectable == null)
+            if (item.SelectableData == null)
             {
                 item.GameObject.SetActive(true);
                 return;
             }
 
-            bool isMount = item.Selectable.Types.Contains(SpecialSelectableType.Mount);
-            bool isFurniture = item.Selectable.Types.Contains(SpecialSelectableType.Furniture);
-            bool isWall = item.Selectable.Types.Contains(SpecialSelectableType.Wall);
-            bool isCeilingLight = item.Selectable.Types.Contains(SpecialSelectableType.CeilingLight);
-            bool isDoor = item.Selectable.Types.Contains(SpecialSelectableType.Door);
-            item.GameObject.SetActive(isMount || isFurniture || isWall || isCeilingLight || isDoor);
+            item.GameObject.SetActive
+                (item.SelectableData
+                .MetaData.IsStandalone);
         });
     }
 

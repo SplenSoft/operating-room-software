@@ -35,7 +35,6 @@ public class SelectableAssetBundles : ScriptableObject, IPreprocessAssetBundle
     [RuntimeInitializeOnLoadMethod]
     private static void OnAppStart()
     {
-        Debug.Log("Getting SelectableAssetBundles datas");
         GetDatas();
     }
 
@@ -46,10 +45,11 @@ public class SelectableAssetBundles : ScriptableObject, IPreprocessAssetBundle
     /// </summary>
     private static async void GetDatas()
     {
+        Debug.Log("Getting SelectableAssetBundles datas");
         var loadingToken = Loading.GetLoadingToken();
 
         // get all SelectableAssetBundles asset bundles from CDN
-        var task = AssetBundleManager.GetAssetBundleNames(nameof(SelectableAssetBundles));
+        var task = AssetBundleManager.GetAssetBundleNames(typeof(SelectableAssetBundles));
         await task;
         if (!Application.isPlaying) return;
 
@@ -87,10 +87,11 @@ public class SelectableAssetBundles : ScriptableObject, IPreprocessAssetBundle
 
         Initialized = true;
         loadingToken.Done();
+        Debug.Log("SelectableAssetBundles initialized");
     }
 
     /// <param name="query">Can be SaveLoadGuid or AssetBundleName</param>
-    public bool TryGetSelectableData(string query, out SelectableData data)
+    public static bool TryGetSelectableData(string query, out SelectableData data)
     {
         data = SelectableData
             .FirstOrDefault(x =>
@@ -129,7 +130,8 @@ public class SelectableAssetBundles : ScriptableObject, IPreprocessAssetBundle
             {
                 AssetBundleName = assetBundleName,
                 SaveLoadGuid = selectable.GUID,
-                PrefabName = go.name
+                PrefabName = go.name,
+                MetaData = selectable.MetaData,
             };
 
             _selectableData.Add(data);

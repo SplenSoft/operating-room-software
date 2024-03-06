@@ -502,7 +502,7 @@ public class GizmoHandler : MonoBehaviour
 
                 if (_selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting) && !gizmoSetting.Unrestricted)
                 {
-                    zScale = Mathf.Clamp(zScale, gizmoSetting.GetMinValue, gizmoSetting.GetMaxValue);
+                    zScale = Mathf.Clamp(zScale, gizmoSetting.GetMinValue(), gizmoSetting.GetMaxValue());
                 }
             }
         }

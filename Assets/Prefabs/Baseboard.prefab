@@ -298,15 +298,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <GUID>k__BackingField: 
-  <ParentAttachmentPoint>k__BackingField: {fileID: 0}
-  <Thumbnail>k__BackingField: {fileID: 0}
-  <Name>k__BackingField: 
-  <SubPartName>k__BackingField: 
+  <MetaData>k__BackingField:
+    <IsSubSelectable>k__BackingField: 0
+    <Enabled>k__BackingField: 0
+    <IsStandalone>k__BackingField: 0
+    <ThumbnailBase64>k__BackingField: 
+    <Name>k__BackingField: 
+    <SubPartName>k__BackingField: 
+    <Categories>k__BackingField: []
+    <KeyWords>k__BackingField: []
+    <AttachmentPointGuidMetaData>k__BackingField: []
+  <AttachmentPointDatas>k__BackingField: []
+  <SpecialTypes>k__BackingField: 
   <WallRestrictions>k__BackingField: 
-  <Types>k__BackingField: 
-  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 0
-  <AllowInverseControl>k__BackingField: 0
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
@@ -315,6 +319,9 @@ MonoBehaviour:
     <MinValue>k__BackingField: 0
     <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
+  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <isDestructible>k__BackingField: 0
+  <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
   <useLossyScale>k__BackingField: 1
   <ZAlwaysFacesGround>k__BackingField: 0
@@ -333,9 +340,6 @@ MonoBehaviour:
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
     metadata: []
-  OnScaleChange:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!65 &4767647742572128758
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -402,7 +406,7 @@ GameObject:
   - component: {fileID: 1356437975153308320}
   m_Layer: 6
   m_Name: Baseboard
-  m_TagString: Untagged
+  m_TagString: Baseboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -436,15 +440,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <GUID>k__BackingField: E12BD8EB-402B-44B3-8B85-C2DD1D12CD62
-  <ParentAttachmentPoint>k__BackingField: {fileID: 0}
-  <Thumbnail>k__BackingField: {fileID: 0}
-  <Name>k__BackingField: 
-  <SubPartName>k__BackingField: Baseboard
+  <MetaData>k__BackingField:
+    <IsSubSelectable>k__BackingField: 0
+    <Enabled>k__BackingField: 0
+    <IsStandalone>k__BackingField: 0
+    <ThumbnailBase64>k__BackingField: 
+    <Name>k__BackingField: Baseboard
+    <SubPartName>k__BackingField: 
+    <Categories>k__BackingField: []
+    <KeyWords>k__BackingField: []
+    <AttachmentPointGuidMetaData>k__BackingField: []
+  <AttachmentPointDatas>k__BackingField: []
+  <SpecialTypes>k__BackingField: 
   <WallRestrictions>k__BackingField: 
-  <Types>k__BackingField: 
-  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 0
-  <AllowInverseControl>k__BackingField: 0
   <GizmoSettingsList>k__BackingField:
   - <Axis>k__BackingField: 2
     <GizmoType>k__BackingField: 2
@@ -453,6 +461,9 @@ MonoBehaviour:
     <MinValue>k__BackingField: 0
     <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
+  <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
+  <isDestructible>k__BackingField: 0
+  <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.0762
     <Selected>k__BackingField: 0
@@ -491,9 +502,6 @@ MonoBehaviour:
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
     metadata: []
-  OnScaleChange:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2201210435872393541
 MonoBehaviour:
   m_ObjectHideFlags: 0

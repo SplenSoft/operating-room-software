@@ -1093,26 +1093,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ItemTemplate>k__BackingField: {fileID: 8432471266395779665}
   <ItemTemplateTextObjectName>k__BackingField: {fileID: 3158347501697319027}
-  <BuiltInSelectablePrefabs>k__BackingField: []
-  <BuiltInFolders>k__BackingField:
-  - Selectables
-  - Selectables/Doors
-  - Selectables/GasOutlets
-  - Selectables/Doors/Double
-  - Selectables/Doors/Single
-  - Selectables/Doors/Unequal
-  - Selectables/Doors/Double/OppositeSwing
-  - Selectables/Doors/Double/SameSwing
-  - Selectables/Doors/Single/3ft
-  - Selectables/Doors/Single/4ft
-  - Selectables/Doors/Unequal/1,4ft
-  - Selectables/Doors/Unequal/2,4ft
-  - Selectables/Doors/Double/OppositeSwing/6ft
-  - Selectables/Doors/Double/OppositeSwing/7ft
-  - Selectables/Doors/Double/OppositeSwing/8ft
-  - Selectables/Doors/Double/SameSwing/6ft
-  - Selectables/Doors/Double/SameSwing/7ft
-  - Selectables/Doors/Double/SameSwing/8ft
 --- !u!114 &3340290244935651647
 MonoBehaviour:
   m_ObjectHideFlags: 0

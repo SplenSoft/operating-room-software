@@ -20,6 +20,15 @@ public class SelectableData
     public string AssetBundleName { get; set; }
 
     /// <summary>
+    /// This field should be considered "seed" or 
+    /// backup data. The most recent version should 
+    /// always come from the online database (or 
+    /// is cached from such)
+    /// </summary>
+    [field: SerializeField, MetaDataHandler]
+    public SelectableMetaData MetaData { get; set; }
+
+    /// <summary>
     /// Downloads and loads a prefab from the CDN
     /// </summary>
     /// <param name="progress"></param>

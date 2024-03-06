@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// Class of primitives that is directly serialized 
 /// to/from online database as part of 
-/// <see cref="Selectable.SelectableMetaData"/>
+/// <see cref="Selectable.MetaData"/>
 /// </summary>
 [Serializable]
 public class GizmoSetting
