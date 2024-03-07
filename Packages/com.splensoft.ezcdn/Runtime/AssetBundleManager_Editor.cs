@@ -140,7 +140,7 @@ namespace SplenSoft.AssetBundles
             return !Application.isPlaying;
         }
 
-        [MenuItem("Tools/Easy CDN/Regenerate Asset Bundle Names")]
+        [MenuItem("Tools/Easy CDN/Dry Run")]
         private static void RegenerateAssetBundleManager()
         {
             AssetDatabase.SaveAssets();
@@ -184,7 +184,7 @@ namespace SplenSoft.AssetBundles
             AssetDatabase.SaveAssets();
         }
 
-        [MenuItem("Tools/Easy CDN/Regenerate Asset Bundle Names", isValidateFunction: true)]
+        [MenuItem("Tools/Easy CDN/Dry Run", isValidateFunction: true)]
         private static bool ValidateRegenerateAssetBundleManager()
         {
             return !Application.isPlaying;

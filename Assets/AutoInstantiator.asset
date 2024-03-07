@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fdb3409edc7bd048842f77ff8afb417, type: 3}
+  m_Name: AutoInstantiator
+  m_EditorClassIdentifier: 
+  <AssetBundleNameToAdd>k__BackingField: 
+  <AssetBundleNames>k__BackingField:
+  - gameobject_47b447b0532ffa94baed8b46a3693ef1

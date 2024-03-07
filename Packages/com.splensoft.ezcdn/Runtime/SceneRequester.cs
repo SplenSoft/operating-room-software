@@ -25,6 +25,14 @@ namespace SplenSoft.AssetBundles
         public override string AssetBundleName { get; set; }
 
         /// <summary>
+        /// UnityEvent listener for the inspector
+        /// </summary>
+        public void DownloadAndLoadScene()
+        {
+            DownloadAndLoadSceneAsync();
+        }
+
+        /// <summary>
         /// Downloads and loads the scene attached to this component
         /// </summary>
         /// <param name="progress">An optional 
