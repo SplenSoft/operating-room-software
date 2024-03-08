@@ -996,6 +996,19 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: EndoscopyTower
+    <SaveLoadGuid>k__BackingField: 163E6934-6C41-4ED8-AA06-729B8B5814D9
+    <AssetBundleName>k__BackingField: gameobject_af4bc14824710524eb3823707af229a3
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: EndoscopyTower
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: ExtraWall
     <SaveLoadGuid>k__BackingField: 4C2191AD-CBC5-46F2-BB93-283B075C4550
     <AssetBundleName>k__BackingField: gameobject_7bd757a57385ced4cae53c023bdd860d
@@ -1296,6 +1309,84 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: BlueGasOutlet
+    <SaveLoadGuid>k__BackingField: 53CA27AA-C81C-4C55-BB6A-DB9E11508A7C
+    <AssetBundleName>k__BackingField: gameobject_bb6efb5cfa87f5b4f93c1799b2d2f428
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: BlueGasOutlet
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: CopperGasOutlet
+    <SaveLoadGuid>k__BackingField: 3E2E2682-697E-4F63-BF1A-52CBFADD675B
+    <AssetBundleName>k__BackingField: gameobject_cec78301d9529514799a20139f824606
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: CopperGasOutlet
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: EthernetOutlet
+    <SaveLoadGuid>k__BackingField: 
+    <AssetBundleName>k__BackingField: gameobject_816473b63764cfd48a34ca42db81e1fa
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: EthernetOutlet
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GrayGasOutlet
+    <SaveLoadGuid>k__BackingField: 7B905F53-ABD6-4FB8-8D01-F55238AD323B
+    <AssetBundleName>k__BackingField: gameobject_27a6cec860ef9b54ab007b8a666d1bd5
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: GrayGasOutlet
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: StorzAVOutlet
+    <SaveLoadGuid>k__BackingField: 9F1AB52C-9862-45A9-B73A-EFA662FDD9CD
+    <AssetBundleName>k__BackingField: gameobject_30698eb732c853846b22a8519a88fb70
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: StorzAVOutlet
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: WhiteGasOutlet
+    <SaveLoadGuid>k__BackingField: 044755F8-0B73-4933-9E94-A7E719A6E0EB
+    <AssetBundleName>k__BackingField: gameobject_6ed69c92a5a9eec40bf458061dc9d96b
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: WhiteGasOutlet
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: PerfusionMachine
     <SaveLoadGuid>k__BackingField: 45379E1E-3CE9-439C-AA8E-AC1AFE208092
     <AssetBundleName>k__BackingField: gameobject_69082596913b21a4bbace01ac76613ae
@@ -1544,6 +1635,32 @@ MonoBehaviour:
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: Storage4
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: Storz55TV
+    <SaveLoadGuid>k__BackingField: EAE86B9B-6122-4230-898E-B1C573114D6D
+    <AssetBundleName>k__BackingField: gameobject_6291721a51a828d4ba0545a0ecfce75a
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Storz55TV
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: StorzCollaborator
+    <SaveLoadGuid>k__BackingField: 4A432C94-3DE8-4AA5-AF23-1796A067CCE7
+    <AssetBundleName>k__BackingField: gameobject_2437dd17cea82de48b64499abb6dfbc0
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: StorzCollaborator
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
