@@ -84,8 +84,6 @@ namespace SplenSoft.AssetBundles
             return _customAssetHandlers;
         }
 
-        private static bool _isCreatingAssetBundleManager;
-
         public static string AssetBundlePath => Path.Combine(
             Directory.GetCurrentDirectory(),
             "AssetBundles"
@@ -169,7 +167,11 @@ namespace SplenSoft.AssetBundles
             for (int i = 0; i < objPaths.Count; i++)
             {
                 string path = objPaths[i];
-                Log.Write(LogLevel.Log, $"AssetBundleManager.PackageAssetBundles: path is {path}");
+
+                Log.Write(
+                    LogLevel.Verbose, 
+                    $"Preparing asset for bundling: Path is {path}");
+
                 string guid = guids[i];
                 if (!string.IsNullOrWhiteSpace(guid))
                 {

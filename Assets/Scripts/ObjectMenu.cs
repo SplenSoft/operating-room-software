@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /// <summary>
@@ -16,6 +17,7 @@ public class ObjectMenu : MonoBehaviour
 {
     public static ObjectMenu Instance { get; private set; }
     public static UnityEvent ActiveStateChanged { get; } = new();
+    public static UnityEvent LastOpenedSelectableChanged { get; } = new();
     private static bool _initialized;
 
     [field: SerializeField] 
@@ -33,6 +35,8 @@ public class ObjectMenu : MonoBehaviour
         public GameObject GameObject { get; set; }
         public string customFile { get; set; }
     }
+
+    public static Selectable LastOpenedSelectable { get; private set; }
 
     #region Monobehaviour
 
@@ -105,6 +109,14 @@ public class ObjectMenu : MonoBehaviour
 
                 var newSelectableGameObject = Instantiate(prefab);
                 var selectable2 = newSelectableGameObject.GetComponent<Selectable>();
+                LastOpenedSelectable = selectable2;
+                LastOpenedSelectableChanged?.Invoke();
+
+                if (SceneManager.GetActiveScene().name == "ObjectEditor")
+                {
+                    return;
+                }
+                
                 if (_attachmentPoint != null)
                 {
                     _attachmentPoint.SetAttachedSelectable(selectable2);
@@ -211,6 +223,12 @@ public class ObjectMenu : MonoBehaviour
         ObjectMenuItems.ForEach(item =>
         {
             if (item.SelectableData == null)
+            {
+                item.GameObject.SetActive(true);
+                return;
+            }
+
+            if (SceneManager.GetActiveScene().name == "ObjectEditor")
             {
                 item.GameObject.SetActive(true);
                 return;

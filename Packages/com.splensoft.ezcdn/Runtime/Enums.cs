@@ -10,6 +10,7 @@
 
     public enum LogLevel
     { 
+        Verbose,
         Log,
         Warning,
         Error

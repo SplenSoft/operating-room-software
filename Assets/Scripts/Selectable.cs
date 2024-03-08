@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -104,6 +105,25 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;  
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] public bool useLossyScale { get; private set; }
+
+    public Bounds GetBounds()
+    {
+        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+
+        Bounds bounds = new Bounds(
+            meshRenderers[0].bounds.center, 
+            meshRenderers[0].bounds.size);
+
+        //if (meshRenderers.Length == 1) 
+        //    return bounds;
+
+        for (int i = 1; i < meshRenderers.Length; i++)
+        {
+            bounds.Encapsulate(meshRenderers[i].bounds);
+        }
+
+        return bounds;
+    }
 
     [field: SerializeField, 
     Tooltip("True if this object will rotate " +
@@ -842,7 +862,10 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     private void Start()
     {
-        if (GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID) && transform.parent == null)
+        if (GUID != "" &&
+        ConfigurationManager._instance != null &&
+        !ConfigurationManager._instance.isRoomBoundary(GUID) &&
+        transform.parent == null)
         {
             guid = Guid.NewGuid().ToString();
             gameObject.name = guid.ToString();
@@ -1074,6 +1097,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
         else if (e.KeyCode == KeyCode.Delete && e.KeyState == KeyState.ReleasedThisFrame && IsSelected)
         {
+            if (SceneManager.GetActiveScene().name == "ObjectEditor")
+            {
+                return;
+            }
+
             if (!isDestructible) return;
 
             Deselect();
@@ -1097,6 +1125,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public void Select()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            return;
+        }
+
         if (IsSelected || _isRaycastPlacementMode || GizmoHandler.GizmoBeingUsed) return;
         if (SelectedSelectable != null)
         {

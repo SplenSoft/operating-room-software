@@ -12,6 +12,7 @@ namespace SplenSoft.AssetBundles
                 switch (level)
                 {
                     case LogLevel.Log:
+                    case LogLevel.Verbose:
                         Debug.Log(message);
                         break;
                     case LogLevel.Warning:

@@ -1,4 +1,5 @@
 using SplenSoft.AssetBundles;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,28 +18,52 @@ public class SceneRequester_LoadingScreen : MonoBehaviour
     {
         _sceneRequester = GetComponent<SceneRequester>();
 
+        AssetBundleManager
+            .SceneAssetRetrievalStarted
+            .AddListener(SceneRetrievalStarted);
+
+        AssetBundleManager
+            .SceneAssetLoaded
+            .AddListener(SceneAssetLoaded);
+
         _sceneRequester.OnProgressUpdated
             .AddListener(OnProgressUpdated);
     }
 
     private void OnDestroy()
     {
+        AssetBundleManager
+            .SceneAssetRetrievalStarted
+            .RemoveListener(SceneRetrievalStarted);
+
+        AssetBundleManager
+               .SceneAssetLoaded
+               .RemoveListener(SceneAssetLoaded);
+
         _sceneRequester.OnProgressUpdated
             .RemoveListener(OnProgressUpdated);
+    }
 
-        if (_loadingToken != null)
+    private void SceneAssetLoaded(string assetBundleName)
+    {
+        if (assetBundleName == _sceneRequester.AssetBundleName)
         {
             _loadingToken.Done();
+            Destroy(gameObject);
+        }
+    }
+
+    private void SceneRetrievalStarted(string assetBundleName)
+    {
+        if (assetBundleName == _sceneRequester.AssetBundleName)
+        {
+            DontDestroyOnLoad(gameObject);
+            _loadingToken = Loading.GetLoadingToken();
         }
     }
 
     private void OnProgressUpdated(float progress)
     {
-        if (_loadingToken == null && progress < 1) 
-        {
-            _loadingToken = Loading.GetLoadingToken();
-        }
-
-        _loadingToken.SetProgress(progress);
+        _loadingToken.SetProgress(Mathf.Min(progress, 0.95f));
     }
 }

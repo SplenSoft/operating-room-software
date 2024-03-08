@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class Measurable : MonoBehaviour
 {
@@ -48,11 +49,23 @@ public class Measurable : MonoBehaviour
 
     private void Awake()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         MeasurementTypes = MeasurementTypes.Distinct().ToList();
     }
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         Initialize();
     }
 

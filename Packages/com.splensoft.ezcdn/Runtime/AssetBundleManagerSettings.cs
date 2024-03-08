@@ -64,6 +64,17 @@ namespace SplenSoft.AssetBundles
         public bool KeepLocalCopy { get; set; }
 
         /// <summary>
+        /// Unity CCD has a tendency to fail miserably when
+        /// there is a lot of concurrent downloads from a single IP.
+        /// See forum posts here:
+        /// <see href="https://forum.unity.com/threads/windows-platform-failed-to-download-from-ccd-properly.1270739/"/>
+        /// <see href="https://forum.unity.com/threads/max-concurrent-web-requests-setting-best-practices-for-mobile.1133422/"/>
+        /// It is recommended to leave this at default (20),
+        /// but advanced users can mess around with it
+        /// </summary>
+        public int MaxConcurrentDownloads { get; set; } = 20;
+
+        /// <summary>
         /// Loads the existing settings from the 
         /// Resources folder or creates new settings 
         /// if the file does not exist
@@ -280,6 +291,9 @@ namespace SplenSoft.AssetBundles
 
             label = new GUIContent("Include Local Copy", "Builds asset bundles and copies them to StreamAssets before app build. Useful as a fallback if game is played without internet before a local cache is made, but will increase app size.");
             KeepLocalCopy = EditorGUILayout.Toggle(label, KeepLocalCopy);
+
+            label = new GUIContent("Max Concurrent Downloads", "Maximum concurrent downloads to the Unity CCD. Too many of these can cause bad things to to happen. Recommended to leave it at default (20)");
+            MaxConcurrentDownloads = EditorGUILayout.IntField(label, MaxConcurrentDownloads);
 
             var environmentsSettings = EnvironmentsSettings.Get();
 

@@ -67,12 +67,12 @@ namespace SplenSoft.AssetBundles
                     _existingObject = AssetDatabase.LoadAssetAtPath(existingAssetPath, type);
                 }
             }
-
+            
             Object newObj = EditorGUI.ObjectField(position, label, _existingObject, type, false);
 
             if (newObj == _existingObject) return;
 
-            if (newObj == null && !string.IsNullOrEmpty(existingAssetBundleName))
+            if (newObj == null && !string.IsNullOrEmpty(existingAssetBundleName)) 
             {
                 property.stringValue = null;
                 property.serializedObject.ApplyModifiedProperties();
@@ -80,7 +80,7 @@ namespace SplenSoft.AssetBundles
                 return;
             }
 
-            if (AssetBundleManager.TryGetAssetBundleName(newObj, out string assetBundleName) &&
+            if (AssetBundleManager.TryGetAssetBundleName(newObj, out string assetBundleName) && 
                 assetBundleName != existingAssetBundleName)
             {
                 property.stringValue = assetBundleName;

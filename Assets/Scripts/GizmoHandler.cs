@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using Color = UnityEngine.Color;
 
 //[RequireComponent(typeof(Selectable))]
@@ -32,6 +33,12 @@ public class GizmoHandler : MonoBehaviour
 
     private void Awake()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         _selectable = GetComponent<Selectable>();
         _selectable.Deselected.AddListener(EnableGizmo);
         GizmoSelector.GizmoModeChanged += GizmoModeChanged;
@@ -46,6 +53,12 @@ public class GizmoHandler : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         if (_selectable != null)
         {
             _selectable.Deselected.RemoveListener(EnableGizmo);

@@ -13,13 +13,14 @@ public class InputHandler : MonoBehaviour
     public static Vector2 MouseDeltaPixels { get; private set; }
     public static Vector2 MouseDeltaScreenPercentage { get; private set; }
     public static EventHandler<KeyStateChangedEventArgs> KeyStateChanged;
+    public static bool MouseWasDownOverUI { get; private set; }
 
     private int[] values;
     private KeyState[] keys;
     private float _timeClickHeldDown;
     private bool _isClicking;
     private Vector2 _mousePosLastFrame;
-
+    
     static int UILayer => LayerMask.NameToLayer("UI");
 
     //Returns 'true' if we touched or hovering on Unity UI element.
@@ -45,9 +46,9 @@ public class InputHandler : MonoBehaviour
     {
         PointerEventData eventData = new PointerEventData(EventSystem.current);
         eventData.position = Input.mousePosition;
-        List<RaycastResult> raysastResults = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, raysastResults);
-        return raysastResults;
+        List<RaycastResult> raycastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raycastResults);
+        return raycastResults;
     }
 
     private void Awake()
@@ -80,6 +81,8 @@ public class InputHandler : MonoBehaviour
         {
             _isClicking = true;
             _timeClickHeldDown = 0f;
+
+            MouseWasDownOverUI = IsPointerOverUIElement();
         }
         else if (Input.GetMouseButtonUp(0))
         {

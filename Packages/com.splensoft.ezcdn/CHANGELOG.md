@@ -1,10 +1,19 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
-## [1.2.0] - 2024-03-05
+## [1.2.0] - 2024-03-07
 
 ### Added
 - IPreprocessAssetBundle interface added, following existing semantics in Unity. Implements OnPreprocessAssetBundle, which allows custom processing before the asset bundle is packaged and uploaded by EZ-CDN. IPreprocessAssetBundle should only be added to root-level components on prefabs or to ScriptableObjects that are managed by EZ-CDN (ManagedAsset attribute or added in Settings)
+- Verbose option now available as a Log Level. Default is still Log
+- AutoInstantiator ScriptableObject, which will automatically instantiate prefab asset bundles on app start
+- MaxConcurrentDownloads option in settings
+- Global events in AssetBundleManager - AssetRetrievalStarted, AssetLoaded, AssetBundleDownloadStarted, AssetBundleDownloadFinished, SceneAssetRetrievalStarted, SceneAssetLoaded. These are UnityEvents and will pass the asset bundle name as the argument
+
+### Fixes
+- Fix GUILayout issue with AssetBundleReferenceAttribute
+- Add missing hookup to SceneRequester to download and load scene via an inspector event
+- Change "Regenerate Asset Bundle Names" menu item to "Dry Run"
 
 ## [1.1.0] - 2024-03-04
 
