@@ -6250,7 +6250,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2942035293599639419, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
+<<<<<<< HEAD
       value: -0.0000038146973
+=======
+      value: 0.000022888184
+>>>>>>> feature-second-model-sprint
       objectReference: {fileID: 0}
     - target: {fileID: 3375155534626480558, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6422,7 +6426,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6121637902753642345, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchoredPosition.y
+<<<<<<< HEAD
       value: -0.00004196167
+=======
+      value: 0
+>>>>>>> feature-second-model-sprint
       objectReference: {fileID: 0}
     - target: {fileID: 6694157880608194478, guid: e38569eb47ef7ad45bde71842df055be, type: 3}
       propertyPath: m_AnchorMax.y
