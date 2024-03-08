@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public partial class Selectable : MonoBehaviour
+public partial class Selectable
 {
     [CustomEditor(typeof(Selectable))]
     public class Selectable_Inspector : Editor

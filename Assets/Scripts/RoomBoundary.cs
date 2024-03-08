@@ -116,7 +116,7 @@ public class RoomBoundary : MonoBehaviour
         {
             if (hit.TryGetComponent(out Selectable selectable))
             {
-                if (selectable.SubPartName == "Baseboard")
+                if (selectable.gameObject.CompareTag("Baseboard"))
                 {
                     baseboard = hit.gameObject;
                     break;

@@ -54,7 +54,7 @@ public class PdfExporter : MonoBehaviour
             if (item.ScaleLevels.Count > 0) 
             {
                 SimpleJSON.JSONObject selectableData = new();
-                selectableData.Add("Item", item.Name + " length");
+                selectableData.Add("Item", item.MetaData.Name + " length");
                 selectableData.Add("Value", item.CurrentScaleLevel.Size * 1000f + "mm");
                 selectableArray.Add(selectableData);
             }

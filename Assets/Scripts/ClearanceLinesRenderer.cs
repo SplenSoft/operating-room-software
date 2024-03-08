@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public partial class ClearanceLinesRenderer : MonoBehaviour
 {
@@ -105,17 +106,35 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     #region Monobehaviour
     private void Awake()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         _selectable = GetComponent<Selectable>();
     }
 
     private void OnDestroy()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         Unsubscribe();
         Destroy(_lineRenderer.gameObject);
     }
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         Subscribe();
 
         if (Type == RendererType.ArmAssembly) 

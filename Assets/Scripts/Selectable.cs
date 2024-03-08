@@ -1,5 +1,5 @@
 using HighlightPlus;
-using RTG;
+using SplenSoft.AssetBundles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,12 +7,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
+using UnityEngine.SceneManagement;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// Add basic selectable - <see href="https://youtu.be/qEaRrGC_MX8?si=kCXNSVa11KxLKRNG"/> 
 /// </summary>
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect), typeof(TrackedObject)), Serializable]
-public partial class Selectable : MonoBehaviour
+public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 {
     [Serializable]
     public class ScaleLevel
@@ -43,6 +49,18 @@ public partial class Selectable : MonoBehaviour
         }
     }
 
+    [Serializable]
+    public class AttachmentPointData
+    {
+        [field: SerializeField] 
+        public string Guid 
+        { get; set; } = System.Guid.NewGuid().ToString();
+
+        [field: SerializeField]
+        public AttachmentPoint AttachmentPoint
+        { get; set; }
+    }
+
     #region Fields and Properties
     public static List<Selectable> ActiveSelectables { get; } = new List<Selectable>();
 
@@ -51,39 +69,92 @@ public partial class Selectable : MonoBehaviour
     public static bool IsInElevationPhotoMode { get; private set; }
     public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
+    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
     public UnityEvent ScaleUpdated { get; } = new();
     public UnityEvent Deselected { get; } = new();
     public Selectable ParentSelectable { get; private set; }
-
-    public bool IsMouseOver { get; private set; }
-    public bool IsDestroyed { get; private set; }
-
-    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
+    
     public Vector3 OriginalLocalPosition { get; set; }
     public Vector3 OriginalLocalRotation { get; private set; }
     public string guid { get; set; }
+
+    public bool IsMouseOver { get; private set; }
+    public bool IsDestroyed { get; private set; }
+    
     [field: SerializeField] public string GUID { get; private set; }
-    [field: SerializeField] public AttachmentPoint ParentAttachmentPoint { get; set; }
-    [field: SerializeField] public Sprite Thumbnail { get; private set; }
-    [field: SerializeField] public string Name { get; private set; }
-    [field: SerializeField] public string SubPartName { get; private set; }
-    [field: SerializeField] public string Description { get; private set; }
-    [field: SerializeField] private List<RoomBoundaryType> WallRestrictions { get; set; } = new();
-    [field: SerializeField] public List<SelectableType> Types { get; private set; } = new();
+    public AttachmentPoint ParentAttachmentPoint { get; set; }
+    
+    [field: SerializeField, MetaDataHandler] 
+    public SelectableMetaData MetaData { get; set; }
+
+    [field: SerializeField, HideInInspector] 
+    public List<AttachmentPointData> 
+    AttachmentPointDatas { get; set; } = new();
+
+    [field: SerializeField, 
+    FormerlySerializedAs("<Types>k__BackingField")] 
+    public List<SpecialSelectableType> 
+    SpecialTypes { get; set; } = new();
+
+    [field: SerializeField] public List<RoomBoundaryType> WallRestrictions { get; set; } = new();
+    [field: SerializeField] public List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
     [field: SerializeField] public bool isDestructible { get; private set; } = true;
-    [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
-    [field: SerializeField] private List<GizmoSetting> GizmoSettingsList { get; set; } = new();
+    [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;  
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
     [field: SerializeField] public bool useLossyScale { get; private set; }
-    [field: SerializeField] private bool ZAlwaysFacesGround { get; set; }
-    [field: SerializeField] private bool ZAlwaysFacesGroundElevationOnly { get; set; }
+
+    public Bounds GetBounds()
+    {
+        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+
+        Bounds bounds = new Bounds(
+            meshRenderers[0].bounds.center, 
+            meshRenderers[0].bounds.size);
+
+        //if (meshRenderers.Length == 1) 
+        //    return bounds;
+
+        for (int i = 1; i < meshRenderers.Length; i++)
+        {
+            bounds.Encapsulate(meshRenderers[i].bounds);
+        }
+
+        return bounds;
+    }
+
+    [field: SerializeField, 
+    Tooltip("True if this object will rotate " +
+    "along its y-axis automatically to make its " +
+    "z-axis (forward) parallel to the world " +
+    "y-axis (up-down)")] 
+    private bool ZAlwaysFacesGround { get; set; }
+
+    [field: SerializeField, 
+    Tooltip("True if this object will rotate " +
+    "along its y-axis automatically to make its " +
+    "z-axis (forward) parallel to the world " +
+    "y-axis (up-down), but only when taking " +
+    "elevation photos for PDF output")] 
+    private bool ZAlwaysFacesGroundElevationOnly { get; set; }
+
     [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
     [field: SerializeField] public List<Measurable> Measurables { get; private set; }
-    [field: SerializeField] private bool AlignForElevationPhoto { get; set; }
-    [field: SerializeField] private bool ChangeHeightForElevationPhoto { get; set; }
+
+    [field: SerializeField, 
+    Tooltip("True if this object will rotate to its " +
+    "default rotation when taking an elevation " +
+    "photo for the PDF")] 
+    private bool AlignForElevationPhoto { get; set; }
+
+    [field: SerializeField, 
+    Tooltip("True if this object will rotate along " +
+    "its Y-axis (vertical rotation) to its lowest " +
+    "and highest possible positions for an " +
+    "elevation photo.")] 
+    private bool ChangeHeightForElevationPhoto { get; set; }
 
     private List<Selectable> _assemblySelectables = new();
     private Dictionary<Selectable, Quaternion> _originalRotations = new();
@@ -101,13 +172,13 @@ public partial class Selectable : MonoBehaviour
     /// <summary>
     /// If true, this is probably a ceiling mount
     /// </summary>
-    private bool IsAssemblyRoot => Types.Contains(SelectableType.Mount);
+    private bool IsAssemblyRoot => SpecialTypes.Contains(SpecialSelectableType.Mount);
     public bool IsArmAssembly => transform.root.TryGetComponent(out Selectable rootSelectable) && rootSelectable.IsAssemblyRoot;
     public bool IsSelected => SelectedSelectable == this;
 
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentScaleLevel { get; private set; }
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentPreviewScaleLevel { get; private set; }
-    [field: HideInInspector] public UnityEvent<ScaleLevel> OnScaleChange;
+    public UnityEvent<ScaleLevel> OnScaleChange { get; } = new();
 
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
@@ -212,7 +283,7 @@ public partial class Selectable : MonoBehaviour
     public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
         CurrentPreviewScaleLevel = scaleLevel;
-        OnScaleChange.Invoke(CurrentPreviewScaleLevel);
+        OnScaleChange?.Invoke(CurrentPreviewScaleLevel);
 
         Quaternion storedRotation = transform.rotation;
         transform.rotation = _originalRotation;
@@ -280,7 +351,7 @@ public partial class Selectable : MonoBehaviour
             ScaleLevels.ForEach((item) => item.Selected = false);
             scaleLevel.Selected = true;
             CurrentScaleLevel = scaleLevel;
-            OnScaleChange.Invoke(CurrentScaleLevel);
+            OnScaleChange?.Invoke(CurrentScaleLevel);
 
             if (TryGetComponent(out ScaleGroup group))
             {
@@ -347,7 +418,7 @@ public partial class Selectable : MonoBehaviour
     {
         if (TryGetGizmoSetting(gizmoType, axis, out GizmoSetting gizmoSetting))
         {
-            return gizmoSetting.GetMaxValue;
+            return gizmoSetting.GetMaxValue();
         }
         else return 0;
     }
@@ -356,7 +427,7 @@ public partial class Selectable : MonoBehaviour
     {
         if (TryGetGizmoSetting(gizmoType, axis, out GizmoSetting gizmoSetting))
         {
-            return gizmoSetting.GetMinValue;
+            return gizmoSetting.GetMinValue();
         }
         else return 0;
     }
@@ -480,7 +551,7 @@ public partial class Selectable : MonoBehaviour
 
                 if (i == 0)
                 {
-                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue : gizmoSetting.GetMinValue;
+                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue() : gizmoSetting.GetMinValue();
                     selectable.transform.localEulerAngles = newAngles;
                     var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
                     while (childList.FirstOrDefault(x => x.IsHittingCeiling()) != default)
@@ -493,7 +564,7 @@ public partial class Selectable : MonoBehaviour
                 }
                 else
                 {
-                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMinValue : gizmoSetting.GetMaxValue;
+                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMinValue() : gizmoSetting.GetMaxValue();
                 }
 
                 selectable.transform.localEulerAngles = newAngles;
@@ -791,7 +862,10 @@ public partial class Selectable : MonoBehaviour
 
     private void Start()
     {
-        if (GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID) && transform.parent == null)
+        if (GUID != "" &&
+        ConfigurationManager._instance != null &&
+        !ConfigurationManager._instance.isRoomBoundary(GUID) &&
+        transform.parent == null)
         {
             guid = Guid.NewGuid().ToString();
             gameObject.name = guid.ToString();
@@ -915,7 +989,7 @@ public partial class Selectable : MonoBehaviour
                     normal *= -1;
                 }
 
-                if (Types.Contains(SelectableType.Door))
+                if (SpecialTypes.Contains(SpecialSelectableType.Door))
                 {
                     RoomBoundaryType roomBoundaryType = hit.collider.gameObject.GetComponent<RoomBoundary>().RoomBoundaryType;
 
@@ -940,7 +1014,6 @@ public partial class Selectable : MonoBehaviour
                         destination.x = hit.collider.transform.position.x - halfThickness;
                         normal = -Vector3.right;
                     }
-
 
                     destination.y = 0;
                 }
@@ -1024,6 +1097,11 @@ public partial class Selectable : MonoBehaviour
         }
         else if (e.KeyCode == KeyCode.Delete && e.KeyState == KeyState.ReleasedThisFrame && IsSelected)
         {
+            if (SceneManager.GetActiveScene().name == "ObjectEditor")
+            {
+                return;
+            }
+
             if (!isDestructible) return;
 
             Deselect();
@@ -1047,6 +1125,11 @@ public partial class Selectable : MonoBehaviour
 
     public void Select()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            return;
+        }
+
         if (IsSelected || _isRaycastPlacementMode || GizmoHandler.GizmoBeingUsed) return;
         if (SelectedSelectable != null)
         {
@@ -1057,20 +1140,54 @@ public partial class Selectable : MonoBehaviour
         SelectionChanged?.Invoke();
         _gizmoHandler.SelectableSelected();
     }
-}
 
-public enum SelectableType
-{
-    DropTube,
-    Mount,
-    Furniture,
-    ArmSegment,
-    BoomSegment,
-    BoomHead,
-    Wall,
-    CeilingLight,
-    Door,
-    ServiceHeadPanel,
-    ServiceHeadShelves,
-    Tabletop
+    public void OnPreprocessAssetBundle()
+    {
+#if UNITY_EDITOR
+        AttachmentPoint[] attachPoints = 
+            GetComponentsInChildren<AttachmentPoint>(true);
+
+        bool needsDirty = false;
+        Array.ForEach(attachPoints, attPoint =>
+        {
+            bool exists = AttachmentPointDatas
+                .Any(x => x.AttachmentPoint == attPoint);
+
+            // make sure we're tracking it
+            if (!exists)
+            {
+                string newGuid = Guid.NewGuid().ToString();
+                AttachmentPointDatas.Add(
+                    new AttachmentPointData
+                    {
+                        Guid = newGuid,
+                        AttachmentPoint = attPoint
+                    });
+
+                attPoint.MetaData.Guid = newGuid;
+
+                MetaData.AttachmentPointGuidMetaData.Add(
+                    new AttachmentPointGuidMetaData
+                    {
+                        Guid = newGuid,
+                        MetaData = attPoint.MetaData
+                    });
+
+                needsDirty = true;
+            }
+        });
+
+        if (string.IsNullOrWhiteSpace(MetaData.Name) || 
+            MetaData.Name == "Selectable")
+        {
+            MetaData.Name = gameObject.name;
+            needsDirty = true;
+        }
+
+        if (needsDirty) 
+        { 
+            EditorUtility.SetDirty(gameObject);
+        }
+#endif
+    }
 }

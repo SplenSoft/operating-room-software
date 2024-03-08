@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using Color = UnityEngine.Color;
 
 //[RequireComponent(typeof(Selectable))]
@@ -32,6 +33,12 @@ public class GizmoHandler : MonoBehaviour
 
     private void Awake()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         _selectable = GetComponent<Selectable>();
         _selectable.Deselected.AddListener(EnableGizmo);
         GizmoSelector.GizmoModeChanged += GizmoModeChanged;
@@ -46,6 +53,12 @@ public class GizmoHandler : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            enabled = false;
+            return;
+        }
+
         if (_selectable != null)
         {
             _selectable.Deselected.RemoveListener(EnableGizmo);
@@ -455,7 +468,7 @@ public class GizmoHandler : MonoBehaviour
         if (_selectable.useLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
         {
             float newZScale = zScale / _selectable.transform.lossyScale.z;
-            if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
+            if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())
             {
                 //_selectable.transform.localScale = Vector3.one;
                 Vector3 oldScale = _selectable.transform.localScale;
@@ -465,7 +478,7 @@ public class GizmoHandler : MonoBehaviour
                     1,
                     zScale);
 
-                if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue)
+                if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())
                 {
                     _selectable.transform.localScale = oldScale;
                     return;
@@ -502,7 +515,7 @@ public class GizmoHandler : MonoBehaviour
 
                 if (_selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting) && !gizmoSetting.Unrestricted)
                 {
-                    zScale = Mathf.Clamp(zScale, gizmoSetting.GetMinValue, gizmoSetting.GetMaxValue);
+                    zScale = Mathf.Clamp(zScale, gizmoSetting.GetMinValue(), gizmoSetting.GetMaxValue());
                 }
             }
         }

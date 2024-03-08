@@ -17,6 +17,12 @@ public class GizmoDimensions : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        Selectable.SelectionChanged -= UpdateActiveState;
+        _dropdown.onValueChanged.RemoveListener(UpdateGizmoDimension);
+    }
+
     void UpdateActiveState()
     {
         if (Selectable.SelectedSelectable != null)

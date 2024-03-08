@@ -221,6 +221,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3808924356805802442}
   - component: {fileID: 4500082523908294456}
+  - component: {fileID: 1619841951285165686}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -275,6 +276,20 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &1619841951285165686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443742329594485381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &1748624588242611278
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,11 +801,11 @@ MonoBehaviour:
   m_Content: {fileID: 3808924356805802442}
   m_Horizontal: 1
   m_Vertical: 1
-  m_MovementType: 1
+  m_MovementType: 2
   m_Elasticity: 0.1
-  m_Inertia: 1
+  m_Inertia: 0
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 1
+  m_ScrollSensitivity: 20
   m_Viewport: {fileID: 6746164118843962508}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 5978337217099215731}
@@ -1093,26 +1108,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <ItemTemplate>k__BackingField: {fileID: 8432471266395779665}
   <ItemTemplateTextObjectName>k__BackingField: {fileID: 3158347501697319027}
-  <BuiltInSelectablePrefabs>k__BackingField: []
-  <BuiltInFolders>k__BackingField:
-  - Selectables
-  - Selectables/Doors
-  - Selectables/GasOutlets
-  - Selectables/Doors/Double
-  - Selectables/Doors/Single
-  - Selectables/Doors/Unequal
-  - Selectables/Doors/Double/OppositeSwing
-  - Selectables/Doors/Double/SameSwing
-  - Selectables/Doors/Single/3ft
-  - Selectables/Doors/Single/4ft
-  - Selectables/Doors/Unequal/1,4ft
-  - Selectables/Doors/Unequal/2,4ft
-  - Selectables/Doors/Double/OppositeSwing/6ft
-  - Selectables/Doors/Double/OppositeSwing/7ft
-  - Selectables/Doors/Double/OppositeSwing/8ft
-  - Selectables/Doors/Double/SameSwing/6ft
-  - Selectables/Doors/Double/SameSwing/7ft
-  - Selectables/Doors/Double/SameSwing/8ft
 --- !u!114 &3340290244935651647
 MonoBehaviour:
   m_ObjectHideFlags: 0

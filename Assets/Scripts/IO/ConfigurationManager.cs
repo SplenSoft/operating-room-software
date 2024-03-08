@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Unity.VisualScripting;
+using UnityEditor;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -323,7 +324,7 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    void ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
+    private async void ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
     {
         foreach (TrackedObject.Data to in trackedObjects)
         {
@@ -339,7 +340,13 @@ public class ConfigurationManager : MonoBehaviour
 
             if (to.global_guid != attachPointGUID && !string.IsNullOrEmpty(to.global_guid)) // if it is not an AttachPoint, we need to place the Selectable
             {
-                go = InstantiateObject(to);
+                var task = InstantiateObject(to);
+                await task;
+                if (!Application.isPlaying)
+                {
+                    throw new Exception($"Application quit while asset was being loaded/downloaded");
+                }
+                go = task.Result;
                 newObjects.Add(go.GetComponent<TrackedObject>());
             }
 
@@ -376,9 +383,23 @@ public class ConfigurationManager : MonoBehaviour
     /// </summary>
     /// <param name="to">The JSON structure of this object</param>
     /// <returns>The gameobject of our newly instantiated and setup logic applied</returns>
-    GameObject InstantiateObject(TrackedObject.Data to)
+    private async Task<GameObject> InstantiateObject(TrackedObject.Data to)
     {
-        GameObject go = Instantiate(ObjectMenu.Instance.GetPrefabByGUID(to.global_guid));
+        if (!SelectableAssetBundles.TryGetSelectableData(to.global_guid, out SelectableData data))
+        {
+            Debug.LogError($"Could not find selectable data for {to.objectName} with guid {to.global_guid}");
+            return null;
+        }
+
+        var task = data.GetPrefab();
+        await task;
+        if (!Application.isPlaying)
+        {
+            throw new Exception($"Application quit while asset bundle was being downloaded/loaded");
+        }
+
+        GameObject go = Instantiate(task.Result);
+
         go.transform.SetPositionAndRotation(to.pos, to.rot);
         if (!string.IsNullOrEmpty(to.instance_guid))
             go.name = to.instance_guid;
