@@ -50,6 +50,10 @@ public class SelectableMetaData
     [field: SerializeField, HideInInspector]
     public List<AttachmentPointGuidMetaData> 
     AttachmentPointGuidMetaData { get; set; } = new();
+
+    [field: SerializeField, HideInInspector]
+    public long LastModified 
+    { get; set; } = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 }
 
 [Serializable]
@@ -62,3 +66,7 @@ public struct AttachmentPointGuidMetaData
     public AttachmentPointMetaData 
     MetaData { get; set; }
 }
+
+//cOdTQc-RIUn3v_vCu8wDug
+
+//postgresql://ors:cOdTQc-RIUn3v_vCu8wDug@brassy-growler-13696.7tt.aws-us-east-1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full

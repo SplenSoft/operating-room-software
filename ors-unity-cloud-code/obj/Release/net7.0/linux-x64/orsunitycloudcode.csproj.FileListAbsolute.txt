@@ -1,0 +1,12 @@
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\bin\Release\net7.0\linux-x64\orsunitycloudcode.deps.json
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\bin\Release\net7.0\linux-x64\orsunitycloudcode.dll
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\bin\Release\net7.0\linux-x64\orsunitycloudcode.pdb
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\orsunitycloudcode.csproj.AssemblyReference.cache
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\orsunitycloudcode.GeneratedMSBuildEditorConfig.editorconfig
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\orsunitycloudcode.AssemblyInfoInputs.cache
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\orsunitycloudcode.AssemblyInfo.cs
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\orsunitycloudcode.csproj.CoreCompileInputs.cache
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\orsunitycloudcode.dll
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\refint\orsunitycloudcode.dll
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\orsunitycloudcode.pdb
+C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\obj\Release\net7.0\linux-x64\ref\orsunitycloudcode.dll

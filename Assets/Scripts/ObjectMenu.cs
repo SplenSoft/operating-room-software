@@ -27,7 +27,8 @@ public class ObjectMenu : MonoBehaviour
     private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }
 
     private AttachmentPoint _attachmentPoint;
-    private List<ObjectMenuItem> ObjectMenuItems { get; set; } = new();
+    private List<ObjectMenuItem> ObjectMenuItems 
+    { get; set; } = new();
 
     private class ObjectMenuItem
     {
@@ -36,7 +37,11 @@ public class ObjectMenu : MonoBehaviour
         public string customFile { get; set; }
     }
 
-    public static Selectable LastOpenedSelectable { get; private set; }
+    public static Selectable LastOpenedSelectable 
+    { get; private set; }
+
+    public static SelectableData LastOpenedSelectableData 
+    { get; private set; }
 
     #region Monobehaviour
 
@@ -110,6 +115,7 @@ public class ObjectMenu : MonoBehaviour
                 var newSelectableGameObject = Instantiate(prefab);
                 var selectable2 = newSelectableGameObject.GetComponent<Selectable>();
                 LastOpenedSelectable = selectable2;
+                LastOpenedSelectableData = data;
                 LastOpenedSelectableChanged?.Invoke();
 
                 if (SceneManager.GetActiveScene().name == "ObjectEditor")
