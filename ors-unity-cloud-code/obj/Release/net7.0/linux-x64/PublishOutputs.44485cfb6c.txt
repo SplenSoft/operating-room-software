@@ -1,6 +1,0 @@
-C:\Development Projects\ors-unity-cloud-code\bin\Release\net7.0\publish\linux-x64\ors-unity-cloud-code.dll
-C:\Development Projects\ors-unity-cloud-code\bin\Release\net7.0\publish\linux-x64\ors-unity-cloud-code.deps.json
-C:\Development Projects\ors-unity-cloud-code\bin\Release\net7.0\publish\linux-x64\ors-unity-cloud-code.pdb
-C:\Development Projects\ors-unity-cloud-code\bin\Release\net7.0\publish\linux-x64\Unity.Services.CloudCode.Core.dll
-C:\Development Projects\ors-unity-cloud-code\bin\Release\net7.0\publish\linux-x64\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Development Projects\ors-unity-cloud-code\bin\Release\net7.0\publish\linux-x64\Newtonsoft.Json.dll

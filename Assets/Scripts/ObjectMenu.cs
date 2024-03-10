@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -79,14 +80,26 @@ public class ObjectMenu : MonoBehaviour
 
     #endregion
 
+    public static void Regenerate()
+    {
+        foreach (var item in Instance.ObjectMenuItems)
+        {
+            Destroy(item.GameObject);
+        }
+
+        Instance.ObjectMenuItems.Clear();
+        Instance.Initialize();
+    }
+
     private async void Initialize()
     {
         var loadingToken = Loading.GetLoadingToken();
 
-        while (!SelectableAssetBundles.Initialized) 
+        while (!Database.Initialized || !SelectableAssetBundles.Initialized)
+        {
             await Task.Yield();
-
-        if (!Application.isPlaying) return;
+            if (!Application.isPlaying) return;
+        }
 
         foreach (var data in SelectableAssetBundles.GetSelectableData())
         {
@@ -97,9 +110,23 @@ public class ObjectMenu : MonoBehaviour
             //}
 
             // todo: Get data from database
+            string objectName = data.PrefabName;
 
-            //var selectable = prefab.GetComponent<Selectable>();
-            ItemTemplateTextObjectName.text = data.PrefabName;
+            var task = Database.GetMetaData(data.AssetBundleName, data.MetaData);
+            await task;
+
+            if (!Application.isPlaying)
+                throw new Exception($"App quit while downloading");
+            
+            if (task.Result.ResultType == Database.MetaDataOpertaionResultType.Success)
+            {
+                var metadata = JsonConvert.DeserializeObject
+                    <SelectableMetaData>(task.Result.Message);
+
+                objectName = metadata.Name;
+            }
+
+            ItemTemplateTextObjectName.text = objectName;
             var newMenuItem = Instantiate(ItemTemplate, ItemTemplate.transform.parent);
             newMenuItem.GetComponentInChildren<Button>().onClick.AddListener(async () =>
             {
@@ -151,6 +178,7 @@ public class ObjectMenu : MonoBehaviour
         _initialized = true;
 
         loadingToken.Done();
+        Database.SetIsUpToDate();
     }
 
     private void AddSavedRoomConfigs()

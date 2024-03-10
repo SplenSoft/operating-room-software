@@ -1,6 +1,0 @@
-C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\module-compilation\orsunitycloudcode.dll
-C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\module-compilation\orsunitycloudcode.deps.json
-C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\module-compilation\orsunitycloudcode.pdb
-C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\module-compilation\Unity.Services.CloudCode.Core.dll
-C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\module-compilation\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-C:\Development Projects\Operating-Room-Software\ors-unity-cloud-code\module-compilation\Newtonsoft.Json.dll
