@@ -2,53 +2,112 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 internal class UI_ObjectEditor : MonoBehaviour
-{ 
-    [field: SerializeField] 
-    private TextMeshProUGUI Title 
-    { get; set; }
+{
+    #region Fields/Properties
 
-    [field: SerializeField] 
-    private TMP_InputField InputField_ObjectName 
-    { get; set; }
+    public static UI_ObjectEditor Instance { get; private set; }
 
-    [field: SerializeField] 
-    private TextMeshProUGUI List_Keywords 
+    [field: SerializeField]
+    private TextMeshProUGUI Title
     { get; set; }
 
     [field: SerializeField]
-    private TextMeshProUGUI List_Categories
+    private GameObject AttachmentPointBox
+    { get; set; }
+ 
+    [field: SerializeField]
+    private TMP_InputField InputField_ObjectName
     { get; set; }
 
-    [field: SerializeField] 
-    private Toggle Toggle_IsEnabled 
+    [field: SerializeField]
+    private Toggle Toggle_IsEnabled
     { get; set; }
+
+    [field: SerializeField]
+    private TMP_InputField InputField_NewKeyword
+    { get; set; }
+
+    [field: SerializeField]
+    private TMP_InputField InputField_NewCategory
+    { get; set; }
+
+    [field: SerializeField]
+    private TMP_InputField
+    InputField_NewCategoryAttachmentPoint
+    { get; set; }
+
+    [field: SerializeField]
+    private GameObject Template_Keyword
+    { get; set; }
+
+    [field: SerializeField]
+    private GameObject Template_Category
+    { get; set; }
+
+    [field: SerializeField]
+    private GameObject
+    Template_CategoryAttachmentPoint
+    { get; set; }
+
+    [field: SerializeField]
+    private GameObject
+    Template_CompatibleObject
+    { get; set; }
+
+    private UnityEventManager _eventManager = new();
+    private SelectableMetaData _activeMetaData;
+    private List<GameObject> _instantiatedKeywords = new();
+    private List<GameObject> _instantiatedCategories = new();
+    private List<GameObject> _instantiatedCategoriesAttachmentPoint = new();
+    private List<GameObject> _instantiatedAssetBundleNamesAttachmentPoint = new();
+
+    #endregion
+
+    #region Methods
+
+    #region Monobehaviour
 
     private void Awake()
     {
-        ObjectMenu.LastOpenedSelectableChanged
-            .AddListener(UpdateState);
+        _eventManager.RegisterEvents
+            ((ObjectMenu.LastOpenedSelectableChanged, UpdateState),
+            (Selectable.ActiveSelectablesInSceneChanged, UpdateState),
+            (AttachmentPoint.SelectedAttachmentPointChanged, UpdateState));
 
-        Selectable.ActiveSelectablesInSceneChanged
-            .AddListener(UpdateState);
+        _eventManager.AddListeners();
+
+        Template_Keyword.SetActive(false);
+        Template_Category.SetActive(false);
+        Template_CategoryAttachmentPoint.SetActive(false);
+        Template_CompatibleObject.SetActive(false);
 
         gameObject.SetActive(false);
+
+        Instance = this;
     }
 
     private void OnDestroy()
     {
-        ObjectMenu.LastOpenedSelectableChanged
-            .RemoveListener(UpdateState);
+        _eventManager.RemoveListeners();
+    }
 
-        Selectable.ActiveSelectablesInSceneChanged
-            .RemoveListener(UpdateState);
+    #endregion
+
+    public static async void AddCompatibleObject(string assetBundleName)
+    {
+        var task = Instance.AddNewAttachmentPointObject(assetBundleName);
+        await task;
+
+        if (!Application.isPlaying)
+            throw new Exception($"App quit while in task");
+
+        Instance.OpenObjectMenuForAttachmentPointObject();
     }
 
     private async void UpdateState()
@@ -59,52 +118,376 @@ internal class UI_ObjectEditor : MonoBehaviour
             !selectable.IsDestroyed && 
             Selectable.ActiveSelectables.Count > 0;
 
+        bool wasActive = gameObject.activeSelf;
+
         if ((active && !gameObject.activeSelf) || 
         (!active && gameObject.activeSelf))
             gameObject.SetActive(active);
 
-        if (!active) return;
+        AttachmentPointBox.SetActive
+            (AttachmentPoint.SelectedAttachmentPoint != null);
 
-        string assetBundleName = ObjectMenu.LastOpenedSelectableData.AssetBundleName;
+        if (active && wasActive)
+        {
+            RefreshValues();
+        }
 
-        var task = Database.GetMetaData(assetBundleName, selectable.MetaData);
+        if (!active || wasActive) return;
+
+        GetMetaData();
+    }
+
+    private async void GetMetaData()
+    {
+        Selectable selectable = ObjectMenu.LastOpenedSelectable;
+
+        string assetBundleName = ObjectMenu
+                .LastOpenedSelectableData.AssetBundleName;
+
+        var task = Database.GetMetaData
+            (assetBundleName, selectable.MetaData);
+
         await task;
+
+        if (!Application.isPlaying)
+            throw new Exception($"App quit during async task");
 
         if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
         {
-            // todo: show a bad UI
+            UI_DialogPrompt.Open(
+                $"Error: Could not reach database: {task.Result.Message}");
+
             return;
         }
 
         //populate UI
-        var metadata = JsonConvert.DeserializeObject
+        _activeMetaData = JsonConvert.DeserializeObject
             <SelectableMetaData>(task.Result.Message);
 
-        Title.text = metadata.Name;
-        InputField_ObjectName.text = metadata.Name;
-
-        HandleList(List_Keywords, metadata.KeyWords, "keywords");
-        HandleList(List_Categories, metadata.Categories, "categories");
-
-        Toggle_IsEnabled.SetIsOnWithoutNotify(metadata.Enabled);
+        RefreshValues();
     }
 
-    private void HandleList(TextMeshProUGUI inputField, List<string> list, string name)
+    private void RefreshValues()
     {
-        if (list.Count == 0)
+        Title.text = _activeMetaData.Name;
+        InputField_ObjectName.text = _activeMetaData.Name;
+
+        _instantiatedKeywords
+            .ForEach(item => Destroy(item));
+
+        _instantiatedCategories
+            .ForEach(item => Destroy(item));
+
+        _instantiatedKeywords.Clear();
+        _instantiatedCategories.Clear();
+
+        _activeMetaData.KeyWords.ForEach(item => AddNewKeyword(item));
+        _activeMetaData.Categories.ForEach(item => AddNewCategory(item));
+
+        Toggle_IsEnabled.SetIsOnWithoutNotify(_activeMetaData.Enabled);
+
+        InputField_NewKeyword.text = string.Empty;
+        InputField_NewCategory.text = string.Empty;
+        InputField_NewCategoryAttachmentPoint.text = string.Empty;
+
+        if (AttachmentPoint.SelectedAttachmentPoint != null)
         {
-            inputField.text = $"No {name}";
+            _instantiatedCategoriesAttachmentPoint
+                .ForEach(item => Destroy(item));
+
+            _instantiatedCategoriesAttachmentPoint.Clear();
+
+            _instantiatedAssetBundleNamesAttachmentPoint
+                .ForEach(item => Destroy(item));
+
+            _instantiatedAssetBundleNamesAttachmentPoint.Clear();
+
+            var apMetaData = GetAttachmentPointMetaData();
+
+            apMetaData.MetaData
+                .AllowedSelectableCategories
+                .ForEach(item => AddNewCategoryAttachmentPoint(item));
+
+            apMetaData.MetaData.AllowedSelectableAssetBundleNames.ForEach(item => 
+            { 
+                var task = AddNewAttachmentPointObject(item);
+            });
+        }
+    }
+
+    //private void HandleList(TextMeshProUGUI inputField, 
+    //List<string> list, string name)
+    //{
+    //    if (list.Count == 0)
+    //    {
+    //        inputField.text = $"No {name}";
+    //    }
+    //    else
+    //    {
+    //        var stringBuilder = new StringBuilder();
+    //        list.ForEach(word =>
+    //        {
+    //            stringBuilder.AppendLine(word);
+    //        });
+    //        inputField.text = stringBuilder.ToString();
+    //    }
+    //}
+
+    private void UpdateMetaData()
+    {
+        _activeMetaData.Name = InputField_ObjectName.text;
+
+        _activeMetaData.KeyWords = _instantiatedKeywords
+            .Select(x => x.GetComponentInChildren<TextMeshProUGUI>().text)
+            ?.ToList() ?? new List<string>();
+
+        _activeMetaData.Categories = _instantiatedCategories
+            .Select(x => x.GetComponentInChildren<TextMeshProUGUI>().text)
+            ?.ToList() ?? new List<string>();
+
+        _activeMetaData.Enabled = Toggle_IsEnabled.isOn;
+
+        if (AttachmentPoint.SelectedAttachmentPoint != null)
+        {
+            var apMetaData = GetAttachmentPointMetaData();
+
+            List<string> newCategories = _instantiatedCategoriesAttachmentPoint
+                .Select(x => x.GetComponentInChildren<TextMeshProUGUI>().text)
+                .ToList();
+
+            List<string> newAssetNames = _instantiatedAssetBundleNamesAttachmentPoint
+                .Select(x => x.GetComponentInChildren<TextMeshProUGUI>().text)
+                .ToList();
+
+            apMetaData.MetaData.AllowedSelectableCategories = newCategories;
+            apMetaData.MetaData.AllowedSelectableAssetBundleNames = newAssetNames;
+        }
+    }
+
+    private AttachmentPointGuidMetaData GetAttachmentPointMetaData()
+    {
+        var guid = AttachmentPoint.SelectedAttachmentPoint.MetaData.Guid;
+
+        Selectable.AttachmentPointData data = ObjectMenu
+            .LastOpenedSelectable
+            .AttachmentPointDatas
+            .First(x => x.Guid == guid);
+
+        var existing = _activeMetaData
+            .AttachmentPointGuidMetaData
+            .FirstOrDefault(x => x.Guid == guid);
+
+        if (existing == default)
+        {
+            existing = new AttachmentPointGuidMetaData
+            {
+                Guid = guid,
+                MetaData = new AttachmentPointMetaData
+                {
+                    Guid = guid,
+                    AllowedSelectableCategories = new(),
+                    AllowedSelectableAssetBundleNames = new()
+                }
+            };
+
+            _activeMetaData.AttachmentPointGuidMetaData.Add(existing);
+        }
+
+        return existing;
+    }
+
+    public void DeleteSelectables()
+    {
+        Destroy(ObjectMenu.LastOpenedSelectable.gameObject);
+    }
+
+    public async void Save()
+    {
+        UpdateMetaData();
+
+        string assetBundleName = ObjectMenu
+            .LastOpenedSelectableData.AssetBundleName;
+
+        var task = Database.SaveMetaData(assetBundleName, _activeMetaData);
+
+        await task;
+
+        if (!Application.isPlaying)
+            throw new Exception("App closed during async task");
+
+        if (task.Result.ResultType == Database.MetaDataOpertaionResultType.Success)
+        {
+            Debug.Log("Saved data successfully");
+
+            UI_DialogPrompt.Open(
+                "Saved data successfully");
+
+            Title.text = _activeMetaData.Name;
+
+            ObjectMenu.Regenerate();
         }
         else
         {
-            var stringBuilder = new StringBuilder();
-            list.ForEach(word =>
-            {
-                stringBuilder.AppendLine(word);
-            });
-            inputField.text = stringBuilder.ToString();
+            Debug.LogError("Could not save data to the server");
+
+            UI_DialogPrompt.Open(
+                $"An error occurred: {task.Result.Message}. Data was not saved.");
         }
     }
 
-    
+    public void OpenObjectMenuForAttachmentPointObject()
+    {
+        var list = _instantiatedAssetBundleNamesAttachmentPoint
+            .Select(x => x.GetComponentInChildren<TextMeshProUGUI>().text)
+            .ToList();
+
+        ObjectMenu.OpenToSelectCompatibleObjects(list);
+    }
+
+    public void AddNewKeyword()
+    {
+        AddNewItem(Template_Keyword, 
+            InputField_NewKeyword, 
+            _instantiatedKeywords,
+            null);
+    }
+
+    public async Task AddNewAttachmentPointObject(string assetBundleName)
+    {
+        SelectableData selectableData = SelectableAssetBundles
+            .GetSelectableData()
+            .First(x => x.AssetBundleName == assetBundleName);
+
+        var task = Database.GetMetaData(assetBundleName, selectableData.MetaData);
+        await task;
+
+        if (!Application.isPlaying) 
+            throw new Exception("Application quit during task");
+
+        if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
+        {
+            UI_DialogPrompt.Open(
+                $"An error occurred: {task.Result.Message}. Could not fetch metadata. Please check your internet connection and restart the app.");
+
+            return;
+        }
+
+        var metaData = JsonConvert.DeserializeObject
+            <SelectableMetaData>(task.Result.Message);
+
+        string objName = metaData.Name;
+
+        AddNewItem(
+            Template_CompatibleObject, 
+            null, 
+            _instantiatedAssetBundleNamesAttachmentPoint, 
+            objName, 
+            assetBundleName);
+    }
+
+    public void AddNewCategoryAttachmentPoint()
+    {
+        AddNewItem(Template_CategoryAttachmentPoint,
+            InputField_NewCategoryAttachmentPoint,
+            _instantiatedCategoriesAttachmentPoint,
+            null);
+    }
+
+    private void AddNewCategoryAttachmentPoint(string category)
+    {
+        AddNewItem(Template_CategoryAttachmentPoint,
+            InputField_NewCategoryAttachmentPoint,
+            _instantiatedCategoriesAttachmentPoint,
+            category);
+    }
+
+    private void AddNewKeyword(string newKeyword)
+    {
+        AddNewItem(Template_Keyword, 
+            InputField_NewKeyword, 
+            _instantiatedKeywords, 
+            newKeyword);
+    }
+
+    public void AddNewCategory()
+    {
+        AddNewItem(Template_Category,
+            InputField_NewCategory, 
+            _instantiatedCategories, 
+            null);
+    }
+
+    private void AddNewCategory(string categoryName)
+    {
+        AddNewItem(Template_Category, 
+            InputField_NewCategory, 
+            _instantiatedCategories, 
+            categoryName);
+    }
+
+    private void AddNewItem(GameObject template, 
+    TMP_InputField inputField, 
+    List<GameObject> instantiatedItems, 
+    string newItem, string assetBundleName = null)
+    {
+        newItem ??= inputField.text;
+
+        if (string.IsNullOrWhiteSpace(newItem))
+        {
+            Debug.Log($"New Item is null {newItem}, {inputField.text}");
+            return;
+        }
+
+        newItem = newItem.ToLower();
+
+        string text1 = assetBundleName ?? newItem;
+
+        bool exists = instantiatedItems
+            .Select(x => x.GetComponentInChildren<TextMeshProUGUI>().text)
+            .Any(x => x == text1);
+
+        if (exists)
+        {
+            UI_DialogPrompt.Open($"Item \"{newItem}\" already exists.");
+            return;
+        }
+
+        template.SetActive(true);
+
+        var newObj = Instantiate(
+            template,
+            template.transform.parent);
+
+        template.SetActive(false);
+
+        newObj.GetComponentInChildren
+            <TextMeshProUGUI>().text = text1;
+
+        if (assetBundleName != null)
+        {
+            newObj.GetComponentsInChildren<TextMeshProUGUI>()[1].text = newItem;
+        }
+        
+        int sibIndex = instantiatedItems.Count > 0 ? 
+            instantiatedItems.Last()
+            .transform.GetSiblingIndex() + 1 : 
+            template.transform.GetSiblingIndex() + 1;
+
+        newObj.transform.SetSiblingIndex(sibIndex);
+
+        instantiatedItems.Add(newObj);
+
+        newObj.GetComponentInChildren<Button>()
+            .onClick.AddListener(() =>
+            {
+                instantiatedItems.Remove(newObj);
+                Destroy(newObj);
+            });
+
+        if (inputField != null) 
+        {
+            inputField.text = string.Empty;
+        }
+    }
+    #endregion
 }

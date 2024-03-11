@@ -13,7 +13,11 @@ using UnityEditor;
 /// <summary>
 /// Tracks and handles all assets that will appear 
 /// in the <see cref="ObjectMenu"/>. Automatically 
-/// populates before an asset bundle build.
+/// populates before an asset bundle build. Should 
+/// only be used to get asset bundles by name 
+/// (or save/load GUID). Should NOT be used to 
+/// get up-to-date metadata. Use 
+/// <see cref="ObjectMenu"/> instead
 /// </summary>
 [ManagedAsset]
 [CreateAssetMenu(

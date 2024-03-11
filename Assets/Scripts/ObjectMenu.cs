@@ -16,6 +16,7 @@ using UnityEngine.UI;
 /// </summary>
 public class ObjectMenu : MonoBehaviour
 {
+    private static bool _selectCompatibleObjectsMode;
     public static ObjectMenu Instance { get; private set; }
     public static UnityEvent ActiveStateChanged { get; } = new();
     public static UnityEvent LastOpenedSelectableChanged { get; } = new();
@@ -54,6 +55,7 @@ public class ObjectMenu : MonoBehaviour
     private void OnDestroy()
     {
         _initialized = false;
+        _selectCompatibleObjectsMode = false;
     }
 
     private IEnumerator Start()
@@ -70,6 +72,7 @@ public class ObjectMenu : MonoBehaviour
 
     private void OnDisable()
     {
+        _selectCompatibleObjectsMode = false;
         ActiveStateChanged?.Invoke();
     }
 
@@ -130,6 +133,12 @@ public class ObjectMenu : MonoBehaviour
             var newMenuItem = Instantiate(ItemTemplate, ItemTemplate.transform.parent);
             newMenuItem.GetComponentInChildren<Button>().onClick.AddListener(async () =>
             {
+                if (_selectCompatibleObjectsMode)
+                {
+                    UI_ObjectEditor.AddCompatibleObject(data.AssetBundleName);
+                    return;
+                }
+
                 gameObject.SetActive(false);
 
                 var task = data.GetPrefab();
@@ -219,7 +228,81 @@ public class ObjectMenu : MonoBehaviour
         ItemTemplate.SetActive(false);
     }
 
-    private void FilterMenuItems(AttachmentPoint attachmentPoint)
+    private async void FilterMenuItems(AttachmentPoint attachmentPoint)
+    {
+        var selectableData = SelectableAssetBundles.GetSelectableData()
+            .Where(x => x.MetaData.AttachmentPointGuidMetaData
+            .FirstOrDefault(y => y.Guid == attachmentPoint.MetaData.Guid) != default).First();
+
+        var task = Database.GetMetaData(
+            selectableData.AssetBundleName, 
+            selectableData.MetaData);
+
+        await task;
+
+        if (!Application.isPlaying)
+            throw new Exception($"App quit during task");
+
+        if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
+        {
+            UI_DialogPrompt.Open($"Error: {task.Result.Message}");
+            return;
+        }
+
+        var metaData = JsonConvert.DeserializeObject
+            <SelectableMetaData>(task.Result.Message);
+
+        var apData = metaData.AttachmentPointGuidMetaData.First(x => x.Guid == attachmentPoint.MetaData.Guid);
+
+        ObjectMenuItems.ForEach(async item =>
+        {
+            if (item.SelectableData == null)
+            {
+                item.GameObject.SetActive(false);
+                return;
+            }
+
+            var task = Database.GetMetaData(
+                item.SelectableData.AssetBundleName, 
+                item.SelectableData.MetaData);
+
+            await task;
+
+            if (!Application.isPlaying)
+                throw new Exception($"App quit during task");
+
+            if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
+            {
+                UI_DialogPrompt.Open($"Error: {task.Result.Message}");
+                return;
+            }
+
+            var compareMetaData = JsonConvert.DeserializeObject
+                <SelectableMetaData>(task.Result.Message);
+
+            foreach (var category in compareMetaData.Categories)
+            {
+                if (apData.MetaData
+                    .AllowedSelectableCategories.Contains(category))
+                {
+                    item.GameObject.SetActive(true);
+                    return;
+                }
+            }
+
+            if (apData.MetaData
+                .AllowedSelectableAssetBundleNames
+                .Contains(item.SelectableData.AssetBundleName))
+            {
+                item.GameObject.SetActive(true);
+                return;
+            }
+
+            item.GameObject.SetActive(false);
+        });
+    }
+
+    private void FilterMenuItems(List<string> assetBundleNames)
     {
         ObjectMenuItems.ForEach(item =>
         {
@@ -229,26 +312,13 @@ public class ObjectMenu : MonoBehaviour
                 return;
             }
 
-            foreach (var category in item.SelectableData
-                .MetaData.Categories)
+            if (assetBundleNames.Contains(item.SelectableData.AssetBundleName))
             {
-                if (attachmentPoint.MetaData
-                    .AllowedSelectableCategories.Contains(category))
-                {
-                    item.GameObject.SetActive(true);
-                    return;
-                }
-            }
-
-            if (attachmentPoint.MetaData
-                .AllowedSelectableAssetBundleNames
-                .Contains(item.SelectableData.AssetBundleName))
-            {
-                item.GameObject.SetActive(true);
+                item.GameObject.SetActive(false);
                 return;
             }
 
-            item.GameObject.SetActive(false);
+            item.GameObject.SetActive(true);
         });
     }
 
@@ -272,6 +342,13 @@ public class ObjectMenu : MonoBehaviour
                 (item.SelectableData
                 .MetaData.IsStandalone);
         });
+    }
+
+    public static void OpenToSelectCompatibleObjects(List<string> assetBundleNames)
+    {
+        _selectCompatibleObjectsMode = true;
+        Instance.FilterMenuItems(assetBundleNames);
+        Instance.gameObject.SetActive(true);
     }
 
     public async void Open()

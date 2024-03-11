@@ -7,12 +7,6 @@ using UnityEngine.UI;
 
 public class UI_OnScreen_ObjectEditor : MonoBehaviour
 {
-    [field: SerializeField] 
-    private Button ButtonSaveObject { get; set; }
-
-    [field: SerializeField] 
-    private Button ButtonDoneWithObject { get; set; }
-
     [field: SerializeField]
     private CinemachineVirtualCamera VirtualCamera { get; set; }
 
@@ -38,16 +32,9 @@ public class UI_OnScreen_ObjectEditor : MonoBehaviour
         Selectable.ActiveSelectablesInSceneChanged.RemoveListener(UpdateObjects);
     }
 
-    public void Save()
-    {
-        // to do: send message to back end and wait for response
-    }
-
     private void UpdateObjects()
     {
-        bool buttonsActive = Selectable.ActiveSelectables.Count > 0;
-        ButtonSaveObject.gameObject.SetActive(buttonsActive);
-        ButtonDoneWithObject.gameObject.SetActive(buttonsActive);
+        //bool buttonsActive = Selectable.ActiveSelectables.Count > 0;
 
         if (ObjectMenu.LastOpenedSelectable != null && 
         !ObjectMenu.LastOpenedSelectable.IsDestroyed) 
@@ -55,10 +42,5 @@ public class UI_OnScreen_ObjectEditor : MonoBehaviour
             _cameraLookAt.transform.position = 
                 ObjectMenu.LastOpenedSelectable.GetBounds().center;
         }
-    }
-
-    public void DeleteSelectables()
-    {
-        Destroy(ObjectMenu.LastOpenedSelectable.gameObject);
     }
 }

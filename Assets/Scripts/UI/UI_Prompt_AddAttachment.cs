@@ -17,6 +17,11 @@ public class UI_Prompt_AddAttachment : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void OnDestroy()
+    {
+        AttachmentPoint.AttachmentPointHoverStateChanged -= AttachmentPointHoverStateChanged;
+    }
+
     private void AttachmentPointHoverStateChanged(object sender, EventArgs e)
     {
         bool active = AttachmentPoint.HoveredAttachmentPoint != null;

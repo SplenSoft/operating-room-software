@@ -89,9 +89,10 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     [field: SerializeField, MetaDataHandler] 
     public SelectableMetaData MetaData { get; set; }
 
-    [field: SerializeField, HideInInspector] 
-    public List<AttachmentPointData> 
-    AttachmentPointDatas { get; set; } = new();
+    [field: SerializeField, HideInInspector]
+    public List<AttachmentPointData>
+    AttachmentPointDatas
+    { get; set; } = new();
 
     [field: SerializeField, 
     FormerlySerializedAs("<Types>k__BackingField")] 

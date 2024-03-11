@@ -53,7 +53,7 @@ public class SelectableMetaData
 }
 
 [Serializable]
-public struct AttachmentPointGuidMetaData
+public class AttachmentPointGuidMetaData
 {
     [field: SerializeField] 
     public string Guid { get; set; }
