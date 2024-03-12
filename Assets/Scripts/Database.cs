@@ -13,8 +13,8 @@ internal static class Database
 {
     private const string _cacheFolderName = "DatabaseCache";
 
-    //private const string _uri = "https://orswebapi-app-20240309191859.ambitioussky-1264637f.eastus.azurecontainerapps.io";
-    private const string _uri = "https://localhost:7285";
+    private const string _uri = "https://orswebapi-app-20240309191859.ambitioussky-1264637f.eastus.azurecontainerapps.io";
+    //private const string _uri = "https://localhost:7285";
 
     public static bool Initialized { get; private set; }
 
@@ -143,47 +143,16 @@ internal static class Database
     public static async Task<MetaDataOperationResult> GetMetaData(
     string assetBundleName, SelectableMetaData seedData)
     {
-        string key = $"lastModified_{assetBundleName}";
+        var loadingToken = Loading.GetLoadingToken();
 
-        if (IsUpToDate)
+        try
         {
-            // database was not modified since last time we cached everything
+            string key = $"lastModified_{assetBundleName}";
 
-            if (TryGetCache(assetBundleName, out var cachedData))
+            if (IsUpToDate)
             {
-                return new MetaDataOperationResult
-                {
-                    OperationType = MetaDataOperationType.Get,
-                    ResultType = MetaDataOpertaionResultType.Success,
-                    Message = JsonConvert.SerializeObject(cachedData)
-                };
-            }
-        }
+                // database was not modified since last time we cached everything
 
-        if (PlayerPrefs.HasKey(key) && 
-        long.TryParse(PlayerPrefs.GetString(key), out long cachedLastModified))
-        {
-            var lastModifiedTask = DoMetaDataOperation
-                (MetaDataOperationType.GetLastModified, 
-                assetBundleName);
-
-            await lastModifiedTask;
-
-            if (!Application.isPlaying) 
-                throw new Exception("App quit while downloading");
-
-            if 
-            // no internet connection or server failure
-            (lastModifiedTask.Result.ResultType != MetaDataOpertaionResultType.Success ||
-
-            // cache is up to date
-            (!string.IsNullOrEmpty(lastModifiedTask.Result.Message) && 
-            long.TryParse(lastModifiedTask.Result.Message, out long lastModified) && 
-            cachedLastModified == lastModified) || 
-
-            // doesn't exist on database (should never happen)
-            string.IsNullOrEmpty(lastModifiedTask.Result.Message))
-            {
                 if (TryGetCache(assetBundleName, out var cachedData))
                 {
                     return new MetaDataOperationResult
@@ -194,34 +163,84 @@ internal static class Database
                     };
                 }
             }
-        }
 
-        var task = DoMetaDataOperation(
-            MetaDataOperationType.Get, 
-            assetBundleName);
+            if (PlayerPrefs.HasKey(key) &&
+            long.TryParse(PlayerPrefs.GetString(key), out long cachedLastModified))
+            {
+                var lastModifiedTask = DoMetaDataOperation
+                    (MetaDataOperationType.GetLastModified,
+                    assetBundleName);
 
-        await task;
+                await lastModifiedTask;
 
-        if (string.IsNullOrEmpty(task.Result.Message) && 
-        task.Result.ResultType == MetaDataOpertaionResultType.Success)
-        {
-            // data entry does not exist, use seed data to make it
-            task = SaveMetaData(assetBundleName, seedData);
+                if (!Application.isPlaying)
+                    throw new Exception("App quit while downloading");
+
+                if
+                // no internet connection or server failure
+                (lastModifiedTask.Result.ResultType != MetaDataOpertaionResultType.Success ||
+
+                // cache is up to date
+                (!string.IsNullOrEmpty(lastModifiedTask.Result.Message) &&
+                long.TryParse(lastModifiedTask.Result.Message, out long lastModified) &&
+                cachedLastModified == lastModified) ||
+
+                // doesn't exist on database (should never happen)
+                string.IsNullOrEmpty(lastModifiedTask.Result.Message))
+                {
+                    if (TryGetCache(assetBundleName, out var cachedData))
+                    {
+                        return new MetaDataOperationResult
+                        {
+                            OperationType = MetaDataOperationType.Get,
+                            ResultType = MetaDataOpertaionResultType.Success,
+                            Message = JsonConvert.SerializeObject(cachedData)
+                        };
+                    }
+                }
+            }
+
+            var task = DoMetaDataOperation(
+                MetaDataOperationType.Get,
+                assetBundleName);
+
             await task;
 
-            if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
+            if (string.IsNullOrEmpty(task.Result.Message) &&
+            task.Result.ResultType == MetaDataOpertaionResultType.Success)
             {
-                return new MetaDataOperationResult
-                {
-                    OperationType = MetaDataOperationType.Get,
-                    ResultType = MetaDataOpertaionResultType.Success,
-                    Message = JsonConvert.SerializeObject(seedData)
-                };
-            }
-            else return task.Result;
-        }
+                // data entry does not exist, use seed data to make it
+                task = SaveMetaData(assetBundleName, seedData);
+                await task;
 
-        return task.Result;
+                if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
+                {
+                    return new MetaDataOperationResult
+                    {
+                        OperationType = MetaDataOperationType.Get,
+                        ResultType = MetaDataOpertaionResultType.Success,
+                        Message = JsonConvert.SerializeObject(seedData)
+                    };
+                }
+                else return task.Result;
+            }
+
+            return task.Result;
+        }
+        catch (Exception ex) 
+        { 
+            Debug.LogException(ex);
+            return new MetaDataOperationResult
+            {
+                OperationType = MetaDataOperationType.Get,
+                ResultType = MetaDataOpertaionResultType.Exception,
+                Message = $"{ex.GetType().Name} - {ex.Message}"
+            };
+        }
+        finally
+        {
+            loadingToken.Done();
+        }
     }
 
     private static bool TryGetCache(

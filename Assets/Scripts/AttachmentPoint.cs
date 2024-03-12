@@ -4,12 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(TrackedObject))]
 public partial class AttachmentPoint : MonoBehaviour
 {
     public static AttachmentPoint HoveredAttachmentPoint { get; private set; }
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
+    public static UnityEvent SelectedAttachmentPointChanged { get; } = new();
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
     /// <summary>
@@ -101,6 +104,11 @@ public partial class AttachmentPoint : MonoBehaviour
     private void OnDestroy()
     {
         _isDestroyed = true;
+        if (SelectedAttachmentPoint == this)
+        {
+            SelectedAttachmentPoint = null;
+            SelectedAttachmentPointChanged?.Invoke();
+        }
         ObjectMenu.ActiveStateChanged.RemoveListener(EndHoverStateIfHovered);
         ParentSelectables.ForEach(item =>
         {
@@ -129,8 +137,11 @@ public partial class AttachmentPoint : MonoBehaviour
         if (GizmoHandler.GizmoBeingUsed || InputHandler.IsPointerOverUIElement()) return;
         AttachmentPointClicked?.Invoke(this, EventArgs.Empty);
         SelectedAttachmentPoint = this;
+        SelectedAttachmentPointChanged?.Invoke();
         UpdateComponentStatus();
-        ObjectMenu.Open(this);
+
+        if (SceneManager.GetActiveScene().name != "ObjectEditor")
+            ObjectMenu.Open(this);
     }
     #endregion
 
@@ -194,6 +205,13 @@ public partial class AttachmentPoint : MonoBehaviour
     {
         if (ParentSelectables.Contains(Selectable.SelectedSelectable))
             UpdateComponentStatus();
+
+        if (Selectable.SelectedSelectable != null)
+        {
+            SelectedAttachmentPoint = null;
+            SelectedAttachmentPointChanged?.Invoke();
+        }
+            
     }
 
     private void MouseOverStateChanged(object sender, EventArgs e)

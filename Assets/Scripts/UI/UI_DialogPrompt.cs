@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -12,11 +13,12 @@ public class UI_DialogPrompt : MonoBehaviour
     [field: SerializeField] private Button ButtonTemplate { get; set; }
     [field: SerializeField] private TextMeshProUGUI Text { get; set; }
 
-    private List<Button> _instantiatedButtons = new List<Button>();
+    private List<Button> _instantiatedButtons = new();
 
     private void Awake()
     {
         Instance = this;
+        DontDestroyOnLoad(gameObject);
         gameObject.SetActive(false);
     }
 
@@ -24,7 +26,9 @@ public class UI_DialogPrompt : MonoBehaviour
     {
         Instance.Text.text = text;
 
-        while (Instance._instantiatedButtons.Count < buttonActions.Length) 
+        Instance.ButtonTemplate.gameObject.SetActive(true);
+
+        while (Instance._instantiatedButtons.Count < Math.Max(buttonActions.Length, 1)) 
         {
             var newObj = Instantiate(Instance.ButtonTemplate.gameObject, 
                 Instance.ButtonTemplate.transform.parent);
@@ -32,7 +36,16 @@ public class UI_DialogPrompt : MonoBehaviour
             Instance._instantiatedButtons.Add (newObj.GetComponent<Button>());
         }
 
+        Instance.ButtonTemplate.gameObject.SetActive(false);
+
         Instance._instantiatedButtons.ForEach(button => button.gameObject.SetActive(false));
+
+        if (buttonActions.Length == 0) 
+        {
+            var actions = buttonActions.ToList();
+            actions.Add(new ButtonAction("OK"));
+            buttonActions = actions.ToArray();
+        }
 
         for (int i = 0; i < buttonActions.Length; i++)
         {
@@ -54,6 +67,19 @@ public class UI_DialogPrompt : MonoBehaviour
 
 public class ButtonAction
 {
+    public ButtonAction() { }
+
+    public ButtonAction(string text) 
+    { 
+        ButtonText = text;
+    }
+
+    public ButtonAction(string buttonText, Action action)
+    {
+        ButtonText = buttonText;
+        Action = action;
+    }
+
     public string ButtonText { get; set; }
     public Action Action { get; set; }
 }
