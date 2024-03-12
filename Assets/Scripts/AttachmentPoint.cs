@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(TrackedObject))]
-public class AttachmentPoint : MonoBehaviour
+public partial class AttachmentPoint : MonoBehaviour
 {
     public static AttachmentPoint HoveredAttachmentPoint { get; private set; }
     public static AttachmentPoint SelectedAttachmentPoint { get; private set; }
@@ -19,8 +19,15 @@ public class AttachmentPoint : MonoBehaviour
     [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
     [SerializeField, ReadOnly] private bool _attachmentPointHovered;
     [field: SerializeField] private HighlightEffect HighlightHovered { get; set; }
-    [field: SerializeField] public List<SelectableType> AllowedSelectableTypes { get; private set; } = new();
-    [field: SerializeField] public List<Selectable> AllowedSelectables { get; private set; } = new();
+
+    /// <summary>
+    /// Should be considered "seed" or backup data. 
+    /// The most recent version should be pulled from 
+    /// the online database (or a cached version thereof)
+    /// </summary>
+    [field: SerializeField]
+    public AttachmentPointMetaData MetaData { get; set; }
+
     /// <summary>
     /// Moves up in transform hierarchy to same parent as first parent attachment point. Used to keep rotations separate for multiple arm assemblies
     /// </summary>
@@ -44,46 +51,7 @@ public class AttachmentPoint : MonoBehaviour
     private Collider _collider;
     private bool _isDestroyed;
 
-    public void SetAttachedSelectable(Selectable selectable)
-    {
-        AttachedSelectable.Add(selectable);
-        EndHoverStateIfHovered();
-        UpdateComponentStatus();
-    }
-
-    public void DetachSelectable(Selectable selectable)
-    {
-        if (_isDestroyed) return;
-        AttachedSelectable.Remove(selectable);
-        AttachedSelectable.TrimExcess();
-        SetToOriginalParent();
-        UpdateComponentStatus();
-    }
-
-    public void SetToOriginalParent()
-    {
-        if (MoveUpOnAttach)
-        {
-            transform.parent = _originalParent;
-        }
-    }
-
-    public void SetToProperParent()
-    {
-        if (MoveUpOnAttach)
-        {
-            Transform parent = transform.parent;
-            AttachmentPoint attachmentPoint = parent.GetComponent<AttachmentPoint>();
-            while (attachmentPoint == null)
-            {
-                parent = parent.parent;
-                attachmentPoint = parent.GetComponent<AttachmentPoint>();
-            }
-
-            transform.parent = attachmentPoint.transform.parent;
-        }
-    }
-
+    #region Monobehaviour
     private void Awake()
     {
         EmptyNullList();
@@ -130,6 +98,82 @@ public class AttachmentPoint : MonoBehaviour
         SetToProperParent();
     }
 
+    private void OnDestroy()
+    {
+        _isDestroyed = true;
+        ObjectMenu.ActiveStateChanged.RemoveListener(EndHoverStateIfHovered);
+        ParentSelectables.ForEach(item =>
+        {
+            item.MouseOverStateChanged -= MouseOverStateChanged;
+        });
+        Selectable.SelectionChanged -= SelectionChanged;
+    }
+
+    private void OnMouseEnter()
+    {
+        if (GizmoHandler.GizmoBeingUsed || InputHandler.IsPointerOverUIElement()) return;
+        HoveredAttachmentPoint = this;
+        AttachmentPointHoverStateChanged?.Invoke(this, EventArgs.Empty);
+        _attachmentPointHovered = true;
+        UpdateComponentStatus();
+    }
+
+    private void OnMouseExit()
+    {
+        if (GizmoHandler.GizmoBeingUsed || InputHandler.IsPointerOverUIElement()) return;
+        EndHoverState();
+    }
+
+    private void OnMouseUpAsButton()
+    {
+        if (GizmoHandler.GizmoBeingUsed || InputHandler.IsPointerOverUIElement()) return;
+        AttachmentPointClicked?.Invoke(this, EventArgs.Empty);
+        SelectedAttachmentPoint = this;
+        UpdateComponentStatus();
+        ObjectMenu.Open(this);
+    }
+    #endregion
+
+    public void SetAttachedSelectable(Selectable selectable)
+    {
+        AttachedSelectable.Add(selectable);
+        EndHoverStateIfHovered();
+        UpdateComponentStatus();
+    }
+
+    public void DetachSelectable(Selectable selectable)
+    {
+        if (_isDestroyed) return;
+        AttachedSelectable.Remove(selectable);
+        AttachedSelectable.TrimExcess();
+        SetToOriginalParent();
+        UpdateComponentStatus();
+    }
+
+    public void SetToOriginalParent()
+    {
+        if (MoveUpOnAttach)
+        {
+            transform.parent = _originalParent;
+        }
+    }
+
+    public void SetToProperParent()
+    {
+        if (MoveUpOnAttach)
+        {
+            Transform parent = transform.parent;
+            AttachmentPoint attachmentPoint = parent.GetComponent<AttachmentPoint>();
+            while (attachmentPoint == null)
+            {
+                parent = parent.parent;
+                attachmentPoint = parent.GetComponent<AttachmentPoint>();
+            }
+
+            transform.parent = attachmentPoint.transform.parent;
+        }
+    }
+
     private void EndHoverState()
     {
         HoveredAttachmentPoint = null;
@@ -168,41 +212,6 @@ public class AttachmentPoint : MonoBehaviour
         _collider.enabled = AttachedSelectable.Count <= multiAllowed && !areAnyParentSelectablesSelected;
     }
 
-    private void OnDestroy()
-    {
-        _isDestroyed = true;
-        ObjectMenu.ActiveStateChanged.RemoveListener(EndHoverStateIfHovered);
-        ParentSelectables.ForEach(item =>
-        {
-            item.MouseOverStateChanged -= MouseOverStateChanged;
-        });
-        Selectable.SelectionChanged -= SelectionChanged;
-    }
-
-    private void OnMouseEnter()
-    {
-        if (GizmoHandler.GizmoBeingUsed || InputHandler.IsPointerOverUIElement()) return;
-        HoveredAttachmentPoint = this;
-        AttachmentPointHoverStateChanged?.Invoke(this, EventArgs.Empty);
-        _attachmentPointHovered = true;
-        UpdateComponentStatus();
-    }
-
-    private void OnMouseExit()
-    {
-        if (GizmoHandler.GizmoBeingUsed || InputHandler.IsPointerOverUIElement()) return;
-        EndHoverState();
-    }
-
-    private void OnMouseUpAsButton()
-    {
-        if (GizmoHandler.GizmoBeingUsed || InputHandler.IsPointerOverUIElement()) return;
-        AttachmentPointClicked?.Invoke(this, EventArgs.Empty);
-        SelectedAttachmentPoint = this;
-        UpdateComponentStatus();
-        ObjectMenu.Open(this);
-    }
-
     private void EmptyNullList()
     {
         if (AttachedSelectable.Count == 1)
@@ -214,4 +223,20 @@ public class AttachmentPoint : MonoBehaviour
             }
         }
     }
+}
+
+[Serializable]
+public class AttachmentPointMetaData
+{
+    [field: SerializeField, ReadOnly]
+    public string Guid 
+    { get; set; }
+
+    [field: SerializeField] 
+    public List<string> AllowedSelectableCategories 
+    { get; set; } = new();
+
+    [field: SerializeField] 
+    public List<string> AllowedSelectableAssetBundleNames 
+    { get; set; } = new();
 }

@@ -1,3 +1,4 @@
+using SplenSoft.AssetBundles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,12 @@ public static class Loading
         public void SetProgress(float progress)
         {
             Progress = progress;
+            if (Progress == 1) Done();
+        }
+
+        public void SetProgress(object o, AssetRetrievalProgress progress)
+        {
+            Progress = progress.Progress;
             if (Progress == 1) Done();
         }
 

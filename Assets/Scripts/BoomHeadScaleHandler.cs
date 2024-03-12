@@ -22,7 +22,7 @@ public class BoomHeadScaleHandler : MonoBehaviour
 
     void Start()
     {
-        selectable.OnScaleChange.AddListener((x) => ReassembleRows(x));
+        selectable.OnScaleChange?.AddListener((x) => ReassembleRows(x));
     }
 
     int k = 0;
@@ -78,11 +78,11 @@ public class BoomHeadScaleHandler : MonoBehaviour
         Transform point = rail.transform.GetChild(0);
         List<AttachedShelf> shelves = new List<AttachedShelf>();
 
-        foreach(Selectable child in point.GetComponentsInChildren<Selectable>())
+        foreach(Selectable selectable in point.GetComponentsInChildren<Selectable>())
         {
-            if(child.Types.Contains(SelectableType.ServiceHeadShelves))
+            if (selectable.SpecialTypes.Contains(SpecialSelectableType.ServiceHeadShelves))
             {
-                shelves.Add(new AttachedShelf(child.transform));
+                shelves.Add(new AttachedShelf(selectable.transform));
             }
         }
 

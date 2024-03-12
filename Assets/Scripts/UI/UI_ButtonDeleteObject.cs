@@ -29,12 +29,21 @@ public class UI_ButtonDeleteObject : MonoBehaviour
 
     public void DeleteSelectedSelectable()
     {
-        UI_DialogPrompt.Open(() =>
-        {
-            var selectable = Selectable.SelectedSelectable;
-            Selectable.DeselectAll();
-            Destroy(selectable.gameObject);
-        });
-        
+        UI_DialogPrompt.Open("Are you sure you want to delete this object?",
+            new ButtonAction
+            {
+                ButtonText = "Yes",
+                Action = () =>
+                    {
+                        var selectable = Selectable.SelectedSelectable;
+                        Selectable.DeselectAll();
+                        Destroy(selectable.gameObject);
+                    },
+            },
+            new ButtonAction
+            {
+                ButtonText = "Cancel"
+            }
+        );
     }
 }
