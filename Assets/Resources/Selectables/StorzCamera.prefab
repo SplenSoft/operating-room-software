@@ -1,95 +1,107 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &848638398726958534
+--- !u!1001 &2162958546634932095
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1288198929956332970}
+    m_TransformParent: {fileID: 7635754998161367832}
     m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0
+      value: -0.09783241
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.017528716
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.0928429
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071067
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -8679921383154817045, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
+    - target: {fileID: -7511558181221131132, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: d8c8433b2b7c065409a5a4bbdf92f4e8, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
+      propertyPath: m_Materials.Array.data[4]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5afb1132d0067974293c75da9b230909, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
+      propertyPath: m_Materials.Array.data[5]
+      value: 
+      objectReference: {fileID: -6736220983773728163, guid: 50a5ff3e3cd1f5545b41c8c178fe1fd5, type: 3}
+    - target: {fileID: 919132149155446097, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
       propertyPath: m_Name
-      value: DellComputer
+      value: Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
---- !u!1 &506533949505097879 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
+--- !u!1 &1352547218558337582 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
-  m_PrefabInstance: {fileID: 848638398726958534}
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
+  m_PrefabInstance: {fileID: 2162958546634932095}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &5261774752526874645
+--- !u!64 &3001062686172475041
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 506533949505097879}
+  m_GameObject: {fileID: 1352547218558337582}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 7665035020020366864, guid: 351226cb5d6c18443adf3205c2d68f0b, type: 3}
---- !u!114 &1576912252188169802
+  m_Mesh: {fileID: 3967848542767632393, guid: 577030d3f7d9ee045b660ad258aa5918, type: 3}
+--- !u!114 &3089425892217456202
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 506533949505097879}
+  m_GameObject: {fileID: 1352547218558337582}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d13a952dd356a94492b01c9bd024acc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Target>k__BackingField: {fileID: 9206889977387690421}
---- !u!1001 &2486492114871343388
+  <Target>k__BackingField: {fileID: 563597610750553863}
+--- !u!1001 &6527677159273717678
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -102,11 +114,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GUID>k__BackingField
-      value: C0857734-B093-46B7-8A74-818D21F1ED72
+      value: 577D8F13-B4F3-435D-BC00-A014341C88BF
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
-      value: Computer
+      value: Storz Camera
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.size
@@ -114,23 +126,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Types>k__BackingField.Array.data[0]
-      value: 11
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.data[0]
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.data[1]
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <WallRestrictions>k__BackingField.Array.data[2]
@@ -141,15 +153,7 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <WallRestrictions>k__BackingField.Array.data[4]
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<Axis>k__BackingField
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<GizmoType>k__BackingField
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[1].<Axis>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
@@ -158,10 +162,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[1].<Unrestricted>k__BackingField
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<Unrestricted>k__BackingField
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
@@ -210,17 +210,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: m_Name
-      value: DellComputer
+      value: StorzCamera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
---- !u!4 &1288198929956332970 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-  m_PrefabInstance: {fileID: 2486492114871343388}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &9206889977387690421 stripped
+--- !u!1 &563597610750553863 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-  m_PrefabInstance: {fileID: 2486492114871343388}
+  m_PrefabInstance: {fileID: 6527677159273717678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7635754998161367832 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+  m_PrefabInstance: {fileID: 6527677159273717678}
   m_PrefabAsset: {fileID: 0}
