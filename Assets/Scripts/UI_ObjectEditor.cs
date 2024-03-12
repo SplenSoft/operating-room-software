@@ -155,14 +155,13 @@ internal class UI_ObjectEditor : MonoBehaviour
         if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
         {
             UI_DialogPrompt.Open(
-                $"Error: Could not reach database: {task.Result.Message}");
+                $"Error: {task.Result.ErrorMessage}");
 
             return;
         }
 
         //populate UI
-        _activeMetaData = JsonConvert.DeserializeObject
-            <SelectableMetaData>(task.Result.Message);
+        _activeMetaData = task.Result.MetaData;
 
         RefreshValues();
     }
@@ -367,13 +366,12 @@ internal class UI_ObjectEditor : MonoBehaviour
         if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
         {
             UI_DialogPrompt.Open(
-                $"An error occurred: {task.Result.Message}. Could not fetch metadata. Please check your internet connection and restart the app.");
+                $"An error occurred: {task.Result.ErrorMessage}. Could not fetch metadata. Please check your internet connection and restart the app.");
 
             return;
         }
 
-        var metaData = JsonConvert.DeserializeObject
-            <SelectableMetaData>(task.Result.Message);
+        var metaData = task.Result.MetaData;
 
         string objName = metaData.Name;
 

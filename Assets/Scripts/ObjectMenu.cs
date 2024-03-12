@@ -104,7 +104,8 @@ public class ObjectMenu : MonoBehaviour
             if (!Application.isPlaying) return;
         }
 
-        foreach (var data in SelectableAssetBundles.GetSelectableData())
+        SelectableAssetBundles.GetSelectableData()
+        .ToList().ForEach(async data =>
         {
             // if we still need this, we can add it to SelectableData
             //if (prefab.TryGetComponent(out ObjectMenuIgnore ignore))
@@ -120,13 +121,10 @@ public class ObjectMenu : MonoBehaviour
 
             if (!Application.isPlaying)
                 throw new Exception($"App quit while downloading");
-            
+
             if (task.Result.ResultType == Database.MetaDataOpertaionResultType.Success)
             {
-                var metadata = JsonConvert.DeserializeObject
-                    <SelectableMetaData>(task.Result.Message);
-
-                objectName = metadata.Name;
+                objectName = task.Result.MetaData.Name;
             }
 
             ItemTemplateTextObjectName.text = objectName;
@@ -158,7 +156,7 @@ public class ObjectMenu : MonoBehaviour
                 {
                     return;
                 }
-                
+
                 if (_attachmentPoint != null)
                 {
                     _attachmentPoint.SetAttachedSelectable(selectable2);
@@ -166,9 +164,9 @@ public class ObjectMenu : MonoBehaviour
 
                     newSelectableGameObject.transform
                         .SetPositionAndRotation
-                        (_attachmentPoint.transform.position, 
+                        (_attachmentPoint.transform.position,
                         _attachmentPoint.transform.rotation);
-                    
+
                     newSelectableGameObject.transform.parent = _attachmentPoint.transform;
                 }
                 else
@@ -178,7 +176,7 @@ public class ObjectMenu : MonoBehaviour
             });
 
             ObjectMenuItems.Add(new ObjectMenuItem { SelectableData = data, GameObject = newMenuItem });
-        }
+        });
 
         AddSavedRoomConfigs();
 
@@ -245,14 +243,15 @@ public class ObjectMenu : MonoBehaviour
 
         if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
         {
-            UI_DialogPrompt.Open($"Error: {task.Result.Message}");
+            UI_DialogPrompt.Open($"Error: {task.Result.ErrorMessage}");
             return;
         }
 
-        var metaData = JsonConvert.DeserializeObject
-            <SelectableMetaData>(task.Result.Message);
+        var metaData = task.Result.MetaData;
 
-        var apData = metaData.AttachmentPointGuidMetaData.First(x => x.Guid == attachmentPoint.MetaData.Guid);
+        var apData = metaData
+            .AttachmentPointGuidMetaData
+            .First(x => x.Guid == attachmentPoint.MetaData.Guid);
 
         ObjectMenuItems.ForEach(async item =>
         {
@@ -273,12 +272,11 @@ public class ObjectMenu : MonoBehaviour
 
             if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
             {
-                UI_DialogPrompt.Open($"Error: {task.Result.Message}");
+                UI_DialogPrompt.Open($"Error: {task.Result.ErrorMessage}");
                 return;
             }
 
-            var compareMetaData = JsonConvert.DeserializeObject
-                <SelectableMetaData>(task.Result.Message);
+            var compareMetaData = task.Result.MetaData;
 
             foreach (var category in compareMetaData.Categories)
             {
