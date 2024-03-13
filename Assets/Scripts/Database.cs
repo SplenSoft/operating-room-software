@@ -1,22 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 using UnityEngine.XR;
 
 internal static class Database
 {
-    private const string _cacheFolderName = "DatabaseCache";
+    private const int _keySize = 64;
+    private const int _iterations = 350000;
+    private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
 
-    private const string _uri = "https://orswebapi-app-20240309191859.ambitioussky-1264637f.eastus.azurecontainerapps.io";
-    //private const string _uri = "https://localhost:7285";
+    private const string _cacheFolderName = "DatabaseCache";
+    private const string _playerPrefsDbPasswordHashed = "OrsDbPasswordHashed";
+    private const string _playerPrefsDbPasswordSalt = "OrsDbPasswordSalt";
+    private const string _playerPrefsDbPasswordExpiration = "OrsDbPasswordExpires";
+
+    public static UnityEvent OnPasswordValidationAttemptCompleted { get; } = new();
+
+    public static bool MustEnterPassword => 
+        !PlayerPrefs.HasKey(_playerPrefsDbPasswordHashed) || 
+        !PlayerPrefs.HasKey(_playerPrefsDbPasswordExpiration) || 
+        !PlayerPrefs.HasKey(_playerPrefsDbPasswordSalt);
+
+    //private const string _uri = "https://orswebapi-app-20240309191859.ambitioussky-1264637f.eastus.azurecontainerapps.io";
+    private const string _uri = "https://localhost:7285";
 
     public static bool Initialized { get; private set; }
+
+    private static readonly TimeSpan _passwordExpirationTime = new(7, 0, 0, 0);
+
+    /// <summary>
+    /// Will auto regenerate on app start. 
+    /// Used for caching and avoiding expensive 
+    /// hash checks on the server
+    /// </summary>
+    private static string SessionId { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
     /// True if database was not modified 
@@ -42,22 +68,57 @@ internal static class Database
             {
                 OperationType = type,
                 AssetBundleName = assetBundleName,
-                SelectableMetaData = selectableMetaDataString
+                SelectableMetaData = selectableMetaDataString,
+                HashedPassword = PlayerPrefs.GetString(_playerPrefsDbPasswordHashed, null),
+                SessionId = SessionId,
+                Salt = PlayerPrefs.GetString(_playerPrefsDbPasswordSalt, null)
             };
 
-            var json = JsonConvert.SerializeObject(op);
+            var task = DoMetaDataOperation(op);
+            await task;
+
+            if (!Application.isPlaying) 
+                throw new Exception("App quit during task");
+
+            return task.Result;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+
+            return new MetaDataOperationResult
+            {
+                OperationType = type,
+                ResultType = MetaDataOpertaionResultType.Exception,
+                Message = $"{ex.GetType().Name} - {ex.Message}"
+            };
+        }
+        finally 
+        {
+            loadingToken.Done();
+        }
+    }
+
+    private static async Task<MetaDataOperationResult> DoMetaDataOperation
+    (MetaDataOperation operation)
+    {
+        var loadingToken = Loading.GetLoadingToken();
+        try
+        {
+            var json = JsonConvert.SerializeObject(operation);
             //Debug.Log(json);
             byte[] bytes = Encoding.UTF8.GetBytes(json);
             string uri = _uri + "/metadata";
-            
+
             using var request = UnityWebRequest.Put(uri, bytes);
             request.method = "POST";
             request.SetRequestHeader("Content-Type", "application/json");
-            var operation = request.SendWebRequest();
-            while (!operation.isDone)
+
+            var asyncOperation = request.SendWebRequest();
+            while (!asyncOperation.isDone)
             {
                 await Task.Yield();
-                loadingToken.SetProgress(operation.progress);
+                loadingToken.SetProgress(asyncOperation.progress);
                 if (!Application.isPlaying)
                     throw new Exception("App quit while downloading data");
             }
@@ -80,12 +141,12 @@ internal static class Database
 
             return new MetaDataOperationResult
             {
-                OperationType = type,
+                OperationType = operation.OperationType,
                 ResultType = MetaDataOpertaionResultType.Exception,
                 Message = $"{ex.GetType().Name} - {ex.Message}"
             };
         }
-        finally 
+        finally
         {
             loadingToken.Done();
         }
@@ -107,6 +168,19 @@ internal static class Database
             selectableMetaData);
 
         await task;
+
+        if (!Application.isPlaying)
+            throw new Exception("App quit while in task");
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
+        {
+            
+        }
+        else if (task.Result.ResultType != MetaDataOpertaionResultType.Success)
+        {
+            Debug.LogError($"Saving metadata to server failed: {task.Result.Message}");
+            return null;
+        }
 
         var message = JsonConvert.DeserializeObject
             <StoredMetaData>(task.Result.Message);
@@ -361,12 +435,196 @@ internal static class Database
         }
     }
 
+    public static string HashPassword(string password, out string salt)
+    {
+        var saltByte = new byte[_keySize];
+        RandomNumberGenerator.Create().GetBytes(saltByte);
+        //var hash = Rfc2898DeriveBytes.Pbkdf2(
+        //    Encoding.UTF8.GetBytes(password),
+        //    salt,
+        //    _iterations,
+        //    _hashAlgorithm,
+        //    _keySize);
+        //return Convert.ToHexString(hash);
+
+        using var pbkdf2 = new Rfc2898DeriveBytes(
+            Encoding.UTF8.GetBytes(password),
+            saltByte,
+            _iterations,
+            _hashAlgorithm);
+
+        salt = Convert.ToBase64String(saltByte);
+        return Convert.ToBase64String(pbkdf2.GetBytes(_keySize));
+    }
+
+    public static async Task<bool> ValidatePassword(string password)
+    {
+        string hashed = HashPassword(password, out string salt);
+
+        var task = DoMetaDataOperation(new MetaDataOperation
+        {
+            HashedPassword = hashed,
+            Salt = salt,
+            SessionId = SessionId,
+            OperationType = MetaDataOperationType.VerifyPassword
+        });
+
+        await task;
+        if (!Application.isPlaying) 
+            throw new Exception($"App closed during task");
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
+        {
+            UI_DialogPrompt.Open("Your password is incorrect. Try again.");
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return false;
+        }
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
+        {
+            long expiration = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 
+                (long)_passwordExpirationTime.TotalSeconds;
+
+            UI_DialogPrompt.Open("Logged in successfully");
+
+            PlayerPrefs.SetString(_playerPrefsDbPasswordHashed, hashed);
+            PlayerPrefs.SetString(_playerPrefsDbPasswordSalt, salt);
+
+            PlayerPrefs.SetString(
+                _playerPrefsDbPasswordExpiration, 
+                expiration.ToString());
+
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return true;
+        }
+
+        UI_DialogPrompt.Open($"Something went wrong: {task.Result.Message}");
+        OnPasswordValidationAttemptCompleted?.Invoke();
+        return false;
+    }
+
+    public static void LogOut()
+    {
+        PlayerPrefs.DeleteKey(_playerPrefsDbPasswordHashed);
+        PlayerPrefs.DeleteKey(_playerPrefsDbPasswordSalt);
+        PlayerPrefs.DeleteKey(_playerPrefsDbPasswordExpiration);
+        OnPasswordValidationAttemptCompleted?.Invoke();
+        SessionId = Guid.NewGuid().ToString();
+        UI_DialogPrompt.Open("Logged out successfully");
+    }
+
+    /// <summary>
+    /// Validates cached password
+    /// </summary>
+    /// <returns>True if password is valid and has not expired</returns>
+    /// <exception cref="Exception"></exception>
+    public static async Task<bool> ValidatePassword()
+    {
+        if (MustEnterPassword) 
+        {
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return false;
+        } 
+
+        string expirationString = PlayerPrefs
+            .GetString(_playerPrefsDbPasswordExpiration);
+
+        if (!long.TryParse(expirationString, out long expiration) || 
+        expiration <= DateTimeOffset.UtcNow.ToUnixTimeSeconds())
+        {
+            UI_DialogPrompt.Open($"Your session has expired. Please re-enter your password.");
+            PlayerPrefs.DeleteKey(_playerPrefsDbPasswordHashed);
+            PlayerPrefs.DeleteKey(_playerPrefsDbPasswordSalt);
+            PlayerPrefs.DeleteKey(_playerPrefsDbPasswordExpiration);
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return false;
+        }
+
+        var task = DoMetaDataOperation(new MetaDataOperation
+        {
+            HashedPassword = PlayerPrefs.GetString(_playerPrefsDbPasswordHashed),
+            Salt = PlayerPrefs.GetString(_playerPrefsDbPasswordSalt),
+            SessionId = SessionId,
+            OperationType = MetaDataOperationType.VerifyPassword
+        });
+
+        await task;
+        if (!Application.isPlaying)
+            throw new Exception($"App closed during task");
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
+        {
+            UI_DialogPrompt.Open("Your password is no longer valid.");
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return false;
+        }
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
+        {
+            expiration = DateTimeOffset.UtcNow.ToUnixTimeSeconds() +
+                (long)_passwordExpirationTime.TotalSeconds;
+
+            PlayerPrefs.SetString(
+                _playerPrefsDbPasswordExpiration,
+                expiration.ToString());
+
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return true;
+        }
+
+        UI_DialogPrompt.Open($"Something went wrong: {task.Result.Message}");
+        OnPasswordValidationAttemptCompleted?.Invoke();
+        return false;
+    }
+
+    public static async Task<bool> ChangePassword(string newPassword, string oldPassword)
+    {
+        string hashedPassword = HashPassword(newPassword, out _);
+        string hashedOldPassword = HashPassword(oldPassword, out string salt);
+
+        var task = DoMetaDataOperation(new MetaDataOperation
+        {
+            HashedPassword = hashedPassword,
+            Salt = salt,
+            SessionId = SessionId,
+            OperationType = MetaDataOperationType.ChangePassword,
+            HashedOldPassword = hashedOldPassword
+        });
+
+        await task;
+        if (!Application.isPlaying) 
+            throw new Exception("App quit during task");
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
+        {
+            UI_DialogPrompt.Open("The current password does not match. Please re-enter the current password");
+            return false;
+        }
+
+        if (task.Result.ResultType != MetaDataOpertaionResultType.Success)
+        {
+            UI_DialogPrompt.Open($"Something went wrong: {task.Result.Message}");
+            return false;
+        }
+
+        UI_DialogPrompt.Open($"Password changed successfully.");
+
+        return true;
+    }
+
     [Serializable]
     public class MetaDataOperation
     {
         public MetaDataOperationType OperationType { get; set; }
         public string AssetBundleName { get; set; }
         public string SelectableMetaData { get; set; }
+        public string HashedPassword { get; set; }
+        public string SessionId { get; set; }
+        public string HashedOldPassword { get; set; }
+        /// <summary>
+        /// byte array encoded as base64
+        /// </summary>
+        public string Salt { get; set; }
     }
 
     [Serializable]
@@ -383,14 +641,17 @@ internal static class Database
         None,
         Success,
         Error,
-        Exception
+        Exception,
+        PasswordInvalid
     }
 
     public enum MetaDataOperationType
     {
         Get,
         Set,
-        GetLastModified
+        GetLastModified,
+        VerifyPassword,
+        ChangePassword
     }
 
     [Serializable]
