@@ -25,8 +25,8 @@ internal static class Database
     public static bool MustEnterPassword =>
         !PlayerPrefs.HasKey(_playerPrefsSessionId);
 
-    //private const string _uri = "https://orswebapi-app-20240309191859.ambitioussky-1264637f.eastus.azurecontainerapps.io";
-    private const string _uri = "https://localhost:7285";
+    private const string _uri = "https://orswebapi-app-20240309191859.ambitioussky-1264637f.eastus.azurecontainerapps.io";
+    //private const string _uri = "https://localhost:7285";
 
     public static bool Initialized { get; private set; }
 
