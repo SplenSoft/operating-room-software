@@ -193,10 +193,11 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    public void SaveRoom(string title)
+    public async void SaveRoom(string title)
     {
         CreateTracker();
         NewRoomSave();
+        var token = Loading.GetLoadingToken();
 
         roomConfiguration.roomDimension = RoomSize.Instance.currentDimensions; // grabs the current dimensions of the RoomSize to be applied on load
 
@@ -209,6 +210,9 @@ public class ConfigurationManager : MonoBehaviour
                 attachmentPoint.SetToOriginalParent(); // for multi-arm configurations
             }
         }
+
+        await Task.Delay(1000);
+        token.SetProgress(0.33f);
 
         foreach (TrackedObject obj in foundObjects) // We need to go through each object
         {
@@ -224,6 +228,9 @@ public class ConfigurationManager : MonoBehaviour
                 roomConfiguration.collections.Add(tracker); // and add them to the room tracker collection
             }
         }
+
+        await Task.Delay(1000);
+        token.SetProgress(0.66f);
 
         // ======SAVING JSON=========
         string json = JsonConvert.SerializeObject(roomConfiguration, new JsonSerializerSettings
@@ -248,6 +255,9 @@ public class ConfigurationManager : MonoBehaviour
 
         File.WriteAllText(path, json);
         Debug.Log($"Saved Room: {path}");
+
+        await Task.Delay(1000);
+        token.SetProgress(1);
 
         RoomConfigLoader.Instance.GenerateRoomItem(path);
 
@@ -311,8 +321,10 @@ public class ConfigurationManager : MonoBehaviour
     List<AttachmentPoint> newPoints;
     async void GenerateRoomConfig()
     {
+        var token = Loading.GetLoadingToken();
         RoomSize.RoomSizeChanged?.Invoke(roomConfiguration.roomDimension); // apply the saved room dimensions from the json to the RoomSize
-
+        float progressionTicks = 1f / roomConfiguration.collections.Count;
+        float progression = 0;
         foreach (Tracker t in roomConfiguration.collections) // iterate though each tracker in the collection creating new objects. 
         {
             newPoints = new List<AttachmentPoint>();
@@ -321,7 +333,11 @@ public class ConfigurationManager : MonoBehaviour
             ProcessTrackedObjects(t.objects);
             await ResetObjectPositions(newObjects);
             RandomizeInstanceGUIDs();
+            progression += progressionTicks;
+            token.SetProgress(progression);
         }
+
+        token.SetProgress(1f);
     }
 
     private async void ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
