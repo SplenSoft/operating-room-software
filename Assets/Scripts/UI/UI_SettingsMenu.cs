@@ -1,22 +1,41 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Main settings menu opened with a "gear" button in the Main 
+/// scene. Singleton
+/// </summary>
 public class UI_SettingsMenu : MonoBehaviour
 {
-    [field: SerializeField] private static GameObject _container { get; set; }
-    [field: SerializeField] private Button b_CloseMenu { get; set; }
+    public static UI_SettingsMenu 
+    Instance { get; private set; }
+
+    [field: SerializeField] 
+    private Button ButtonCloseMenu { get; set; }
     
-    void Awake()
+    private void Awake()
     {
-        _container = gameObject.transform.GetChild(0).gameObject;
-        b_CloseMenu.onClick.AddListener(()=> ToggleShowSettings(false));
+        Instance = this;
+        ButtonCloseMenu.onClick.AddListener(Close);
+
+        gameObject.SetActive(false);
     }
 
-    public static void ToggleShowSettings(bool show)
+    private void OnDestroy()
     {
-        _container.SetActive(show);
+        ButtonCloseMenu.onClick.RemoveListener(Close);
+    }
+
+    private static void Close()
+    {
+        Instance.gameObject.SetActive(false);
+    }
+
+    internal static void Open()
+    {
+        Instance.gameObject.SetActive(true);
     }
 }

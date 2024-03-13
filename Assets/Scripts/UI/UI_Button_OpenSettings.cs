@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Opens the <see cref="UI_SettingsMenu"/> singleton GameObject
+/// </summary>
 public class UI_Button_OpenSettings : MonoBehaviour
 {
-    private Button button;
+    private Button _button;
 
-    void Awake()
+    private void Awake()
     {
-        button = GetComponent<Button>();
-        button.onClick.AddListener(() => UI_SettingsMenu.ToggleShowSettings(true));
+        _button = GetComponent<Button>();
+        _button.onClick.AddListener(UI_SettingsMenu.Open);
+    }
+
+    private void OnDestroy()
+    {
+        _button.onClick.RemoveListener(UI_SettingsMenu.Open);
     }
 }
