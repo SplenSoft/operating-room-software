@@ -1678,6 +1678,19 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: StorzCamera
+    <SaveLoadGuid>k__BackingField: 577D8F13-B4F3-435D-BC00-A014341C88BF
+    <AssetBundleName>k__BackingField: gameobject_1788bf0396377974595d582c73627187
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: StorzCamera
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: StorzCollaborator
     <SaveLoadGuid>k__BackingField: gameobject_2437dd17cea82de48b64499abb6dfbc0
     <AssetBundleName>k__BackingField: gameobject_2437dd17cea82de48b64499abb6dfbc0
@@ -1687,6 +1700,19 @@ MonoBehaviour:
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: StorzCollaborator
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: StorzTouch
+    <SaveLoadGuid>k__BackingField: 4567331D-1904-41E8-BA6A-EF926773F663
+    <AssetBundleName>k__BackingField: gameobject_7a065fe751fa2524686e8c1663107a35
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Storz Touch
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
