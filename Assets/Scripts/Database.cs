@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.XR;
 
 internal static class Database
 {
@@ -26,6 +25,20 @@ internal static class Database
 
     public static bool AnyCacheErrors { get; private set; }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="assetBundleName"></param>
+    /// <param name="selectableMetaData"></param>
+    /// <returns>If type = <see cref="MetaDataOperationType.Get"/> or 
+    /// <see cref="MetaDataOperationType.Set"/>, 
+    /// <see cref="MetaDataOperationResult.Message"/> will be 
+    /// <see cref="StoredMetaData"/>. If type = 
+    /// <see cref="MetaDataOperationType.GetLastModified"/>, 
+    /// <see cref="MetaDataOperationResult.Message"/> will 
+    /// be a <see cref="long"/>. If message is anything else, 
+    /// it's an error.</returns>
     public static async Task<MetaDataOperationResult> DoMetaDataOperation(
     MetaDataOperationType type, 
     string assetBundleName = null, 
@@ -95,10 +108,6 @@ internal static class Database
     string assetBundleName, 
     SelectableMetaData selectableMetaData)
     {
-        string path = Path.Combine(
-            Application.persistentDataPath, 
-            _cacheFolderName);
-
         var type = MetaDataOperationType.Set;
 
         var task = DoMetaDataOperation(
@@ -108,8 +117,32 @@ internal static class Database
 
         await task;
 
+        if (!Application.isPlaying)
+            throw new Exception("App quit while in task");
+
+        if (task.Result.ResultType != MetaDataOpertaionResultType.Success)
+        {
+            Debug.LogError($"Saving metadata to server failed: {task.Result.Message}");
+            return null;
+        }
+
         var message = JsonConvert.DeserializeObject
             <StoredMetaData>(task.Result.Message);
+
+        SaveToCache(assetBundleName, 
+            selectableMetaData, message.LastModified);
+        
+        return task.Result;
+    }
+
+    private static void SaveToCache(
+    string assetBundleName,
+    SelectableMetaData selectableMetaData, 
+    long lastModified)
+    {
+        string path = Path.Combine(
+            Application.persistentDataPath,
+            _cacheFolderName);
 
         try
         {
@@ -125,22 +158,26 @@ internal static class Database
 
             File.WriteAllText(filePath, serializedJson);
 
-            PlayerPrefs.SetString($"lastModified_{assetBundleName}", message.LastModified.ToString());
+            PlayerPrefs.SetString($"lastModified_{assetBundleName}", lastModified.ToString());
 
             Debug.Log($"Wrote metadata for asset {assetBundleName} to cache");
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             Debug.LogError("Failed to save to cache");
             Debug.LogException(ex);
             AnyCacheErrors = true;
             IsUpToDate = false;
         }
-        
-        return task.Result;
     }
 
-    public static async Task<MetaDataOperationResult> GetMetaData(
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="assetBundleName"></param>
+    /// <param name="seedData">Data that will be saved to the database if the metadata does not exist</param>
+    /// <returns><see cref="MetaDataRetrievalResult.MetaData"/> will be null on failure. Check <see cref="MetaDataRetrievalResult.ErrorMessage"/> and <see cref="MetaDataRetrievalResult.ResultType"/> for details</returns>
+    public static async Task<MetaDataRetrievalResult> GetMetaData(
     string assetBundleName, SelectableMetaData seedData)
     {
         var loadingToken = Loading.GetLoadingToken();
@@ -152,50 +189,46 @@ internal static class Database
             if (IsUpToDate)
             {
                 // database was not modified since last time we cached everything
+                Debug.Log($"Database was not modified since last cache. Attempting to pull from hard drive cache ...");
 
                 if (TryGetCache(assetBundleName, out var cachedData))
                 {
-                    return new MetaDataOperationResult
-                    {
-                        OperationType = MetaDataOperationType.Get,
-                        ResultType = MetaDataOpertaionResultType.Success,
-                        Message = JsonConvert.SerializeObject(cachedData)
-                    };
+                    return new MetaDataRetrievalResult
+                        (MetaDataOpertaionResultType.Success, cachedData);
                 }
             }
+
+            var lastModifiedTask = DoMetaDataOperation
+                    (MetaDataOperationType.GetLastModified,
+                    assetBundleName);
+
+            await lastModifiedTask;
+
+            if (!Application.isPlaying)
+                throw new Exception("App quit while downloading");
+
+            long lastModified = -1;
+
+            long.TryParse(lastModifiedTask.Result.Message, out lastModified);
 
             if (PlayerPrefs.HasKey(key) &&
             long.TryParse(PlayerPrefs.GetString(key), out long cachedLastModified))
             {
-                var lastModifiedTask = DoMetaDataOperation
-                    (MetaDataOperationType.GetLastModified,
-                    assetBundleName);
-
-                await lastModifiedTask;
-
-                if (!Application.isPlaying)
-                    throw new Exception("App quit while downloading");
-
                 if
                 // no internet connection or server failure
                 (lastModifiedTask.Result.ResultType != MetaDataOpertaionResultType.Success ||
 
                 // cache is up to date
                 (!string.IsNullOrEmpty(lastModifiedTask.Result.Message) &&
-                long.TryParse(lastModifiedTask.Result.Message, out long lastModified) &&
-                cachedLastModified == lastModified) ||
+                lastModified != -1 && cachedLastModified == lastModified) ||
 
                 // doesn't exist on database (should never happen)
                 string.IsNullOrEmpty(lastModifiedTask.Result.Message))
                 {
                     if (TryGetCache(assetBundleName, out var cachedData))
                     {
-                        return new MetaDataOperationResult
-                        {
-                            OperationType = MetaDataOperationType.Get,
-                            ResultType = MetaDataOpertaionResultType.Success,
-                            Message = JsonConvert.SerializeObject(cachedData)
-                        };
+                        return new MetaDataRetrievalResult
+                            (MetaDataOpertaionResultType.Success, cachedData);
                     }
                 }
             }
@@ -206,6 +239,7 @@ internal static class Database
 
             await task;
 
+            // task.result.message will be of type StoredMetaData
             if (string.IsNullOrEmpty(task.Result.Message) &&
             task.Result.ResultType == MetaDataOpertaionResultType.Success)
             {
@@ -213,29 +247,74 @@ internal static class Database
                 task = SaveMetaData(assetBundleName, seedData);
                 await task;
 
+                if (!Application.isPlaying)
+                    throw new Exception("App quit during task");
+
                 if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
                 {
-                    return new MetaDataOperationResult
-                    {
-                        OperationType = MetaDataOperationType.Get,
-                        ResultType = MetaDataOpertaionResultType.Success,
-                        Message = JsonConvert.SerializeObject(seedData)
-                    };
+                    return new MetaDataRetrievalResult
+                           (MetaDataOpertaionResultType.Success, seedData);
                 }
-                else return task.Result;
-            }
+                else
+                {
+                    string message = $"Encountered an error while trying to save seed data to the server: {task.Result.Message}";
 
-            return task.Result;
+                    Debug.LogError(message);
+
+                    return new MetaDataRetrievalResult
+                        (MetaDataOpertaionResultType.Error,
+                        null, message);
+                }
+            }
+            else if (task.Result.ResultType != MetaDataOpertaionResultType.Success)
+            {
+                string message = $"Encountered an error while trying to get data from the server: {task.Result.Message}";
+                return new MetaDataRetrievalResult
+                    (MetaDataOpertaionResultType.Error,
+                    null,
+                    message);
+            }
+            else if (task.Result.ResultType == MetaDataOpertaionResultType.Success && !string.IsNullOrEmpty(task.Result.Message))
+            {
+                Debug.Log($"Successfully retrieved metadata from server for asset bundle {assetBundleName}");
+                Debug.Log(task.Result.Message);
+                // task.result.message will be of type StoredMetaData
+                var storedMetaData = JsonConvert.DeserializeObject<StoredMetaData>(task.Result.Message);
+                var selectableMetaData = JsonConvert.DeserializeObject<SelectableMetaData>(storedMetaData.SelectableMetaData);
+
+                if (selectableMetaData == null)
+                {
+                    string message = "Could not deserialize selectable metadata from database";
+                    Debug.LogError(message);
+                    return new MetaDataRetrievalResult
+                        (MetaDataOpertaionResultType.Error, null, message);
+                }
+                else if (lastModified == -1)
+                {
+                    Debug.LogWarning($"Couldn't save to cache - didn't have connection to supply last modified time");
+                }
+                else
+                {
+                    Debug.Log($"Saving {assetBundleName} selectable meta data to cache ...");
+                    SaveToCache(assetBundleName, selectableMetaData, lastModified);
+                }
+
+                return new MetaDataRetrievalResult
+                    (MetaDataOpertaionResultType.Success, selectableMetaData);
+            }
+            else
+            {
+                string message = $"Something went wrong while retrieving metadata: {task.Result.Message}";
+                Debug.LogError(message);
+                return new MetaDataRetrievalResult
+                    (MetaDataOpertaionResultType.Error, null, message);
+            }
         }
         catch (Exception ex) 
         { 
             Debug.LogException(ex);
-            return new MetaDataOperationResult
-            {
-                OperationType = MetaDataOperationType.Get,
-                ResultType = MetaDataOpertaionResultType.Exception,
-                Message = $"{ex.GetType().Name} - {ex.Message}"
-            };
+            return new MetaDataRetrievalResult
+                (MetaDataOpertaionResultType.Exception, null, $"{ex.GetType().Name} - {ex.Message}");
         }
         finally
         {
@@ -243,10 +322,18 @@ internal static class Database
         }
     }
 
+    /// <summary>
+    /// Retrieves selectable meta data from a cache in persistent data on the hard drive
+    /// </summary>
+    /// <param name="assetBundleName"></param>
+    /// <param name="selectableMetaData"></param>
+    /// <returns></returns>
     private static bool TryGetCache(
     string assetBundleName,
     out SelectableMetaData selectableMetaData)
     {
+        Debug.Log($"Retrieving {assetBundleName} from hard drive cache ...");
+
         selectableMetaData = null;
 
         string filePath = Path.Combine
@@ -265,6 +352,8 @@ internal static class Database
                 .DeserializeObject(
                     file, 
                     typeof(SelectableMetaData));
+
+            Debug.Log($"Cache {assetBundleName} is valid ? {selectableMetaData != null}");
         }
         catch (Exception ex) 
         { 
@@ -285,6 +374,9 @@ internal static class Database
 
         if (task.Result != -1)
         {
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(task.Result);
+            Debug.Log($"Setting database cache up to date: {dateTimeOffset.ToLocalTime()}");
+
             PlayerPrefs.SetString("DatabaseLastModified", task.Result.ToString());
             IsUpToDate = true;
         }
@@ -367,6 +459,26 @@ internal static class Database
         public MetaDataOperationType OperationType { get; set; }
         public string AssetBundleName { get; set; }
         public string SelectableMetaData { get; set; }
+    }
+
+    public class MetaDataRetrievalResult
+    {
+        public MetaDataRetrievalResult(MetaDataOpertaionResultType resultType, SelectableMetaData metaData)
+        {
+            ResultType = resultType;
+            MetaData = metaData;
+        }
+
+        public MetaDataRetrievalResult() { }
+
+        public MetaDataRetrievalResult(MetaDataOpertaionResultType resultType, SelectableMetaData metaData, string errorMessage) : this(resultType, metaData)
+        {
+            ErrorMessage = errorMessage;
+        }
+
+        public MetaDataOpertaionResultType ResultType { get; set; }
+        public SelectableMetaData MetaData { get; set; }
+        public string ErrorMessage { get; set; }
     }
 
     [Serializable]
