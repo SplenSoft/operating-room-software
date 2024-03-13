@@ -436,13 +436,13 @@ internal class UI_ObjectEditor : MonoBehaviour
             return;
         }
 
-        newItem = newItem.ToLower();
+        //newItem = newItem.ToLower();
 
         string text1 = assetBundleName ?? newItem;
 
         bool exists = instantiatedItems
             .Select(x => x.GetComponentInChildren<TextMeshProUGUI>().text)
-            .Any(x => x == text1);
+            .Any(x => string.Compare(x, newItem, true) == 0);
 
         if (exists)
         {
