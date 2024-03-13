@@ -14,7 +14,7 @@ using Color = UnityEngine.Color;
 public class GizmoHandler : MonoBehaviour
 {
     [field: SerializeField, HideInInspector] public ObjectTransformGizmo _translateGizmo { get; private set; }
-    private ObjectTransformGizmo _rotateGizmo;
+    [field: SerializeField, HideInInspector] public ObjectTransformGizmo _rotateGizmo { get; private set; }
     private ObjectTransformGizmo _scaleGizmo;
     private ObjectTransformGizmo _universalGizmo;
     private bool _gizmosInitialized;
