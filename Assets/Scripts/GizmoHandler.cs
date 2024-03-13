@@ -92,6 +92,7 @@ public class GizmoHandler : MonoBehaviour
             if (_translateGizmo.Gizmo.IsEnabled)
             {
                 _translateGizmo.Gizmo.Transform.Position3D = transform.position;
+                _translateGizmo.Gizmo.Transform.LocalRotation3D = transform.localRotation;
                 //_translateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
                 _translateGizmo.Gizmo.MoveGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
                 //RTGizmosEngine.Get.MoveGizmoSettings3D.SetXSnapStep
