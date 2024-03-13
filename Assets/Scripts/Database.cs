@@ -18,30 +18,17 @@ internal static class Database
     private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
 
     private const string _cacheFolderName = "DatabaseCache";
-    private const string _playerPrefsDbPassword = "OrsDbPasswordHashed";
-    private const string _playerPrefsDbPasswordSalt = "OrsDbPasswordSalt";
-    private const string _playerPrefsDbPasswordExpiration = "OrsDbPasswordExpires";
+    private const string _playerPrefsSessionId = "OrsSessionId";
 
     public static UnityEvent OnPasswordValidationAttemptCompleted { get; } = new();
 
-    public static bool MustEnterPassword => 
-        !PlayerPrefs.HasKey(_playerPrefsDbPassword) || 
-        !PlayerPrefs.HasKey(_playerPrefsDbPasswordExpiration) || 
-        !PlayerPrefs.HasKey(_playerPrefsDbPasswordSalt);
+    public static bool MustEnterPassword =>
+        !PlayerPrefs.HasKey(_playerPrefsSessionId);
 
     //private const string _uri = "https://orswebapi-app-20240309191859.ambitioussky-1264637f.eastus.azurecontainerapps.io";
     private const string _uri = "https://localhost:7285";
 
     public static bool Initialized { get; private set; }
-
-    private static readonly TimeSpan _passwordExpirationTime = new(7, 0, 0, 0);
-
-    /// <summary>
-    /// Will auto regenerate on app start. 
-    /// Used for caching and avoiding expensive 
-    /// hash checks on the server
-    /// </summary>
-    private static string SessionId { get; set; } = Guid.NewGuid().ToString();
 
     /// <summary>
     /// True if database was not modified 
@@ -82,9 +69,7 @@ internal static class Database
                 OperationType = type,
                 AssetBundleName = assetBundleName,
                 SelectableMetaData = selectableMetaDataString,
-                HashedPassword = PlayerPrefs.GetString(_playerPrefsDbPassword, null),
-                SessionId = SessionId,
-                Salt = PlayerPrefs.GetString(_playerPrefsDbPasswordSalt, null)
+                SessionId = PlayerPrefs.GetString(_playerPrefsSessionId, null),
             };
 
             var task = DoMetaDataOperation(op);
@@ -181,10 +166,10 @@ internal static class Database
         if (!Application.isPlaying)
             throw new Exception("App quit while in task");
 
-        if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
+        if (task.Result.ResultType == MetaDataOpertaionResultType.SessionExpired)
         {
-            UI_DialogPrompt.Open("Password is not valid. Please enter a valid password to continue");
-            InvalidatePasswordAndSession();
+            UI_DialogPrompt.Open("Session expired. Re-enter your password to continue.");
+            InvalidateSession();
             UI_DbPassword.OpenEnterPassword();
             while (UI_DbPassword.Instance.gameObject.activeSelf)
             {
@@ -554,15 +539,23 @@ internal static class Database
         }
     }
 
+    /// <summary>
+    /// Is called when a password has been 
+    /// entered manually and we are 
+    /// sending it to the server to be checked.
+    /// Creates and sends a sessionId (guid) 
+    /// that is cached here and on the server.
+    /// </summary>
+    /// <param name="password"></param>
+    /// <returns>True if password matched the password in the database</returns>
+    /// <exception cref="Exception"></exception>
     public static async Task<bool> ValidatePassword(string password)
     {
-        string hashed = HashPassword(password, out string salt);
-
+        string sessionId = Guid.NewGuid().ToString();
         var task = DoMetaDataOperation(new MetaDataOperation
         {
-            HashedPassword = hashed,
-            Salt = salt,
-            SessionId = SessionId,
+            Password = password,
+            SessionId = sessionId,
             OperationType = MetaDataOperationType.VerifyPassword
         });
 
@@ -579,17 +572,9 @@ internal static class Database
 
         if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
         {
-            long expiration = DateTimeOffset.UtcNow.ToUnixTimeSeconds() + 
-                (long)_passwordExpirationTime.TotalSeconds;
-
             UI_DialogPrompt.Open("Logged in successfully");
 
-            PlayerPrefs.SetString(_playerPrefsDbPassword, hashed);
-            PlayerPrefs.SetString(_playerPrefsDbPasswordSalt, salt);
-
-            PlayerPrefs.SetString(
-                _playerPrefsDbPasswordExpiration, 
-                expiration.ToString());
+            PlayerPrefs.SetString(_playerPrefsSessionId, sessionId);
 
             OnPasswordValidationAttemptCompleted?.Invoke();
             return true;
@@ -602,25 +587,22 @@ internal static class Database
 
     public static void LogOut()
     {
-        InvalidatePasswordAndSession();
+        InvalidateSession();
         UI_DialogPrompt.Open("Logged out successfully");
     }
 
-    private static void InvalidatePasswordAndSession()
+    private static void InvalidateSession()
     {
-        PlayerPrefs.DeleteKey(_playerPrefsDbPassword);
-        PlayerPrefs.DeleteKey(_playerPrefsDbPasswordSalt);
-        PlayerPrefs.DeleteKey(_playerPrefsDbPasswordExpiration);
+        PlayerPrefs.DeleteKey(_playerPrefsSessionId);
         OnPasswordValidationAttemptCompleted?.Invoke();
-        SessionId = Guid.NewGuid().ToString();
     }
 
     /// <summary>
     /// Validates cached password
     /// </summary>
-    /// <returns>True if password is valid and has not expired</returns>
+    /// <returns>True if password is sessionId and has not expired</returns>
     /// <exception cref="Exception"></exception>
-    public static async Task<bool> ValidatePassword()
+    public static async Task<bool> ValidateSession()
     {
         if (MustEnterPassword) 
         {
@@ -628,47 +610,26 @@ internal static class Database
             return false;
         } 
 
-        string expirationString = PlayerPrefs
-            .GetString(_playerPrefsDbPasswordExpiration);
-
-        if (!long.TryParse(expirationString, out long expiration) || 
-        expiration <= DateTimeOffset.UtcNow.ToUnixTimeSeconds())
-        {
-            UI_DialogPrompt.Open($"Your session has expired. Please re-enter your password.");
-            PlayerPrefs.DeleteKey(_playerPrefsDbPassword);
-            PlayerPrefs.DeleteKey(_playerPrefsDbPasswordSalt);
-            PlayerPrefs.DeleteKey(_playerPrefsDbPasswordExpiration);
-            OnPasswordValidationAttemptCompleted?.Invoke();
-            return false;
-        }
-
         var task = DoMetaDataOperation(new MetaDataOperation
         {
-            HashedPassword = PlayerPrefs.GetString(_playerPrefsDbPassword),
-            SessionId = SessionId,
-            OperationType = MetaDataOperationType.VerifyPassword
+            SessionId = PlayerPrefs.GetString(_playerPrefsSessionId, null),
+            OperationType = MetaDataOperationType.ValidateSession
         });
 
         await task;
         if (!Application.isPlaying)
             throw new Exception($"App closed during task");
 
-        if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
+        if (task.Result.ResultType == MetaDataOpertaionResultType.SessionExpired)
         {
-            UI_DialogPrompt.Open("Your password is no longer valid.");
+            UI_DialogPrompt.Open("Your session is no longer valid. Please log in again.");
+            InvalidateSession();
             OnPasswordValidationAttemptCompleted?.Invoke();
             return false;
         }
 
         if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
         {
-            expiration = DateTimeOffset.UtcNow.ToUnixTimeSeconds() +
-                (long)_passwordExpirationTime.TotalSeconds;
-
-            PlayerPrefs.SetString(
-                _playerPrefsDbPasswordExpiration,
-                expiration.ToString());
-
             OnPasswordValidationAttemptCompleted?.Invoke();
             return true;
         }
@@ -683,7 +644,6 @@ internal static class Database
         var task = DoMetaDataOperation(new MetaDataOperation
         {
             Password = newPassword,
-            SessionId = SessionId,
             OperationType = MetaDataOperationType.ChangePassword,
             OldPassword = oldPassword
         });
@@ -755,7 +715,8 @@ internal static class Database
         Success,
         Error,
         Exception,
-        PasswordInvalid
+        PasswordInvalid,
+        SessionExpired
     }
 
     public enum MetaDataOperationType
@@ -764,7 +725,8 @@ internal static class Database
         Set,
         GetLastModified,
         VerifyPassword,
-        ChangePassword
+        ChangePassword,
+        ValidateSession
     }
 
     [Serializable]

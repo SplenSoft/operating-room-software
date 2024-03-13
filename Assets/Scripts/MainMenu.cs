@@ -50,7 +50,7 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator OpenObjectEditorCoroutine()
     {
-        var task = Database.ValidatePassword();
+        var task = Database.ValidateSession();
         yield return new WaitUntil(() => task.IsCompleted);
 
         if (task.Result == true) 
