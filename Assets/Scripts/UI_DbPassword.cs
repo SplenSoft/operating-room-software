@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_DbPassword : MonoBehaviour
@@ -31,7 +32,14 @@ public class UI_DbPassword : MonoBehaviour
         gameObject.SetActive(false);
 
         ButtonCancel.onClick
-            .AddListener(() => gameObject.SetActive(false));
+            .AddListener(() => 
+            {
+                if (SceneManager.GetActiveScene().name != "Start")
+                {
+                    SceneManager.LoadScene("Start");
+                }
+                gameObject.SetActive(false);
+            });
     }
 
     private void OnDestroy()
