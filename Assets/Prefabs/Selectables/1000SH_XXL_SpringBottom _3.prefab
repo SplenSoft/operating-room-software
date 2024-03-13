@@ -362,6 +362,11 @@ MonoBehaviour:
       _canBeDisplayed: 1
       _isExpanded: 1
       _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &5046950360407781414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,7 +417,7 @@ MonoBehaviour:
   <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
-  <useLossyScale>k__BackingField: 0
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 1
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -466,6 +471,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
     _settings:
       _canBeDisplayed: 1
       _isExpanded: 1
@@ -686,7 +696,7 @@ MonoBehaviour:
   <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
-  <useLossyScale>k__BackingField: 0
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0

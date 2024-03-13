@@ -1,10 +1,10 @@
+using SplenSoft.UnityUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -22,6 +22,15 @@ public class UI_DbPassword : MonoBehaviour
     [field: SerializeField] public Button ButtonCancel { get; set; }
 
     private const string _passwordDirections = "Password must have eight characters, at least one number, at least one uppercase letter, at least one lowercase letter and at least one special character.";
+
+    [RuntimeInitializeOnLoadMethod]
+    private async void OnAppStart()
+    {
+        while (Instance == null)
+        {
+            await UnityTask.Yield();
+        }
+    }
 
     public void Awake()
     {
@@ -45,6 +54,17 @@ public class UI_DbPassword : MonoBehaviour
     private void OnDestroy()
     {
         InputField_Password.onValueChanged.RemoveListener(ValueChanged);
+    }
+
+    private void OnEnable()
+    {
+        ButtonSubmit.interactable = false;
+    }
+
+    private void OnDisable()
+    {
+        Text_EnterPassword.text = string.Empty;
+        Text_EnterOldPassword.text = string.Empty;
     }
 
     private void ValueChanged(string arg0)

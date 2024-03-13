@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SplenSoft.UnityUtilities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Networking;
@@ -269,7 +271,7 @@ internal static class Database
             if (IsUpToDate)
             {
                 // database was not modified since last time we cached everything
-                Debug.Log($"Database was not modified since last cache. Attempting to pull from hard drive cache ...");
+                //Debug.Log($"Database was not modified since last cache. Attempting to pull from hard drive cache ...");
 
                 if (TryGetCache(assetBundleName, out var cachedData))
                 {
@@ -285,7 +287,7 @@ internal static class Database
             await lastModifiedTask;
 
             if (!Application.isPlaying)
-                throw new Exception("App quit while downloading");
+                throw new AppQuitInTaskException();
 
             long lastModified = -1;
 
@@ -319,16 +321,20 @@ internal static class Database
 
             await task;
 
+            if (!Application.isPlaying) 
+                throw new AppQuitInTaskException();
+
             // task.result.message will be of type StoredMetaData
             if (string.IsNullOrEmpty(task.Result.Message) &&
             task.Result.ResultType == MetaDataOpertaionResultType.Success)
             {
                 // data entry does not exist, use seed data to make it
                 task = SaveMetaData(assetBundleName, seedData);
+
                 await task;
 
-                if (!Application.isPlaying)
-                    throw new Exception("App quit during task");
+                if (!Application.isPlaying) 
+                    throw new AppQuitInTaskException();
 
                 if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
                 {
@@ -356,8 +362,8 @@ internal static class Database
             }
             else if (task.Result.ResultType == MetaDataOpertaionResultType.Success && !string.IsNullOrEmpty(task.Result.Message))
             {
-                Debug.Log($"Successfully retrieved metadata from server for asset bundle {assetBundleName}");
-                Debug.Log(task.Result.Message);
+                //Debug.Log($"Successfully retrieved metadata from server for asset bundle {assetBundleName}");
+                //Debug.Log(task.Result.Message);
                 // task.result.message will be of type StoredMetaData
                 var storedMetaData = JsonConvert.DeserializeObject<StoredMetaData>(task.Result.Message);
                 var selectableMetaData = JsonConvert.DeserializeObject<SelectableMetaData>(storedMetaData.SelectableMetaData);
@@ -375,7 +381,7 @@ internal static class Database
                 }
                 else
                 {
-                    Debug.Log($"Saving {assetBundleName} selectable meta data to cache ...");
+                    //Debug.Log($"Saving {assetBundleName} selectable meta data to cache ...");
                     SaveToCache(assetBundleName, selectableMetaData, lastModified);
                 }
 
@@ -390,7 +396,7 @@ internal static class Database
                     (MetaDataOpertaionResultType.Error, null, message);
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex) when (ex is not AppQuitInTaskException)
         { 
             Debug.LogException(ex);
             return new MetaDataRetrievalResult
@@ -555,7 +561,7 @@ internal static class Database
 
         await task;
         if (!Application.isPlaying) 
-            throw new Exception($"App closed during task");
+            throw new AppQuitInTaskException();
 
         if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
         {
@@ -612,7 +618,7 @@ internal static class Database
 
         await task;
         if (!Application.isPlaying)
-            throw new Exception($"App closed during task");
+            throw new AppQuitInTaskException();
 
         if (task.Result.ResultType == MetaDataOpertaionResultType.SessionExpired)
         {

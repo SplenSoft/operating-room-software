@@ -548,6 +548,11 @@ MonoBehaviour:
       _canBeDisplayed: 1
       _isExpanded: 1
       _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &7152650348232616790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -610,7 +615,7 @@ MonoBehaviour:
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
     metadata: []
-  <useLossyScale>k__BackingField: 0
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
