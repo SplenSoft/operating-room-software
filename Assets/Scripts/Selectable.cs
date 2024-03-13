@@ -69,7 +69,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public static bool IsInElevationPhotoMode { get; private set; }
     public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
-    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> GizmoSettings { get; } = new();
+    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> 
+    GizmoSettings { get; } = new();
+
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
     public UnityEvent ScaleUpdated { get; } = new();
@@ -78,12 +80,15 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     
     public Vector3 OriginalLocalPosition { get; set; }
     public Vector3 OriginalLocalRotation { get; private set; }
+
     public string guid { get; set; }
 
     public bool IsMouseOver { get; private set; }
     public bool IsDestroyed { get; private set; }
     
-    [field: SerializeField] public string GUID { get; private set; }
+    [field: SerializeField] 
+    public string GUID { get; private set; }
+
     public AttachmentPoint ParentAttachmentPoint { get; set; }
     
     [field: SerializeField, MetaDataHandler] 
@@ -102,10 +107,15 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     [field: SerializeField] public List<RoomBoundaryType> WallRestrictions { get; set; } = new();
     [field: SerializeField] public List<GizmoSetting> GizmoSettingsList { get; set; } = new();
     [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
-    [field: SerializeField] public bool isDestructible { get; private set; } = true;
+
+    [field: SerializeField] 
+    public bool IsDestructible { get; private set; } = true;
+
     [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;  
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
-    [field: SerializeField] public bool useLossyScale { get; private set; }
+
+    [field: SerializeField, FormerlySerializedAs("<useLossyScale>k__BackingField")] 
+    public bool UseLossyScale { get; private set; }
 
     public Bounds GetBounds()
     {
@@ -130,7 +140,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     Tooltip("True if this object will rotate " +
     "along its y-axis automatically to make its " +
     "z-axis (forward) parallel to the world " +
-    "y-axis (up-down)")] 
+    "y-axis (up-down)")]
     private bool ZAlwaysFacesGround { get; set; }
 
     [field: SerializeField, 
@@ -185,6 +195,202 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     private bool _hasBeenPlaced;
     #endregion
 
+    #region Monobehaviour
+    private void Awake()
+    {
+        //if (!ConfigurationManager._instance.isDebug && GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID)) gameObject.name = guid.ToString();
+
+        if (AllowInverseControl)
+        {
+            if (GetComponent<CCDIK>() == null)
+            {
+                this.gameObject.AddComponent<CCDIK>();
+            }
+        }
+
+        ActiveSelectables.Add(this);
+        Transform parent = transform.parent;
+
+        while (parent != null)
+        {
+            if (parent.TryGetComponent<AttachmentPoint>(out var attachmentPoint))
+            {
+                if (attachmentPoint != ParentAttachmentPoint)
+                {
+                    ParentAttachmentPoint = attachmentPoint;
+                }
+                break;
+            }
+
+            if (parent.TryGetComponent<Selectable>(out var selectable))
+            {
+                ParentSelectable = selectable;
+                break;
+            }
+
+            parent = parent.parent;
+        }
+
+        _cameraRenderTextureElevation = GetComponentInChildren<Camera>();
+        if (_cameraRenderTextureElevation != null)
+        {
+            _cameraRenderTextureElevation.enabled = false;
+        }
+
+        _originalRotation = transform.rotation;
+        //OriginalLocalRotation = transform.localEulerAngles;
+        _highlightEffect = GetComponent<HighlightEffect>();
+        _highlightProfileSelected = Resources.Load<HighlightProfile>("HighlightProfile_SelectableSelected");
+
+        if (_highlightEffect.profile != _highlightProfileSelected)
+        {
+            _highlightEffect.ProfileLoad(_highlightProfileSelected);
+        }
+
+        _gizmoHandler = GetComponent<GizmoHandler>();
+        InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
+
+        GizmoSettingsList.ForEach(item =>
+        {
+            if (!GizmoSettings.ContainsKey(item.GizmoType))
+            {
+                GizmoSettings[item.GizmoType] = new();
+            }
+            GizmoSettings[item.GizmoType][item.Axis] = item;
+        });
+
+        ActiveSelectablesInSceneChanged?.Invoke();
+    }
+
+    private void OnDestroy()
+    {
+        if (IsDestroyed) return;
+
+        IsDestroyed = true;
+
+        ActiveSelectables.Remove(this);
+
+        if (SelectedSelectable == this)
+        {
+            Deselect();
+        }
+
+        InputHandler.KeyStateChanged -= InputHandler_KeyStateChanged;
+        if (ParentAttachmentPoint != null)
+        {
+            ParentAttachmentPoint.DetachSelectable(this);
+        }
+
+        if (ParentSelectable != null)
+        {
+            Destroy(ParentSelectable.gameObject);
+        }
+
+        SelectableDestroyed?.Invoke();
+        ActiveSelectablesInSceneChanged?.Invoke();
+    }
+
+    public void OnMouseUpAsButton()
+    {
+        if (InputHandler.IsPointerOverUIElement()) return;
+        Select();
+    }
+
+    private void OnMouseEnter()
+    {
+        if (GizmoHandler.GizmoBeingUsed) return;
+        IsMouseOver = true;
+        MouseOverStateChanged?.Invoke(this, null);
+    }
+
+    private void OnMouseExit()
+    {
+        if (GizmoHandler.GizmoBeingUsed) return;
+        IsMouseOver = false;
+        MouseOverStateChanged?.Invoke(this, null);
+    }
+
+    private void Start()
+    {
+        if (GUID != "" &&
+        !ConfigurationManager.IsRoomBoundary(GUID) &&
+        !ConfigurationManager.IsBaseboard(GUID) &&
+        transform.parent == null)
+        {
+            guid = Guid.NewGuid().ToString();
+            gameObject.name = guid.ToString();
+        }
+
+        if (ScaleLevels.Count > 0)
+        {
+            CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
+            CurrentPreviewScaleLevel = CurrentScaleLevel;
+            CurrentScaleLevel.ScaleZ = transform.localScale.z;
+
+            StoreChildScales();
+
+            ScaleLevels.ForEach(item =>
+            {
+                if (!item.ModelDefault)
+                {
+                    float perc = item.Size / CurrentScaleLevel.Size;
+                    item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
+                }
+            });
+
+            var defaultSelected = ScaleLevels.First(item => item.Selected);
+            SetScaleLevel(defaultSelected, true);
+
+            if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
+            {
+                _gizmoHandler.GizmoDragEnded.AddListener(() =>
+                {
+                    if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                    {
+                        UpdateZScaling(true);
+                    }
+                });
+
+                _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
+                {
+                    if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
+                    {
+                        UpdateZScaling(false);
+                    }
+                });
+            }
+        }
+
+        _originalRotation2 = transform.localRotation;
+        OriginalLocalPosition = transform.localPosition;
+        //OriginalLocalRotation = transform.localEulerAngles;
+        Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
+        transform.localPosition += adjustedOffsetVector;
+    }
+
+    private void Update()
+    {
+        UpdateRaycastPlacementMode();
+        FaceZTowardGround();
+    }
+    #endregion
+
+    public static float RoundToNearestHalfInch(float value)
+    {
+        float halfInch = 0.0127f;
+        float modulo = value % halfInch;
+        if (modulo <= halfInch / 2)
+        {
+            value -= modulo;
+        }
+        else
+        {
+            value += halfInch - modulo;
+        }
+
+        return value;
+    }
+
     public static void DeselectAll()
     {
         if (SelectedSelectable != null)
@@ -193,6 +399,24 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             SelectedSelectable.Deselect();
             //SelectionChanged?.Invoke(null, null);
         }
+    }
+
+    /// <summary>
+    /// Destroys all <see cref="IsDestructible"/> objects 
+    /// in the scene
+    /// </summary>
+    public static void DestroyAll()
+    {
+        DeselectAll();
+
+        ActiveSelectables
+            .Where(x => x.IsDestructible)
+            .ToList()
+            .ForEach(x => 
+            { 
+                if (x != null && !x.IsDestroyed)
+                    Destroy(x.gameObject);
+            });
     }
 
     private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
@@ -746,186 +970,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return filenameImage1;
     }
 
-    #region Monobehaviour
-    private void Awake()
-    {
-        //if (!ConfigurationManager._instance.isDebug && GUID != "" && !ConfigurationManager._instance.isRoomBoundary(GUID)) gameObject.name = guid.ToString();
-
-        if(AllowInverseControl)
-        {
-            if(GetComponent<CCDIK>() == null)
-            {
-                this.gameObject.AddComponent<CCDIK>();
-            }
-        }
-
-        ActiveSelectables.Add(this);
-        Transform parent = transform.parent;
-
-        while (parent != null)
-        {
-            if (parent.TryGetComponent<AttachmentPoint>(out var attachmentPoint))
-            {
-                if (attachmentPoint != ParentAttachmentPoint)
-                {
-                    ParentAttachmentPoint = attachmentPoint;
-                }
-                break;
-            }
-
-            if (parent.TryGetComponent<Selectable>(out var selectable))
-            {
-                ParentSelectable = selectable;
-                break;
-            }
-
-            parent = parent.parent;
-        }
-
-        _cameraRenderTextureElevation = GetComponentInChildren<Camera>();
-        if (_cameraRenderTextureElevation != null)
-        {
-            _cameraRenderTextureElevation.enabled = false;
-        }
-
-        _originalRotation = transform.rotation;
-        //OriginalLocalRotation = transform.localEulerAngles;
-        _highlightEffect = GetComponent<HighlightEffect>();
-        _highlightProfileSelected = Resources.Load<HighlightProfile>("HighlightProfile_SelectableSelected");
-
-        if (_highlightEffect.profile != _highlightProfileSelected)
-        {
-            _highlightEffect.ProfileLoad(_highlightProfileSelected);
-        }
-
-        _gizmoHandler = GetComponent<GizmoHandler>();
-        InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
-
-        GizmoSettingsList.ForEach(item =>
-        {
-            if (!GizmoSettings.ContainsKey(item.GizmoType))
-            {
-                GizmoSettings[item.GizmoType] = new();
-            }
-            GizmoSettings[item.GizmoType][item.Axis] = item;
-        });
-
-        ActiveSelectablesInSceneChanged?.Invoke();
-    }
-
-    private void OnDestroy()
-    {
-        if (IsDestroyed) return;
-
-        IsDestroyed = true;
-
-        ActiveSelectables.Remove(this);
-
-        if (SelectedSelectable == this)
-        {
-            Deselect();
-        }
-
-        InputHandler.KeyStateChanged -= InputHandler_KeyStateChanged;
-        if (ParentAttachmentPoint != null)
-        {
-            ParentAttachmentPoint.DetachSelectable(this);
-        }
-
-        if (ParentSelectable != null)
-        {
-            Destroy(ParentSelectable.gameObject);
-        }
-
-        SelectableDestroyed?.Invoke();
-        ActiveSelectablesInSceneChanged?.Invoke();
-    }
-
-    public void OnMouseUpAsButton()
-    {
-        if (InputHandler.IsPointerOverUIElement()) return;
-        Select();
-    }
-
-    private void OnMouseEnter()
-    {
-        if (GizmoHandler.GizmoBeingUsed) return;
-        IsMouseOver = true;
-        MouseOverStateChanged?.Invoke(this, null);
-    }
-
-    private void OnMouseExit()
-    {
-        if (GizmoHandler.GizmoBeingUsed) return;
-        IsMouseOver = false;
-        MouseOverStateChanged?.Invoke(this, null);
-    }
-
-    private void Start()
-    {
-        if (GUID != "" &&
-        ConfigurationManager._instance != null &&
-        !ConfigurationManager._instance.isRoomBoundary(GUID) &&
-        transform.parent == null)
-        {
-            guid = Guid.NewGuid().ToString();
-            gameObject.name = guid.ToString();
-        }
-
-        if (ScaleLevels.Count > 0)
-        {
-            CurrentScaleLevel = ScaleLevels.First(item => item.ModelDefault);
-            CurrentPreviewScaleLevel = CurrentScaleLevel;
-            CurrentScaleLevel.ScaleZ = transform.localScale.z;
-
-            StoreChildScales();
-
-            ScaleLevels.ForEach(item =>
-            {
-                if (!item.ModelDefault)
-                {
-                    float perc = item.Size / CurrentScaleLevel.Size;
-                    item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
-                }
-            });
-
-            var defaultSelected = ScaleLevels.First(item => item.Selected);
-            SetScaleLevel(defaultSelected, true);
-
-            if (IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
-            {
-                _gizmoHandler.GizmoDragEnded.AddListener(() =>
-            {
-                if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
-                {
-                    UpdateZScaling(true);
-                }
-            });
-
-                _gizmoHandler.GizmoDragPostUpdate.AddListener(() =>
-                {
-                    if (GizmoSelector.CurrentGizmoMode == GizmoMode.Scale)
-                    {
-                        UpdateZScaling(false);
-                    }
-                });
-            }
-        }
-
-        _originalRotation2 = transform.localRotation;
-        OriginalLocalPosition = transform.localPosition;
-        //OriginalLocalRotation = transform.localEulerAngles;
-        Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
-        transform.localPosition += adjustedOffsetVector;
-    }
-
-    private void Update()
-    {
-        UpdateRaycastPlacementMode();
-        FaceZTowardGround();
-    }
-    #endregion
-
     private void FaceZTowardGround()
     {
         if (ZAlwaysFacesGround || (ZAlwaysFacesGroundElevationOnly && IsInElevationPhotoMode))
@@ -949,22 +993,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         if (!Application.isPlaying) return;
 
         _isRaycastPlacementMode = true;
-    }
-
-    public static float RoundToNearestHalfInch(float value)
-    {
-        float halfInch = 0.0127f;
-        float modulo = value % halfInch;
-        if (modulo <= halfInch / 2)
-        {
-            value -= modulo;
-        }
-        else
-        {
-            value += halfInch - modulo;
-        }
-
-        return value;
     }
 
     private async void UpdateRaycastPlacementMode()
@@ -1072,8 +1100,18 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         {
             _highlightEffect.highlighted = false;
             _hasBeenPlaced = true;
-            SendMessage("SelectablePositionChanged");
-            SendMessage("VirtualParentChanged", _virtualParent);
+            //SendMessage("SelectablePositionChanged");
+            //SendMessage("VirtualParentChanged", _virtualParent);
+            if (_virtualParent != null && TryGetComponent<KeepRelativePosition>(out var krp))
+            {
+                krp.VirtualParentChanged(_virtualParent);
+                krp.SelectablePositionChanged();
+            }
+            else
+            {
+                Debug.LogWarning("No virtual parent detected.");
+            }
+
             if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
             {
                 RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = false;
@@ -1103,7 +1141,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 return;
             }
 
-            if (!isDestructible) return;
+            if (!IsDestructible) return;
 
             Deselect();
 
@@ -1182,6 +1220,18 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             MetaData.Name == "Selectable")
         {
             MetaData.Name = gameObject.name;
+            needsDirty = true;
+        }
+
+        // string path = AssetDatabase.GetAssetPath(gameObject);
+
+        if (!AssetBundleManager.TryGetAssetBundleName(gameObject, out string assetBundleName)) 
+        {
+            Debug.LogError("Path was null!");
+        }
+        else
+        {
+            GUID = assetBundleName;
             needsDirty = true;
         }
 

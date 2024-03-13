@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <GUID>k__BackingField: 7C46DC68-31C9-4E20-A386-0D8DF02F675C
+  <GUID>k__BackingField: gameobject_5d18bbab28e9d3346bb992c27d307a92
   <MetaData>k__BackingField:
     <IsSubSelectable>k__BackingField: 0
     <Enabled>k__BackingField: 1
@@ -67,7 +67,7 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <GizmoSettingsList>k__BackingField: []
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 1
+  <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
   <useLossyScale>k__BackingField: 0

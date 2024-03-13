@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -13,10 +11,6 @@ using UnityEngine.Networking;
 
 internal static class Database
 {
-    private const int _keySize = 64;
-    private const int _iterations = 350000;
-    private static readonly HashAlgorithmName _hashAlgorithm = HashAlgorithmName.SHA512;
-
     private const string _cacheFolderName = "DatabaseCache";
     private const string _playerPrefsSessionId = "OrsSessionId";
 

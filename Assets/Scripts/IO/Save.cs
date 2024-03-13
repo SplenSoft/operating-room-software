@@ -37,11 +37,11 @@ public class Save : MonoBehaviour
         {
             if (Selectable.SelectedSelectable == null)
             {
-                ConfigurationManager._instance.SaveRoom(fileName.text.Replace(" ", "_"));
+                ConfigurationManager.Instance.SaveRoom(fileName.text.Replace(" ", "_"));
             }
             else
             {
-                ConfigurationManager._instance.SaveConfiguration(fileName.text.Replace(" ", "_"));
+                ConfigurationManager.Instance.SaveConfiguration(fileName.text.Replace(" ", "_"));
             }
 
             fileName.text = "";

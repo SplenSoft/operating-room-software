@@ -47,7 +47,12 @@ public class RoomBoundary : MonoBehaviour
             baseboard.transform.SetParent(null);
         }
 
-        RoomSize.RoomSizeChanged += SetSize;
+        RoomSize.RoomSizeChanged.AddListener(SetSize);
+    }
+
+    private void OnDestroy()
+    {
+        RoomSize.RoomSizeChanged.RemoveListener(SetSize);
     }
 
     void SetSize(RoomDimension dimension)

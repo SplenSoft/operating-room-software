@@ -855,7 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effb0eaaff1886d4db976646f857f47a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <currentDimensions>k__BackingField:
+  <CurrentDimensions>k__BackingField:
     Width: 0
     Height: 0
     Depth: 0

@@ -8,12 +8,12 @@ public class MatchHeightToWalls : MonoBehaviour
 {
     private void Awake()
     {
-        RoomSize.RoomSizeChanged += UpdateScale;
+        RoomSize.RoomSizeChanged.AddListener(UpdateScale);
     }
 
     private void OnDestroy()
     {
-        RoomSize.RoomSizeChanged -= UpdateScale;
+        RoomSize.RoomSizeChanged.RemoveListener(UpdateScale);
     }
 
     private void Start()

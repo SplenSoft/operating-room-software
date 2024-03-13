@@ -12,14 +12,19 @@ public class KeepRelativePosition : MonoBehaviour
     private RoomBoundary _roomBoundary;
     private InGameLight _light;
     private Transform _originalLightParent;
+    private bool _subscribed;
+    private bool _isDestroyed;
+
 
     private void Awake()
     {
-        RoomSize.RoomSizeChanged += RoomSizeChanged;
+        
         
         RecalculateRelativePosition();
         if (VirtualParent != null) 
         {
+            _subscribed = true;
+            RoomSize.RoomSizeChanged.AddListener(RoomSizeChanged);
             _roomBoundary = VirtualParent.GetComponent<RoomBoundary>();
             if (_roomBoundary != null && HideIfSurfaceIsHidden)
             {
@@ -32,6 +37,20 @@ public class KeepRelativePosition : MonoBehaviour
         if (_light != null) 
         {
             _originalLightParent = _light.transform.parent;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // todo: this doesn't unsubscribe fast enough when loading a room, clearing pre-existing objects1
+        _isDestroyed = true;
+        if (!_subscribed) return;
+
+        RoomSize.RoomSizeChanged.RemoveListener(RoomSizeChanged);
+        if (_roomBoundary != null && HideIfSurfaceIsHidden)
+        {
+            _roomBoundary.VisibilityStatusChanged.RemoveListener(CheckHideStatus);
+            UI_ToggleShowCeilingObjects.CeilingObjectVisibilityToggled.RemoveListener(CheckHideStatus);
         }
     }
 
@@ -82,18 +101,14 @@ public class KeepRelativePosition : MonoBehaviour
     private async void RoomSizeChanged(RoomDimension dimension)
     {
         if (VirtualParent == null) return;
-        await Task.Yield();
-        GoToRelativePosition();
-    }
 
-    private void OnDestroy()
-    {
-        // TODO - this doesn't unsubscribe fast enough when loading a room, clearing pre-existing objects
-        RoomSize.RoomSizeChanged -= RoomSizeChanged;
-        if (_roomBoundary != null && HideIfSurfaceIsHidden)
-        {
-            _roomBoundary.VisibilityStatusChanged.RemoveListener(CheckHideStatus);
-            UI_ToggleShowCeilingObjects.CeilingObjectVisibilityToggled.RemoveListener(CheckHideStatus);
-        }
+        await Task.Yield();
+
+        if (!Application.isPlaying) 
+            throw new Exception("App quit during async");
+
+        if (_isDestroyed) return;
+
+        GoToRelativePosition();
     }
 }

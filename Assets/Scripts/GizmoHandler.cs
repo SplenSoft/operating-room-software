@@ -465,7 +465,7 @@ public class GizmoHandler : MonoBehaviour
             ApplySnapping(ref xScale, ref yScale, ref zScale);
         }
 
-        if (_selectable.useLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
+        if (_selectable.UseLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
         {
             float newZScale = zScale / _selectable.transform.lossyScale.z;
             if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())

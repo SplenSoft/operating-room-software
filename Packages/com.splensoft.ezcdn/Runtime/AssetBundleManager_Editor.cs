@@ -346,7 +346,6 @@ namespace SplenSoft.AssetBundles
                     Log.Write(LogLevel.Log, $"Completed building asset bundles for {buildTargetBucket.BuildTarget}");
                     Log.Write(LogLevel.Log, $"Syncing asset bundles for {buildTargetBucket.BuildTarget} to Unity Cloud CDN");
 
-
                     string bucketId = buildTargetBucket.BucketId;
 
                     RunCliCommands(new List<string>()

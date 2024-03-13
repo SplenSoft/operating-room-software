@@ -212,7 +212,7 @@ public class ObjectMenu : MonoBehaviour
         newMenuItem.GetComponentInChildren<Button>().onClick.AddListener(async () =>
         {
             gameObject.SetActive(false);
-            GameObject newSelectable = await ConfigurationManager._instance.LoadConfig(f);
+            GameObject newSelectable = await ConfigurationManager.Instance.LoadConfig(f);
             if (newSelectable == null)
             {
                 Debug.LogError("Something went wrong with LoadConfig!!");
