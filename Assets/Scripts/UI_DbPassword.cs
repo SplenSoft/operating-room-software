@@ -56,6 +56,7 @@ public class UI_DbPassword : MonoBehaviour
     {
         Text_EnterPassword.text = string.Empty;
         Text_EnterOldPassword.text = string.Empty;
+        Instance.ButtonSubmit.onClick.RemoveAllListeners();
     }
 
     private void ValueChanged(string arg0)
