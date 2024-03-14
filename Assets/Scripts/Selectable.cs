@@ -121,12 +121,14 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     {
         MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
 
+        if (meshRenderers.Length == 0)
+        {
+            throw new Exception($"Selectable {gameObject.name} had 0 mesh renderers.");
+        }
+
         Bounds bounds = new Bounds(
             meshRenderers[0].bounds.center, 
             meshRenderers[0].bounds.size);
-
-        //if (meshRenderers.Length == 1) 
-        //    return bounds;
 
         for (int i = 1; i < meshRenderers.Length; i++)
         {

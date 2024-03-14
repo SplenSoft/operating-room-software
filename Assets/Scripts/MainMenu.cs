@@ -56,7 +56,7 @@ public class MainMenu : MonoBehaviour
         if (task.Result == true) 
         { 
             OnPasswordSuccess?.Invoke();
-            yield return null;
+            yield break;
         }
 
         UI_DbPassword.OpenEnterPassword();

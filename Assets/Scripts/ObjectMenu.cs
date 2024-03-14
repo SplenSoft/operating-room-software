@@ -10,34 +10,48 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using FuzzySharp;
 
 /// <summary>
 /// Singleton object that displays a menu to instantiate selectables.
 /// </summary>
 public class ObjectMenu : MonoBehaviour
 {
+    private class ObjectMenuItem
+    {
+        public SelectableData SelectableData { get; set; }
+        public SelectableMetaData SelectableMetaData { get; set; }
+        public GameObject GameObject { get; set; }
+        public string CustomFile { get; set; }
+        public bool ValidForSearch { get; set; } = true;
+        public double LevenshteinRatio { get; set; }
+    }
+
     private static bool _selectCompatibleObjectsMode;
     public static ObjectMenu Instance { get; private set; }
     public static UnityEvent ActiveStateChanged { get; } = new();
     public static UnityEvent LastOpenedSelectableChanged { get; } = new();
     private static bool _initialized;
 
+    private static List<string> _activeAssetBundleNames = new List<string>();
+
+    private const int _minFuzzyRatio = 10;
+
     [field: SerializeField] 
     private GameObject ItemTemplate { get; set; }
 
     [field: SerializeField] 
-    private TextMeshProUGUI ItemTemplateTextObjectName { get; set; }
+    private TextMeshProUGUI ItemTemplateTextObjectName 
+    { get; set; }
+
+    [field: SerializeField]
+    private TMP_InputField InputField_Search
+    { get; set; }
 
     private AttachmentPoint _attachmentPoint;
+
     private List<ObjectMenuItem> ObjectMenuItems 
     { get; set; } = new();
-
-    private class ObjectMenuItem
-    {
-        public SelectableData SelectableData { get; set; }
-        public GameObject GameObject { get; set; }
-        public string customFile { get; set; }
-    }
 
     public static Selectable LastOpenedSelectable 
     { get; private set; }
@@ -45,17 +59,26 @@ public class ObjectMenu : MonoBehaviour
     public static SelectableData LastOpenedSelectableData 
     { get; private set; }
 
+    private bool SearchIsActive => 
+        !string.IsNullOrWhiteSpace(InputField_Search.text);
+
     #region Monobehaviour
 
     private void Awake()
     {
         Instance = this;
+
+        InputField_Search.onValueChanged
+            .AddListener(UpdateSearchFilter);
     }
 
     private void OnDestroy()
     {
         _initialized = false;
         _selectCompatibleObjectsMode = false;
+
+        InputField_Search.onValueChanged
+            .RemoveListener(UpdateSearchFilter);
     }
 
     private IEnumerator Start()
@@ -82,6 +105,81 @@ public class ObjectMenu : MonoBehaviour
     }
 
     #endregion
+
+    private void ClearSearchValidity()
+    {
+        InputField_Search.text = string.Empty;
+        ObjectMenuItems.ForEach(x => x.ValidForSearch = true);
+    }
+
+    private void UpdateSearchFilter(string searchText)
+    {
+        if (!gameObject.activeSelf) return;
+
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            ObjectMenuItems.ForEach(x => x.ValidForSearch = true);
+            RefilterItems();
+            return;
+        }
+
+        ObjectMenuItems.ForEach(x =>
+        {
+            if (x.SelectableMetaData == null) return;
+            // Name
+            double ratio = Fuzz.PartialRatio
+                (x.SelectableMetaData.Name, searchText);
+
+            // Categories
+            foreach (var category in x.SelectableMetaData.Categories) 
+            {
+                ratio = Math.Max(ratio, Fuzz.Ratio(searchText, category));
+            }
+
+            // Keywords
+            foreach (var keyword in x.SelectableMetaData.KeyWords)
+            {
+                ratio = Math.Max(ratio, Fuzz.Ratio(searchText, keyword));
+            }
+
+            x.LevenshteinRatio = ratio;
+
+            if (ratio >= _minFuzzyRatio)
+            {
+                x.ValidForSearch = true;
+            }
+            else
+            {
+                x.LevenshteinRatio = 0;
+                x.ValidForSearch = false;
+            }
+        });
+
+        ObjectMenuItems = ObjectMenuItems.OrderByDescending(x => x.LevenshteinRatio).ToList();
+
+        for (int i = 0; i < ObjectMenuItems.Count; i++)
+        {
+            ObjectMenuItems[i].GameObject.transform.SetSiblingIndex(i);
+        }
+
+        RefilterItems();
+    }
+
+    private void RefilterItems()
+    {
+        if (_selectCompatibleObjectsMode)
+        {
+            FilterMenuItems(_activeAssetBundleNames);
+        }
+        else if (_attachmentPoint != null)
+        {
+            FilterMenuItems(_attachmentPoint);
+        }
+        else
+        {
+            ClearMenuFilter();
+        }
+    }
 
     public static void Regenerate()
     {
@@ -122,9 +220,12 @@ public class ObjectMenu : MonoBehaviour
             if (!Application.isPlaying)
                 throw new Exception($"App quit while downloading");
 
+            SelectableMetaData metadata = data.MetaData;
+
             if (task.Result.ResultType == Database.MetaDataOpertaionResultType.Success)
             {
                 objectName = task.Result.MetaData.Name;
+                metadata = task.Result.MetaData;
             }
 
             ItemTemplateTextObjectName.text = objectName;
@@ -175,7 +276,12 @@ public class ObjectMenu : MonoBehaviour
                 }
             });
 
-            ObjectMenuItems.Add(new ObjectMenuItem { SelectableData = data, GameObject = newMenuItem });
+            ObjectMenuItems.Add(new ObjectMenuItem 
+            { 
+                SelectableData = data, 
+                GameObject = newMenuItem,
+                SelectableMetaData = metadata
+            });
         });
 
         AddSavedRoomConfigs();
@@ -222,7 +328,7 @@ public class ObjectMenu : MonoBehaviour
             selectable.StartRaycastPlacementMode();
         });
 
-        ObjectMenuItems.Add(new ObjectMenuItem { GameObject = newMenuItem, customFile = f });
+        ObjectMenuItems.Add(new ObjectMenuItem { GameObject = newMenuItem, CustomFile = f });
         ItemTemplate.SetActive(false);
     }
 
@@ -261,22 +367,13 @@ public class ObjectMenu : MonoBehaviour
                 return;
             }
 
-            var task = Database.GetMetaData(
-                item.SelectableData.AssetBundleName, 
-                item.SelectableData.MetaData);
-
-            await task;
-
-            if (!Application.isPlaying)
-                throw new Exception($"App quit during task");
-
-            if (task.Result.ResultType != Database.MetaDataOpertaionResultType.Success)
+            if (SearchIsActive && !item.ValidForSearch)
             {
-                UI_DialogPrompt.Open($"Error: {task.Result.ErrorMessage}");
+                item.GameObject.SetActive(false);
                 return;
             }
 
-            var compareMetaData = task.Result.MetaData;
+            var compareMetaData = item.SelectableMetaData;
 
             foreach (var category in compareMetaData.Categories)
             {
@@ -304,13 +401,9 @@ public class ObjectMenu : MonoBehaviour
     {
         ObjectMenuItems.ForEach(item =>
         {
-            if (item.SelectableData == null)
-            {
-                item.GameObject.SetActive(false);
-                return;
-            }
-
-            if (assetBundleNames.Contains(item.SelectableData.AssetBundleName))
+            if (item.SelectableData == null || 
+            assetBundleNames.Contains(item.SelectableData.AssetBundleName) || 
+            (SearchIsActive && !item.ValidForSearch))
             {
                 item.GameObject.SetActive(false);
                 return;
@@ -326,7 +419,14 @@ public class ObjectMenu : MonoBehaviour
         {
             if (item.SelectableData == null)
             {
-                item.GameObject.SetActive(true);
+                item.GameObject.SetActive
+                    (SceneManager.GetActiveScene().name != "ObjectEditor");
+                return;
+            }
+
+            if (SearchIsActive && !item.ValidForSearch) 
+            {
+                item.GameObject.SetActive(false);
                 return;
             }
 
@@ -344,7 +444,9 @@ public class ObjectMenu : MonoBehaviour
 
     public static void OpenToSelectCompatibleObjects(List<string> assetBundleNames)
     {
+        _activeAssetBundleNames = assetBundleNames;
         _selectCompatibleObjectsMode = true;
+        Instance.ClearSearchValidity();
         Instance.FilterMenuItems(assetBundleNames);
         Instance.gameObject.SetActive(true);
     }
@@ -356,6 +458,7 @@ public class ObjectMenu : MonoBehaviour
 
         if (!Application.isPlaying) return;
 
+        Instance.ClearSearchValidity();
         ClearMenuFilter();
         _attachmentPoint = null;
         gameObject.SetActive(true);
@@ -368,6 +471,7 @@ public class ObjectMenu : MonoBehaviour
 
         if (!Application.isPlaying) return;
 
+        Instance.ClearSearchValidity();
         Instance._attachmentPoint = attachmentPoint;
         Instance.FilterMenuItems(attachmentPoint);
         Instance.gameObject.SetActive(true);
