@@ -23,15 +23,6 @@ public class UI_DbPassword : MonoBehaviour
 
     private const string _passwordDirections = "Password must have eight characters, at least one number, at least one uppercase letter, at least one lowercase letter and at least one special character.";
 
-    [RuntimeInitializeOnLoadMethod]
-    private async void OnAppStart()
-    {
-        while (Instance == null)
-        {
-            await UnityTask.Yield();
-        }
-    }
-
     public void Awake()
     {
         Instance = this;
@@ -76,8 +67,15 @@ public class UI_DbPassword : MonoBehaviour
         ButtonSubmit.interactable = valid;
     }
 
-    public static void OpenChangePassword()
+    public static async void OpenChangePassword()
     {
+        while (Instance == null)
+        {
+            await Task.Yield();
+            if (!Application.isPlaying)
+                throw new AppQuitInTaskException();
+        }
+
         Instance.Text_EnterOldPassword.gameObject.SetActive(true);
         Instance.Text_EnterOldPassword.text = "Enter current password";
         Instance.InputField_OldPassword.gameObject.SetActive(true);
@@ -91,8 +89,15 @@ public class UI_DbPassword : MonoBehaviour
         Instance.gameObject.SetActive(true);
     }
 
-    public static void OpenEnterPassword()
+    public static async void OpenEnterPassword()
     {
+        while (Instance == null)
+        {
+            await Task.Yield();
+            if (!Application.isPlaying)
+                throw new AppQuitInTaskException();
+        }
+
         Instance.Text_EnterOldPassword.gameObject.SetActive(false);
         Instance.InputField_OldPassword.gameObject.SetActive(false);
         Instance.Text_PasswordDirections.gameObject.SetActive(false);
