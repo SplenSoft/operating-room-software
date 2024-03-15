@@ -1125,6 +1125,175 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_Blank
+    <SaveLoadGuid>k__BackingField: gameobject_43ac82af7ff661d44b2b323c487d8f3d
+    <AssetBundleName>k__BackingField: gameobject_43ac82af7ff661d44b2b323c487d8f3d
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: 'Mounted Gas Outlet (Blank) '
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_CarbonDioxide
+    <SaveLoadGuid>k__BackingField: gameobject_1ec98387653627649a12821ef9c683aa
+    <AssetBundleName>k__BackingField: gameobject_1ec98387653627649a12821ef9c683aa
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: 'Mounted Gas Outlet (CO2) '
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_He-O2
+    <SaveLoadGuid>k__BackingField: gameobject_914d2a8f12b87a64fb653fbbd1b8ca87
+    <AssetBundleName>k__BackingField: gameobject_914d2a8f12b87a64fb653fbbd1b8ca87
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (He-O2)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_InstrumentAir
+    <SaveLoadGuid>k__BackingField: gameobject_a5ca47f32e079fc43bc738ae9827d00d
+    <AssetBundleName>k__BackingField: gameobject_a5ca47f32e079fc43bc738ae9827d00d
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (Instrument Air)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_MedicalAir
+    <SaveLoadGuid>k__BackingField: gameobject_2f777bb99e3adb24fac08f792ccd5764
+    <AssetBundleName>k__BackingField: gameobject_2f777bb99e3adb24fac08f792ccd5764
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (Medical Air)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_Nitrogen
+    <SaveLoadGuid>k__BackingField: gameobject_cfb7391e3f19377489a9923069fc8b4a
+    <AssetBundleName>k__BackingField: gameobject_cfb7391e3f19377489a9923069fc8b4a
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (Nitrogen)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_NitrousOxide
+    <SaveLoadGuid>k__BackingField: gameobject_0e539a1750ae9e141bdf419ef8059ed6
+    <AssetBundleName>k__BackingField: gameobject_0e539a1750ae9e141bdf419ef8059ed6
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (Nitrous Oxide)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_O2-He
+    <SaveLoadGuid>k__BackingField: gameobject_30dae5ea08011a5408ad15279feb1b4f
+    <AssetBundleName>k__BackingField: gameobject_30dae5ea08011a5408ad15279feb1b4f
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (O2-He)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_Oxygen
+    <SaveLoadGuid>k__BackingField: gameobject_b71d2e36b886d6946b6e9f9069fad351
+    <AssetBundleName>k__BackingField: gameobject_b71d2e36b886d6946b6e9f9069fad351
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (Oxygen)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_VacuumSuction
+    <SaveLoadGuid>k__BackingField: gameobject_3c193512bbcc49749a00ab31f07b5b4f
+    <AssetBundleName>k__BackingField: gameobject_3c193512bbcc49749a00ab31f07b5b4f
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (Vacuum Suction)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Mounted_WagdEvac
+    <SaveLoadGuid>k__BackingField: gameobject_41c190c19799ba245a288cc1392ef245
+    <AssetBundleName>k__BackingField: gameobject_41c190c19799ba245a288cc1392ef245
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Mounted Gas Outlet (WAGD Evac)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Variant_Blank
+    <SaveLoadGuid>k__BackingField: gameobject_0ec46401e033cc74aa5c557047fa1804
+    <AssetBundleName>k__BackingField: gameobject_0ec46401e033cc74aa5c557047fa1804
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Gas Outlet (Blank)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: GasOutlet_Variant_CarbonDioxide
     <SaveLoadGuid>k__BackingField: gameobject_27573fcce7c9810488cb5ecb9427fc4a
     <AssetBundleName>k__BackingField: gameobject_27573fcce7c9810488cb5ecb9427fc4a
@@ -1803,6 +1972,19 @@ MonoBehaviour:
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: StorzCollaborator
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: StorzCollaboratorGO
+    <SaveLoadGuid>k__BackingField: gameobject_36f34a0a801bbe44a92b261d6c598e51
+    <AssetBundleName>k__BackingField: gameobject_36f34a0a801bbe44a92b261d6c598e51
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Storz Collaborator GO
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
