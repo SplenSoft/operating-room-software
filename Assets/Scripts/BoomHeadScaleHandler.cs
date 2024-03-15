@@ -36,7 +36,6 @@ public class BoomHeadScaleHandler : MonoBehaviour
         _selectable.OnScaleChange?.AddListener((x) => ReassembleRows(x));
     }
 
-    int k = 0;
     void ReassembleRows(Selectable.ScaleLevel scaleLevel)
     {
         if (scaleLevel.TryGetValue("rows", out string s_rowCount))
