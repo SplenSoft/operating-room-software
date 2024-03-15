@@ -10,14 +10,22 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
     [SerializeField] private bool _useY;
     [SerializeField] private bool _useZ;
     [SerializeField] private float _multiplier;
+
     private void Awake()
     {
         _meshRenderer = GetComponent<MeshRenderer>();
-        RoomSize.RoomSizeChanged += async x =>
-        {
-            await Task.Yield();
-            Scale();
-        };
+        RoomSize.RoomSizeChanged.AddListener(OnRoomSizeChanged);
+    }
+
+    private void OnDestroy()
+    {
+        RoomSize.RoomSizeChanged.RemoveListener(OnRoomSizeChanged);
+    }
+
+    private async void OnRoomSizeChanged(RoomDimension rd)
+    {
+        await Task.Yield();
+        Scale();
     }
 
     public void Scale()

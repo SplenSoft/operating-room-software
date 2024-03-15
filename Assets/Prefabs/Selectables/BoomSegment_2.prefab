@@ -207,7 +207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GUID>k__BackingField
-      value: B12C8360-E6F8-4699-8401-6E97CE61068D
+      value: gameobject_16a9b6546d2960f48beb4a95fe98b7f0
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
@@ -788,10 +788,10 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <GizmoSettingsList>k__BackingField: []
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 1
+  <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
-  <useLossyScale>k__BackingField: 0
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 1
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -822,6 +822,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
     _settings:
       _canBeDisplayed: 1
       _isExpanded: 1
@@ -862,6 +867,11 @@ MonoBehaviour:
       _canBeDisplayed: 1
       _isExpanded: 1
       _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &5102702119798078014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -897,10 +907,10 @@ MonoBehaviour:
     <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 1
+  <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
-  <useLossyScale>k__BackingField: 0
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0

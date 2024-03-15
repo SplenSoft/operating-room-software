@@ -21,13 +21,13 @@ public class OrbitCamera : MonoBehaviour
 
         CameraManager.Register(VirtualCamera);
 
-        RoomSize.RoomSizeChanged += ResetPosition;
+        RoomSize.RoomSizeChanged.AddListener(ResetPosition);
         Selectable.SelectionChanged += UpdateTarget;
     }
 
     private void OnDestroy()
     {
-        RoomSize.RoomSizeChanged -= ResetPosition;
+        RoomSize.RoomSizeChanged.RemoveListener(ResetPosition);
         Selectable.SelectionChanged -= UpdateTarget;
     }
 

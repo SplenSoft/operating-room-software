@@ -18,7 +18,7 @@ public class UI_ButtonDeleteObject : MonoBehaviour
         if (this == null || gameObject == null) return;
 
         bool active = Selectable.SelectedSelectable != null;
-        if(active) if(!Selectable.SelectedSelectable.isDestructible) return;
+        if(active) if(!Selectable.SelectedSelectable.IsDestructible) return;
         gameObject.SetActive(active);
     }
 

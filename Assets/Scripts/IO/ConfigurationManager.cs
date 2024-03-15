@@ -5,27 +5,43 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using Unity.VisualScripting;
-using UnityEditor;
 
 public class ConfigurationManager : MonoBehaviour
 {
-    public static ConfigurationManager _instance;
+    public static ConfigurationManager Instance { get; private set; }
+
     [Tooltip("Contextual display of GUIDs in hierarchy for easier debugging")]
     public bool isDebug = false;
-    private Tracker tracker; // The tracker for individual configurations
-    private RoomConfiguration roomConfiguration; // overall room configuration, contains collection of trackers
+
+    private List<TrackedObject> _newObjects;
+
+    private List<AttachmentPoint> _newPoints;
+
+    /// <summary>
+    /// This is the prefab GUID for ALL attachment points. DO NOT CHANGE.
+    /// </summary>
+    private const string _attachPointGUID = "_AP";
+
+    /// <summary>
+    /// The tracker for individual configurations
+    /// </summary>
+    private Tracker _tracker; 
+
+    /// <summary>
+    /// overall room configuration, contains collection of trackers
+    /// </summary>
+    private RoomConfiguration _roomConfiguration;
 
     private readonly string _lastNukedSavesPlayerPrefsKey = "lastNukedSaves";
 
-    private readonly string _nukeBelowVersion = "0.0.42";
+    private readonly string _nukeBelowVersion = "0.0.46";
 
-    void Awake()
+    private void Awake()
     {
-        if (_instance != null)
+        if (Instance != null)
             Destroy(this.gameObject);
 
-        _instance = this;
+        Instance = this;
 
         CreateTracker();
         NewRoomSave();
@@ -106,25 +122,25 @@ public class ConfigurationManager : MonoBehaviour
     /// <summary>
     /// Creates a new tracker to be used with a fresh configuration load
     /// </summary>
-    Tracker CreateTracker()
+    private Tracker CreateTracker()
     {
-        tracker = new Tracker
+        _tracker = new Tracker
         {
             objects = new List<TrackedObject.Data>()
         };
-        return tracker;
+        return _tracker;
     }
 
     /// <summary>
     /// Create a new room configuration to be used with a fresh room load
     /// </summary>
-    RoomConfiguration NewRoomSave()
+    private RoomConfiguration NewRoomSave()
     {
-        roomConfiguration = new RoomConfiguration()
+        _roomConfiguration = new RoomConfiguration()
         {
             collections = new List<Tracker>()
         };
-        return roomConfiguration;
+        return _roomConfiguration;
     }
 
     /// <summary>
@@ -147,11 +163,11 @@ public class ConfigurationManager : MonoBehaviour
 
         foreach (TrackedObject obj in foundObjects)
         {
-            tracker.objects.Add(obj.GetData()); // Add each tracked object, add to our local tracker instance
+            _tracker.objects.Add(obj.GetData()); // Add each tracked object, add to our local tracker instance
         }
 
         //====== SAVING JSON =======
-        string json = JsonConvert.SerializeObject(tracker, new JsonSerializerSettings
+        string json = JsonConvert.SerializeObject(_tracker, new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore // allows Newtonsoft to go through the loop to serialize entire Position and Quaternion Rotation
         });
@@ -177,12 +193,12 @@ public class ConfigurationManager : MonoBehaviour
         ObjectMenu.Instance.AddCustomMenuItem(path); // add this configuration to the ObjectMenu
         foreach (TrackedObject obj in foundObjects)
         {
-            if (obj.TryGetComponent(out Selectable s))
+            if (obj.TryGetComponent(out Selectable selectable))
             {
-                if (!string.IsNullOrEmpty(s.guid))
+                if (!string.IsNullOrEmpty(selectable.guid))
                 {
-                    s.guid = Guid.NewGuid().ToString();
-                    s.name = s.guid;
+                    selectable.guid = Guid.NewGuid().ToString();
+                    selectable.name = selectable.guid;
                 }
             }
 
@@ -193,12 +209,13 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    public void SaveRoom(string title)
+    public async void SaveRoom(string title)
     {
         CreateTracker();
         NewRoomSave();
+        var token = Loading.GetLoadingToken();
 
-        roomConfiguration.roomDimension = RoomSize.Instance.currentDimensions; // grabs the current dimensions of the RoomSize to be applied on load
+        _roomConfiguration.roomDimension = RoomSize.Instance.CurrentDimensions; // grabs the current dimensions of the RoomSize to be applied on load
 
         TrackedObject[] foundObjects = FindObjectsOfType<TrackedObject>();
 
@@ -210,6 +227,9 @@ public class ConfigurationManager : MonoBehaviour
             }
         }
 
+        await Task.Delay(1000);
+        token.SetProgress(0.33f);
+
         foreach (TrackedObject obj in foundObjects) // We need to go through each object
         {
             if (obj.transform == obj.transform.root)
@@ -218,15 +238,18 @@ public class ConfigurationManager : MonoBehaviour
                 TrackedObject[] temps = obj.transform.GetComponentsInChildren<TrackedObject>(); // and finding all embedded/attached selectables along with attachment points
                 foreach (TrackedObject to in temps)
                 {
-                    tracker.objects.Add(to.GetData()); // add them to their respective tracker
+                    _tracker.objects.Add(to.GetData()); // add them to their respective tracker
                 }
 
-                roomConfiguration.collections.Add(tracker); // and add them to the room tracker collection
+                _roomConfiguration.collections.Add(_tracker); // and add them to the room tracker collection
             }
         }
 
+        await Task.Delay(1000);
+        token.SetProgress(0.66f);
+
         // ======SAVING JSON=========
-        string json = JsonConvert.SerializeObject(roomConfiguration, new JsonSerializerSettings
+        string json = JsonConvert.SerializeObject(_roomConfiguration, new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
@@ -249,6 +272,9 @@ public class ConfigurationManager : MonoBehaviour
         File.WriteAllText(path, json);
         Debug.Log($"Saved Room: {path}");
 
+        await Task.Delay(1000);
+        token.SetProgress(1);
+
         RoomConfigLoader.Instance.GenerateRoomItem(path);
 
         foreach (TrackedObject obj in foundObjects) // We need to go through each object
@@ -260,8 +286,6 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    private string attachPointGUID = "_AP"; // this is the prefab GUID for ALL attachment points. DO NOT CHANGE.
-
     public async Task<GameObject> LoadConfig(string file)
     {
         Debug.Log($"Loading config file at {file}");
@@ -270,13 +294,13 @@ public class ConfigurationManager : MonoBehaviour
         {
             CreateTracker();
             string json = File.ReadAllText(file);
-            tracker = JsonConvert.DeserializeObject<Tracker>(json);
+            _tracker = JsonConvert.DeserializeObject<Tracker>(json);
 
-            newPoints = new List<AttachmentPoint>();
-            newObjects = new List<TrackedObject>();
+            _newPoints = new List<AttachmentPoint>();
+            _newObjects = new List<TrackedObject>();
 
-            ProcessTrackedObjects(tracker.objects);
-            await ResetObjectPositions(newObjects);
+            ProcessTrackedObjects(_tracker.objects);
+            await ResetObjectPositions(_newObjects);
             RandomizeInstanceGUIDs();
 
             return GetRoot();
@@ -287,14 +311,19 @@ public class ConfigurationManager : MonoBehaviour
     public void LoadRoom(string file)
     {
         Debug.Log($"Clearing default room objects");
-        List<TrackedObject> existingObjects = FindObjectsOfType<TrackedObject>().ToList(); // we need to clear the current room (default objects in scene) to load our new one
-        foreach (TrackedObject to in existingObjects)
-        {
-            if (to == null) continue;
-            if (to.transform == to.transform.root && !isRoomBoundary(to.GetData())) Destroy(to.gameObject);
-        }
-        existingObjects.Clear();
-        existingObjects.TrimExcess();
+
+        // we need to clear the current room (default objects in scene) to load our new one
+        //List<TrackedObject> existingObjects = FindObjectsOfType<TrackedObject>().ToList(); 
+
+        //foreach (TrackedObject to in existingObjects)
+        //{
+        //    if (to == null) continue;
+        //    if (to.transform == to.transform.root && !IsRoomBoundary(to.GetData())) Destroy(to.gameObject);
+        //}
+        //existingObjects.Clear();
+        //existingObjects.TrimExcess();
+
+        Selectable.DestroyAll();
 
         Debug.Log($"Loading Room at {file}");
 
@@ -302,26 +331,37 @@ public class ConfigurationManager : MonoBehaviour
         {
             CreateTracker();
             string json = File.ReadAllText(file);
-            roomConfiguration = JsonConvert.DeserializeObject<RoomConfiguration>(json);
+
+            _roomConfiguration = JsonConvert
+                .DeserializeObject<RoomConfiguration>(json);
+
             GenerateRoomConfig();
         }
     }
-
-    List<TrackedObject> newObjects;
-    List<AttachmentPoint> newPoints;
-    async void GenerateRoomConfig()
+    
+    private async void GenerateRoomConfig()
     {
-        RoomSize.RoomSizeChanged?.Invoke(roomConfiguration.roomDimension); // apply the saved room dimensions from the json to the RoomSize
+        var token = Loading.GetLoadingToken();
 
-        foreach (Tracker t in roomConfiguration.collections) // iterate though each tracker in the collection creating new objects. 
+        // apply the saved room dimensions from the json to the RoomSize
+        //RoomSize.RoomSizeChanged?.Invoke(_roomConfiguration.roomDimension); 
+        RoomSize.SetDimensions(_roomConfiguration.roomDimension);
+
+        float progressionTicks = 1f / _roomConfiguration.collections.Count;
+        float progression = 0;
+        foreach (Tracker t in _roomConfiguration.collections) // iterate though each tracker in the collection creating new objects. 
         {
-            newPoints = new List<AttachmentPoint>();
-            newObjects = new List<TrackedObject>();
+            _newPoints = new List<AttachmentPoint>();
+            _newObjects = new List<TrackedObject>();
 
             ProcessTrackedObjects(t.objects);
-            await ResetObjectPositions(newObjects);
+            await ResetObjectPositions(_newObjects);
             RandomizeInstanceGUIDs();
+            progression += progressionTicks;
+            token.SetProgress(progression);
         }
+
+        token.SetProgress(1f);
     }
 
     private async void ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
@@ -330,15 +370,19 @@ public class ConfigurationManager : MonoBehaviour
         {
             GameObject go = null;
 
-            if (isRoomBoundary(to))
+            if (IsRoomBoundary(to) || IsBaseboard(to))
             {
-                go = GetRoomBoundary(to);
+                go = IsRoomBoundary(to) ? 
+                    GetRoomBoundary(to) : 
+                    GetBaseboard(to);
+
                 LogData(go.GetComponent<Selectable>(), to);
                 ResetMaterialPalettes(go.GetComponent<TrackedObject>());
                 continue;
             }
 
-            if (to.global_guid != attachPointGUID && !string.IsNullOrEmpty(to.global_guid)) // if it is not an AttachPoint, we need to place the Selectable
+            // if it is not an AttachPoint, we need to place the Selectable
+            if (to.global_guid != _attachPointGUID && !string.IsNullOrEmpty(to.global_guid)) 
             {
                 var task = InstantiateObject(to);
                 await task;
@@ -347,7 +391,7 @@ public class ConfigurationManager : MonoBehaviour
                     throw new Exception($"Application quit while asset was being loaded/downloaded");
                 }
                 go = task.Result;
-                newObjects.Add(go.GetComponent<TrackedObject>());
+                _newObjects.Add(go.GetComponent<TrackedObject>());
             }
 
             if (to.parent != null)
@@ -355,16 +399,16 @@ public class ConfigurationManager : MonoBehaviour
                 if (to.global_guid == null || to.global_guid == "") // embedded selectable component
                 {
                     go = ProcessEmbeddedSelectable(to);
-                    newObjects.Add(go.GetComponent<TrackedObject>());
+                    _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
-                else if (to.global_guid == attachPointGUID) // attachment point component
+                else if (to.global_guid == _attachPointGUID) // attachment point component
                 {
                     ProcessAttachmentPoint(to);
                 }
                 else // selectable attached to an attachment point
                 {
                     ProcessAttachedSelectable(go, to);
-                    newObjects.Add(go.GetComponent<TrackedObject>());
+                    _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
             }
             else
@@ -372,7 +416,7 @@ public class ConfigurationManager : MonoBehaviour
                 if (to.global_guid == null || to.global_guid == "") // embedded selectable component
                 {
                     go = ProcessEmbeddedSelectable(to);
-                    newObjects.Add(go.GetComponent<TrackedObject>());
+                    _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
             }
         }
@@ -381,13 +425,13 @@ public class ConfigurationManager : MonoBehaviour
     /// <summary>
     /// Instantiates a object, applies position, rotation, guid, and logs the scale for use later.
     /// </summary>
-    /// <param name="to">The JSON structure of this object</param>
+    /// <param name="trackedObject">The JSON structure of this object</param>
     /// <returns>The gameobject of our newly instantiated and setup logic applied</returns>
-    private async Task<GameObject> InstantiateObject(TrackedObject.Data to)
+    private async Task<GameObject> InstantiateObject(TrackedObject.Data trackedObject)
     {
-        if (!SelectableAssetBundles.TryGetSelectableData(to.global_guid, out SelectableData data))
+        if (!SelectableAssetBundles.TryGetSelectableData(trackedObject.global_guid, out SelectableData data))
         {
-            Debug.LogError($"Could not find selectable data for {to.objectName} with guid {to.global_guid}");
+            Debug.LogError($"Could not find selectable data for {trackedObject.objectName} with guid {trackedObject.global_guid}");
             return null;
         }
 
@@ -400,11 +444,13 @@ public class ConfigurationManager : MonoBehaviour
 
         GameObject go = Instantiate(task.Result);
 
-        go.transform.SetPositionAndRotation(to.pos, to.rot);
-        if (!string.IsNullOrEmpty(to.instance_guid))
-            go.name = to.instance_guid;
-        go.GetComponent<Selectable>().guid = to.instance_guid;
-        LogData(go.GetComponent<Selectable>(), to);
+        go.transform.SetPositionAndRotation(trackedObject.pos, trackedObject.rot);
+
+        if (!string.IsNullOrEmpty(trackedObject.instance_guid))
+            go.name = trackedObject.instance_guid;
+
+        go.GetComponent<Selectable>().guid = trackedObject.instance_guid;
+        LogData(go.GetComponent<Selectable>(), trackedObject);
         return go;
     }
 
@@ -412,11 +458,11 @@ public class ConfigurationManager : MonoBehaviour
     /// Finds and applies the tracked AttachmentPoint information to the prefab included version
     /// </summary>
     /// <param name="to">The JSON structure of this object</param>
-    void ProcessAttachmentPoint(TrackedObject.Data to)
+    private void ProcessAttachmentPoint(TrackedObject.Data to)
     {
         GameObject myself = GameObject.Find(to.parent);
         myself.GetComponent<TrackedObject>().StoreValues(to);
-        newPoints.Add(myself.GetComponent<AttachmentPoint>());
+        _newPoints.Add(myself.GetComponent<AttachmentPoint>());
     }
 
     /// <summary>
@@ -424,7 +470,7 @@ public class ConfigurationManager : MonoBehaviour
     /// </summary>
     /// <param name="to">The JSON structure of this object</param>
     /// <returns>The populated selectable's gameobject is returned</returns>
-    GameObject ProcessEmbeddedSelectable(TrackedObject.Data to)
+    private GameObject ProcessEmbeddedSelectable(TrackedObject.Data to)
     {
         try
         {
@@ -446,9 +492,9 @@ public class ConfigurationManager : MonoBehaviour
     /// </summary>
     /// <param name="go">Reference to the gameObject being applied data</param>
     /// <param name="to">The JSON structure of this object</param>
-    void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
+    private void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
     {
-        AttachmentPoint ap = newPoints.Single(s => ConfigurationManager.GetGameObjectPath(s.gameObject) == to.parent);
+        AttachmentPoint ap = _newPoints.Single(s => ConfigurationManager.GetGameObjectPath(s.gameObject) == to.parent);
         ap.SetAttachedSelectable(go.GetComponent<Selectable>());
         go.transform.SetParent(ap.gameObject.transform);
         go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
@@ -459,7 +505,7 @@ public class ConfigurationManager : MonoBehaviour
     /// Resets the objects position and rotation to match with the JSON strucutre, after a frame to allow other logic to process the correct information
     /// </summary>
     /// <param name="newObjects">The tracked list of new objects that have been created during loading</param>
-    async Task ResetObjectPositions(List<TrackedObject> newObjects)
+    private async Task ResetObjectPositions(List<TrackedObject> newObjects)
     {
         newObjects.Reverse(); // The list needs to be reversed so that the hierarchy is root downwards. 
         foreach (TrackedObject obj in newObjects)
@@ -476,7 +522,7 @@ public class ConfigurationManager : MonoBehaviour
             ResetMaterialPalettes(obj);
         }
 
-        foreach (AttachmentPoint ap in newPoints)
+        foreach (AttachmentPoint ap in _newPoints)
         {
             if (ap == null)
             {
@@ -490,9 +536,9 @@ public class ConfigurationManager : MonoBehaviour
     /// <summary>
     /// Randomizes the instance GUIDs of the tracked objects within the configuration so that double loading doesn't have conflicts with GameObject.Find
     /// </summary>
-    void RandomizeInstanceGUIDs()
+    private void RandomizeInstanceGUIDs()
     {
-        foreach (TrackedObject to in newObjects)
+        foreach (TrackedObject to in _newObjects)
         {
             if (to.transform.root == to.transform)
             {
@@ -506,7 +552,7 @@ public class ConfigurationManager : MonoBehaviour
     /// Sets the scale of the object
     /// </summary>
     /// <param name="obj">The JSON structure of the object</param>
-    void ResetScaleLevels(TrackedObject obj)
+    private void ResetScaleLevels(TrackedObject obj)
     {
         if (obj.GetScaleLevel() != null)
         {
@@ -530,7 +576,7 @@ public class ConfigurationManager : MonoBehaviour
     /// Sets the Local Position & "OriginalLocalPosition" of the object
     /// </summary>
     /// <param name="obj">The JSON structure of the object</param>
-    void ResetLocalPosition(TrackedObject obj)
+    private void ResetLocalPosition(TrackedObject obj)
     {
         if (obj == null)
         {
@@ -545,7 +591,7 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    void ResetMaterialPalettes(TrackedObject obj)
+    private void ResetMaterialPalettes(TrackedObject obj)
     {
         if (obj == null)
         {
@@ -568,7 +614,7 @@ public class ConfigurationManager : MonoBehaviour
     /// </summary>
     /// <param name="s">The object's selectable component</param>
     /// <param name="to">The JSON structure of this object</param>
-    void LogData(Selectable s, TrackedObject.Data to)
+    private void LogData(Selectable s, TrackedObject.Data to)
     {
         s.GetComponent<TrackedObject>().StoreValues(to);
     }
@@ -577,28 +623,45 @@ public class ConfigurationManager : MonoBehaviour
     /// Finds the root transform of a generated configuration
     /// </summary>
     /// <returns>Generated configuration's transform.root</returns>
-    GameObject GetRoot()
+    private GameObject GetRoot()
     {
-        return newObjects.Single(x => x.transform == x.transform.root).gameObject;
+        return _newObjects.Single(x => x.transform == x.transform.root).gameObject;
     }
 
-    public bool isRoomBoundary(string guid)
+    public static bool IsRoomBoundary(string guid)
     {
-        if (guid == "Wall_N" || guid == "Wall_S" ||
-            guid == "Wall_E" || guid == "Wall_W" ||
-            guid == "Ceil" || guid == "Floor")
-            return true;
-        else return false;
+        return 
+            guid == "Wall_N" || 
+            guid == "Wall_S" ||
+            guid == "Wall_E" || 
+            guid == "Wall_W" ||
+            guid == "Ceil" || 
+            guid == "Floor";
     }
 
-    public bool isRoomBoundary(TrackedObject.Data to)
+    public static bool IsBaseboard(string guid)
     {
-        return isRoomBoundary(to.global_guid);
+        return guid.StartsWith("Baseboard");
     }
 
-    GameObject GetRoomBoundary(TrackedObject.Data to)
+    private static bool IsBaseboard(TrackedObject.Data to)
+    {
+        return IsBaseboard(to.global_guid);
+    }
+
+    public static bool IsRoomBoundary(TrackedObject.Data to)
+    {
+        return IsRoomBoundary(to.global_guid);
+    }
+
+    private static GameObject GetRoomBoundary(TrackedObject.Data to)
     {
         return GameObject.Find("RoomBoundary_" + to.global_guid);
+    }
+
+    private static GameObject GetBaseboard(TrackedObject.Data to)
+    {
+        return GameObject.Find(to.global_guid);
     }
 
     /// <summary>

@@ -50,8 +50,8 @@ public partial class AttachmentPoint : MonoBehaviour
 
     public List<Selectable> ParentSelectables { get; } = new();
     [field: SerializeField, ReadOnly] public Transform _originalParent { get; private set; }
-    private MeshRenderer _renderer;
-    private Collider _collider;
+    [field: SerializeField] private MeshRenderer Renderer { get; set; }
+    private Collider _collider; 
     private bool _isDestroyed;
 
     #region Monobehaviour
@@ -60,7 +60,11 @@ public partial class AttachmentPoint : MonoBehaviour
         EmptyNullList();
 
         _collider = GetComponentInChildren<Collider>();
-        _renderer = GetComponentInChildren<MeshRenderer>();
+
+        if (Renderer == null)
+        {
+            Renderer = GetComponentInChildren<MeshRenderer>();
+        }
 
         Transform parent = transform.parent;
         _originalParent = parent;
@@ -225,7 +229,7 @@ public partial class AttachmentPoint : MonoBehaviour
 
         bool isMouseOverAnyParentSelectable = ParentSelectables.FirstOrDefault(item => item.IsMouseOver) != default;
         bool areAnyParentSelectablesSelected = ParentSelectables.Contains(Selectable.SelectedSelectable);
-        _renderer.enabled = (isMouseOverAnyParentSelectable || _attachmentPointHovered) && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
+        Renderer.enabled = (isMouseOverAnyParentSelectable || _attachmentPointHovered) && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
         HighlightHovered.highlighted = _attachmentPointHovered && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
         _collider.enabled = AttachedSelectable.Count <= multiAllowed && !areAnyParentSelectablesSelected;
     }

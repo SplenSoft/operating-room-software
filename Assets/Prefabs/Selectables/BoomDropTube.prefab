@@ -117,7 +117,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GUID>k__BackingField
-      value: 92B75922-A802-4CFD-9D8F-5BD3F17E8527
+      value: gameobject_8a9d70475b8764042ac5cbac8ec9360d
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <Name>k__BackingField
@@ -565,6 +565,11 @@ MonoBehaviour:
       _canBeDisplayed: 1
       _isExpanded: 1
       _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &6141377555318746125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,7 +605,7 @@ MonoBehaviour:
     <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 1
+  <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.1
@@ -619,7 +624,7 @@ MonoBehaviour:
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 1
     metadata: []
-  <useLossyScale>k__BackingField: 0
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0

@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <GUID>k__BackingField: 3B7902B0-3CFE-43D2-8793-0DBF0264FD08
+  <GUID>k__BackingField: gameobject_1d7d6954e148df94d9e6aaefbfd85fe1
   <MetaData>k__BackingField:
     <IsSubSelectable>k__BackingField: 0
     <Enabled>k__BackingField: 1
@@ -150,10 +150,10 @@ MonoBehaviour:
   <WallRestrictions>k__BackingField: 
   <GizmoSettingsList>k__BackingField: []
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 1
+  <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
-  <useLossyScale>k__BackingField: 0
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -349,6 +349,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
     _settings:
       _canBeDisplayed: 1
       _isExpanded: 1

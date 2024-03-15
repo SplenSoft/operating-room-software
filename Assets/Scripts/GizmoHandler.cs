@@ -14,7 +14,7 @@ using Color = UnityEngine.Color;
 public class GizmoHandler : MonoBehaviour
 {
     [field: SerializeField, HideInInspector] public ObjectTransformGizmo _translateGizmo { get; private set; }
-    private ObjectTransformGizmo _rotateGizmo;
+    [field: SerializeField, HideInInspector] public ObjectTransformGizmo _rotateGizmo { get; private set; }
     private ObjectTransformGizmo _scaleGizmo;
     private ObjectTransformGizmo _universalGizmo;
     private bool _gizmosInitialized;
@@ -92,6 +92,7 @@ public class GizmoHandler : MonoBehaviour
             if (_translateGizmo.Gizmo.IsEnabled)
             {
                 _translateGizmo.Gizmo.Transform.Position3D = transform.position;
+                _translateGizmo.Gizmo.Transform.LocalRotation3D = transform.localRotation;
                 //_translateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
                 _translateGizmo.Gizmo.MoveGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
                 //RTGizmosEngine.Get.MoveGizmoSettings3D.SetXSnapStep
@@ -465,7 +466,7 @@ public class GizmoHandler : MonoBehaviour
             ApplySnapping(ref xScale, ref yScale, ref zScale);
         }
 
-        if (_selectable.useLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
+        if (_selectable.UseLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
         {
             float newZScale = zScale / _selectable.transform.lossyScale.z;
             if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())

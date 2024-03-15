@@ -2,16 +2,21 @@ using System;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Singleton class
 /// </summary>
 public class RoomSize : MonoBehaviour
 {
-    public static Action<RoomDimension> RoomSizeChanged;
     public static RoomSize Instance { get; set; }
+
+    public static UnityEvent<RoomDimension> RoomSizeChanged { get; } = new();
+
     private readonly float _minimumSizeInFeet = 6f;
-    [field: SerializeField, HideInInspector] public RoomDimension currentDimensions { get; private set; }
+
+    [field: SerializeField, HideInInspector] 
+    public RoomDimension CurrentDimensions { get; private set; }
 
     [field: SerializeField] private TMP_InputField InputFieldWidth { get; set; }
     [field: SerializeField] private TMP_InputField InputFieldHeight { get; set; }
@@ -20,11 +25,32 @@ public class RoomSize : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        InputFieldWidth.onEndEdit.AddListener(text => EnforceDimensionSize(InputFieldWidth, text));
-        InputFieldHeight.onEndEdit.AddListener(text => EnforceDimensionSize(InputFieldHeight, text));
-        InputFieldDepth.onEndEdit.AddListener(text => EnforceDimensionSize(InputFieldDepth, text));
 
-        RoomSizeChanged += x => { currentDimensions = x; };
+        InputFieldWidth.onEndEdit
+            .AddListener(text => EnforceDimensionSize(InputFieldWidth, text));
+
+        InputFieldHeight.onEndEdit
+            .AddListener(text => EnforceDimensionSize(InputFieldHeight, text));
+
+        InputFieldDepth.onEndEdit
+        .AddListener(text => EnforceDimensionSize(InputFieldDepth, text));
+
+        RoomSizeChanged.AddListener(OnRoomSizeChanged);
+    }
+
+    private void OnDestroy()
+    {
+        RoomSizeChanged.RemoveListener(OnRoomSizeChanged);
+    }
+
+    public static void SetDimensions(RoomDimension roomDimension)
+    {
+        RoomSizeChanged?.Invoke(roomDimension);
+    }
+
+    private void OnRoomSizeChanged(RoomDimension dim)
+    {
+        CurrentDimensions = dim;
     }
 
     private void EnforceDimensionSize(TMP_InputField inputField, string text)
@@ -60,14 +86,14 @@ public class RoomSize : MonoBehaviour
 [Serializable]
 public struct RoomDimension
 {
-    public float Width;
-    public float Height;
-    public float Depth;
-
     public RoomDimension(float w, float h, float d)
     {
         Width = w;
         Height = h;
         Depth = d;
     }
+
+    public float Width;
+    public float Height;
+    public float Depth;
 }

@@ -107,6 +107,11 @@ MonoBehaviour:
       _canBeDisplayed: 1
       _isExpanded: 1
       _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
 --- !u!114 &2763326451925524032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,10 +325,10 @@ MonoBehaviour:
     <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 0
+  <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
-  <useLossyScale>k__BackingField: 1
+  <UseLossyScale>k__BackingField: 1
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -439,7 +444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <GUID>k__BackingField: E12BD8EB-402B-44B3-8B85-C2DD1D12CD62
+  <GUID>k__BackingField: gameobject_d4c54a4ad1f67144db29628f39fd23f5
   <MetaData>k__BackingField:
     <IsSubSelectable>k__BackingField: 0
     <Enabled>k__BackingField: 0
@@ -462,7 +467,7 @@ MonoBehaviour:
     <IgnoreScale>k__BackingField: 0
     <Invert>k__BackingField: 0
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
-  <isDestructible>k__BackingField: 0
+  <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.0762
@@ -485,7 +490,7 @@ MonoBehaviour:
     <Selected>k__BackingField: 1
     <ModelDefault>k__BackingField: 0
     metadata: []
-  <useLossyScale>k__BackingField: 0
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -681,6 +686,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <_translateGizmo>k__BackingField:
+    _settings:
+      _canBeDisplayed: 1
+      _isExpanded: 1
+      _transformableLayers: -1
+  <_rotateGizmo>k__BackingField:
     _settings:
       _canBeDisplayed: 1
       _isExpanded: 1

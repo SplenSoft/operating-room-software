@@ -1,16 +1,25 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using SplenSoft.UnityUtilities;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Networking;
 
 internal static class Database
 {
     private const string _cacheFolderName = "DatabaseCache";
+    private const string _playerPrefsSessionId = "OrsSessionId";
+
+    public static UnityEvent OnPasswordValidationAttemptCompleted { get; } = new();
+
+    public static bool MustEnterPassword =>
+        !PlayerPrefs.HasKey(_playerPrefsSessionId);
 
     private const string _uri = "https://orswebapi-app-20240309191859.ambitioussky-1264637f.eastus.azurecontainerapps.io";
     //private const string _uri = "https://localhost:7285";
@@ -55,22 +64,55 @@ internal static class Database
             {
                 OperationType = type,
                 AssetBundleName = assetBundleName,
-                SelectableMetaData = selectableMetaDataString
+                SelectableMetaData = selectableMetaDataString,
+                SessionId = PlayerPrefs.GetString(_playerPrefsSessionId, null),
             };
 
-            var json = JsonConvert.SerializeObject(op);
+            var task = DoMetaDataOperation(op);
+            await task;
+
+            if (!Application.isPlaying) 
+                throw new Exception("App quit during task");
+
+            return task.Result;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogException(ex);
+
+            return new MetaDataOperationResult
+            {
+                OperationType = type,
+                ResultType = MetaDataOpertaionResultType.Exception,
+                Message = $"{ex.GetType().Name} - {ex.Message}"
+            };
+        }
+        finally 
+        {
+            loadingToken.Done();
+        }
+    }
+
+    private static async Task<MetaDataOperationResult> DoMetaDataOperation
+    (MetaDataOperation operation)
+    {
+        var loadingToken = Loading.GetLoadingToken();
+        try
+        {
+            var json = JsonConvert.SerializeObject(operation);
             //Debug.Log(json);
             byte[] bytes = Encoding.UTF8.GetBytes(json);
             string uri = _uri + "/metadata";
-            
+
             using var request = UnityWebRequest.Put(uri, bytes);
             request.method = "POST";
             request.SetRequestHeader("Content-Type", "application/json");
-            var operation = request.SendWebRequest();
-            while (!operation.isDone)
+
+            var asyncOperation = request.SendWebRequest();
+            while (!asyncOperation.isDone)
             {
                 await Task.Yield();
-                loadingToken.SetProgress(operation.progress);
+                loadingToken.SetProgress(asyncOperation.progress);
                 if (!Application.isPlaying)
                     throw new Exception("App quit while downloading data");
             }
@@ -93,12 +135,12 @@ internal static class Database
 
             return new MetaDataOperationResult
             {
-                OperationType = type,
+                OperationType = operation.OperationType,
                 ResultType = MetaDataOpertaionResultType.Exception,
                 Message = $"{ex.GetType().Name} - {ex.Message}"
             };
         }
-        finally 
+        finally
         {
             loadingToken.Done();
         }
@@ -120,10 +162,50 @@ internal static class Database
         if (!Application.isPlaying)
             throw new Exception("App quit while in task");
 
-        if (task.Result.ResultType != MetaDataOpertaionResultType.Success)
+        if (task.Result.ResultType == MetaDataOpertaionResultType.SessionExpired)
         {
-            Debug.LogError($"Saving metadata to server failed: {task.Result.Message}");
-            return null;
+            UI_DialogPrompt.Open("Session expired. Re-enter your password to continue.");
+            InvalidateSession();
+            UI_DbPassword.OpenEnterPassword();
+            while (UI_DbPassword.Instance.gameObject.activeSelf)
+            {
+                await Task.Yield();
+
+                if (!Application.isPlaying)
+                    throw new Exception("App quit while in task");
+            }
+
+            if (!MustEnterPassword)
+            {
+                task = SaveMetaData(assetBundleName, selectableMetaData);
+
+                await task;
+
+                if (!Application.isPlaying)
+                    throw new Exception("App quit while in task");
+
+                return task.Result;
+            }
+            else
+            {
+                UI_DialogPrompt.Open("Save cancelled due to invalid credentials");
+                return new MetaDataOperationResult
+                {
+                    ResultType = MetaDataOpertaionResultType.Error,
+                    Message = "Save cancelled due to invalid credentials"
+                };
+            }
+        }
+        else if (task.Result.ResultType != MetaDataOpertaionResultType.Success)
+        {
+            string errorMessage = $"Saving metadata to server failed: {task.Result.Message}";
+            Debug.LogError(errorMessage);
+            UI_DialogPrompt.Open(errorMessage);
+            return new MetaDataOperationResult
+            {
+                ResultType = MetaDataOpertaionResultType.Error,
+                Message = errorMessage
+            };
         }
 
         var message = JsonConvert.DeserializeObject
@@ -189,7 +271,7 @@ internal static class Database
             if (IsUpToDate)
             {
                 // database was not modified since last time we cached everything
-                Debug.Log($"Database was not modified since last cache. Attempting to pull from hard drive cache ...");
+                //Debug.Log($"Database was not modified since last cache. Attempting to pull from hard drive cache ...");
 
                 if (TryGetCache(assetBundleName, out var cachedData))
                 {
@@ -205,7 +287,7 @@ internal static class Database
             await lastModifiedTask;
 
             if (!Application.isPlaying)
-                throw new Exception("App quit while downloading");
+                throw new AppQuitInTaskException();
 
             long lastModified = -1;
 
@@ -239,16 +321,20 @@ internal static class Database
 
             await task;
 
+            if (!Application.isPlaying) 
+                throw new AppQuitInTaskException();
+
             // task.result.message will be of type StoredMetaData
             if (string.IsNullOrEmpty(task.Result.Message) &&
             task.Result.ResultType == MetaDataOpertaionResultType.Success)
             {
                 // data entry does not exist, use seed data to make it
                 task = SaveMetaData(assetBundleName, seedData);
+
                 await task;
 
-                if (!Application.isPlaying)
-                    throw new Exception("App quit during task");
+                if (!Application.isPlaying) 
+                    throw new AppQuitInTaskException();
 
                 if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
                 {
@@ -276,8 +362,8 @@ internal static class Database
             }
             else if (task.Result.ResultType == MetaDataOpertaionResultType.Success && !string.IsNullOrEmpty(task.Result.Message))
             {
-                Debug.Log($"Successfully retrieved metadata from server for asset bundle {assetBundleName}");
-                Debug.Log(task.Result.Message);
+                //Debug.Log($"Successfully retrieved metadata from server for asset bundle {assetBundleName}");
+                //Debug.Log(task.Result.Message);
                 // task.result.message will be of type StoredMetaData
                 var storedMetaData = JsonConvert.DeserializeObject<StoredMetaData>(task.Result.Message);
                 var selectableMetaData = JsonConvert.DeserializeObject<SelectableMetaData>(storedMetaData.SelectableMetaData);
@@ -295,7 +381,7 @@ internal static class Database
                 }
                 else
                 {
-                    Debug.Log($"Saving {assetBundleName} selectable meta data to cache ...");
+                    //Debug.Log($"Saving {assetBundleName} selectable meta data to cache ...");
                     SaveToCache(assetBundleName, selectableMetaData, lastModified);
                 }
 
@@ -310,7 +396,7 @@ internal static class Database
                     (MetaDataOpertaionResultType.Error, null, message);
             }
         }
-        catch (Exception ex) 
+        catch (Exception ex) when (ex is not AppQuitInTaskException)
         { 
             Debug.LogException(ex);
             return new MetaDataRetrievalResult
@@ -453,12 +539,145 @@ internal static class Database
         }
     }
 
+    /// <summary>
+    /// Is called when a password has been 
+    /// entered manually and we are 
+    /// sending it to the server to be checked.
+    /// Creates and sends a sessionId (guid) 
+    /// that is cached here and on the server.
+    /// </summary>
+    /// <param name="password"></param>
+    /// <returns>True if password matched the password in the database</returns>
+    /// <exception cref="Exception"></exception>
+    public static async Task<bool> ValidatePassword(string password)
+    {
+        string sessionId = Guid.NewGuid().ToString();
+        var task = DoMetaDataOperation(new MetaDataOperation
+        {
+            Password = password,
+            SessionId = sessionId,
+            OperationType = MetaDataOperationType.VerifyPassword
+        });
+
+        await task;
+        if (!Application.isPlaying) 
+            throw new AppQuitInTaskException();
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
+        {
+            UI_DialogPrompt.Open("Your password is incorrect. Try again.");
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return false;
+        }
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
+        {
+            UI_DialogPrompt.Open("Logged in successfully");
+
+            PlayerPrefs.SetString(_playerPrefsSessionId, sessionId);
+
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return true;
+        }
+
+        UI_DialogPrompt.Open($"Something went wrong: {task.Result.Message}");
+        OnPasswordValidationAttemptCompleted?.Invoke();
+        return false;
+    }
+
+    public static void LogOut()
+    {
+        InvalidateSession();
+        UI_DialogPrompt.Open("Logged out successfully");
+    }
+
+    private static void InvalidateSession()
+    {
+        PlayerPrefs.DeleteKey(_playerPrefsSessionId);
+        OnPasswordValidationAttemptCompleted?.Invoke();
+    }
+
+    /// <summary>
+    /// Validates cached password
+    /// </summary>
+    /// <returns>True if password is sessionId and has not expired</returns>
+    /// <exception cref="Exception"></exception>
+    public static async Task<bool> ValidateSession()
+    {
+        if (MustEnterPassword) 
+        {
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return false;
+        } 
+
+        var task = DoMetaDataOperation(new MetaDataOperation
+        {
+            SessionId = PlayerPrefs.GetString(_playerPrefsSessionId, null),
+            OperationType = MetaDataOperationType.ValidateSession
+        });
+
+        await task;
+        if (!Application.isPlaying)
+            throw new AppQuitInTaskException();
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.SessionExpired)
+        {
+            UI_DialogPrompt.Open("Your session is no longer valid. Please log in again.");
+            InvalidateSession();
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return false;
+        }
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.Success)
+        {
+            OnPasswordValidationAttemptCompleted?.Invoke();
+            return true;
+        }
+
+        UI_DialogPrompt.Open($"Something went wrong: {task.Result.Message}");
+        OnPasswordValidationAttemptCompleted?.Invoke();
+        return false;
+    }
+
+    public static async Task<bool> ChangePassword(string newPassword, string oldPassword)
+    {
+        var task = DoMetaDataOperation(new MetaDataOperation
+        {
+            Password = newPassword,
+            OperationType = MetaDataOperationType.ChangePassword,
+            OldPassword = oldPassword
+        });
+
+        await task;
+        if (!Application.isPlaying) 
+            throw new Exception("App quit during task");
+
+        if (task.Result.ResultType == MetaDataOpertaionResultType.PasswordInvalid)
+        {
+            UI_DialogPrompt.Open("The current password does not match. Please re-enter the current password");
+            return false;
+        }
+
+        if (task.Result.ResultType != MetaDataOpertaionResultType.Success)
+        {
+            UI_DialogPrompt.Open($"Something went wrong: {task.Result.Message}");
+            return false;
+        }
+
+        UI_DialogPrompt.Open($"Password changed successfully.");
+
+        return true;
+    }
+
     [Serializable]
     public class MetaDataOperation
     {
         public MetaDataOperationType OperationType { get; set; }
         public string AssetBundleName { get; set; }
         public string SelectableMetaData { get; set; }
+        public string Password { get; set; }
+        public string OldPassword { get; set; }
+        public string SessionId { get; set; }
     }
 
     public class MetaDataRetrievalResult
@@ -495,14 +714,19 @@ internal static class Database
         None,
         Success,
         Error,
-        Exception
+        Exception,
+        PasswordInvalid,
+        SessionExpired
     }
 
     public enum MetaDataOperationType
     {
         Get,
         Set,
-        GetLastModified
+        GetLastModified,
+        VerifyPassword,
+        ChangePassword,
+        ValidateSession
     }
 
     [Serializable]

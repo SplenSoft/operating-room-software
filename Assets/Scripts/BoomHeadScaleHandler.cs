@@ -3,34 +3,44 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using RTG;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class BoomHeadScaleHandler : MonoBehaviour
 {
     [field: SerializeField] public Row[] attachRow;
     [field: SerializeField] public ColumnAtScale[] attachOffsets;
-    private Selectable selectable;
+    private Selectable _selectable;
     [field: SerializeField] public Transform railAttachPoint;
     [field: SerializeField] public Selectable.ScaleLevel scale;
 
-    void Awake()
+    [field: SerializeField] 
+    private List<GameObject> GameObjectsDisabledOnRuntime 
+    { get; set; } = new();
+
+    private void Awake()
     {
-        selectable = GetComponent<Selectable>();
+        _selectable = GetComponent<Selectable>();
+        if (SceneManager.GetActiveScene().name == "Main")
+        {
+            GameObjectsDisabledOnRuntime.ForEach(x =>
+            {
+                x.SetActive(false);
+            });
+        }
     }
 
-    void Start()
+    private void Start()
     {
-        selectable.OnScaleChange?.AddListener((x) => ReassembleRows(x));
+        _selectable.OnScaleChange?.AddListener((x) => ReassembleRows(x));
     }
 
-    int k = 0;
     void ReassembleRows(Selectable.ScaleLevel scaleLevel)
     {
         if (scaleLevel.TryGetValue("rows", out string s_rowCount))
         {
-            int rowCount = Int32.Parse(s_rowCount);
+            int rowCount = int.Parse(s_rowCount);
 
             for (int i = 1; i <= attachRow.Length; i++)
             {
