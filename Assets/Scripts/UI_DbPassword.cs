@@ -13,13 +13,26 @@ public class UI_DbPassword : MonoBehaviour
 {
     public static UI_DbPassword Instance { get; private set; }
 
-    [field: SerializeField] public TMP_InputField InputField_OldPassword { get; set; }
-    [field: SerializeField] public TMP_InputField InputField_Password { get; set; }
-    [field: SerializeField] public TextMeshProUGUI Text_EnterOldPassword { get; set; }
-    [field: SerializeField] public TextMeshProUGUI Text_EnterPassword { get; set; }
-    [field: SerializeField] public TextMeshProUGUI Text_PasswordDirections { get; set; }
-    [field: SerializeField] public Button ButtonSubmit { get; set; }
-    [field: SerializeField] public Button ButtonCancel { get; set; }
+    [field: SerializeField] 
+    public TMP_InputField InputField_OldPassword { get; set; }
+
+    [field: SerializeField] 
+    public TMP_InputField InputField_Password { get; set; }
+
+    [field: SerializeField] 
+    public TextMeshProUGUI Text_EnterOldPassword { get; set; }
+
+    [field: SerializeField] 
+    public TextMeshProUGUI Text_EnterPassword { get; set; }
+
+    [field: SerializeField] 
+    public TextMeshProUGUI Text_PasswordDirections { get; set; }
+
+    [field: SerializeField] 
+    public Button ButtonSubmit { get; set; }
+
+    [field: SerializeField] 
+    public Button ButtonCancel { get; set; }
 
     private const string _passwordDirections = "Password must have eight characters, at least one number, at least one uppercase letter, at least one lowercase letter and at least one special character.";
 

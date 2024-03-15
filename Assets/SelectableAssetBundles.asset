@@ -202,6 +202,57 @@ MonoBehaviour:
           <Guid>k__BackingField: 0c9d363b-25d9-457f-a539-4d8ad0833aff
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
+  - <PrefabName>k__BackingField: BoomHeadAttachment_HighVoltage
+    <SaveLoadGuid>k__BackingField: gameobject_e14354f76b9c38e448fd7c8fe7f2e526
+    <AssetBundleName>k__BackingField: gameobject_e14354f76b9c38e448fd7c8fe7f2e526
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: SHP_HV_Outlets
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField:
+      - <Guid>k__BackingField: dd81dd20-4f3c-4acc-a995-7aa3102cf36b
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: dd81dd20-4f3c-4acc-a995-7aa3102cf36b
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 7818968d-a479-471b-ad65-70c1f7842a71
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 7818968d-a479-471b-ad65-70c1f7842a71
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: a01628c2-d939-412c-b812-7de44d585760
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: a01628c2-d939-412c-b812-7de44d585760
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+  - <PrefabName>k__BackingField: BoomHeadAttachment_LowVoltage
+    <SaveLoadGuid>k__BackingField: gameobject_5d18bbab28e9d3346bb992c27d307a92
+    <AssetBundleName>k__BackingField: gameobject_5d18bbab28e9d3346bb992c27d307a92
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: SHP_LV_Knob2
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField:
+      - <Guid>k__BackingField: 3b94a2d5-cae6-4158-b7e7-89b3f141d60a
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 3b94a2d5-cae6-4158-b7e7-89b3f141d60a
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: b810bc09-0bde-4059-8290-56748aa0d929
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: b810bc09-0bde-4059-8290-56748aa0d929
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
   - <PrefabName>k__BackingField: BoomSegment_1
     <SaveLoadGuid>k__BackingField: gameobject_489bf8b9c4f4e1d46b78a9534b9c434e
     <AssetBundleName>k__BackingField: gameobject_489bf8b9c4f4e1d46b78a9534b9c434e
@@ -1022,19 +1073,6 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: EthernetOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_816473b63764cfd48a34ca42db81e1fa
-    <AssetBundleName>k__BackingField: gameobject_816473b63764cfd48a34ca42db81e1fa
-    <MetaData>k__BackingField:
-      <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 1
-      <IsStandalone>k__BackingField: 1
-      <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: EthernetOutlet
-      <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
-      <KeyWords>k__BackingField: []
-      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: ExtraWall
     <SaveLoadGuid>k__BackingField: gameobject_7bd757a57385ced4cae53c023bdd860d
     <AssetBundleName>k__BackingField: gameobject_7bd757a57385ced4cae53c023bdd860d
@@ -1087,56 +1125,154 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: BlueGasOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_b5e64f03d7ec19e4e8748874910a5f6e
-    <AssetBundleName>k__BackingField: gameobject_b5e64f03d7ec19e4e8748874910a5f6e
+  - <PrefabName>k__BackingField: GasOutlet_Variant_CarbonDioxide
+    <SaveLoadGuid>k__BackingField: gameobject_27573fcce7c9810488cb5ecb9427fc4a
+    <AssetBundleName>k__BackingField: gameobject_27573fcce7c9810488cb5ecb9427fc4a
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
       <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: BlueGasOutlet
+      <Name>k__BackingField: Gas Outlet (CO2)
       <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: CopperGasOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_096de37a2bc085841bacb392a21e1c86
-    <AssetBundleName>k__BackingField: gameobject_096de37a2bc085841bacb392a21e1c86
+  - <PrefabName>k__BackingField: GasOutlet_Variant_He-O2
+    <SaveLoadGuid>k__BackingField: gameobject_c291c8d9c22f1d04e8bfdaf412d19e4c
+    <AssetBundleName>k__BackingField: gameobject_c291c8d9c22f1d04e8bfdaf412d19e4c
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
       <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: CopperGasOutlet
+      <Name>k__BackingField: Gas Outlet (He-O2)
       <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: GrayGasOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_a8d8ea68aef76b84b8848d37ce501f7a
-    <AssetBundleName>k__BackingField: gameobject_a8d8ea68aef76b84b8848d37ce501f7a
+  - <PrefabName>k__BackingField: GasOutlet_Variant_InstrumentAir
+    <SaveLoadGuid>k__BackingField: gameobject_5a6bc9a9e6fb14b49b1e9e961e0a5f5c
+    <AssetBundleName>k__BackingField: gameobject_5a6bc9a9e6fb14b49b1e9e961e0a5f5c
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
       <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: GrayGasOutlet
+      <Name>k__BackingField: Gas Outlet (Instrument Air)
       <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: WhiteGasOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_1c0450c034b831946a1904bd961b299e
-    <AssetBundleName>k__BackingField: gameobject_1c0450c034b831946a1904bd961b299e
+  - <PrefabName>k__BackingField: GasOutlet_Variant_MedicalAir
+    <SaveLoadGuid>k__BackingField: gameobject_ee366966e065d2c42a6bcabb1b75d333
+    <AssetBundleName>k__BackingField: gameobject_ee366966e065d2c42a6bcabb1b75d333
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
       <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: WhiteGasOutlet
+      <Name>k__BackingField: Gas Outlet (Medical Air)
       <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Variant_Nitrogen
+    <SaveLoadGuid>k__BackingField: gameobject_ce102851802e90b4f84aab415aacf928
+    <AssetBundleName>k__BackingField: gameobject_ce102851802e90b4f84aab415aacf928
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Gas Outlet (Nitrogen)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Variant_NitrousOxide
+    <SaveLoadGuid>k__BackingField: gameobject_5c83a6c4249dad14c9d257afa6d62b48
+    <AssetBundleName>k__BackingField: gameobject_5c83a6c4249dad14c9d257afa6d62b48
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Gas Outlet (Nitrous Oxide)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Variant_O2-He
+    <SaveLoadGuid>k__BackingField: gameobject_3a7ac12dbbdb97141be13ccbb527e21a
+    <AssetBundleName>k__BackingField: gameobject_3a7ac12dbbdb97141be13ccbb527e21a
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Gas Outlet (O2-He)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Variant_Oxygen
+    <SaveLoadGuid>k__BackingField: gameobject_61cda5bc021dcb544a5c039c2ca7fef1
+    <AssetBundleName>k__BackingField: gameobject_61cda5bc021dcb544a5c039c2ca7fef1
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Gas Outlet (Oxygen)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Variant_VacuumSuction
+    <SaveLoadGuid>k__BackingField: gameobject_7e3bd2122846d08458a4c167150e11ad
+    <AssetBundleName>k__BackingField: gameobject_7e3bd2122846d08458a4c167150e11ad
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Gas Outlet (Vacuum Suction)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: GasOutlet_Variant_WagdEvac
+    <SaveLoadGuid>k__BackingField: gameobject_de6cb32bcdbb9b7478753bf5002860fe
+    <AssetBundleName>k__BackingField: gameobject_de6cb32bcdbb9b7478753bf5002860fe
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Gas Outlet (WAGD Evac)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Gas Outlets
+      - Boom Head Low Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: KickBucketEmpty
@@ -1335,56 +1471,48 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: BlueGasOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_bb6efb5cfa87f5b4f93c1799b2d2f428
-    <AssetBundleName>k__BackingField: gameobject_bb6efb5cfa87f5b4f93c1799b2d2f428
+  - <PrefabName>k__BackingField: BlankOutlet
+    <SaveLoadGuid>k__BackingField: gameobject_b012101e0764d2443916ae1dcd3be14a
+    <AssetBundleName>k__BackingField: gameobject_b012101e0764d2443916ae1dcd3be14a
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
       <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: BlueGasOutlet
+      <Name>k__BackingField: Blank Plate
       <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
-      <KeyWords>k__BackingField: []
-      <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: CopperGasOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_cec78301d9529514799a20139f824606
-    <AssetBundleName>k__BackingField: gameobject_cec78301d9529514799a20139f824606
-    <MetaData>k__BackingField:
-      <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 1
-      <IsStandalone>k__BackingField: 1
-      <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: CopperGasOutlet
-      <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
-      <KeyWords>k__BackingField: []
+      <Categories>k__BackingField:
+      - Boom Head High Voltage
+      - Boom Head Low Voltage
+      <KeyWords>k__BackingField:
+      - outlet
       <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: EthernetOutlet
     <SaveLoadGuid>k__BackingField: gameobject_40729a188c492a14baf33234724df328
     <AssetBundleName>k__BackingField: gameobject_40729a188c492a14baf33234724df328
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
-      <IsStandalone>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: EthernetOutlet
       <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
+      <Categories>k__BackingField:
+      - Boom Head Low Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: GrayGasOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_27a6cec860ef9b54ab007b8a666d1bd5
-    <AssetBundleName>k__BackingField: gameobject_27a6cec860ef9b54ab007b8a666d1bd5
+  - <PrefabName>k__BackingField: Outlet_HV_Power
+    <SaveLoadGuid>k__BackingField: gameobject_77aeabcf2efb52446be7765c7bea071e
+    <AssetBundleName>k__BackingField: gameobject_77aeabcf2efb52446be7765c7bea071e
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
       <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: GrayGasOutlet
+      <Name>k__BackingField: Power Outlet
       <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
+      <Categories>k__BackingField:
+      - Boom Head High Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: StorzAVOutlet
@@ -1392,25 +1520,13 @@ MonoBehaviour:
     <AssetBundleName>k__BackingField: gameobject_30698eb732c853846b22a8519a88fb70
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
-      <IsStandalone>k__BackingField: 0
-      <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: StorzAVOutlet
-      <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
-      <KeyWords>k__BackingField: []
-      <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: WhiteGasOutlet
-    <SaveLoadGuid>k__BackingField: gameobject_6ed69c92a5a9eec40bf458061dc9d96b
-    <AssetBundleName>k__BackingField: gameobject_6ed69c92a5a9eec40bf458061dc9d96b
-    <MetaData>k__BackingField:
-      <IsSubSelectable>k__BackingField: 0
       <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: WhiteGasOutlet
+      <Name>k__BackingField: StorzAVOutlet
       <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
+      <Categories>k__BackingField:
+      - Boom Head Low Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: PerfusionMachine
@@ -1517,19 +1633,6 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: SHP_HV_Outlets
-    <SaveLoadGuid>k__BackingField: gameobject_e14354f76b9c38e448fd7c8fe7f2e526
-    <AssetBundleName>k__BackingField: gameobject_e14354f76b9c38e448fd7c8fe7f2e526
-    <MetaData>k__BackingField:
-      <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 1
-      <IsStandalone>k__BackingField: 0
-      <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: SHP_HV_Outlets
-      <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
-      <KeyWords>k__BackingField: []
-      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: SHP_LV_Knob1
     <SaveLoadGuid>k__BackingField: gameobject_1d7d6954e148df94d9e6aaefbfd85fe1
     <AssetBundleName>k__BackingField: gameobject_1d7d6954e148df94d9e6aaefbfd85fe1
@@ -1539,19 +1642,6 @@ MonoBehaviour:
       <IsStandalone>k__BackingField: 0
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: SHP_LV_Knob1
-      <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
-      <KeyWords>k__BackingField: []
-      <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: SHP_LV_Knob2
-    <SaveLoadGuid>k__BackingField: gameobject_5d18bbab28e9d3346bb992c27d307a92
-    <AssetBundleName>k__BackingField: gameobject_5d18bbab28e9d3346bb992c27d307a92
-    <MetaData>k__BackingField:
-      <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 1
-      <IsStandalone>k__BackingField: 0
-      <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: SHP_LV_Knob2
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
