@@ -92,6 +92,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<OnlyIfRoot>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[1].<OnlyIfRoot>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<Unrestricted>k__BackingField
       value: 1
       objectReference: {fileID: 0}
