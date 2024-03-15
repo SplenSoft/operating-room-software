@@ -104,9 +104,17 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public List<SpecialSelectableType> 
     SpecialTypes { get; set; } = new();
 
-    [field: SerializeField] public List<RoomBoundaryType> WallRestrictions { get; set; } = new();
-    [field: SerializeField] public List<GizmoSetting> GizmoSettingsList { get; set; } = new();
-    [field: SerializeField] private Vector3 InitialLocalPositionOffset { get; set; }
+    [field: SerializeField] 
+    public List<RoomBoundaryType> WallRestrictions 
+    { get; set; } = new();
+
+    [field: SerializeField] 
+    public List<GizmoSetting> GizmoSettingsList 
+    { get; set; } = new();
+
+    [field: SerializeField] 
+    private Vector3 InitialLocalPositionOffset 
+    { get; set; }
 
     [field: SerializeField] 
     public bool IsDestructible { get; private set; } = true;
@@ -116,27 +124,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     [field: SerializeField, FormerlySerializedAs("<useLossyScale>k__BackingField")] 
     public bool UseLossyScale { get; private set; }
-
-    public Bounds GetBounds()
-    {
-        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
-
-        if (meshRenderers.Length == 0)
-        {
-            throw new Exception($"Selectable {gameObject.name} had 0 mesh renderers.");
-        }
-
-        Bounds bounds = new Bounds(
-            meshRenderers[0].bounds.center, 
-            meshRenderers[0].bounds.size);
-
-        for (int i = 1; i < meshRenderers.Length; i++)
-        {
-            bounds.Encapsulate(meshRenderers[i].bounds);
-        }
-
-        return bounds;
-    }
 
     [field: SerializeField, 
     Tooltip("True if this object will rotate " +
@@ -240,9 +227,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
 
         _originalRotation = transform.rotation;
-        //OriginalLocalRotation = transform.localEulerAngles;
+
         _highlightEffect = GetComponent<HighlightEffect>();
-        _highlightProfileSelected = Resources.Load<HighlightProfile>("HighlightProfile_SelectableSelected");
+
+        _highlightProfileSelected = Resources.Load<HighlightProfile>
+            ("HighlightProfile_SelectableSelected");
 
         if (_highlightEffect.profile != _highlightProfileSelected)
         {
@@ -254,6 +243,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         GizmoSettingsList.ForEach(item =>
         {
+            if (item.OnlyIfRoot && ParentAttachmentPoint != null)
+            {
+                return;
+            }
+
             if (!GizmoSettings.ContainsKey(item.GizmoType))
             {
                 GizmoSettings[item.GizmoType] = new();
@@ -376,6 +370,27 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         FaceZTowardGround();
     }
     #endregion
+
+    public Bounds GetBounds()
+    {
+        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+
+        if (meshRenderers.Length == 0)
+        {
+            throw new Exception($"Selectable {gameObject.name} had 0 mesh renderers.");
+        }
+
+        Bounds bounds = new Bounds(
+            meshRenderers[0].bounds.center,
+            meshRenderers[0].bounds.size);
+
+        for (int i = 1; i < meshRenderers.Length; i++)
+        {
+            bounds.Encapsulate(meshRenderers[i].bounds);
+        }
+
+        return bounds;
+    }
 
     public static float RoundToNearestHalfInch(float value)
     {
