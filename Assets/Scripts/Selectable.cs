@@ -77,6 +77,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public UnityEvent SelectableDestroyed { get; } = new();
     public UnityEvent ScaleUpdated { get; } = new();
     public UnityEvent Deselected { get; } = new();
+    public UnityEvent OnPlaced { get; } = new ();
     public Selectable ParentSelectable { get; private set; }
 
     public Vector3 OriginalLocalPosition { get; set; }
@@ -1161,6 +1162,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             if (!Application.isPlaying) return;
 
             _isRaycastPlacementMode = false;
+            OnPlaced?.Invoke();
         }
     }
 
