@@ -140,8 +140,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     "elevation photos for PDF output")] 
     private bool ZAlwaysFacesGroundElevationOnly { get; set; }
 
-    [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
-    [field: SerializeField] public List<Measurable> Measurables { get; private set; }
+    [field: SerializeField] 
+    private bool ZAlignUpIsParentForward { get; set; }
+
+    [field: SerializeField] 
+    public List<Measurable> Measurables { get; private set; }
 
     [field: SerializeField, 
     Tooltip("True if this object will rotate to its " +
@@ -155,6 +158,13 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     "and highest possible positions for an " +
     "elevation photo.")] 
     private bool ChangeHeightForElevationPhoto { get; set; }
+
+    /// <summary>
+    /// Selectables that are part of the same prefab as this one. 
+    /// Used to highlight multiple gizmos instead of just one
+    /// </summary>
+    [field: SerializeField]
+    private List<Selectable> RelatedSelectables { get; set; }
 
     private List<Selectable> _assemblySelectables = new();
     private Dictionary<Selectable, Quaternion> _originalRotations = new();

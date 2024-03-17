@@ -158,6 +158,7 @@ MonoBehaviour:
   <MultiAttach>k__BackingField: 1
   <MultiLimit>k__BackingField: 3
   <_originalParent>k__BackingField: {fileID: 0}
+  <Renderer>k__BackingField: {fileID: 0}
 --- !u!114 &6606448676518450220
 MonoBehaviour:
   m_ObjectHideFlags: 0
