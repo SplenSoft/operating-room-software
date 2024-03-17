@@ -57,7 +57,7 @@ public class ScreenshotCamera : MonoBehaviour
     {
         _virtualCamera.Priority = 999;
 
-        Selectable parentSelectable = Selectable.SelectedSelectable.transform.root.GetComponent<Selectable>();
+        Selectable parentSelectable = Selectable.SelectedSelectables[0].transform.root.GetComponent<Selectable>();
 
         List<MeshRenderer> allowedMeshRenderers = parentSelectable.gameObject.GetComponentsInChildren<MeshRenderer>().ToList();
         List<Collider> allowedColliders = parentSelectable.gameObject.GetComponentsInChildren<Collider>().ToList();

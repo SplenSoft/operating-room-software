@@ -7,9 +7,10 @@ namespace RTG
     [Serializable]
     public class RotationGizmo : GizmoBehaviour
     {
-        private GizmoPlaneSlider3D _xSlider;
-        private GizmoPlaneSlider3D _ySlider;
-        private GizmoPlaneSlider3D _zSlider;
+        public GizmoPlaneSlider3D _xSlider;
+        public GizmoPlaneSlider3D _ySlider;
+        public GizmoPlaneSlider3D _zSlider;
+
         private GizmoPlaneSlider3DCollection _axesSliders = new GizmoPlaneSlider3DCollection();
 
         private GizmoCap3D _midCap;
@@ -145,9 +146,9 @@ namespace RTG
             _midCap.SetVisible(LookAndFeel3D.IsMidCapVisible);
             _camXYRotationDrag.Sensitivity = Settings3D.DragSensitivity;
 
-            _xSlider.SetBorderVisible(LookAndFeel3D.IsAxisVisible(0));
-            _ySlider.SetBorderVisible(LookAndFeel3D.IsAxisVisible(1));
-            _zSlider.SetBorderVisible(LookAndFeel3D.IsAxisVisible(2));
+            //_xSlider.SetBorderVisible(LookAndFeel3D.IsAxisVisible(0));
+            //_ySlider.SetBorderVisible(LookAndFeel3D.IsAxisVisible(1));
+            //_zSlider.SetBorderVisible(LookAndFeel3D.IsAxisVisible(2));
             _camLookSlider.SetBorderVisible(LookAndFeel3D.IsCamLookSliderVisible);
 
             if (_camLookSlider.IsBorderVisible) UpdateCamLookSlider(Gizmo.FocusCamera);

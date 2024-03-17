@@ -26,7 +26,7 @@ public class ExtraWall : MonoBehaviour
 
     private void SelectedSelectableChanged()
     {
-        SetActive(Selectable.SelectedSelectable == Selectable);
+        SetActive(Selectable.SelectedSelectables.Contains(Selectable));
     }
 
     private void SetActive(bool active)

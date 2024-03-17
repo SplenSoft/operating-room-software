@@ -29,6 +29,6 @@ public class UI_MaterialPalleteSwatch : MonoBehaviour
 
     private void AssignSwatchToSelectable()
     {
-        Selectable.SelectedSelectable.GetComponent<MaterialPalette>().Assign(image.material, element);
+        Selectable.SelectedSelectables[0].GetComponent<MaterialPalette>().Assign(image.material, element);
     }
 }

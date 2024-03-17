@@ -18,14 +18,15 @@ public class UI_ButtonExportPdf : MonoBehaviour
 
     private void OnSelectionChanged()
     {
-        gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.IsArmAssembly);
+        gameObject.SetActive(Selectable.SelectedSelectables.Count > 0 && 
+            Selectable.SelectedSelectables[0].IsArmAssembly);
     }
 
     public void ExportPdf()
     {
-        if (Selectable.SelectedSelectable.TryGetArmAssemblyRoot(out _))
+        if (Selectable.SelectedSelectables[0].TryGetArmAssemblyRoot(out _))
         {
-            Selectable.SelectedSelectable.ExportElevationPdf();
+            Selectable.SelectedSelectables[0].ExportElevationPdf();
         }
         else
         {

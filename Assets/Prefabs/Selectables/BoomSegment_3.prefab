@@ -199,6 +199,9 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <RelatedSelectables>k__BackingField:
+  - {fileID: 5157047544467377219}
+  - {fileID: 1627928882040947910}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -481,6 +484,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Name>k__BackingField
       value: BoomSegment_3
       objectReference: {fileID: 0}
@@ -488,6 +495,10 @@ PrefabInstance:
       propertyPath: <AttachmentPointDatas>k__BackingField.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 1627928882040947910}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Enabled>k__BackingField
       value: 1
@@ -586,6 +597,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+--- !u!114 &5157047544467377219 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+  m_PrefabInstance: {fileID: 5576360667614525261}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &9079933078280670203 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}

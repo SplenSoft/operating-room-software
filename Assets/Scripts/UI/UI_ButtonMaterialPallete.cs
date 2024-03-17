@@ -8,7 +8,12 @@ using UnityEngine.UI;
 public class UI_ButtonMaterialPallete : MonoBehaviour
 {
     Button _button;
-    MaterialPalette _palette; // internal reference to the material palette object
+
+    /// <summary>
+    /// internal reference to the material palette object
+    /// </summary>
+    MaterialPalette _palette;
+
     public UI_MaterialPallete ui_pallete;
     public TMP_Text label;
     private int _elementIncrement;
@@ -33,9 +38,11 @@ public class UI_ButtonMaterialPallete : MonoBehaviour
         _palette = null;
         ui_pallete.ClearPalleteOptions();
 
-        if (Selectable.SelectedSelectable != null)
+        if (Selectable.SelectedSelectables.Count > 0)
         {
-            objectActive = Selectable.SelectedSelectable.gameObject.TryGetComponent(out MaterialPalette m);
+            objectActive = Selectable.SelectedSelectables[0]
+                .gameObject.TryGetComponent(out MaterialPalette m);
+
             _palette = m;
             _elementIncrement = 0;
             label.text = "Show Material Palette";

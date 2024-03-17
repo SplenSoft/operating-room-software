@@ -38,7 +38,9 @@ public class OrbitCamera : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (CameraManager.ActiveCamera != VirtualCamera || GizmoHandler.GizmoBeingUsed) return;
+        if (CameraManager.ActiveCamera != VirtualCamera 
+        || GizmoHandler.GizmoBeingUsed) 
+            return;
 
         float h = Input.GetAxis("Mouse X");
         float v = Input.GetAxis("Mouse Y");
@@ -55,7 +57,9 @@ public class OrbitCamera : MonoBehaviour
 
         if (Input.GetMouseButton(1))
         {
-            if (orbitMode == OrbitMode.SelectableLocked && Selectable.SelectedSelectable != null) return;
+            if (orbitMode == OrbitMode.SelectableLocked 
+            && Selectable.SelectedSelectables.Count > 0) 
+                return;
 
             orbitRigidBody.AddRelativeForce(new Vector3(h, 0, v), ForceMode.Impulse);
         }
@@ -75,7 +79,7 @@ public class OrbitCamera : MonoBehaviour
     {
         if (orbitMode != OrbitMode.SelectableLocked) return;
 
-        if (Selectable.SelectedSelectable == null)
+        if (Selectable.SelectedSelectables.Count == 0)
         {
             if (previousPosition == null) previousPosition = new Vector3(0, 0, 0);
 
@@ -85,7 +89,7 @@ public class OrbitCamera : MonoBehaviour
         {
             previousPosition = orbitTarget.transform.position;
 
-            orbitTarget.transform.position = Selectable.SelectedSelectable.transform.position;
+            orbitTarget.transform.position = Selectable.SelectedSelectables[0].transform.position;
         }
     }
 

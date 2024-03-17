@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using TMPro;
@@ -49,9 +50,13 @@ public class UI_Dropdown_SnapScale : MonoBehaviour
 
     async void UpdateSnapScale(int selection)
     {
-        if(Selectable.SelectedSelectable == null) return;
-        GizmoHandler currentHandler = Selectable.SelectedSelectable.GetComponent<GizmoHandler>();
-        if (currentHandler == null) return;
+        if(Selectable.SelectedSelectables.Count == 0) 
+            return;
+
+        if (!Selectable.SelectedSelectables
+        .Any(x => x.GetComponent<GizmoHandler>() != null))
+            return;
+
 
         await Task.Yield();
         switch (selection)
@@ -76,17 +81,20 @@ public class UI_Dropdown_SnapScale : MonoBehaviour
 
     void SetSnaps(float snap)
     {
-        GizmoHandler currentHandler = Selectable.SelectedSelectable.GetComponent<GizmoHandler>();
+        foreach (var selectable in  Selectable.SelectedSelectables) 
+        {
+            GizmoHandler currentHandler = selectable.GetComponent<GizmoHandler>();
 
-        currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings3D.SetXSnapStep(snap);
-        currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings3D.SetYSnapStep(snap);
-        currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings3D.SetZSnapStep(snap);
+            currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings3D.SetXSnapStep(snap);
+            currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings3D.SetYSnapStep(snap);
+            currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings3D.SetZSnapStep(snap);
 
-        currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings2D.SetXSnapStep(snap);
-        currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings2D.SetYSnapStep(snap);
+            currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings2D.SetXSnapStep(snap);
+            currentHandler._translateGizmo.Gizmo.MoveGizmo.Settings2D.SetYSnapStep(snap);
 
-        currentHandler._rotateGizmo.Gizmo.RotationGizmo.Settings3D.SetAxisSnapStep(0, snap);
-        currentHandler._rotateGizmo.Gizmo.RotationGizmo.Settings3D.SetAxisSnapStep(1, snap);
-        currentHandler._rotateGizmo.Gizmo.RotationGizmo.Settings3D.SetAxisSnapStep(2, snap);
+            //currentHandler._rotateGizmo.Gizmo.RotationGizmo.Settings3D.SetAxisSnapStep(0, snap);
+            //currentHandler._rotateGizmo.Gizmo.RotationGizmo.Settings3D.SetAxisSnapStep(1, snap);
+            //currentHandler._rotateGizmo.Gizmo.RotationGizmo.Settings3D.SetAxisSnapStep(2, snap);
+        }
     }
 }

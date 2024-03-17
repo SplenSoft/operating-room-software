@@ -14,17 +14,17 @@ namespace RTG
             Inactive
         }
 
-        private GizmoLineSlider3D _pXSlider;
-        private GizmoLineSlider3D _pYSlider;
-        private GizmoLineSlider3D _pZSlider;
-        private GizmoLineSlider3D _nXSlider;
-        private GizmoLineSlider3D _nYSlider;
-        private GizmoLineSlider3D _nZSlider;
+        public GizmoLineSlider3D _pXSlider;
+        public GizmoLineSlider3D _pYSlider;
+        public GizmoLineSlider3D _pZSlider;
+        public GizmoLineSlider3D _nXSlider;
+        public GizmoLineSlider3D _nYSlider;
+        public GizmoLineSlider3D _nZSlider;
         private GizmoLineSlider3DCollection _axesSliders = new GizmoLineSlider3DCollection();
 
-        private GizmoPlaneSlider3D _xySlider;
-        private GizmoPlaneSlider3D _yzSlider;
-        private GizmoPlaneSlider3D _zxSlider;
+        public GizmoPlaneSlider3D _xySlider;
+        public GizmoPlaneSlider3D _yzSlider;
+        public GizmoPlaneSlider3D _zxSlider;
         private GizmoPlaneSlider3DCollection _dblSliders = new GizmoPlaneSlider3DCollection();
 
         private GizmoCap3D _midCap;
@@ -334,12 +334,12 @@ namespace RTG
                     SetVertexSnapEnabled(Hotkeys.EnableVertexSnapping.IsActive());
                 if (vSnapWasEnabled && !_isVertexSnapEnabled) Gizmo.Transform.Position3D = _postVSnapPosRestore;
 
-                _pXSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(0));
-                _pXSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(0));
-                _pYSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(1));
-                _pYSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(1));
-                _pZSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(2));
-                _pZSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(2));
+                //_pXSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(0));
+                //_pXSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(0));
+                //_pYSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(1));
+                //_pYSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(1));
+                //_pZSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(2));
+                //_pZSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(2));
 
                 _nXSlider.SetVisible(LookAndFeel3D.IsNegativeSliderVisible(0));
                 _nXSlider.Set3DCapVisible(LookAndFeel3D.IsNegativeSliderCapVisible(0));
@@ -351,12 +351,12 @@ namespace RTG
 
             if (!_isVertexSnapEnabled && !_is2DModeEnabled)
             {
-                _xySlider.SetVisible(LookAndFeel3D.IsDblSliderVisible(PlaneId.XY));
-                _xySlider.SetBorderVisible(_xySlider.IsVisible);
-                _yzSlider.SetVisible(LookAndFeel3D.IsDblSliderVisible(PlaneId.YZ));
-                _yzSlider.SetBorderVisible(_yzSlider.IsVisible);
-                _zxSlider.SetVisible(LookAndFeel3D.IsDblSliderVisible(PlaneId.ZX));
-                _zxSlider.SetBorderVisible(_zxSlider.IsVisible);
+                //_xySlider.SetVisible(LookAndFeel3D.IsDblSliderVisible(PlaneId.XY));
+                //_xySlider.SetBorderVisible(_xySlider.IsVisible);
+                //_yzSlider.SetVisible(LookAndFeel3D.IsDblSliderVisible(PlaneId.YZ));
+                //_yzSlider.SetBorderVisible(_yzSlider.IsVisible);
+                //_zxSlider.SetVisible(LookAndFeel3D.IsDblSliderVisible(PlaneId.ZX));
+                //_zxSlider.SetBorderVisible(_zxSlider.IsVisible);
 
                 PlaceDblSlidersInSliderPlanes(Gizmo.FocusCamera);
             }

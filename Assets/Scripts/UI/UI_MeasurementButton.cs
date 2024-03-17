@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -25,12 +26,15 @@ public class UI_MeasurementButton : MonoBehaviour
 
     private void UpdateLogic()
     {
-        bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.Measurables.Count > 0;
+        bool active = Selectable.SelectedSelectables.Count > 0 && 
+            Selectable.SelectedSelectables.Sum(x => x.Measurables.Count) > 0;
+
         gameObject.SetActive(active);
         if (active)
         {
-            _currentMeasurables = Selectable.SelectedSelectable.Measurables;
-            _toggle.SetIsOnWithoutNotify(active && Selectable.SelectedSelectable.Measurables[0].IsActive);
+            _currentMeasurables = Selectable.SelectedSelectables.SelectMany(x => x.Measurables).ToList();
+
+            _toggle.SetIsOnWithoutNotify(active && _currentMeasurables[0].IsActive);
         }
         else
         {

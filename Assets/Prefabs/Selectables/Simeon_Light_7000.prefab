@@ -161,6 +161,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ClearanceLineMeasuringPosition>k__BackingField
       value: 
       objectReference: {fileID: 9155875815043487358}
@@ -168,6 +172,10 @@ PrefabInstance:
       propertyPath: <MetaData>k__BackingField.<Name>k__BackingField
       value: Simeon_Light_7000
       objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 3131619152337864307}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Enabled>k__BackingField
       value: 1
@@ -239,6 +247,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 2453419977022336542}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2954072631648425232 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+  m_PrefabInstance: {fileID: 2453419977022336542}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171851913702416055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9171851913702416055 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
@@ -576,6 +595,9 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <RelatedSelectables>k__BackingField:
+  - {fileID: 2954072631648425232}
+  - {fileID: 3131619152337864307}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0

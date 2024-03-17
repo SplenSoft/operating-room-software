@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UI_ButtonDeleteObject : MonoBehaviour
@@ -17,8 +18,12 @@ public class UI_ButtonDeleteObject : MonoBehaviour
         if (!Application.isPlaying) return;
         if (this == null || gameObject == null) return;
 
-        bool active = Selectable.SelectedSelectable != null;
-        if(active) if(!Selectable.SelectedSelectable.IsDestructible) return;
+        bool active = Selectable.SelectedSelectables.Count > 0;
+
+        if (active && !Selectable.SelectedSelectables
+        .Any(x => x.IsDestructible)) 
+            return;
+
         gameObject.SetActive(active);
     }
 
@@ -35,9 +40,9 @@ public class UI_ButtonDeleteObject : MonoBehaviour
                 ButtonText = "Yes",
                 Action = () =>
                     {
-                        var selectable = Selectable.SelectedSelectable;
+                        var selectables = Selectable.SelectedSelectables;
                         Selectable.DeselectAll();
-                        Destroy(selectable.gameObject);
+                        Destroy(selectables[0].gameObject);
                     },
             },
             new ButtonAction

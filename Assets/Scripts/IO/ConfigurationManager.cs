@@ -151,7 +151,9 @@ public class ConfigurationManager : MonoBehaviour
     {
         CreateTracker();
 
-        TrackedObject[] foundObjects = Selectable.SelectedSelectable.transform.root.GetComponentsInChildren<TrackedObject>(); // finds all the Selectable & AttachmentPoints for this object
+        // finds all the Selectable & AttachmentPoints for this object
+        TrackedObject[] foundObjects = Selectable.SelectedSelectables[0]
+            .transform.root.GetComponentsInChildren<TrackedObject>(); 
 
         foreach (TrackedObject obj in foundObjects)
         {

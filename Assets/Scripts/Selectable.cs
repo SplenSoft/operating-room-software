@@ -65,7 +65,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public static List<Selectable> ActiveSelectables { get; } = new List<Selectable>();
 
     public static Action SelectionChanged;
-    public static Selectable SelectedSelectable { get; private set; }
+    public static List<Selectable> SelectedSelectables { get; private set; } = new();
     public static bool IsInElevationPhotoMode { get; private set; }
     public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
@@ -163,7 +163,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// Selectables that are part of the same prefab as this one. 
     /// Used to highlight multiple gizmos instead of just one
     /// </summary>
-    [field: SerializeField]
+    [field: SerializeField, HideInInspector]
     private List<Selectable> RelatedSelectables { get; set; }
 
     private List<Selectable> _assemblySelectables = new();
@@ -184,7 +184,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// </summary>
     private bool IsAssemblyRoot => SpecialTypes.Contains(SpecialSelectableType.Mount);
     public bool IsArmAssembly => transform.root.TryGetComponent(out Selectable rootSelectable) && rootSelectable.IsAssemblyRoot;
-    public bool IsSelected => SelectedSelectable == this;
+    public bool IsSelected => SelectedSelectables.Contains(this);
 
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentScaleLevel { get; private set; }
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentPreviewScaleLevel { get; private set; }
@@ -276,7 +276,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         ActiveSelectables.Remove(this);
 
-        if (SelectedSelectable == this)
+        if (SelectedSelectables.Contains(this))
         {
             Deselect();
         }
@@ -298,6 +298,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public void OnMouseUpAsButton()
     {
+        Debug.Log($"Mouse up detected over {gameObject.name}");
         if (InputHandler.IsPointerOverUIElement()) return;
         Select();
     }
@@ -420,10 +421,16 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public static void DeselectAll()
     {
-        if (SelectedSelectable != null)
+        if (SelectedSelectables.Count > 0)
         {
-            if (SelectedSelectable.GetComponent<GizmoHandler>().GizmoUsedLastFrame) return;
-            SelectedSelectable.Deselect();
+            foreach (var selectable in SelectedSelectables)
+            {
+                if (selectable.GetComponent
+                <GizmoHandler>().GizmoUsedLastFrame) 
+                    return;
+            }
+            
+            SelectedSelectables[0].Deselect();
             //SelectionChanged?.Invoke(null, null);
         }
     }
@@ -1178,10 +1185,21 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     private void Deselect(bool fireEvent = true)
     {
-        if (!IsSelected) return;
-        SelectedSelectable = null;
-        _highlightEffect.highlighted = false;
-        Deselected?.Invoke();
+        Debug.Log($"Attempting to deselect {gameObject.name}");
+        if (!IsSelected)
+        {
+            Debug.Log($"Could not deselect {gameObject.name} because it was not selected");
+            return;
+        }
+
+        List<Selectable> previous = new List<Selectable>(SelectedSelectables);
+        SelectedSelectables.Clear();
+
+        previous.ForEach(x =>
+        {
+            x._highlightEffect.highlighted = false;
+            Deselected?.Invoke();
+        });
 
         if (fireEvent)
         {
@@ -1191,20 +1209,48 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public void Select()
     {
+        Debug.Log($"Attempting to select {gameObject.name}");
+
         if (SceneManager.GetActiveScene().name == "ObjectEditor")
         {
             return;
         }
 
-        if (IsSelected || _isRaycastPlacementMode || GizmoHandler.GizmoBeingUsed) return;
-        if (SelectedSelectable != null)
+        if (IsSelected)
         {
-            SelectedSelectable.Deselect(false);
+            Debug.Log($"Could not select {gameObject.name} because it was already selected");
+            return;
         }
-        SelectedSelectable = this;
-        _highlightEffect.highlighted = true;
+        
+        if (_isRaycastPlacementMode)
+        {
+            Debug.Log($"Could not select {gameObject.name} because it is in raycast placement mode");
+            return;
+        }
+        
+        if (GizmoHandler.GizmoBeingUsed)
+        {
+            Debug.Log($"Could not select {gameObject.name} because a gizmo is being used");
+            return;
+        }
+
+        if (SelectedSelectables.Count > 0)
+        {
+            Debug.Log($"Deselecting previously selected selectables");
+            SelectedSelectables[0].Deselect(false);
+        }
+
+        Debug.Log($"Currently selected selectable count is {SelectedSelectables.Count} (should be 0)");
+
+        SelectedSelectables = new List<Selectable>(RelatedSelectables);
+
+        SelectedSelectables.ForEach(x =>
+        {
+            x._highlightEffect.highlighted = true;
+            x._gizmoHandler.SelectableSelected();
+        });
+
         SelectionChanged?.Invoke();
-        _gizmoHandler.SelectableSelected();
     }
 
     public void OnPreprocessAssetBundle()
@@ -1213,7 +1259,19 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         AttachmentPoint[] attachPoints = 
             GetComponentsInChildren<AttachmentPoint>(true);
 
+        var relatedSelectables = GetComponentsInChildren<Selectable>().ToList();
+
         bool needsDirty = false;
+
+        relatedSelectables.ForEach(x =>
+        {
+            if (relatedSelectables != x.RelatedSelectables)
+            {
+                x.RelatedSelectables = new List<Selectable>(relatedSelectables);
+                needsDirty = true;
+            }
+        });
+
         Array.ForEach(attachPoints, attPoint =>
         {
             bool exists = AttachmentPointDatas

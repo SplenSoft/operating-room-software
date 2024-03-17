@@ -52,6 +52,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3418681061359784512, guid: df96b37727a2e304aa32e00cc6dee146, type: 3}
+      propertyPath: <GUID>k__BackingField
+      value: gameobject_1ec98387653627649a12821ef9c683aa
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418681061359784512, guid: df96b37727a2e304aa32e00cc6dee146, type: 3}
       propertyPath: <MetaData>k__BackingField.<Name>k__BackingField
       value: 'Mounted Gas Outlet (CO2) '
       objectReference: {fileID: 0}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,13 +36,23 @@ public class UI_ToggleLightSwitch : MonoBehaviour
 
     private void UpdateActiveState()
     {
-        bool active = Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.GetComponent<LightFactory>(); // store result of the selectable & light checks for multiple uses
-        gameObject.SetActive(active); // if there is a current selectable and it is a light, we display the UI
+        // store result of the selectable & light checks for multiple uses
+        bool active = Selectable.SelectedSelectables.Count > 0 && 
+            Selectable.SelectedSelectables.Any(x => x.GetComponent<LightFactory>() != null);
+
+        // if there is a current selectable and it is a light, we display the UI
+        gameObject.SetActive(active); 
 
         if (active)
         {
-            _selectedLight = Selectable.SelectedSelectable.gameObject.GetComponent<LightFactory>(); // store the value for reuse
-            _toggle.isOn = _selectedLight.isOn(); // set the toggle to match the current state of the light (ON/OFF)
+            Selectable.SelectedSelectables.ForEach(x =>
+            {
+                if (x.GetComponent<LightFactory>() != null)
+                {
+                    _selectedLight = x.gameObject.GetComponent<LightFactory>(); // store the value for reuse
+                    _toggle.isOn = _selectedLight.isOn(); // set the toggle to match the current state of the light (ON/OFF)
+                }
+            });
         }
     }
 

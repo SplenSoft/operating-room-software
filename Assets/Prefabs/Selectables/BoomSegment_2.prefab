@@ -298,6 +298,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Name>k__BackingField
       value: BoomSegment_2
       objectReference: {fileID: 0}
@@ -305,6 +309,14 @@ PrefabInstance:
       propertyPath: <AttachmentPointDatas>k__BackingField.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 5102702119798078014}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.data[2]
+      value: 
+      objectReference: {fileID: 1634076314307409458}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Enabled>k__BackingField
       value: 1
@@ -416,6 +428,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 7081033005323050407}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7545313951941142185 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+  m_PrefabInstance: {fileID: 7081033005323050407}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4539726008913472782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8431142525230486137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -799,6 +822,10 @@ MonoBehaviour:
   - {fileID: 5451522369069084445}
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <RelatedSelectables>k__BackingField:
+  - {fileID: 7545313951941142185}
+  - {fileID: 5102702119798078014}
+  - {fileID: 1634076314307409458}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -918,6 +945,10 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 1
+  <RelatedSelectables>k__BackingField:
+  - {fileID: 7545313951941142185}
+  - {fileID: 5102702119798078014}
+  - {fileID: 1634076314307409458}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0

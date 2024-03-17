@@ -54,6 +54,9 @@ public partial class AttachmentPoint : MonoBehaviour
     private Collider _collider; 
     private bool _isDestroyed;
 
+    private bool AreAnyParentSelectablesSelected => 
+        ParentSelectables.Any(x => Selectable.SelectedSelectables.Contains(x));
+
     #region Monobehaviour
     private void Awake()
     {
@@ -207,15 +210,14 @@ public partial class AttachmentPoint : MonoBehaviour
 
     private void SelectionChanged()
     {
-        if (ParentSelectables.Contains(Selectable.SelectedSelectable))
+        if (AreAnyParentSelectablesSelected)
             UpdateComponentStatus();
 
-        if (Selectable.SelectedSelectable != null)
+        if (Selectable.SelectedSelectables.Count > 0)
         {
             SelectedAttachmentPoint = null;
             SelectedAttachmentPointChanged?.Invoke();
         }
-            
     }
 
     private void MouseOverStateChanged(object sender, EventArgs e)
@@ -228,7 +230,7 @@ public partial class AttachmentPoint : MonoBehaviour
         int multiAllowed = MultiAttach ? MultiLimit : 0; // check if this is a multiattach point and use the limit, otherwise use 0 for default points. 
 
         bool isMouseOverAnyParentSelectable = ParentSelectables.FirstOrDefault(item => item.IsMouseOver) != default;
-        bool areAnyParentSelectablesSelected = ParentSelectables.Contains(Selectable.SelectedSelectable);
+        bool areAnyParentSelectablesSelected = AreAnyParentSelectablesSelected;
         Renderer.enabled = (isMouseOverAnyParentSelectable || _attachmentPointHovered) && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
         HighlightHovered.highlighted = _attachmentPointHovered && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
         _collider.enabled = AttachedSelectable.Count <= multiAllowed && !areAnyParentSelectablesSelected;

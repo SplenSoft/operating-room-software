@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class GizmoDimensions : MonoBehaviour
 {
@@ -25,9 +26,9 @@ public class GizmoDimensions : MonoBehaviour
 
     void UpdateActiveState()
     {
-        if (Selectable.SelectedSelectable != null)
+        if (Selectable.SelectedSelectables.Count > 0)
         {
-            if(Selectable.SelectedSelectable.AllowInverseControl)
+            if (Selectable.SelectedSelectables.Any(x => x.AllowInverseControl))
             {
                 gameObject.SetActive(true);
                 Invoke("DelayedSync", 0.05f);
@@ -51,15 +52,20 @@ public class GizmoDimensions : MonoBehaviour
 
     void UpdateGizmoDimension(int selection)
     {
-        GizmoHandler handler = Selectable.SelectedSelectable.GetComponent<GizmoHandler>();
-        if(handler == null) return;
-        if (selection == 0)
-        {   
-            handler._translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(false);
-        }
-        else
+        foreach (var selectable in Selectable
+        .SelectedSelectables)
         {
-            handler._translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
+            GizmoHandler handler = selectable.GetComponent<GizmoHandler>();
+
+            if (handler == null || !selectable.AllowInverseControl) continue;
+            if (selection == 0)
+            {
+                handler._translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(false);
+            }
+            else
+            {
+                handler._translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
+            }
         }
     }
 }

@@ -1,12 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public class UI_ScalableLength : MonoBehaviour
 {
-    [field: SerializeField] private TextMeshProUGUI TextLength { get; set; }
+    [field: SerializeField] 
+    private TextMeshProUGUI TextLength { get; set; }
+
+    private bool _isActive;
 
     private void Awake()
     {
@@ -21,14 +25,18 @@ public class UI_ScalableLength : MonoBehaviour
 
     private void SelectableChanged()
     {
-        gameObject.SetActive(Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.ScaleLevels.Count > 0);
+        _isActive = Selectable.SelectedSelectables.Count > 0 &&
+            Selectable.SelectedSelectables.Sum(x => x.ScaleLevels.Count) > 0;
+
+        gameObject.SetActive(_isActive);
     }
 
     private void Update()
     {
-        if (Selectable.SelectedSelectable != null && Selectable.SelectedSelectable.ScaleLevels.Count > 0)
+        if (_isActive)
         {
-            var scale = Selectable.SelectedSelectable.CurrentPreviewScaleLevel.Size;
+            var selectable = Selectable.SelectedSelectables.First(x => x.ScaleLevels.Count > 0);
+            var scale = selectable.CurrentPreviewScaleLevel.Size;
             TextLength.text = $"{scale * 1000f} mm";
         }
     }

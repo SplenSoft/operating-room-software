@@ -20,7 +20,7 @@ public class Save : MonoBehaviour
     {
         b_Save.onClick.AddListener(() =>
         {
-            if (Selectable.SelectedSelectable == null)
+            if (Selectable.SelectedSelectables.Count == 0)
             {
                 header.text = "Save Room";
             }
@@ -35,7 +35,7 @@ public class Save : MonoBehaviour
 
         b_Confirm.onClick.AddListener(() =>
         {
-            if (Selectable.SelectedSelectable == null)
+            if (Selectable.SelectedSelectables.Count == 0)
             {
                 ConfigurationManager.Instance.SaveRoom(fileName.text.Replace(" ", "_"));
             }

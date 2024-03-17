@@ -31,7 +31,7 @@ public class GizmoSelector : MonoBehaviour
 
     private void UpdateActiveState()
     {
-        gameObject.SetActive(Selectable.SelectedSelectable != null);
+        gameObject.SetActive(Selectable.SelectedSelectables.Count > 0);
     }
 
     public void SetGizmoMode(GizmoMode gizmoMode)
