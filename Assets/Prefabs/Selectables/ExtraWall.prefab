@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3846625104531619497}
   - component: {fileID: 2236446469525971918}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Measurable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 3123351360766199621}
   - component: {fileID: 1805625642060688028}
   - component: {fileID: 1048063755412966520}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Cube
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -168,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4348417616439016503}
   - component: {fileID: 3396228673259986434}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Measurable (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8083890104133895714}
   - component: {fileID: 3988044917155668066}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Measurable (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7584511293515154829}
   - component: {fileID: 687280179759893069}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Measurable (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -477,6 +477,14 @@ PrefabInstance:
     - target: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: m_Name
       value: ExtraWall
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}

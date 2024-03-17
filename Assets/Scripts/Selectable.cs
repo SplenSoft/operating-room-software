@@ -52,8 +52,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     [Serializable]
     public class AttachmentPointData
     {
-        [field: SerializeField] 
-        public string Guid 
+        [field: SerializeField]
+        public string Guid
         { get; set; } = System.Guid.NewGuid().ToString();
 
         [field: SerializeField]
@@ -69,15 +69,16 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public static bool IsInElevationPhotoMode { get; private set; }
     public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
-    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>> 
-    GizmoSettings { get; } = new();
+    public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>>
+    GizmoSettings
+    { get; } = new();
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
     public UnityEvent ScaleUpdated { get; } = new();
     public UnityEvent Deselected { get; } = new();
     public Selectable ParentSelectable { get; private set; }
-    
+
     public Vector3 OriginalLocalPosition { get; set; }
     public Vector3 OriginalLocalRotation { get; private set; }
 
@@ -85,13 +86,13 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public bool IsMouseOver { get; private set; }
     public bool IsDestroyed { get; private set; }
-    
-    [field: SerializeField] 
+
+    [field: SerializeField]
     public string GUID { get; private set; }
 
     public AttachmentPoint ParentAttachmentPoint { get; set; }
-    
-    [field: SerializeField, MetaDataHandler] 
+
+    [field: SerializeField, MetaDataHandler]
     public SelectableMetaData MetaData { get; set; }
 
     [field: SerializeField, HideInInspector]
@@ -99,61 +100,62 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     AttachmentPointDatas
     { get; set; } = new();
 
-    [field: SerializeField, 
-    FormerlySerializedAs("<Types>k__BackingField")] 
-    public List<SpecialSelectableType> 
-    SpecialTypes { get; set; } = new();
-
-    [field: SerializeField] 
-    public List<RoomBoundaryType> WallRestrictions 
+    [field: SerializeField,
+    FormerlySerializedAs("<Types>k__BackingField")]
+    public List<SpecialSelectableType>
+    SpecialTypes
     { get; set; } = new();
 
-    [field: SerializeField] 
-    public List<GizmoSetting> GizmoSettingsList 
+    [field: SerializeField]
+    public List<RoomBoundaryType> WallRestrictions
     { get; set; } = new();
 
-    [field: SerializeField] 
-    private Vector3 InitialLocalPositionOffset 
+    [field: SerializeField]
+    public List<GizmoSetting> GizmoSettingsList
+    { get; set; } = new();
+
+    [field: SerializeField]
+    private Vector3 InitialLocalPositionOffset
     { get; set; }
 
-    [field: SerializeField] 
+    [field: SerializeField]
     public bool IsDestructible { get; private set; } = true;
 
-    [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;  
+    [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
     [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
 
-    [field: SerializeField, FormerlySerializedAs("<useLossyScale>k__BackingField")] 
+    [field: SerializeField, FormerlySerializedAs("<useLossyScale>k__BackingField")]
     public bool UseLossyScale { get; private set; }
 
-    [field: SerializeField, 
+    [field: SerializeField,
     Tooltip("True if this object will rotate " +
     "along its y-axis automatically to make its " +
     "z-axis (forward) parallel to the world " +
     "y-axis (up-down)")]
     private bool ZAlwaysFacesGround { get; set; }
 
-    [field: SerializeField, 
+    [field: SerializeField,
     Tooltip("True if this object will rotate " +
     "along its y-axis automatically to make its " +
     "z-axis (forward) parallel to the world " +
     "y-axis (up-down), but only when taking " +
-    "elevation photos for PDF output")] 
+    "elevation photos for PDF output")]
     private bool ZAlwaysFacesGroundElevationOnly { get; set; }
 
     [field: SerializeField] private bool ZAlignUpIsParentForward { get; set; }
     [field: SerializeField] public List<Measurable> Measurables { get; private set; }
 
-    [field: SerializeField, 
+    [field: SerializeField,
     Tooltip("True if this object will rotate to its " +
     "default rotation when taking an elevation " +
-    "photo for the PDF")] 
+    "photo for the PDF")]
     private bool AlignForElevationPhoto { get; set; }
 
-    [field: SerializeField, 
+    [field: SerializeField,
     Tooltip("True if this object will rotate along " +
     "its Y-axis (vertical rotation) to its lowest " +
     "and highest possible positions for an " +
-    "elevation photo.")] 
+    "elevation photo.")]
     private bool ChangeHeightForElevationPhoto { get; set; }
 
     private List<Selectable> _assemblySelectables = new();
@@ -429,8 +431,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         ActiveSelectables
             .Where(x => x.IsDestructible)
             .ToList()
-            .ForEach(x => 
-            { 
+            .ForEach(x =>
+            {
                 if (x != null && !x.IsDestroyed)
                     Destroy(x.gameObject);
             });
@@ -1006,6 +1008,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         DeselectAll();
         _highlightEffect.highlighted = true;
 
+        if (transform.tag == "Wall")
+        {
+            GetComponentInChildren<Collider>().enabled = false;
+        }
+
         await Task.Yield();
         if (!Application.isPlaying) return;
 
@@ -1029,7 +1036,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             {
                 Vector3 destination = hit.point;
                 Vector3 normal = hit.normal;
-                if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+                if (WallRestrictions[0] == RoomBoundaryType.Ceiling
+                && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
                 {
                     destination += RoomBoundary.DefaultWallThickness * Vector3.down;
                     normal *= -1;
@@ -1037,28 +1045,31 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
                 if (SpecialTypes.Contains(SpecialSelectableType.Door))
                 {
-                    RoomBoundaryType roomBoundaryType = hit.collider.gameObject.GetComponent<RoomBoundary>().RoomBoundaryType;
+                    if (hit.collider.gameObject.TryGetComponent(out RoomBoundary roomBoundary))
+                    {
+                        RoomBoundaryType roomBoundaryType = roomBoundary.RoomBoundaryType;
 
-                    float halfThickness = RoomBoundary.DefaultWallThickness / 2f;
-                    if (roomBoundaryType == RoomBoundaryType.WallNorth)
-                    {
-                        destination.z = hit.collider.transform.position.z - halfThickness;
-                        normal = -Vector3.forward;
-                    }
-                    else if (roomBoundaryType == RoomBoundaryType.WallSouth)
-                    {
-                        destination.z = hit.collider.transform.position.z + halfThickness;
-                        normal = Vector3.forward;
-                    }
-                    else if (roomBoundaryType == RoomBoundaryType.WallWest)
-                    {
-                        destination.x = hit.collider.transform.position.x + halfThickness;
-                        normal = Vector3.right;
-                    }
-                    else if (roomBoundaryType == RoomBoundaryType.WallEast)
-                    {
-                        destination.x = hit.collider.transform.position.x - halfThickness;
-                        normal = -Vector3.right;
+                        float halfThickness = RoomBoundary.DefaultWallThickness / 2f;
+                        if (roomBoundaryType == RoomBoundaryType.WallNorth)
+                        {
+                            destination.z = hit.collider.transform.position.z - halfThickness;
+                            //normal = -Vector3.forward;
+                        }
+                        else if (roomBoundaryType == RoomBoundaryType.WallSouth)
+                        {
+                            destination.z = hit.collider.transform.position.z + halfThickness;
+                            //normal = Vector3.forward;
+                        }
+                        else if (roomBoundaryType == RoomBoundaryType.WallWest)
+                        {
+                            destination.x = hit.collider.transform.position.x + halfThickness;
+                            //normal = Vector3.right;
+                        }
+                        else if (roomBoundaryType == RoomBoundaryType.WallEast)
+                        {
+                            destination.x = hit.collider.transform.position.x - halfThickness;
+                            //normal = -Vector3.right;
+                        }
                     }
 
                     destination.y = 0;
@@ -1101,10 +1112,17 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             }
             else if (WallRestrictions.Count > 0)
             {
-                var wall = raycastHit.collider.GetComponent<RoomBoundary>();
-                if (WallRestrictions.Contains(wall.RoomBoundaryType))
+                if (raycastHit.collider.tag == "Wall")
                 {
                     SetPosition(raycastHit);
+                }
+                else
+                {
+                    var wall = raycastHit.collider.GetComponent<RoomBoundary>();
+                    if (WallRestrictions.Contains(wall.RoomBoundaryType))
+                    {
+                        SetPosition(raycastHit);
+                    }
                 }
             }
             else
@@ -1133,6 +1151,12 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             {
                 RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = false;
             }
+
+            if (transform.tag == "Wall")
+            {
+                GetComponentInChildren<Collider>().enabled = true;
+            }
+
             await Task.Yield();
             if (!Application.isPlaying) return;
 
@@ -1200,7 +1224,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public void OnPreprocessAssetBundle()
     {
 #if UNITY_EDITOR
-        AttachmentPoint[] attachPoints = 
+        AttachmentPoint[] attachPoints =
             GetComponentsInChildren<AttachmentPoint>(true);
 
         bool needsDirty = false;
@@ -1233,7 +1257,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             }
         });
 
-        if (string.IsNullOrWhiteSpace(MetaData.Name) || 
+        if (string.IsNullOrWhiteSpace(MetaData.Name) ||
             MetaData.Name == "Selectable")
         {
             MetaData.Name = gameObject.name;
@@ -1242,7 +1266,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         // string path = AssetDatabase.GetAssetPath(gameObject);
 
-        if (!AssetBundleManager.TryGetAssetBundleName(gameObject, out string assetBundleName)) 
+        if (!AssetBundleManager.TryGetAssetBundleName(gameObject, out string assetBundleName))
         {
             Debug.LogError("Path was null!");
         }
@@ -1252,8 +1276,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             needsDirty = true;
         }
 
-        if (needsDirty) 
-        { 
+        if (needsDirty)
+        {
             EditorUtility.SetDirty(gameObject);
         }
 #endif
