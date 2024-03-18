@@ -1273,6 +1273,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         SelectedSelectables = new List<Selectable>(RelatedSelectables);
 
+        if (!SelectedSelectables.Contains(this))
+        {
+            SelectedSelectables.Add(this);
+        }
+
         SelectedSelectables.ForEach(x =>
         {
             x._highlightEffect.highlighted = true;
