@@ -172,6 +172,7 @@ namespace RTG
             const float viewHeightScaleOrtho = 0.071f;
             const float viewHeightScalePersp = 0.046f;
 
+            if (camera == null) return 0f;
             if (camera.orthographic) return (camera.orthographicSize * 2.0f) / (viewHeightScaleOrtho * camera.pixelHeight);
             else
             {

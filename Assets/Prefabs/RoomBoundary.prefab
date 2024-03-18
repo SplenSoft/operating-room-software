@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7776920442873419372}
   - component: {fileID: 168151443588313367}
   - component: {fileID: 6142050885433908352}
-  - component: {fileID: 3130999724384441241}
   - component: {fileID: 7157633925201568350}
+  - component: {fileID: 4087454470110563666}
+  - component: {fileID: 6115795198019323899}
   m_Layer: 7
   m_Name: RoomBoundary
   m_TagString: Untagged
@@ -86,19 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3130999724384441241
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 169857843208681756}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7157633925201568350
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,6 +102,32 @@ MonoBehaviour:
   <RoomBoundaryType>k__BackingField: 0
   <VirtualCamera>k__BackingField: {fileID: 0}
   <baseboard>k__BackingField: {fileID: 0}
+--- !u!64 &4087454470110563666
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169857843208681756}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &6115795198019323899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169857843208681756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0af82fbc0767e489021023046ab54c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2183912130177328532
 GameObject:
   m_ObjectHideFlags: 0
