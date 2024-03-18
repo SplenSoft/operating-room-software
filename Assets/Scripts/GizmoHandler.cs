@@ -28,6 +28,7 @@ public class GizmoHandler : MonoBehaviour
     public UnityEvent GizmoDragPostUpdate { get; } = new UnityEvent();
     private Vector3 _lastCircleIntersectPoint;
     //private static readonly Color _colorTransparent = new(0, 0, 0, 0);
+    public bool IsDestroyed { get; private set; }
 
     private bool RotateGizmoEnabled => GizmoSelector.CurrentGizmoMode == 
         GizmoMode.Rotate && _selectable.IsSelected;
@@ -72,6 +73,8 @@ public class GizmoHandler : MonoBehaviour
 
     private void OnDestroy()
     {
+        IsDestroyed = true;
+
         if (SceneManager.GetActiveScene().name == "ObjectEditor")
         {
             enabled = false;
