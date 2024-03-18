@@ -250,6 +250,7 @@ public class GizmoHandler : MonoBehaviour
         if (_gizmosInitialized) return;
 
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
+        
         // if (Selectable.SelectedSelectable.AllowInverseControl)
         //     _translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
 
@@ -297,13 +298,14 @@ public class GizmoHandler : MonoBehaviour
 
     private void OnGizmoPreDragBegin(Gizmo gizmo, int handleId)
     {
+        _translateGizmo.Gizmo.Transform.LocalRotation3D = transform.localRotation;
         _localScaleBeforeStartDrag = transform.localScale;
         _positionBeforeStartDrag = transform.position;
         CurrentScaleDrag = transform.localScale;
         //_lastCircleIntersectPoint = default;
         IsBeingUsed = true;
 
-        if(TryGetComponent(out CCDIK ik))
+        if (TryGetComponent(out CCDIK ik))
         {
             ik.enabled = true;
         }
@@ -327,8 +329,9 @@ public class GizmoHandler : MonoBehaviour
         await Task.Yield();
         GizmoUsedLastFrame = false;
         _translateGizmo.Gizmo.Transform.Position3D = transform.position;
+        _translateGizmo.Gizmo.Transform.LocalRotation3D = transform.localRotation;
 
-        if(TryGetComponent(out CCDIK ik))
+        if (TryGetComponent(out CCDIK ik))
         {
             ik.enabled = false;
         }

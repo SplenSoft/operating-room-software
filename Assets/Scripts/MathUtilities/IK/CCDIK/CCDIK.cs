@@ -28,6 +28,7 @@ public class CCDIK : MonoBehaviour
     if (Target != null)
     {
       Target.position = transform.position;
+      Target.localRotation = transform.localRotation;
     }
   }
 
@@ -85,7 +86,7 @@ public class CCDIK : MonoBehaviour
     if (joints.Count > 0)
       for (int j = 0; j < joints.Count; j++)
       {
-        joints[j].Evaluate(transform, Target, j == 0);
+        joints[j].Evaluate(transform, Target.transform, j == 0);
       }
   }
 }
