@@ -1213,10 +1213,10 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     private void Deselect(bool fireEvent = true)
     {
-        Debug.Log($"Attempting to deselect {gameObject.name}");
+        //Debug.Log($"Attempting to deselect {gameObject.name}");
         if (!IsSelected)
         {
-            Debug.Log($"Could not deselect {gameObject.name} because it was not selected");
+            //Debug.Log($"Could not deselect {gameObject.name} because it was not selected");
             return;
         }
 
@@ -1238,7 +1238,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public void Select()
     {
-        Debug.Log($"Attempting to select {gameObject.name}");
+        //Debug.Log($"Attempting to select {gameObject.name}");
 
         if (SceneManager.GetActiveScene().name == "ObjectEditor")
         {
@@ -1247,29 +1247,29 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         if (IsSelected)
         {
-            Debug.Log($"Could not select {gameObject.name} because it was already selected");
+            //Debug.Log($"Could not select {gameObject.name} because it was already selected");
             return;
         }
         
         if (_isRaycastPlacementMode)
         {
-            Debug.Log($"Could not select {gameObject.name} because it is in raycast placement mode");
+            //Debug.Log($"Could not select {gameObject.name} because it is in raycast placement mode");
             return;
         }
         
         if (GizmoHandler.GizmoBeingUsed)
         {
-            Debug.Log($"Could not select {gameObject.name} because a gizmo is being used");
+            //Debug.Log($"Could not select {gameObject.name} because a gizmo is being used");
             return;
         }
 
         if (SelectedSelectables.Count > 0)
         {
-            Debug.Log($"Deselecting previously selected selectables");
+            //Debug.Log($"Deselecting previously selected selectables");
             SelectedSelectables[0].Deselect(false);
         }
 
-        Debug.Log($"Currently selected selectable count is {SelectedSelectables.Count} (should be 0)");
+        //Debug.Log($"Currently selected selectable count is {SelectedSelectables.Count} (should be 0)");
 
         SelectedSelectables = new List<Selectable>(RelatedSelectables);
 
