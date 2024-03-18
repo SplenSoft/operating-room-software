@@ -29,6 +29,30 @@ public class GizmoHandler : MonoBehaviour
     private Vector3 _lastCircleIntersectPoint;
     //private static readonly Color _colorTransparent = new(0, 0, 0, 0);
 
+    private bool RotateGizmoEnabled => GizmoSelector.CurrentGizmoMode == 
+        GizmoMode.Rotate && _selectable.IsSelected;
+
+    private bool TranslateEnabled => GizmoSelector.CurrentGizmoMode == 
+        GizmoMode.Translate && _selectable.IsSelected;
+
+    private bool ScaleEnabled => GizmoSelector.CurrentGizmoMode == 
+        GizmoMode.Scale && _selectable.IsSelected;
+
+    [SerializeField, ReadOnly] private bool _canUseAnyTranslation;
+    [SerializeField, ReadOnly] private bool _canUseTranslateX;
+    [SerializeField, ReadOnly] private bool _canUseTranslateY;
+    [SerializeField, ReadOnly] private bool _canUseTranslateZ;
+
+    [SerializeField, ReadOnly] private bool _canUseAnyRotation;
+    [SerializeField, ReadOnly] private bool _canUseRotationX;
+    [SerializeField, ReadOnly] private bool _canUseRotationY;
+    [SerializeField, ReadOnly] private bool _canUseRotationZ;
+
+    [SerializeField, ReadOnly] private bool _canUseAnyScale;
+    [SerializeField, ReadOnly] private bool _canUseScaleX;
+    [SerializeField, ReadOnly] private bool _canUseScaleY;
+    [SerializeField, ReadOnly] private bool _canUseScaleZ;
+
     private Selectable _selectable;
 
     private void Awake()
@@ -44,11 +68,6 @@ public class GizmoHandler : MonoBehaviour
         GizmoSelector.GizmoModeChanged += GizmoModeChanged;
         UI_ToggleSnapping.SnappingToggled.AddListener(EnableGizmo);
         CameraManager.CameraChanged.AddListener(EnableGizmo);
-    }
-
-    private void GizmoModeChanged(object sender = null, EventArgs e = null)
-    {
-        EnableGizmo();
     }
 
     private void OnDestroy()
@@ -68,6 +87,38 @@ public class GizmoHandler : MonoBehaviour
         CameraManager.CameraChanged.RemoveListener(EnableGizmo);
     }
 
+    private IEnumerator Start()
+    {
+        yield return new WaitUntil(() => _selectable.Started);
+
+        _canUseTranslateX = _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.X);
+        _canUseTranslateY = _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.Y);
+        _canUseTranslateZ = _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.Z);
+        _canUseAnyTranslation = _canUseTranslateX || _canUseTranslateY || _canUseTranslateZ;
+
+        _canUseRotationX = _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X);
+        _canUseRotationY = _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y);
+        _canUseRotationZ = _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z);
+        _canUseAnyRotation = _canUseRotationX || _canUseRotationY || _canUseRotationZ;
+
+        _canUseScaleX = _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X);
+        _canUseScaleY = _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y);
+        _canUseScaleZ = _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z);
+        _canUseAnyScale = _canUseScaleX || _canUseScaleY || _canUseScaleZ;
+
+        enabled = AnyEnabled();
+    }
+
+    private void Update()
+    {
+        UpdatePositionAndRotation();
+    }
+
+    private void GizmoModeChanged(object sender = null, EventArgs e = null)
+    {
+        EnableGizmo();
+    }
+
     public void SelectableSelected()
     {
         CreateGizmos();
@@ -79,27 +130,82 @@ public class GizmoHandler : MonoBehaviour
         EnableGizmo();
     }
 
-    private void EnableGizmo()
+    private bool AnyEnabled()
     {
-        if (!_gizmosInitialized) return;
+        return RotateGizmoEnabled || TranslateEnabled || ScaleEnabled;
+    }
 
-        bool rotateGizmoEnabled = GizmoSelector.CurrentGizmoMode == GizmoMode.Rotate && _selectable.IsSelected;
-
-        Debug.Log($"Gizmo state updated for {gameObject.name} - rotateGizmoEnabled = {rotateGizmoEnabled}");
-
-        _translateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Translate && _selectable.IsSelected);
-        _rotateGizmo.Gizmo.SetEnabled(rotateGizmoEnabled);
-        _scaleGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Scale && _selectable.IsSelected);
+    private void UpdatePositionAndRotation()
+    {
+        if (!_selectable.IsSelected) 
+            return;
 
         _translateGizmo.Gizmo.Transform.Position3D = transform.position;
         _translateGizmo.Gizmo.Transform.LocalRotation3D = transform.localRotation;
-        //_translateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
-        _translateGizmo.Gizmo.MoveGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
-        //RTGizmosEngine.Get.MoveGizmoSettings3D.SetXSnapStep
 
-        bool xMovementAllowed = _translateGizmo.Gizmo.IsEnabled && _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.X);
-        bool yMovementAllowed = _translateGizmo.Gizmo.IsEnabled && _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.Y);
-        bool zMovementAllowed = _translateGizmo.Gizmo.IsEnabled && _selectable.IsGizmoSettingAllowed(GizmoType.Move, Axis.Z);
+        _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
+        _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+
+        _scaleGizmo.Gizmo.Transform.LocalPosition3D = transform.position;
+        _scaleGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
+    }
+
+    private void UpdateScaleGizmo()
+    {
+        _scaleGizmo.Gizmo.ScaleGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
+
+        _scaleGizmo.Gizmo.ScaleGizmo._pstvXSlider.SetVisible(_canUseScaleX);
+        _scaleGizmo.Gizmo.ScaleGizmo._pstvXSlider.Set3DCapVisible(_canUseScaleX);
+
+        _scaleGizmo.Gizmo.ScaleGizmo._pstvYSlider.SetVisible(_canUseScaleY);
+        _scaleGizmo.Gizmo.ScaleGizmo._pstvYSlider.Set3DCapVisible(_canUseScaleY);
+
+        _scaleGizmo.Gizmo.ScaleGizmo._pstvZSlider.SetVisible(_canUseScaleZ);
+        _scaleGizmo.Gizmo.ScaleGizmo._pstvZSlider.Set3DCapVisible(_canUseScaleZ);
+    }
+
+    private void UpdateRotationGizmo()
+    {
+        _rotateGizmo.Gizmo.RotationGizmo
+            .SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
+
+        _rotateGizmo.Gizmo.RotationGizmo._xSlider
+            .SetBorderVisible(_canUseRotationX && RotateGizmoEnabled);
+
+        var currentCameraType = CameraManager.ActiveCamera
+            .GetComponent<OperatingRoomCamera>().CameraType;
+
+        bool allowVertical = currentCameraType !=
+            OperatingRoomCameraType.OrthoCeiling;
+
+        bool allowRotationY = RotateGizmoEnabled &&
+            allowVertical && _canUseRotationY;
+
+        _rotateGizmo.Gizmo.RotationGizmo._ySlider
+            .SetBorderVisible(allowRotationY);
+
+        bool allowHorizontal = currentCameraType !=
+            OperatingRoomCameraType.OrthoSide;
+
+        bool allowRotationZ = RotateGizmoEnabled &&
+            allowHorizontal && _canUseRotationZ;
+
+        _rotateGizmo.Gizmo.RotationGizmo._zSlider
+            .SetBorderVisible(allowRotationZ);
+    }
+
+    private void UpdateTranslationGizmo()
+    {
+        _translateGizmo.Gizmo.MoveGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
+
+        bool xMovementAllowed = _translateGizmo.Gizmo.IsEnabled &&
+            _canUseTranslateX;
+
+        bool yMovementAllowed = _translateGizmo.Gizmo.IsEnabled &&
+            _canUseTranslateY;
+
+        bool zMovementAllowed = _translateGizmo.Gizmo.IsEnabled &&
+            _canUseTranslateZ;
 
         _translateGizmo.Gizmo.MoveGizmo._pXSlider.SetVisible(xMovementAllowed);
         _translateGizmo.Gizmo.MoveGizmo._pYSlider.SetVisible(yMovementAllowed);
@@ -115,68 +221,28 @@ public class GizmoHandler : MonoBehaviour
         _translateGizmo.Gizmo.MoveGizmo._yzSlider.SetBorderVisible(xMovementAllowed && yMovementAllowed);
         _translateGizmo.Gizmo.MoveGizmo._zxSlider.SetVisible(zMovementAllowed && xMovementAllowed);
         _translateGizmo.Gizmo.MoveGizmo._zxSlider.SetBorderVisible(zMovementAllowed && xMovementAllowed);
+    }
 
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, xMovementAllowed);
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, yMovementAllowed);
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderVisible(2, AxisSign.Positive, zMovementAllowed);
+    private void EnableGizmo()
+    {
+        if (!_gizmosInitialized) return;
 
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, xMovementAllowed);
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, yMovementAllowed);
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetSliderCapVisible(2, AxisSign.Positive, zMovementAllowed);
+        _translateGizmo.Gizmo.SetEnabled(TranslateEnabled);
+        _rotateGizmo.Gizmo.SetEnabled(RotateGizmoEnabled);
+        _scaleGizmo.Gizmo.SetEnabled(ScaleEnabled);
 
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.XY, xMovementAllowed && yMovementAllowed);
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.YZ, yMovementAllowed && zMovementAllowed);
-        //RTGizmosEngine.Get.MoveGizmoLookAndFeel3D.SetDblSliderVisible(PlaneId.ZX, zMovementAllowed && xMovementAllowed);
+        UpdatePositionAndRotation();
 
-        _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
-        _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
-        _rotateGizmo.Gizmo.RotationGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
+        if (_canUseAnyTranslation)
+            UpdateTranslationGizmo();
 
-        //Debug.Log(CameraManager.ActiveCamera.name);
+        if (_canUseAnyRotation)
+            UpdateRotationGizmo();
 
-        var currentCameraType = CameraManager.ActiveCamera
-            .GetComponent<OperatingRoomCamera>().CameraType;
+        if (_canUseAnyScale)
+            UpdateScaleGizmo();
 
-        bool allowHorizontal = currentCameraType != 
-            OperatingRoomCameraType.OrthoSide ? true : false;
-
-        bool allowVertical = currentCameraType != 
-            OperatingRoomCameraType.OrthoCeiling ? true : false;
-
-        bool allowX = rotateGizmoEnabled && _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X);
-        bool allowY = rotateGizmoEnabled && allowVertical ? _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) : false;
-        bool allowZ = rotateGizmoEnabled && allowHorizontal ? _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z) : false;
-
-        Debug.Log($"AllowY = {allowY}");
-
-        //_rotateGizmo.Gizmo.RotationGizmo._xSlider.SetVisible(allowX);
-        _rotateGizmo.Gizmo.RotationGizmo._xSlider.SetBorderVisible(allowX);
-
-        //_rotateGizmo.Gizmo.RotationGizmo._ySlider.SetVisible(allowY);
-        _rotateGizmo.Gizmo.RotationGizmo._ySlider.SetBorderVisible(allowY);
-
-        //_rotateGizmo.Gizmo.RotationGizmo._zSlider.SetVisible(allowZ);
-        _rotateGizmo.Gizmo.RotationGizmo._zSlider.SetBorderVisible(allowZ);
-
-        //RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(0, allowX);
-        //RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(1, allowY);
-        //RTGizmosEngine.Get.RotationGizmoLookAndFeel3D.SetAxisVisible(2, allowZ);
-
-        _scaleGizmo.Gizmo.Transform.LocalPosition3D = transform.position;
-        _scaleGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
-        _scaleGizmo.Gizmo.ScaleGizmo.SetSnapEnabled(UI_ToggleSnapping.SnappingEnabled);
-
-        RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(0, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X));
-        RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(1, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y));
-        RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderVisible(2, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z));
-
-        RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(0, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.X));
-        RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(1, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Y));
-        RTGizmosEngine.Get.ScaleGizmoLookAndFeel3D.SetSliderCapVisible(2, AxisSign.Positive, _selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z));
-
-
-        //_universalGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Universal && _selectable.IsSelected);
-        //_universalGizmo.Gizmo.Transform.Position3D = transform.position;
+        enabled = AnyEnabled();
     }
 
     private void CreateGizmos()
@@ -204,6 +270,7 @@ public class GizmoHandler : MonoBehaviour
         _translateGizmo.Gizmo.PreDragUpdate += OnGizmoPreDragUpdate;
         _translateGizmo.Gizmo.PreDragBegin += OnGizmoPreDragBegin;
         _translateGizmo.SetTransformPivot(GizmoObjectTransformPivot.ObjectMeshPivot);
+        UpdateTranslationGizmo();
 
         _rotateGizmo = RTGizmosEngine.Get.CreateObjectRotationGizmo();
         _rotateGizmo.SetTargetObject(gameObject);
@@ -212,6 +279,7 @@ public class GizmoHandler : MonoBehaviour
         _rotateGizmo.Gizmo.PostDragBegin += OnGizmoPostDragBegin;
         _rotateGizmo.Gizmo.PostDragEnd += OnGizmoPostDragEnd;
         _rotateGizmo.SetTransformPivot(GizmoObjectTransformPivot.ObjectMeshPivot);
+        UpdateRotationGizmo();
 
         _scaleGizmo = RTGizmosEngine.Get.CreateObjectScaleGizmo();
         //_scaleGizmo.SetTargetObject(gameObject);
@@ -222,6 +290,8 @@ public class GizmoHandler : MonoBehaviour
         _scaleGizmo.Gizmo.PostDragUpdate += OnGizmoPostDragUpdate;
         _scaleGizmo.Gizmo.PreDragBegin += OnGizmoPreDragBegin;
         _scaleGizmo.SetTransformPivot(GizmoObjectTransformPivot.ObjectMeshPivot);
+        UpdateScaleGizmo();
+
         _gizmosInitialized = true;
     }
 

@@ -7,18 +7,19 @@ namespace RTG
     [Serializable]
     public class ScaleGizmo : GizmoBehaviour
     {
-        private GizmoLineSlider3D _pstvXSlider;
-        private GizmoLineSlider3D _pstvYSlider;
-        private GizmoLineSlider3D _pstvZSlider;
+        public GizmoLineSlider3D _pstvXSlider;
+        public GizmoLineSlider3D _pstvYSlider;
+        public GizmoLineSlider3D _pstvZSlider;
+
         private GizmoLineSlider3D _negXSlider;
         private GizmoLineSlider3D _negYSlider;
         private GizmoLineSlider3D _negZSlider;
         private GizmoLineSlider3DCollection _axesSliders = new GizmoLineSlider3DCollection();
 
         private GizmoMultiAxisScaleMode _multiAxisScaleMode = GizmoMultiAxisScaleMode.DoubleAxis;
-        private GizmoPlaneSlider3D _xySlider;
-        private GizmoPlaneSlider3D _yzSlider;
-        private GizmoPlaneSlider3D _zxSlider;
+        public GizmoPlaneSlider3D _xySlider;
+        public GizmoPlaneSlider3D _yzSlider;
+        public GizmoPlaneSlider3D _zxSlider;
         private GizmoPlaneSlider3DCollection _dblSliders = new GizmoPlaneSlider3DCollection();
 
         private GizmoCap3D _midCap;
