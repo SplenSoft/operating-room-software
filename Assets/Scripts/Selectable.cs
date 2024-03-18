@@ -1266,6 +1266,18 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         bool needsDirty = false;
 
+        Array.ForEach(GetComponentsInChildren<Collider>(), collider =>
+        {
+            if (collider.gameObject.layer != 
+            LayerMask.NameToLayer("Selectable"))
+            {
+                needsDirty = true;
+
+                collider.gameObject.layer = LayerMask
+                    .NameToLayer("Selectable");
+            }
+        });
+
         relatedSelectables.ForEach(x =>
         {
             if (relatedSelectables != x.RelatedSelectables)
