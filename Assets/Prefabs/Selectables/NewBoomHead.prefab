@@ -557,6 +557,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 5052940284651625814, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 47d33ef8-1bd3-43c2-889e-5b8717a054f6
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_3
@@ -607,6 +611,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &2904780057492127085 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 1300140097944470814}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6902422133237835957 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -721,6 +736,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2516620433347329476, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: c50490c8-37c3-41b2-bd20-8d2100a80f99
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_7
@@ -775,6 +794,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &2804201443248589390 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 2066689125627753021}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5867917723885100950 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -795,6 +825,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 27af03fc-a5b9-48ce-8a3a-819642d16f98
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_12
@@ -849,6 +883,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &1786424581559875339 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 2490063040757288824}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8020675637939102419 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -869,6 +914,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 47e65274-eab0-4a97-9e92-78680393bc13
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_19
@@ -923,6 +972,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &2302914646981825439 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 2716027083966475244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7525540154191038023 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -943,6 +1003,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -3086737408939379948, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 51377b2b-f44a-4bc4-880a-4536b144609b
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_11
@@ -997,6 +1061,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &2038891463470046530 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 2742485939123742001}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7768171377121478810 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -1017,6 +1092,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: e4f7fd94-0e17-40b8-bfad-d21a924bfbdf
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_15
@@ -1071,6 +1150,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &1341370274782696512 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 2943486901450763315}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7284589328245408152 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -1149,7 +1239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <AttachmentPointDatas>k__BackingField.Array.size
-      value: 21
+      value: 41
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Enabled>k__BackingField
@@ -1356,6 +1446,86 @@ PrefabInstance:
       value: 92f92412-9f9b-426f-af43-8f9759f24cbe
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[21].<Guid>k__BackingField
+      value: dfc8b646-8cf0-4085-9784-49d71ee993fe
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[22].<Guid>k__BackingField
+      value: b81399c8-aa47-45ca-b174-2a8b481b1595
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[23].<Guid>k__BackingField
+      value: 47d33ef8-1bd3-43c2-889e-5b8717a054f6
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[24].<Guid>k__BackingField
+      value: 45acdfbc-8ab2-4182-8aed-7291afb18b12
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[25].<Guid>k__BackingField
+      value: 248bc4b4-0edf-4f88-a421-f977ab723f52
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[26].<Guid>k__BackingField
+      value: e777141b-9119-4b81-9bc0-0683bba0b5c3
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[27].<Guid>k__BackingField
+      value: c50490c8-37c3-41b2-bd20-8d2100a80f99
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[28].<Guid>k__BackingField
+      value: 12a998b3-d327-4f1b-bf63-28e90df15271
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[29].<Guid>k__BackingField
+      value: c2a47df2-3871-406f-afcc-d99fd7fa99c7
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[30].<Guid>k__BackingField
+      value: bea58122-397c-4926-a9c9-6e377dd022ec
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[31].<Guid>k__BackingField
+      value: 51377b2b-f44a-4bc4-880a-4536b144609b
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[32].<Guid>k__BackingField
+      value: 27af03fc-a5b9-48ce-8a3a-819642d16f98
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[33].<Guid>k__BackingField
+      value: 894c52db-b344-4095-b23f-bbdc9a5342f5
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[34].<Guid>k__BackingField
+      value: 514c9669-b72b-41a9-b501-0149c034b1eb
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[35].<Guid>k__BackingField
+      value: e4f7fd94-0e17-40b8-bfad-d21a924bfbdf
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[36].<Guid>k__BackingField
+      value: 2d8f72b1-abcb-4998-adfa-8496ba185182
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[37].<Guid>k__BackingField
+      value: ce302968-6be4-42be-bc04-adddd9c2339d
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[38].<Guid>k__BackingField
+      value: d62d6dc4-44af-41de-a083-b0cf0d087791
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[39].<Guid>k__BackingField
+      value: 47e65274-eab0-4a97-9e92-78680393bc13
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[40].<Guid>k__BackingField
+      value: e40d4e4a-eeb3-4576-bcc5-3e88118921d6
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GizmoSettingsList>k__BackingField.Array.data[2].<GizmoType>k__BackingField
       value: 0
       objectReference: {fileID: 0}
@@ -1389,7 +1559,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.size
-      value: 21
+      value: 41
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[0].<AttachmentPoint>k__BackingField
@@ -1475,6 +1645,86 @@ PrefabInstance:
       propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[20].<AttachmentPoint>k__BackingField
       value: 
       objectReference: {fileID: 4460034532636006353}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[21].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 6738674445189402110}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[22].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 1039458306688885480}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[23].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 2904780057492127085}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[24].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 8462240408913976692}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[25].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 4803508985567924195}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[26].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 5824757647275023395}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[27].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 2804201443248589390}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[28].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 141097329110335329}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[29].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 8407796928972903257}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[30].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 7276846067107633447}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[31].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 2038891463470046530}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[32].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 1786424581559875339}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[33].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 6480398447913463942}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[34].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 324582563679511791}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[35].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 1341370274782696512}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[36].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 8266516243112156704}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[37].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 6731820901488601653}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[38].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 5294092286622870734}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[39].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 2302914646981825439}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <AttachmentPointDatas>k__BackingField.Array.data[40].<AttachmentPoint>k__BackingField
+      value: 
+      objectReference: {fileID: 613699612034626036}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <ScaleLevels>k__BackingField.Array.data[0].metadata.Array.data[0].<key>k__BackingField
       value: rows
@@ -1640,6 +1890,86 @@ PrefabInstance:
       value: 92f92412-9f9b-426f-af43-8f9759f24cbe
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[21].<Guid>k__BackingField
+      value: dfc8b646-8cf0-4085-9784-49d71ee993fe
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[22].<Guid>k__BackingField
+      value: b81399c8-aa47-45ca-b174-2a8b481b1595
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[23].<Guid>k__BackingField
+      value: 47d33ef8-1bd3-43c2-889e-5b8717a054f6
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[24].<Guid>k__BackingField
+      value: 45acdfbc-8ab2-4182-8aed-7291afb18b12
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[25].<Guid>k__BackingField
+      value: 248bc4b4-0edf-4f88-a421-f977ab723f52
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[26].<Guid>k__BackingField
+      value: e777141b-9119-4b81-9bc0-0683bba0b5c3
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[27].<Guid>k__BackingField
+      value: c50490c8-37c3-41b2-bd20-8d2100a80f99
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[28].<Guid>k__BackingField
+      value: 12a998b3-d327-4f1b-bf63-28e90df15271
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[29].<Guid>k__BackingField
+      value: c2a47df2-3871-406f-afcc-d99fd7fa99c7
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[30].<Guid>k__BackingField
+      value: bea58122-397c-4926-a9c9-6e377dd022ec
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[31].<Guid>k__BackingField
+      value: 51377b2b-f44a-4bc4-880a-4536b144609b
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[32].<Guid>k__BackingField
+      value: 27af03fc-a5b9-48ce-8a3a-819642d16f98
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[33].<Guid>k__BackingField
+      value: 894c52db-b344-4095-b23f-bbdc9a5342f5
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[34].<Guid>k__BackingField
+      value: 514c9669-b72b-41a9-b501-0149c034b1eb
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[35].<Guid>k__BackingField
+      value: e4f7fd94-0e17-40b8-bfad-d21a924bfbdf
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[36].<Guid>k__BackingField
+      value: 2d8f72b1-abcb-4998-adfa-8496ba185182
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[37].<Guid>k__BackingField
+      value: ce302968-6be4-42be-bc04-adddd9c2339d
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[38].<Guid>k__BackingField
+      value: d62d6dc4-44af-41de-a083-b0cf0d087791
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[39].<Guid>k__BackingField
+      value: 47e65274-eab0-4a97-9e92-78680393bc13
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[40].<Guid>k__BackingField
+      value: e40d4e4a-eeb3-4576-bcc5-3e88118921d6
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[0].<MetaData>k__BackingField.<Guid>k__BackingField
       value: 330f9560-0e2e-48f8-b2f8-7fe8caed3b14
       objectReference: {fileID: 0}
@@ -1722,6 +2052,86 @@ PrefabInstance:
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[20].<MetaData>k__BackingField.<Guid>k__BackingField
       value: 92f92412-9f9b-426f-af43-8f9759f24cbe
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[21].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: dfc8b646-8cf0-4085-9784-49d71ee993fe
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[22].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: b81399c8-aa47-45ca-b174-2a8b481b1595
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[23].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 47d33ef8-1bd3-43c2-889e-5b8717a054f6
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[24].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 45acdfbc-8ab2-4182-8aed-7291afb18b12
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[25].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 248bc4b4-0edf-4f88-a421-f977ab723f52
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[26].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: e777141b-9119-4b81-9bc0-0683bba0b5c3
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[27].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: c50490c8-37c3-41b2-bd20-8d2100a80f99
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[28].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 12a998b3-d327-4f1b-bf63-28e90df15271
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[29].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: c2a47df2-3871-406f-afcc-d99fd7fa99c7
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[30].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: bea58122-397c-4926-a9c9-6e377dd022ec
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[31].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 51377b2b-f44a-4bc4-880a-4536b144609b
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[32].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 27af03fc-a5b9-48ce-8a3a-819642d16f98
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[33].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 894c52db-b344-4095-b23f-bbdc9a5342f5
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[34].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 514c9669-b72b-41a9-b501-0149c034b1eb
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[35].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: e4f7fd94-0e17-40b8-bfad-d21a924bfbdf
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[36].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 2d8f72b1-abcb-4998-adfa-8496ba185182
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[37].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: ce302968-6be4-42be-bc04-adddd9c2339d
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[38].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: d62d6dc4-44af-41de-a083-b0cf0d087791
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[39].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: 47e65274-eab0-4a97-9e92-78680393bc13
+      objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <MetaData>k__BackingField.<AttachmentPointGuidMetaData>k__BackingField.Array.data[40].<MetaData>k__BackingField.<Guid>k__BackingField
+      value: e40d4e4a-eeb3-4576-bcc5-3e88118921d6
       objectReference: {fileID: 0}
     - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: m_RootOrder
@@ -1989,6 +2399,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: e40d4e4a-eeb3-4576-bcc5-3e88118921d6
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_20
@@ -2043,6 +2457,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &613699612034626036 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 3657081356003985799}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9151810072748614700 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -2059,6 +2484,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -1183012829682040885, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: b81399c8-aa47-45ca-b174-2a8b481b1595
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_2
@@ -2109,6 +2538,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &1039458306688885480 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 3758316867023346331}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5214200128039606928 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8967993027088990219, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -2134,6 +2574,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 3042652072288215660, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 12a998b3-d327-4f1b-bf63-28e90df15271
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_8
@@ -2188,6 +2632,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &141097329110335329 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 4301390438267127570}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8534542345305795257 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -2208,6 +2663,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 514c9669-b72b-41a9-b501-0149c034b1eb
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_14
@@ -2262,6 +2721,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+--- !u!114 &324582563679511791 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 4523296873878592668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8287934281196286263 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
@@ -2282,6 +2752,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 2d8f72b1-abcb-4998-adfa-8496ba185182
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_16
@@ -2341,6 +2815,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 5259162216824727123}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8266516243112156704 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 5259162216824727123}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5686535974092335914
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2356,6 +2841,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -26699094067015077, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: c2a47df2-3871-406f-afcc-d99fd7fa99c7
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_9
@@ -2415,6 +2904,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 5686535974092335914}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8407796928972903257 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 5686535974092335914}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5704713020895798535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2430,6 +2930,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -5953266196333713434, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 45acdfbc-8ab2-4182-8aed-7291afb18b12
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_4
@@ -2489,6 +2993,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 5704713020895798535}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8462240408913976692 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 5704713020895798535}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5818854564795890529
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2593,6 +3108,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 8805111995715499659, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: bea58122-397c-4926-a9c9-6e377dd022ec
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_10
@@ -2652,6 +3171,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 6825293626754081108}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7276846067107633447 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 6825293626754081108}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7081734587014482155
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2760,6 +3290,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 894c52db-b344-4095-b23f-bbdc9a5342f5
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_13
@@ -2819,6 +3353,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 7182076578037483765}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6480398447913463942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 7182076578037483765}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7433446155063333446
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2834,6 +3379,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: ce302968-6be4-42be-bc04-adddd9c2339d
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_17
@@ -2893,6 +3442,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 7433446155063333446}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6731820901488601653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 7433446155063333446}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7476054691760600461
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2900,6 +3460,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 77486103945529810}
     m_Modifications:
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: dfc8b646-8cf0-4085-9784-49d71ee993fe
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_1
@@ -2960,6 +3524,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 7476054691760600461}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6738674445189402110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 7476054691760600461}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7679040531264791632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2975,6 +3550,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: -4703527427018764547, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: e777141b-9119-4b81-9bc0-0683bba0b5c3
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_6
@@ -3034,6 +3613,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 7679040531264791632}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5824757647275023395 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 7679040531264791632}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8303714634289288381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3049,6 +3639,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 4224226797077626042, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: d62d6dc4-44af-41de-a083-b0cf0d087791
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_18
@@ -3108,6 +3702,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 8303714634289288381}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5294092286622870734 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 8303714634289288381}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8713798344719234960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3123,6 +3728,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 5468583818096180132, guid: 07855af5dace34b45b2b4a1f2425a175, type: 3}
+    - target: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+      propertyPath: <MetaData>k__BackingField.<Guid>k__BackingField
+      value: 248bc4b4-0edf-4f88-a421-f977ab723f52
+      objectReference: {fileID: 0}
     - target: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
       propertyPath: m_Name
       value: BoomHeadPanel_5
@@ -3182,3 +3791,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5602850515556216235, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
   m_PrefabInstance: {fileID: 8713798344719234960}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4803508985567924195 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4198723288031836275, guid: 7dd995b93b0bdce48be9ac048b9fcd6c, type: 3}
+  m_PrefabInstance: {fileID: 8713798344719234960}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79f4f1f4b77332e4582ec64224c3ac69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
