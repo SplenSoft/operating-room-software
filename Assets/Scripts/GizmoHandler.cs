@@ -83,8 +83,12 @@ public class GizmoHandler : MonoBehaviour
     {
         if (!_gizmosInitialized) return;
 
+        bool rotateGizmoEnabled = GizmoSelector.CurrentGizmoMode == GizmoMode.Rotate && _selectable.IsSelected;
+
+        Debug.Log($"Gizmo state updated for {gameObject.name} - rotateGizmoEnabled = {rotateGizmoEnabled}");
+
         _translateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Translate && _selectable.IsSelected);
-        _rotateGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Rotate && _selectable.IsSelected);
+        _rotateGizmo.Gizmo.SetEnabled(rotateGizmoEnabled);
         _scaleGizmo.Gizmo.SetEnabled(GizmoSelector.CurrentGizmoMode == GizmoMode.Scale && _selectable.IsSelected);
 
         _translateGizmo.Gizmo.Transform.Position3D = transform.position;
@@ -139,9 +143,11 @@ public class GizmoHandler : MonoBehaviour
         bool allowVertical = currentCameraType != 
             OperatingRoomCameraType.OrthoCeiling ? true : false;
 
-        bool allowX = _rotateGizmo.Gizmo.IsEnabled && _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X);
-        bool allowY = _rotateGizmo.Gizmo.IsEnabled && allowVertical ? _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) : false;
-        bool allowZ = _rotateGizmo.Gizmo.IsEnabled && allowHorizontal ? _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z) : false;
+        bool allowX = rotateGizmoEnabled && _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X);
+        bool allowY = rotateGizmoEnabled && allowVertical ? _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) : false;
+        bool allowZ = rotateGizmoEnabled && allowHorizontal ? _selectable.IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z) : false;
+
+        Debug.Log($"AllowY = {allowY}");
 
         //_rotateGizmo.Gizmo.RotationGizmo._xSlider.SetVisible(allowX);
         _rotateGizmo.Gizmo.RotationGizmo._xSlider.SetBorderVisible(allowX);

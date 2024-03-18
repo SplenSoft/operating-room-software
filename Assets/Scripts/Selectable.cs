@@ -163,7 +163,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// Selectables that are part of the same prefab as this one. 
     /// Used to highlight multiple gizmos instead of just one
     /// </summary>
-    [field: SerializeField, HideInInspector]
+    [field: SerializeField, ReadOnly]
     private List<Selectable> RelatedSelectables { get; set; }
 
     private List<Selectable> _assemblySelectables = new();
@@ -1197,8 +1197,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         previous.ForEach(x =>
         {
+            //Debug.Log($"Firing deselect event for {x.gameObject.name}");
             x._highlightEffect.highlighted = false;
-            Deselected?.Invoke();
+            x.Deselected?.Invoke();
         });
 
         if (fireEvent)

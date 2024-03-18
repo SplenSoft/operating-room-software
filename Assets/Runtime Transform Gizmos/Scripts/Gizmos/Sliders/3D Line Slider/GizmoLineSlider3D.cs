@@ -696,8 +696,10 @@ namespace RTG
 
         protected override void OnVisibilityStateChanged()
         {
+            if (!Application.isPlaying) return;
             _controllers[(int)LookAndFeel.LineType].UpdateHandles();
             Camera camera = Gizmo.GetWorkCamera();
+            if (camera == null) return;
             float zoomFactor = GetZoomFactor(camera);
 
             _controllers[(int)LookAndFeel.LineType].UpdateEpsilons(zoomFactor);

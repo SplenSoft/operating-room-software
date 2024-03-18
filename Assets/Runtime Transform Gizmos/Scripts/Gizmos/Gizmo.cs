@@ -118,6 +118,8 @@ namespace RTG
 
         public Camera GetWorkCamera()
         {
+            if (RTGizmosEngine.Get == null) return null;
+
             return RTGizmosEngine.Get.PipelineStage == GizmosEnginePipelineStage.Render ?
                 RTGizmosEngine.Get.RenderStageCamera : FocusCamera;
         }
