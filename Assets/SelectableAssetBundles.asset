@@ -1047,19 +1047,6 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
-  - <PrefabName>k__BackingField: Doors
-    <SaveLoadGuid>k__BackingField: gameobject_84d3ed2003c3a584d91ffaa2fc5bf80b
-    <AssetBundleName>k__BackingField: gameobject_84d3ed2003c3a584d91ffaa2fc5bf80b
-    <MetaData>k__BackingField:
-      <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 1
-      <IsStandalone>k__BackingField: 1
-      <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: Doors
-      <SubPartName>k__BackingField: 
-      <Categories>k__BackingField: []
-      <KeyWords>k__BackingField: []
-      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: EndoscopyTower
     <SaveLoadGuid>k__BackingField: gameobject_af4bc14824710524eb3823707af229a3
     <AssetBundleName>k__BackingField: gameobject_af4bc14824710524eb3823707af229a3
@@ -1627,104 +1614,104 @@ MonoBehaviour:
           <Guid>k__BackingField: 92f92412-9f9b-426f-af43-8f9759f24cbe
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: fa0d03c3-3b58-413d-97d1-26b597784a8d
+      - <Guid>k__BackingField: eb2fbd85-366b-4cb2-9d7b-94d7f6816155
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: fa0d03c3-3b58-413d-97d1-26b597784a8d
+          <Guid>k__BackingField: eb2fbd85-366b-4cb2-9d7b-94d7f6816155
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 9d3ce7f3-41c2-4520-a555-d5e797fb4975
+      - <Guid>k__BackingField: 7354f80b-d8eb-40cf-a1ca-ba6f7e583650
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 9d3ce7f3-41c2-4520-a555-d5e797fb4975
+          <Guid>k__BackingField: 7354f80b-d8eb-40cf-a1ca-ba6f7e583650
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 4923f6fd-a833-4cd9-aa32-2c158e7390dd
+      - <Guid>k__BackingField: 2ad48583-08c5-45fe-a7ba-93b2f4a05a14
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 4923f6fd-a833-4cd9-aa32-2c158e7390dd
+          <Guid>k__BackingField: 2ad48583-08c5-45fe-a7ba-93b2f4a05a14
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 3e2561a3-60ee-40b6-8f11-533a86cb3ae2
+      - <Guid>k__BackingField: 69141551-a605-49f5-b54b-da24236d6853
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 3e2561a3-60ee-40b6-8f11-533a86cb3ae2
+          <Guid>k__BackingField: 69141551-a605-49f5-b54b-da24236d6853
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: cf17d6ee-5b26-43bb-a3b0-5ce38043660b
+      - <Guid>k__BackingField: e742573b-e4a3-4ca2-86c1-e29cdae4583c
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: cf17d6ee-5b26-43bb-a3b0-5ce38043660b
+          <Guid>k__BackingField: e742573b-e4a3-4ca2-86c1-e29cdae4583c
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 44d97461-ff03-47c2-a424-488c67c4b0ce
+      - <Guid>k__BackingField: 263327d7-5056-4c46-a2f6-18ebca8723f9
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 44d97461-ff03-47c2-a424-488c67c4b0ce
+          <Guid>k__BackingField: 263327d7-5056-4c46-a2f6-18ebca8723f9
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 2849c6d4-9d82-437a-ab8f-f5b0b9ede85f
+      - <Guid>k__BackingField: 77a5e012-29ad-4df4-894b-e105980a9b24
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 2849c6d4-9d82-437a-ab8f-f5b0b9ede85f
+          <Guid>k__BackingField: 77a5e012-29ad-4df4-894b-e105980a9b24
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 5510d76d-15d9-47d9-962b-156a08871101
+      - <Guid>k__BackingField: 527018fe-833b-4479-a806-603d6d76f249
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 5510d76d-15d9-47d9-962b-156a08871101
+          <Guid>k__BackingField: 527018fe-833b-4479-a806-603d6d76f249
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 162cfc33-ce25-4ed2-ba74-98903885ec5b
+      - <Guid>k__BackingField: 36f99302-fee6-4727-8fab-1510a9e79da8
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 162cfc33-ce25-4ed2-ba74-98903885ec5b
+          <Guid>k__BackingField: 36f99302-fee6-4727-8fab-1510a9e79da8
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 02dcf400-f06f-40c3-9ae6-3c0090ff6c7b
+      - <Guid>k__BackingField: 31edf852-6b9b-46f3-ac02-c529c5855670
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 02dcf400-f06f-40c3-9ae6-3c0090ff6c7b
+          <Guid>k__BackingField: 31edf852-6b9b-46f3-ac02-c529c5855670
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 8043b100-e723-4a25-9667-1426e23232f1
+      - <Guid>k__BackingField: 525bb825-2990-4425-9238-7b4e33ae81e7
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 8043b100-e723-4a25-9667-1426e23232f1
+          <Guid>k__BackingField: 525bb825-2990-4425-9238-7b4e33ae81e7
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: c3c27504-166a-4d94-8bf0-3beb1f901757
+      - <Guid>k__BackingField: 71e952f3-8731-472f-a3b3-e1e283d39ef6
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: c3c27504-166a-4d94-8bf0-3beb1f901757
+          <Guid>k__BackingField: 71e952f3-8731-472f-a3b3-e1e283d39ef6
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: a9dc9952-4772-4756-836d-33dcc77a9527
+      - <Guid>k__BackingField: 0145d213-a766-4060-a147-0a4578439b43
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: a9dc9952-4772-4756-836d-33dcc77a9527
+          <Guid>k__BackingField: 0145d213-a766-4060-a147-0a4578439b43
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 34df684e-962f-4131-bab5-c26d32c4e5e9
+      - <Guid>k__BackingField: ade9271d-2c92-40fb-b68f-c5bdb1806a23
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 34df684e-962f-4131-bab5-c26d32c4e5e9
+          <Guid>k__BackingField: ade9271d-2c92-40fb-b68f-c5bdb1806a23
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 1c34b2d0-3b7d-4bf7-b881-4931581fe27d
+      - <Guid>k__BackingField: a4268dea-e836-42fb-a08f-c2752c5bb796
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 1c34b2d0-3b7d-4bf7-b881-4931581fe27d
+          <Guid>k__BackingField: a4268dea-e836-42fb-a08f-c2752c5bb796
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: a432bf96-da37-4b77-845a-b0e1238f9b42
+      - <Guid>k__BackingField: d3ca152f-1fb7-44ee-b595-e13dd52bd5a0
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: a432bf96-da37-4b77-845a-b0e1238f9b42
+          <Guid>k__BackingField: d3ca152f-1fb7-44ee-b595-e13dd52bd5a0
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 45de02c2-0270-457f-9a65-968e4b069e54
+      - <Guid>k__BackingField: 78b6b77b-3aa1-4b3e-8105-8832dbc36ecc
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 45de02c2-0270-457f-9a65-968e4b069e54
+          <Guid>k__BackingField: 78b6b77b-3aa1-4b3e-8105-8832dbc36ecc
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 960e0d6e-a715-4eee-b419-7db59fff8d12
+      - <Guid>k__BackingField: 02b0d382-eec2-42c7-9327-5122d792741c
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 960e0d6e-a715-4eee-b419-7db59fff8d12
+          <Guid>k__BackingField: 02b0d382-eec2-42c7-9327-5122d792741c
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: 288b9b1b-adf6-4917-a4fd-ea4805e35f4f
+      - <Guid>k__BackingField: 3dea4842-16af-4ec7-add9-04ff6bc0a2dd
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 288b9b1b-adf6-4917-a4fd-ea4805e35f4f
+          <Guid>k__BackingField: 3dea4842-16af-4ec7-add9-04ff6bc0a2dd
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: e913d72c-142e-4ae9-b139-f1079727ee3a
+      - <Guid>k__BackingField: 1fb5afb5-7ea0-4728-ac91-21beb3c06410
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: e913d72c-142e-4ae9-b139-f1079727ee3a
+          <Guid>k__BackingField: 1fb5afb5-7ea0-4728-ac91-21beb3c06410
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
   - <PrefabName>k__BackingField: OR_Table_0

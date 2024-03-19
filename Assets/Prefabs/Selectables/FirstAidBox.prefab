@@ -198,6 +198,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstAidBox
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e555a8a03d981a64299de594ac6ddd97, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e555a8a03d981a64299de594ac6ddd97, type: 3}
 --- !u!1 &8555463051298896299 stripped

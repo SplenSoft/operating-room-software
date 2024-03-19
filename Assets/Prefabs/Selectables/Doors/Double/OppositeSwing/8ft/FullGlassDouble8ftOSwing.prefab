@@ -618,6 +618,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FullGlassDoubleDoor8ft
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4924168009988663033, guid: d5a42f9dbe1946c4bb353056df4fd2b7, type: 3}
       propertyPath: m_IsActive
       value: 0

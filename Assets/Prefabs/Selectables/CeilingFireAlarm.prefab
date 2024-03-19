@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FireAlarm
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 251a7f1fe0eaefc46b5b6cf4b6d85055, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 251a7f1fe0eaefc46b5b6cf4b6d85055, type: 3}
 --- !u!1 &6795120271892165067 stripped

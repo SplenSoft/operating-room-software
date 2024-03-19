@@ -281,6 +281,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FullGlassDoubleDoor7ft
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e5f4d5f4a3172804bb6ecdcf73dc5076, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5031985201642690442, guid: e5f4d5f4a3172804bb6ecdcf73dc5076, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1

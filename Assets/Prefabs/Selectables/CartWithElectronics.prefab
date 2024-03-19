@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CartWithElectronics
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 49bcb69fb2389f349b8622037fc174f5, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 49bcb69fb2389f349b8622037fc174f5, type: 3}
 --- !u!1 &5271328593830551070 stripped

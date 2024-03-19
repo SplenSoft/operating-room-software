@@ -204,6 +204,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SideliteDoubleDoor8ft
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d019b8732a7dd8744a6611ea94dbc9d3, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4924168009988663033, guid: d019b8732a7dd8744a6611ea94dbc9d3, type: 3}
       propertyPath: m_IsActive
       value: 0

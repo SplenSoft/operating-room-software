@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sirgocal Robot Station
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8dfef2d0cba403042a3269f13b2fb21f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1770180348554387631, guid: 8dfef2d0cba403042a3269f13b2fb21f, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0

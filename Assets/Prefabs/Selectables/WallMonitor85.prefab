@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 7691459715217417015}
   - component: {fileID: 2206793174798915124}
   - component: {fileID: 3312062587932436085}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WallMonitor_85
   m_TagString: Untagged
   m_Icon: {fileID: 0}

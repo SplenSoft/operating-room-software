@@ -52,6 +52,11 @@ public class FreeLookCam : MonoBehaviour
             HandleRotation();
         }
 
+        if (!RoomSize.Bounds.Contains(transform.position))
+        {
+            transform.position = RoomSize.Bounds.ClosestPoint(transform.position);
+        }
+
         //if (transform.position.y < 10)
         //{
         //    transform.position = Vector3.zero;

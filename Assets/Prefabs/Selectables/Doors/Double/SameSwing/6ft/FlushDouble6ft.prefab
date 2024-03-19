@@ -755,6 +755,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlushDoubleDoor6ft
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 600539c7d8f75cc4dbdc1fedc459115e, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1106444520987019296, guid: 600539c7d8f75cc4dbdc1fedc459115e, type: 3}
       propertyPath: m_IsActive
       value: 0

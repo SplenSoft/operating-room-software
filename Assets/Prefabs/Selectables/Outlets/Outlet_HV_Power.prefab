@@ -159,6 +159,10 @@ PrefabInstance:
       value: Outlet
       objectReference: {fileID: 0}
     - target: {fileID: 1679886840836866240, guid: ac8b1b66018f03d48b0581c3a8be5219, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1679886840836866240, guid: ac8b1b66018f03d48b0581c3a8be5219, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -166,6 +170,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: fe8fe446f6ef7dc44a08cc64bcf86e85, type: 2}
+    - target: {fileID: 7813747117595421361, guid: ac8b1b66018f03d48b0581c3a8be5219, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac8b1b66018f03d48b0581c3a8be5219, type: 3}
 --- !u!1 &3464717931310939542 stripped

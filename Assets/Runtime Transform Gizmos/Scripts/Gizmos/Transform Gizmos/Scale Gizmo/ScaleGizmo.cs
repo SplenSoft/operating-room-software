@@ -218,12 +218,12 @@ namespace RTG
                 else SetMultiAxisScaleMode(GizmoMultiAxisScaleMode.Uniform);
             }
 
-            _pstvXSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(0));
-            _pstvXSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(0));
-            _pstvYSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(1));
-            _pstvYSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(1));
-            _pstvZSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(2));
-            _pstvZSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(2));
+            //_pstvXSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(0));
+            //_pstvXSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(0));
+            //_pstvYSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(1));
+            //_pstvYSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(1));
+            //_pstvZSlider.SetVisible(LookAndFeel3D.IsPositiveSliderVisible(2));
+            //_pstvZSlider.Set3DCapVisible(LookAndFeel3D.IsPositiveSliderCapVisible(2));
 
             _negXSlider.SetVisible(LookAndFeel3D.IsNegativeSliderVisible(0));
             _negXSlider.Set3DCapVisible(LookAndFeel3D.IsNegativeSliderCapVisible(0));

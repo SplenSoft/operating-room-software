@@ -337,6 +337,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SideliteDoor6ft
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 14d1c6e3decfe8544b5c5166d8e1ac60, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5031985201642690442, guid: 14d1c6e3decfe8544b5c5166d8e1ac60, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1

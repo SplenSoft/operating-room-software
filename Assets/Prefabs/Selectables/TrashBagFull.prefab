@@ -198,6 +198,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrashBagFull
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 12c534bebee15aa499f4f7ae2d4b5adb, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 12c534bebee15aa499f4f7ae2d4b5adb, type: 3}
 --- !u!1 &7447612573581987246 stripped

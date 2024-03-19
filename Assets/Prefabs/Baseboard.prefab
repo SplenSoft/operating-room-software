@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 3625238998407065597}
   - component: {fileID: 1111237605541233216}
   - component: {fileID: 6125908676062489664}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WallProtector
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -114,6 +114,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: XXLLargeArmsNonScaleBoom
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e5ef99855970f95419f7181e49634ae7, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e5ef99855970f95419f7181e49634ae7, type: 3}
 --- !u!4 &1486407580323511532 stripped

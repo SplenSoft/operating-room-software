@@ -36,6 +36,7 @@ public class Cuttable : MonoBehaviour
         if (_gizmoHandler != null)
         {
             _gizmoHandler.GizmoDragEnded.AddListener(Cut);
+            _gizmoHandler.GizmoDragPostUpdate.AddListener(Cut);
         }
 
         if (_selectable != null)
@@ -51,6 +52,7 @@ public class Cuttable : MonoBehaviour
         if (_gizmoHandler != null)
         {
             _gizmoHandler.GizmoDragEnded.RemoveListener(Cut);
+            _gizmoHandler.GizmoDragPostUpdate.RemoveListener(Cut);
         }
 
         if (_selectable != null)
@@ -89,6 +91,13 @@ public class Cuttable : MonoBehaviour
         _filter.sharedMesh = _originalMesh;
         ((MeshCollider)_collider).sharedMesh = _filter.sharedMesh;
 
+        MeshCollider meshCollider = null;
+        if (_collider is MeshCollider mc && !mc.convex)
+        {
+            meshCollider = (MeshCollider)_collider;
+            meshCollider.convex = true;
+        }
+
         // Get all wallcutters in scene
         var wallCutters = Selectable.ActiveSelectables
             .SelectMany(x => x.GetComponentsInChildren<WallCutter>())
@@ -103,13 +112,13 @@ public class Cuttable : MonoBehaviour
             // dump more meshes than we need to, so for now I
             // think it's worth it
             bool collides = Physics.ComputePenetration(
-                _collider, 
-                transform.position, 
-                transform.rotation, 
-                wallCutter.Collider, 
-                wallCutter.CutArea.transform.position, 
-                wallCutter.CutArea.transform.rotation, 
-                out _, 
+                _collider,
+                _collider.gameObject.transform.position,
+                _collider.gameObject.transform.rotation,
+                wallCutter.Collider,
+                wallCutter.Collider.gameObject.transform.position,
+                wallCutter.Collider.gameObject.transform.rotation,
+                out _,
                 out _);
 
             if (!collides) continue;
@@ -121,18 +130,7 @@ public class Cuttable : MonoBehaviour
 
             for (int i = 0; i < verts.Length; i++)
             {
-                Vector3 vert = verts[i];
-
-                vert.x -= _filter.transform.position.x;
-                vert.x /= _filter.transform.localScale.x;
-
-                vert.y -= _filter.transform.position.y;
-                vert.y /= _filter.transform.localScale.y;
-
-                vert.z -= _filter.transform.position.z;
-                vert.z /= _filter.transform.localScale.z;
-                
-                verts[i] = vert;
+                verts[i] = _filter.transform.InverseTransformPoint(verts[i]);
             }
 
             mesh.SetVertices(verts);
@@ -152,5 +150,9 @@ public class Cuttable : MonoBehaviour
 
         ((MeshCollider)_collider).sharedMesh = _filter.sharedMesh;
         UpdateMaterials();
+        if (meshCollider != null)
+        {
+            meshCollider.convex = false;
+        }
     }
 }

@@ -79,6 +79,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FullSupplyCabinet
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3b010440a3028c64697d49604a9eec97, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b010440a3028c64697d49604a9eec97, type: 3}
 --- !u!1 &172040599910772691 stripped

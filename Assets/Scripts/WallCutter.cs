@@ -8,9 +8,11 @@ using UnityEngine;
 
 public class WallCutter : MonoBehaviour
 {
+    private UnityEventManager _eventManager = new();
     private Selectable _selectable;
     private GizmoHandler _gizmoHandler;
     private MeshRenderer _meshRenderer;
+    private WallCutter[] _wallCuttersOnSelectable;
     public Collider Collider { get; private set; }
 
     [field: SerializeField, 
@@ -21,11 +23,16 @@ public class WallCutter : MonoBehaviour
     {
         Collider = CutArea.GetComponent<Collider>();
         _selectable = transform.root.GetComponent<Selectable>();
+        _wallCuttersOnSelectable = _selectable.GetComponentsInChildren<WallCutter>();
         _gizmoHandler = transform.root.GetComponent<GizmoHandler>();
         _meshRenderer = CutArea.GetComponent<MeshRenderer>();
 
-        _selectable.OnPlaced.AddListener(UpdateCuts);
-        _gizmoHandler.GizmoDragEnded.AddListener(UpdateCuts);
+        _eventManager.RegisterEvents(
+            (_selectable.OnPlaced, UpdateCuts),
+            (_gizmoHandler.GizmoDragEnded, UpdateCuts),
+            (_gizmoHandler.GizmoDragPostUpdate, UpdateCuts));
+
+        _eventManager.AddListeners();
     }
 
     private void Start()
@@ -35,13 +42,14 @@ public class WallCutter : MonoBehaviour
 
     private void OnDestroy()
     {
-        _selectable.OnPlaced.RemoveListener(UpdateCuts);
-        _gizmoHandler.GizmoDragEnded.RemoveListener(UpdateCuts);
+        _eventManager.RemoveListeners();
+        UpdateCuts();
     }
 
     private void UpdateCuts()
     {
-        Cuttable.UpdateCuts();
+        if (_wallCuttersOnSelectable[0] == this)
+            Cuttable.UpdateCuts();
     }
 
 #if UNITY_EDITOR

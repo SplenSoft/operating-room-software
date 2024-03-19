@@ -196,6 +196,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
     public bool Started { get; private set; }
+
     #endregion
 
     #region Monobehaviour
@@ -1028,9 +1029,15 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         DeselectAll();
         _highlightEffect.highlighted = true;
 
-        if (transform.tag == "Wall")
+        if (transform.CompareTag("Wall"))
         {
-            GetComponentInChildren<Collider>().enabled = false;
+            var collider = GetComponentInChildren<Collider>();
+            if (collider is MeshCollider mc)
+            {
+                mc.convex = true;
+            }
+            collider.isTrigger = true;
+            collider.enabled = false;
         }
 
         await Task.Yield();
@@ -1090,6 +1097,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                             destination.x = hit.collider.transform.position.x - halfThickness;
                             //normal = -Vector3.right;
                         }
+
                     }
 
                     destination.y = 0;
@@ -1172,9 +1180,15 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = false;
             }
 
-            if (transform.tag == "Wall")
+            if (transform.CompareTag("Wall"))
             {
-                GetComponentInChildren<Collider>().enabled = true;
+                var collider = GetComponentInChildren<Collider>();
+                collider.isTrigger = false;
+                if (collider is MeshCollider mc)
+                {
+                    mc.convex = false;
+                }
+                collider.enabled = true;
             }
 
             await Task.Yield();
@@ -1299,8 +1313,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         Array.ForEach(GetComponentsInChildren<Collider>(), collider =>
         {
-            if (collider.gameObject.layer == 
-            LayerMask.NameToLayer("Default"))
+            // Default layer
+            if (collider.gameObject.layer == 0)
             {
                 needsDirty = true;
 

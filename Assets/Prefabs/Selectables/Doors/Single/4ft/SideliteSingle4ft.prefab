@@ -230,6 +230,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sidelite4FTSingle
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0f9f1341b3c74484094efd0c0f04c15b, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7826466812584322040, guid: 0f9f1341b3c74484094efd0c0f04c15b, type: 3}
       propertyPath: m_IsActive
       value: 0

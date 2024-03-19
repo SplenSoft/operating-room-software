@@ -198,6 +198,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StorzTouch
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 78ea064e947741e4db117074cfedeccc, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78ea064e947741e4db117074cfedeccc, type: 3}
 --- !u!1 &3621564211088763464 stripped

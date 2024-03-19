@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Surgical Chair
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fcca5a4beaff2ea459e09283327d870d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fcca5a4beaff2ea459e09283327d870d, type: 3}
 --- !u!1 &2958841519775324294 stripped

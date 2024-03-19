@@ -36,6 +36,15 @@ public class OrbitCamera : MonoBehaviour
         orbitTarget.transform.position = new Vector3(0, 0, 0);
     }
 
+    private void Update()
+    {
+        if (!RoomSize.Bounds.Contains(orbitTarget.transform.position))
+        {
+            orbitTarget.transform.position = RoomSize.Bounds
+                .ClosestPoint(orbitTarget.transform.position);
+        }
+    }
+
     private void FixedUpdate()
     {
         if (CameraManager.ActiveCamera != VirtualCamera 

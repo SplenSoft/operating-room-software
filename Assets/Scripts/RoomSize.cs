@@ -1,5 +1,5 @@
 using System;
-using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,6 +22,11 @@ public class RoomSize : MonoBehaviour
     [field: SerializeField] private TMP_InputField InputFieldHeight { get; set; }
     [field: SerializeField] private TMP_InputField InputFieldDepth { get; set; }
 
+    /// <summary>
+    /// The bounds that represents the entire room
+    /// </summary>
+    public static Bounds Bounds { get; private set; }
+
     private void Awake()
     {
         Instance = this;
@@ -33,14 +38,33 @@ public class RoomSize : MonoBehaviour
             .AddListener(text => EnforceDimensionSize(InputFieldHeight, text));
 
         InputFieldDepth.onEndEdit
-        .AddListener(text => EnforceDimensionSize(InputFieldDepth, text));
+            .AddListener(text => EnforceDimensionSize(InputFieldDepth, text));
 
         RoomSizeChanged.AddListener(OnRoomSizeChanged);
+        RoomSizeChanged.AddListener(UpdateBounds);
     }
 
     private void OnDestroy()
     {
         RoomSizeChanged.RemoveListener(OnRoomSizeChanged);
+        RoomSizeChanged.RemoveListener(UpdateBounds);
+    }
+
+    private static async void UpdateBounds(RoomDimension dimension = default)
+    {
+        await Task.Yield();
+
+        if (!Application.isPlaying)
+            return;
+
+        var bounds = new Bounds(Vector3.zero, Vector3.zero);
+
+        RoomBoundary.Instances.ForEach(x =>
+        {
+            bounds.Encapsulate(x.MeshRenderer.bounds);
+        });
+
+        Bounds = bounds;
     }
 
     public static void SetDimensions(RoomDimension roomDimension)

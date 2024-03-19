@@ -110,6 +110,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: fe8fe446f6ef7dc44a08cc64bcf86e85, type: 2}
+    - target: {fileID: -6509067522763458280, guid: 130408ec8aecc4e4988f634464c82c74, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: -5877560138243667684, guid: 130408ec8aecc4e4988f634464c82c74, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -129,6 +133,10 @@ PrefabInstance:
     - target: {fileID: -5877560138243667684, guid: 130408ec8aecc4e4988f634464c82c74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5571200389081588841, guid: 130408ec8aecc4e4988f634464c82c74, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -2489339336693841423, guid: 130408ec8aecc4e4988f634464c82c74, type: 3}
       propertyPath: m_LocalRotation.w
@@ -153,6 +161,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 130408ec8aecc4e4988f634464c82c74, type: 3}
       propertyPath: m_Name
       value: XXLLargeSpringArticulatingLowerArm
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 130408ec8aecc4e4988f634464c82c74, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4041314064515768100, guid: 130408ec8aecc4e4988f634464c82c74, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -367,6 +379,18 @@ MonoBehaviour:
       _canBeDisplayed: 1
       _isExpanded: 1
       _transformableLayers: -1
+  _canUseAnyTranslation: 0
+  _canUseTranslateX: 0
+  _canUseTranslateY: 0
+  _canUseTranslateZ: 0
+  _canUseAnyRotation: 0
+  _canUseRotationX: 0
+  _canUseRotationY: 0
+  _canUseRotationZ: 0
+  _canUseAnyScale: 0
+  _canUseScaleX: 0
+  _canUseScaleY: 0
+  _canUseScaleZ: 0
 --- !u!114 &5046950360407781414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,7 +449,10 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
-  <RelatedSelectables>k__BackingField: []
+  <RelatedSelectables>k__BackingField:
+  - {fileID: 7395933003582030303}
+  - {fileID: 8217240273343571565}
+  - {fileID: 8537093520404394872}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -482,6 +509,18 @@ MonoBehaviour:
       _canBeDisplayed: 1
       _isExpanded: 1
       _transformableLayers: -1
+  _canUseAnyTranslation: 0
+  _canUseTranslateX: 0
+  _canUseTranslateY: 0
+  _canUseTranslateZ: 0
+  _canUseAnyRotation: 0
+  _canUseRotationX: 0
+  _canUseRotationY: 0
+  _canUseRotationZ: 0
+  _canUseAnyScale: 0
+  _canUseScaleX: 0
+  _canUseScaleY: 0
+  _canUseScaleZ: 0
 --- !u!114 &2464095599967895577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -706,7 +745,10 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 1
-  <RelatedSelectables>k__BackingField: []
+  <RelatedSelectables>k__BackingField:
+  - {fileID: 7395933003582030303}
+  - {fileID: 8217240273343571565}
+  - {fileID: 8537093520404394872}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -815,7 +857,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Name>k__BackingField
@@ -825,6 +867,14 @@ PrefabInstance:
       propertyPath: <AttachmentPointDatas>k__BackingField.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 8217240273343571565}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.data[2]
+      value: 
+      objectReference: {fileID: 8537093520404394872}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Enabled>k__BackingField
       value: 1
@@ -936,6 +986,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 7805042658694445777}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7395933003582030303 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+  m_PrefabInstance: {fileID: 7805042658694445777}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3536924608109988472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8011696592449312583
 PrefabInstance:
   m_ObjectHideFlags: 0
