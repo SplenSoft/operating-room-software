@@ -1112,6 +1112,19 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: FloorMat_Ovular
+    <SaveLoadGuid>k__BackingField: gameobject_b3956c80524a89543a7360f28669f82f
+    <AssetBundleName>k__BackingField: gameobject_b3956c80524a89543a7360f28669f82f
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: FloorMat_Ovular
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: FloorMat_Rectangular
     <SaveLoadGuid>k__BackingField: gameobject_ded53db342f35594e9d55b1e27f88051
     <AssetBundleName>k__BackingField: gameobject_ded53db342f35594e9d55b1e27f88051
