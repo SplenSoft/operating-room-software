@@ -183,6 +183,8 @@ public class GizmoHandler : MonoBehaviour
         _rotateGizmo.Gizmo.RotationGizmo._xSlider
             .SetBorderVisible(_canUseRotationX && rotationEnabled);
 
+        if (CameraManager.ActiveCamera == null) return;
+
         var currentCameraType = CameraManager.ActiveCamera
             .GetComponent<OperatingRoomCamera>().CameraType;
 
