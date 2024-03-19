@@ -586,7 +586,6 @@ MonoBehaviour:
   _useX: 0
   _useY: 0
   _useZ: 0
-  _multiplier: -0.01
 --- !u!33 &6795847191154242788 stripped
 MeshFilter:
   m_CorrespondingSourceObject: {fileID: -6236147733926916964, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}
