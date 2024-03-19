@@ -317,7 +317,6 @@ GameObject:
   - component: {fileID: 8967993027088990219}
   - component: {fileID: 2960367707753303149}
   - component: {fileID: 8744416669904072873}
-  - component: {fileID: 8297525693400398076}
   m_Layer: 0
   m_Name: BoomHeadPanel
   m_TagString: Untagged
@@ -391,15 +390,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8297525693400398076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5602850515556216235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
