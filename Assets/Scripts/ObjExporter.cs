@@ -9,6 +9,7 @@ using Object = UnityEngine.Object;
 using Debug = UnityEngine.Debug;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using RTG;
 
 public class ObjExporterScript
 {
@@ -23,7 +24,12 @@ public class ObjExporterScript
         StartIndex = 0;
     }
 
-    public static async Task<string> MeshToString(MeshFilter mf, Transform t, List<Material> materials, StringBuilder mtlStringBuilder, Loading.LoadingToken loadingToken)
+    public static async Task<string> MeshToString(
+    MeshFilter mf, 
+    Transform t, 
+    List<Material> materials, 
+    StringBuilder mtlStringBuilder, 
+    Loading.LoadingToken loadingToken)
     {
         Vector3 s = t.localScale;
         Vector3 p = t.localPosition;
@@ -108,7 +114,7 @@ public class ObjExporterScript
 
 public static class ObjExporter
 {  
-    public static async void DoExport(bool makeSubmeshes, GameObject obj)
+    public static async void DoExport(bool makeSubmeshes, MeshFilter[] meshFilters, string name)
     {
         var loadingTokenOverall = Loading.GetLoadingToken();
         var loadingTokenCombiningMeshes = Loading.GetLoadingToken();
@@ -119,7 +125,7 @@ public static class ObjExporter
 
         try
         {
-            string meshName = obj.name;
+            string meshName = name;
             StringBuilder meshString = new StringBuilder();
 
             meshString.Append("#" + meshName + ".obj"
@@ -128,14 +134,8 @@ public static class ObjExporter
                 + "\n#-------"
                 + "\n\n");
 
-            Vector3 oldPos = obj.transform.position;
-            obj.transform.position = Vector3.zero;
-
-            MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>()
-                .Where(item => item.enabled)
-                .ToList()
-                .ConvertAll(item => item.gameObject.GetComponent<MeshFilter>())
-                .ToArray();
+            //Vector3 oldPos = obj.transform.position;
+            //obj.transform.position = Vector3.zero;
 
             UnityEngine.Debug.Log($"Found {meshFilters.Length} meshfilters");
             List<CombineInstance> combineInstances = new List<CombineInstance>();
@@ -144,7 +144,7 @@ public static class ObjExporter
             while (i < meshFilters.Length)
             {
                 var filter = meshFilters[i];
-                
+
                 if (filter.sharedMesh.vertexCount > 0)
                 {
                     var meshRenderer = filter.gameObject.GetComponent<MeshRenderer>();
@@ -173,9 +173,9 @@ public static class ObjExporter
             mesh.CombineMeshes(combine, mergeSubMeshes: false, useMatrices: true);
             loadingTokenOverall.SetProgress(0.25f);
             await Task.Yield();
-            obj.transform.position = oldPos;
+            //obj.transform.position = oldPos;
 
-            obj = new GameObject("Mesh", typeof(MeshFilter)/*, typeof(MeshRenderer)*/);
+            var obj = new GameObject("Mesh", typeof(MeshFilter)/*, typeof(MeshRenderer)*/);
             obj.GetComponent<MeshFilter>().sharedMesh = mesh;
 
             Transform t = obj.transform;
@@ -247,11 +247,10 @@ public static class ObjExporter
                 Debug.LogError(request);
             }
 
-            
             Object.Destroy(mesh);
             Object.Destroy(obj);
         }
-        catch (Exception e) 
+        catch (Exception e)
         {
             Debug.LogException(e);
         }
@@ -266,7 +265,48 @@ public static class ObjExporter
         }
     }
 
-    private static async Task<string> ProcessTransform(Transform t, bool makeSubmeshes, List<Material> materials, StringBuilder mtlStringBuilder, Loading.LoadingToken loadingToken)
+    public static void DoExport(bool makeSubmeshes, GameObject obj)
+    {
+        MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>()
+            .Where(item => item.enabled)
+            .ToList()
+            .ConvertAll(item => item.gameObject.GetComponent<MeshFilter>())
+            .ToArray();
+
+        DoExport(makeSubmeshes, meshFilters, obj.name);
+    }
+
+    public static void DoExport(
+    bool makeSubmeshes, 
+    List<Selectable> selectables,
+    ObjExportOptions options)
+    {
+        MeshFilter[] meshFilters = selectables
+            .Where(x => x.transform.root == x.transform)
+            .Where(x => 
+            {
+                return true;
+
+                // todo
+
+                //return !excludeWalls || (!x.gameObject.CompareTag("Wall") &&
+                //!x.gameObject.TryGetComponent<RoomBoundary>(out _));
+            })
+            .SelectMany(x => x.GetComponentsInChildren<MeshRenderer>())
+            .Where(x => x.enabled)
+            .ToList()
+            .ConvertAll(x => x.gameObject.GetComponent<MeshFilter>())
+            .ToArray();
+
+        DoExport(makeSubmeshes, meshFilters, "Room export");
+    }
+
+    private static async Task<string> ProcessTransform(
+    Transform t, 
+    bool makeSubmeshes, 
+    List<Material> materials, 
+    StringBuilder mtlStringBuilder, 
+    Loading.LoadingToken loadingToken)
     {
         StringBuilder meshString = new StringBuilder();
 
@@ -295,9 +335,20 @@ public static class ObjExporter
         return meshString.ToString();
     }
 
-    static void WriteToFile(string s, string filename)
+    private static void WriteToFile(string s, string filename)
     {
         using StreamWriter sw = new StreamWriter(filename);
         sw.Write(s);
     }
+}
+
+public class ObjExportOptions
+{
+    public bool IncludeFloor { get; set; }
+    public bool IncludeFloorObjects { get; set; }
+    public bool IncludeWalls { get; set; }
+    public bool IncludeWallObjects { get; set; }
+    public bool IncludeCeiling { get; set; }
+    public bool IncludeCeilingObjects { get; set; }
+    public bool IncludeArmBoomAssemblies { get; set; }
 }
