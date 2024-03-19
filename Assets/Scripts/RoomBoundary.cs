@@ -9,6 +9,7 @@ using UnityEngine.Events;
 
 public class RoomBoundary : MonoBehaviour
 {
+    public UnityEvent SizeSet { get; } = new();
     public UnityEvent VisibilityStatusChanged { get; } = new();
     private static readonly float _mouseMoveSensitivityX = 10f;
     private static readonly float _mouseMoveSensitivityY = 10f;
@@ -110,6 +111,8 @@ public class RoomBoundary : MonoBehaviour
 
             baseboard.transform.SetParent(null);
         }
+
+        SizeSet?.Invoke();
     }
 
     void CheckReferenceToBaseboard()

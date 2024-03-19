@@ -567,3 +567,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Selectable>k__BackingField: {fileID: 3304083570917657035}
+--- !u!114 &1886035769955000643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8821559155327484524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DriveToAllChildren: 0
+  PreserveColor: 0
+  IncludeRotation: 1

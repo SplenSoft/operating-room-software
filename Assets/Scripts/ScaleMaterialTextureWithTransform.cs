@@ -9,11 +9,15 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
     [SerializeField] private bool _useX;
     [SerializeField] private bool _useY;
     [SerializeField] private bool _useZ;
-    [SerializeField] private float _multiplier;
+    //[SerializeField] private float _multiplier;
 
     private void Awake()
     {
-        _meshRenderer = GetComponent<MeshRenderer>();
+        if (_meshRenderer == null)
+        {
+            _meshRenderer = GetComponent<MeshRenderer>();
+        }   
+        
         RoomSize.RoomSizeChanged.AddListener(OnRoomSizeChanged);
     }
 
@@ -64,7 +68,7 @@ public class ScaleMaterialTextureWithTransform : MonoBehaviour
 
         foreach (Material m in _meshRenderer.materials)
         {
-            m.SetTextureScale("_BaseMap", new Vector2(factor1 * _multiplier, factor2 * _multiplier));
+            m.SetTextureScale("_BaseMap", new Vector2(factor1, factor2));
         }
     }
 }

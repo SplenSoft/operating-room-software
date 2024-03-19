@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Can be attached to wall objects to define that they can be
@@ -12,6 +13,7 @@ using UnityEngine;
 /// </summary>
 public class Cuttable : MonoBehaviour
 {
+    public UnityEvent OnCut { get; } = new();
     private static List<Cuttable> ActiveCuttables { get; } = new();
 
     private Mesh _originalMesh;
@@ -154,5 +156,7 @@ public class Cuttable : MonoBehaviour
         {
             meshCollider.convex = false;
         }
+
+        OnCut?.Invoke();
     }
 }
