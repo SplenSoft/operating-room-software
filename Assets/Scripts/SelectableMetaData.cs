@@ -47,7 +47,7 @@ public class SelectableMetaData
     public List<string> KeyWords
     { get; set; } = new();
 
-    [field: SerializeField, HideInInspector]
+    [field: SerializeField, ReadOnly]
     public List<AttachmentPointGuidMetaData> 
     AttachmentPointGuidMetaData { get; set; } = new();
 }

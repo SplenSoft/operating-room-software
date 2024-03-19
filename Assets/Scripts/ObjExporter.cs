@@ -265,10 +265,10 @@ public static class ObjExporter
         }
     }
 
-    public static void DoExport(bool makeSubmeshes, GameObject obj)
+    public static void DoExport(bool makeSubmeshes, GameObject obj, ObjExportOptions options)
     {
         MeshFilter[] meshFilters = obj.GetComponentsInChildren<MeshRenderer>()
-            .Where(item => item.enabled)
+            .Where(x => FilterMeshRenderers(x, options))
             .ToList()
             .ConvertAll(item => item.gameObject.GetComponent<MeshFilter>())
             .ToArray();
@@ -285,20 +285,82 @@ public static class ObjExporter
             .Where(x => x.transform.root == x.transform)
             .Where(x => 
             {
-                return true;
+                if (x.TryGetComponent<RoomBoundary>(out var roomBoundary))
+                {
+                    switch (roomBoundary.RoomBoundaryType)
+                    {
+                        case RoomBoundaryType.Ceiling:
+                            return options.IncludeCeiling;
+                        case RoomBoundaryType.Floor:
+                            return options.IncludeFloor;
+                        case RoomBoundaryType.WallSouth:
+                        case RoomBoundaryType.WallNorth:
+                        case RoomBoundaryType.WallEast:
+                        case RoomBoundaryType.WallWest:
+                            return options.IncludeWalls;
+                    }
+                }
 
-                // todo
+                if (x.TryGetComponent<Selectable>(out var selectable))
+                {
+                    if (selectable.SpecialTypes.Contains(SpecialSelectableType.Mount)) 
+                    {
+                        return options.IncludeArmBoomAssemblies;
+                    }
 
-                //return !excludeWalls || (!x.gameObject.CompareTag("Wall") &&
-                //!x.gameObject.TryGetComponent<RoomBoundary>(out _));
+                    float angle = Vector3.Angle(selectable.transform.forward, Vector3.down);
+
+                    if (angle < 5)
+                    {
+                        return options.IncludeCeilingObjects;
+                    }
+
+                    if (angle > 175)
+                    {
+                        return options.IncludeFloorObjects;
+                    }
+
+                    return options.IncludeWallObjects;
+                }
+
+                Debug.LogWarning($"Could not determine OBJ export category for {x.gameObject.name}");
+
+                return false;
             })
             .SelectMany(x => x.GetComponentsInChildren<MeshRenderer>())
-            .Where(x => x.enabled)
+            .Where(x => FilterMeshRenderers(x, options))
             .ToList()
             .ConvertAll(x => x.gameObject.GetComponent<MeshFilter>())
             .ToArray();
 
         DoExport(makeSubmeshes, meshFilters, "Room export");
+    }
+
+    private static bool FilterMeshRenderers(MeshRenderer meshRenderer, ObjExportOptions options)
+    {
+        if (!meshRenderer.enabled)
+            return false;
+
+        if (options.IncludeArmBoomHeads)
+        {
+            return true;
+        }
+
+        Transform parent = meshRenderer.transform;
+
+        while (parent != null)
+        {
+            // Best way to determine if something is
+            // a boom/arm head
+            if (parent.GetComponent<CCDIK>() != null)
+            {
+                return false;
+            }
+
+            parent = parent.parent;
+        }
+
+        return true;
     }
 
     private static async Task<string> ProcessTransform(
@@ -351,4 +413,5 @@ public class ObjExportOptions
     public bool IncludeCeiling { get; set; }
     public bool IncludeCeilingObjects { get; set; }
     public bool IncludeArmBoomAssemblies { get; set; }
+    public bool IncludeArmBoomHeads { get; set; }
 }

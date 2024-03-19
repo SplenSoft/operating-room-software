@@ -1361,6 +1361,23 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             }
         });
 
+        for (int i = AttachmentPointDatas.Count - 1; i >= 0; i--)
+        {
+            var attPoint = AttachmentPointDatas[i];
+
+            if (!attachPoints.Contains(attPoint.AttachmentPoint))
+            {
+                needsDirty = true;
+
+                var metaData = MetaData.AttachmentPointGuidMetaData.Where(x => x.MetaData.Guid == attPoint.Guid).ToList();
+                AttachmentPointDatas.RemoveAt(i);
+                if (metaData.Count > 0)
+                {
+                    MetaData.AttachmentPointGuidMetaData.Remove(metaData[0]);
+                }
+            }
+        }
+
         if (string.IsNullOrWhiteSpace(MetaData.Name) ||
             MetaData.Name == "Selectable")
         {

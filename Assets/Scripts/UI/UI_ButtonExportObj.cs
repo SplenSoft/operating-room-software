@@ -24,28 +24,29 @@ public class UI_ButtonExportObj : MonoBehaviour
 
     public void ExportObj()
     {
-        if (Selectable.SelectedSelectables.Count > 0)
-        {
-            if (Selectable.SelectedSelectables[0].TryGetArmAssemblyRoot(out GameObject obj))
-            {
-                ObjExporter.DoExport(true, obj);
-            }
-            else
-            {
+        //if (Selectable.SelectedSelectables.Count > 0)
+        //{
+        //    if (Selectable.SelectedSelectables[0].TryGetArmAssemblyRoot(out GameObject obj))
+        //    {
+        //        ObjExporter.DoExport(true, obj, Get);
+        //    }
+        //    else
+        //    {
 
-                ObjExporter.DoExport(true, Selectable.SelectedSelectables[0].gameObject);
-            }
-        }
-        else
-        {
-            //UI_DialogPrompt.Open(
-            //    "Would you like to include the walls and objects on the walls?", 
-            //    new ButtonAction(
-            //        "Yes", 
-            //        () => ObjExporter.DoExport(true, Selectable.ActiveSelectables)),
-            //    new ButtonAction(
-            //        "No", 
-            //        () => ObjExporter.DoExport(true, Selectable.ActiveSelectables, true)));
-        }
+        //        ObjExporter.DoExport(true, Selectable.SelectedSelectables[0].gameObject);
+        //    }
+        //}
+        //else
+        //{
+        //    //UI_DialogPrompt.Open(
+        //    //    "Would you like to include the walls and objects on the walls?", 
+        //    //    new ButtonAction(
+        //    //        "Yes", 
+        //    //        () => ObjExporter.DoExport(true, Selectable.ActiveSelectables)),
+        //    //    new ButtonAction(
+        //    //        "No", 
+        //    //        () => ObjExporter.DoExport(true, Selectable.ActiveSelectables, true)));
+        //}
+        UI_ObjExportOptions.Open();
     }
 }

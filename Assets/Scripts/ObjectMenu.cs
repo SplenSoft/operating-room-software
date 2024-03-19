@@ -357,9 +357,16 @@ public class ObjectMenu : MonoBehaviour
 
         var apData = metaData
             .AttachmentPointGuidMetaData
-            .First(x => x.Guid == attachmentPoint.MetaData.Guid);
+            .FirstOrDefault(x => x.Guid == attachmentPoint.MetaData.Guid);
 
-        ObjectMenuItems.ForEach(async item =>
+        if (apData == default)
+        {
+            apData = selectableData.MetaData
+                .AttachmentPointGuidMetaData
+                .First(x => x.Guid == attachmentPoint.MetaData.Guid);
+        }
+
+        ObjectMenuItems.ForEach(item =>
         {
             if (item.SelectableData == null)
             {
