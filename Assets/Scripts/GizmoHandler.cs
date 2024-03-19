@@ -140,11 +140,12 @@ public class GizmoHandler : MonoBehaviour
 
     private void UpdatePositionAndRotation()
     {
-        if (!_selectable.IsSelected) 
+        if (!_selectable.IsSelected)
             return;
 
         _translateGizmo.Gizmo.Transform.Position3D = transform.position;
         _translateGizmo.Gizmo.Transform.LocalRotation3D = transform.localRotation;
+        _translateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;
 
         _rotateGizmo.Gizmo.Transform.Position3D = transform.position;
         _rotateGizmo.Gizmo.Transform.Rotation3D = transform.rotation;

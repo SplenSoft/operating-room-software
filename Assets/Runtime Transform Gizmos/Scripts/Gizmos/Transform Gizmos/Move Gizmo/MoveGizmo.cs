@@ -475,6 +475,8 @@ namespace RTG
 
         private void Update2DGizmoPosition()
         {
+            var cam = Gizmo.GetWorkCamera();
+            if (cam == null) return;
             Gizmo.Transform.Position2D = Gizmo.GetWorkCamera().WorldToScreenPoint(Gizmo.Transform.Position3D);
         }
 
