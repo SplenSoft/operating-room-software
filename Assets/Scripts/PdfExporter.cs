@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
+using System.Linq;
 
 public class PdfExporter : MonoBehaviour
 {
@@ -39,22 +40,64 @@ public class PdfExporter : MonoBehaviour
         node.Add("image2", image2);
         SimpleJSON.JSONArray selectableArray = new();
 
-        SimpleJSON.JSONObject selectableData = new();
-        selectableData.Add("Item", "Break System");
-        selectableData.Add("Value", "Electric");
-        selectableArray.Add(selectableData);
+        //SimpleJSON.JSONObject selectableData = new();
+        //selectableData.Add("Item", "Break System");
+        //selectableData.Add("Value", "Electric");
+        //selectableArray.Add(selectableData);
 
-        SimpleJSON.JSONObject selectableData2 = new();
-        selectableData2.Add("Item", "Arm Type");
-        selectableData2.Add("Value", "MediLift Spring Arm");
-        selectableArray.Add(selectableData2);
+        //SimpleJSON.JSONObject selectableData2 = new();
+        //selectableData2.Add("Item", "Arm Type");
+        //selectableData2.Add("Value", "MediLift Spring Arm");
+        //selectableArray.Add(selectableData2);
 
-        selectables.ForEach(item =>
+        selectables
+        .OrderBy(x => x.transform.GetParentCount())
+        .ToList()
+        .ForEach(item =>
         {
+            var metaData = item.RelatedSelectables[0].MetaData;
+
+            var matchingItem = ObjectMenu.Instance.ObjectMenuItems
+                .FirstOrDefault(x => item.RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
+
+            if (matchingItem != null) 
+            {
+                metaData = matchingItem.SelectableMetaData;
+            }
+
+            string itemName = metaData.Name;
+
+            if (!string.IsNullOrWhiteSpace(item.MetaData.SubPartName))
+            {
+                itemName += " " + item.MetaData.SubPartName;
+            }
+
+            if (metaData.Categories.Contains("Service Head Services") || 
+            metaData.Name.Contains("Blank Plate") || 
+            metaData.Name.Contains("Service Head Rails"))
+            {
+                return;
+            }
+            else if (metaData.Categories.Contains("High Voltage Services") ||
+            metaData.Categories.Contains("Low Voltage Services"))
+            {
+                SimpleJSON.JSONObject selectableData = new();
+                selectableData.Add("Item", "Service Head Attachment");
+                selectableData.Add("Value", itemName);
+                selectableArray.Add(selectableData);
+            }
+            else if (item.RelatedSelectables[0] == item)
+            {
+                SimpleJSON.JSONObject selectableData = new();
+                selectableData.Add("Item", "Part/Attachment");
+                selectableData.Add("Value", itemName);
+                selectableArray.Add(selectableData);
+            } 
+
             if (item.ScaleLevels.Count > 0) 
             {
                 SimpleJSON.JSONObject selectableData = new();
-                selectableData.Add("Item", item.MetaData.Name + " length");
+                selectableData.Add("Item", itemName + " length");
                 selectableData.Add("Value", item.CurrentScaleLevel.Size * 1000f + "mm");
                 selectableArray.Add(selectableData);
             }

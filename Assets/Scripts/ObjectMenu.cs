@@ -17,7 +17,7 @@ using FuzzySharp;
 /// </summary>
 public class ObjectMenu : MonoBehaviour
 {
-    private class ObjectMenuItem
+    public class ObjectMenuItem
     {
         public SelectableData SelectableData { get; set; }
         public SelectableMetaData SelectableMetaData { get; set; }
@@ -50,8 +50,8 @@ public class ObjectMenu : MonoBehaviour
 
     private AttachmentPoint _attachmentPoint;
 
-    private List<ObjectMenuItem> ObjectMenuItems 
-    { get; set; } = new();
+    public List<ObjectMenuItem> ObjectMenuItems 
+    { get; private set; } = new();
 
     public static Selectable LastOpenedSelectable 
     { get; private set; }
