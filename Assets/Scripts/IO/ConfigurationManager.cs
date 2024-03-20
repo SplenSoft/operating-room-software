@@ -25,7 +25,7 @@ public class ConfigurationManager : MonoBehaviour
     /// <summary>
     /// The tracker for individual configurations
     /// </summary>
-    private Tracker _tracker; 
+    private Tracker _tracker;
 
     /// <summary>
     /// overall room configuration, contains collection of trackers
@@ -153,7 +153,7 @@ public class ConfigurationManager : MonoBehaviour
 
         // finds all the Selectable & AttachmentPoints for this object
         TrackedObject[] foundObjects = Selectable.SelectedSelectables[0]
-            .transform.root.GetComponentsInChildren<TrackedObject>(); 
+            .transform.root.GetComponentsInChildren<TrackedObject>();
 
         foreach (TrackedObject obj in foundObjects)
         {
@@ -340,7 +340,7 @@ public class ConfigurationManager : MonoBehaviour
             GenerateRoomConfig();
         }
     }
-    
+
     private async void GenerateRoomConfig()
     {
         var token = Loading.GetLoadingToken();
@@ -374,8 +374,8 @@ public class ConfigurationManager : MonoBehaviour
 
             if (IsRoomBoundary(to) || IsBaseboard(to))
             {
-                go = IsRoomBoundary(to) ? 
-                    GetRoomBoundary(to) : 
+                go = IsRoomBoundary(to) ?
+                    GetRoomBoundary(to) :
                     GetBaseboard(to);
 
                 LogData(go.GetComponent<Selectable>(), to);
@@ -384,7 +384,7 @@ public class ConfigurationManager : MonoBehaviour
             }
 
             // if it is not an AttachPoint, we need to place the Selectable
-            if (to.global_guid != _attachPointGUID && !string.IsNullOrEmpty(to.global_guid)) 
+            if (to.global_guid != _attachPointGUID && !string.IsNullOrEmpty(to.global_guid))
             {
                 var task = InstantiateObject(to);
                 await task;
@@ -496,11 +496,21 @@ public class ConfigurationManager : MonoBehaviour
     /// <param name="to">The JSON structure of this object</param>
     private void ProcessAttachedSelectable(GameObject go, TrackedObject.Data to)
     {
-        AttachmentPoint ap = _newPoints.Single(s => ConfigurationManager.GetGameObjectPath(s.gameObject) == to.parent);
-        ap.SetAttachedSelectable(go.GetComponent<Selectable>());
-        go.transform.SetParent(ap.gameObject.transform);
-        go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
-        LogData(go.GetComponent<Selectable>(), to);
+        if (!string.IsNullOrEmpty(to.attachedTo))
+        {
+            GameObject parentGO = GameObject.Find(to.attachedTo);
+            go.transform.SetParent(parentGO.transform);
+            go.GetComponent<Selectable>().AttachedTo = parentGO.GetComponent<Selectable>();
+            LogData(go.GetComponent<Selectable>(), to);
+        }
+        else
+        {
+            AttachmentPoint ap = _newPoints.Single(s => ConfigurationManager.GetGameObjectPath(s.gameObject) == to.parent);
+            ap.SetAttachedSelectable(go.GetComponent<Selectable>());
+            go.transform.SetParent(ap.gameObject.transform);
+            go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
+            LogData(go.GetComponent<Selectable>(), to);
+        }
     }
 
     /// <summary>
@@ -586,6 +596,11 @@ public class ConfigurationManager : MonoBehaviour
             return;
         }
 
+        if(obj.IsDecal())
+        {
+            return;
+        }
+
         if (!string.IsNullOrEmpty(obj.GetComponent<Selectable>().GUID) && obj.transform != obj.transform.root)
         {
             obj.transform.localPosition = Vector3.zero;
@@ -632,12 +647,12 @@ public class ConfigurationManager : MonoBehaviour
 
     public static bool IsRoomBoundary(string guid)
     {
-        return 
-            guid == "Wall_N" || 
+        return
+            guid == "Wall_N" ||
             guid == "Wall_S" ||
-            guid == "Wall_E" || 
+            guid == "Wall_E" ||
             guid == "Wall_W" ||
-            guid == "Ceil" || 
+            guid == "Ceil" ||
             guid == "Floor";
     }
 
