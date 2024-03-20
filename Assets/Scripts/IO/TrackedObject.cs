@@ -19,6 +19,17 @@ public class TrackedObject : MonoBehaviour
         public List<string> materialNames;
     }
 
+    private void Awake()
+    {
+        // Tracked object requires at least one of these
+        // components or things will break
+        if (!gameObject.TryGetComponent<Selectable>(out var _) && 
+        !gameObject.TryGetComponent<AttachmentPoint>(out var _))
+        {
+            Destroy(this);
+        }
+    }
+
     private Data data;
 
     public Data GetData()
