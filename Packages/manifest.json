@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "co.parabox.csg": "https://github.com/fredborden214/pb_CSG.git",
     "com.unity.cinemachine": "2.8.9",
     "com.unity.collab-proxy": "2.0.0",
     "com.unity.collections": "1.2.4",

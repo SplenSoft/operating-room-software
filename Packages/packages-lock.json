@@ -1,12 +1,5 @@
 {
   "dependencies": {
-    "co.parabox.csg": {
-      "version": "https://github.com/fredborden214/pb_CSG.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "080730b2d41dbff7045e264a07c85b707532395f"
-    },
     "com.splensoft.ezcdn": {
       "version": "file:com.splensoft.ezcdn",
       "depth": 0,
