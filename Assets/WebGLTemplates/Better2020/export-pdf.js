@@ -1,7 +1,10 @@
+
+const { jsPDF } = window.jspdf;
+
 function getPdfJson(callback) {
     var searchParams = new URLSearchParams(window.location.search);
     var id = searchParams.get('id');
-    var url = "http://www.splensoft.com/ors/php/json/" + id + ".json";
+    var url = "https://www.splensoft.com/ors/php/json/" + id + ".json";
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
     xhr.responseType = 'json';
@@ -53,10 +56,56 @@ function exportPdf(data) {
         //var headers = ["Item 1", "Item 2"];
         doc.setTextColor(0);
         doc.setFontSize(12);
-        doc.table(10, maxImageHeight + 130, data.selectableData, null, {
-            autoSize: true
-        });
+        // doc.table(10, maxImageHeight + 130, data.selectableData, null, {
+        //     autoSize: true
+        // });
+
+        const margin = {
+            left: 15,
+            right: 15,
+            top: maxImageHeight + 130,
+            bottom: 20,
+          };
+
+          // space between each section
+        const spacing = 5;
+        const sections = 4;
+
+        const printWidht = doc.internal.pageSize.width- (margin.left + margin.right);
+        const sectionWidth = (printWidht - ((sections - 1) * spacing)) / sections;
         
+        doc.autoTable({
+            //head: [['ID', 'Name', 'Email']],
+            body: data.selectableData,
+            tableWidth: sectionWidth,
+            margin,
+            //cellWidth: 'auto',
+            rowPageBreak: 'avoid', // avoid breaking rows into multiple sections
+            didDrawPage({table, pageNumber}) {
+              const docPage = doc.internal.getNumberOfPages();
+              const nextShouldWrap = pageNumber % sections;
+        
+              if (nextShouldWrap) {
+                
+                // move to previous page, so when autoTable calls
+                // addPage() it will still be the same current page
+                doc.setPage(docPage - 1);
+        
+                var sectionWidth = 0;
+                
+                table.columns.forEach((element) => sectionWidth += element.width);
+
+                // change left margin which will controll x position
+                table.settings.margin.left += sectionWidth + spacing;
+
+              } else {
+                
+                // reset left margin for the first section in every page
+                table.settings.margin.left = margin.left;
+              }
+            }
+          });
+
         getBase64Image("logo.png", logoImageData => {
             var lowerRightAreaWidth = 200;
             var lowerRightAreaX = pageWidthPx - 520;
