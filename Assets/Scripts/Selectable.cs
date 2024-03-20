@@ -179,7 +179,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// Used to highlight multiple gizmos instead of just one
     /// </summary>
     [field: SerializeField, ReadOnly]
-    private List<Selectable> RelatedSelectables { get; set; }
+    public List<Selectable> RelatedSelectables { get; private set; }
 
     private List<Selectable> _assemblySelectables = new();
     private Dictionary<Selectable, Quaternion> _originalRotations = new();
