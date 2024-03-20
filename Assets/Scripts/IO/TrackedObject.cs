@@ -26,6 +26,12 @@ public class TrackedObject : MonoBehaviour
         if (!gameObject.TryGetComponent<Selectable>(out var _) && 
         !gameObject.TryGetComponent<AttachmentPoint>(out var _))
         {
+            Debug.LogWarning($"TrackedObject component is on " +
+            $"GameObject {gameObject.name} without either " +
+            $"Selectable or AttachmentPoint. This is not " +
+            $"allowed and the TrackedObject component will " +
+            $"now be destroyed");
+
             Destroy(this);
         }
     }
