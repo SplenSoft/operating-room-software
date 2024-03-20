@@ -162,6 +162,18 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     "elevation photo.")]
     private bool ChangeHeightForElevationPhoto { get; set; }
 
+    [field: SerializeField,
+    Tooltip("Meant for decals. This means you can " +
+    "place it on any collider. Yes, including other " +
+    "decals. Could get messy.")]
+    private bool CanPlaceAnywhere { get; set; }
+
+    /// <summary>
+    /// A forced parent with no attachment point. Only used
+    /// by "decal" type attachments
+    /// </summary>
+    public Selectable AttachedTo { get; set; }
+
     /// <summary>
     /// Selectables that are part of the same prefab as this one. 
     /// Used to highlight multiple gizmos instead of just one
@@ -196,6 +208,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     private bool _isRaycastPlacementMode;
     private bool _hasBeenPlaced;
     public bool Started { get; private set; }
+    private bool _isRaycastingOnSelectable;
 
     #endregion
 
@@ -1040,6 +1053,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             collider.enabled = false;
         }
 
+        if (CanPlaceAnywhere)
+        {
+            GetComponentInChildren<Collider>().enabled = false;
+        }
+
         await Task.Yield();
         if (!Application.isPlaying) return;
 
@@ -1056,128 +1074,163 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
 
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        int mask = 1 << LayerMask.NameToLayer("Wall");
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, mask))
+
+        _isRaycastingOnSelectable = false;
+        if (CanPlaceAnywhere)
         {
-            void SetPosition(RaycastHit hit)
+            int maskSelectable = 1 << LayerMask.NameToLayer("Selectable");
+            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, maskSelectable))
             {
-                Vector3 destination = hit.point;
-                Vector3 normal = hit.normal;
-                if (WallRestrictions[0] == RoomBoundaryType.Ceiling
-                && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+                transform.position = hit.point;
+                transform.LookAt(transform.position + hit.normal, Vector3.up);
+                _isRaycastingOnSelectable = true;
+                AttachedTo = null;
+                Transform parent = hit.transform;
+                while (AttachedTo == null)
                 {
-                    destination += RoomBoundary.DefaultWallThickness * Vector3.down;
-                    normal *= -1;
-                }
-
-                if (SpecialTypes.Contains(SpecialSelectableType.Door))
-                {
-                    if (hit.collider.gameObject.TryGetComponent(out RoomBoundary roomBoundary))
+                    if (parent == null)
                     {
-                        RoomBoundaryType roomBoundaryType = roomBoundary.RoomBoundaryType;
-
-                        float halfThickness = RoomBoundary.DefaultWallThickness / 2f;
-                        if (roomBoundaryType == RoomBoundaryType.WallNorth)
-                        {
-                            destination.z = hit.collider.transform.position.z - halfThickness;
-                            //normal = -Vector3.forward;
-                        }
-                        else if (roomBoundaryType == RoomBoundaryType.WallSouth)
-                        {
-                            destination.z = hit.collider.transform.position.z + halfThickness;
-                            //normal = Vector3.forward;
-                        }
-                        else if (roomBoundaryType == RoomBoundaryType.WallWest)
-                        {
-                            destination.x = hit.collider.transform.position.x + halfThickness;
-                            //normal = Vector3.right;
-                        }
-                        else if (roomBoundaryType == RoomBoundaryType.WallEast)
-                        {
-                            destination.x = hit.collider.transform.position.x - halfThickness;
-                            //normal = -Vector3.right;
-                        }
-
+                        _isRaycastingOnSelectable = false;
+                        break;
                     }
 
-                    destination.y = 0;
-                }
-
-                if (UI_ToggleSnapping.SnappingEnabled)
-                {
-                    float yMag = Mathf.Abs(hit.normal.y);
-                    float xMag = Mathf.Abs(hit.normal.x);
-                    float zMag = Mathf.Abs(hit.normal.z);
-
-                    if (yMag > xMag && yMag > zMag)
-                    {
-                        destination.x = RoundToNearestHalfInch(destination.x);
-                        destination.z = RoundToNearestHalfInch(destination.z);
-                    }
-                    else if (xMag > yMag && xMag > zMag)
-                    {
-                        destination.y = RoundToNearestHalfInch(destination.y);
-                        destination.z = RoundToNearestHalfInch(destination.z);
-                    }
-                    else if (zMag > xMag && zMag > yMag)
-                    {
-                        destination.y = RoundToNearestHalfInch(destination.y);
-                        destination.x = RoundToNearestHalfInch(destination.x);
-                    }
-                }
-                transform.SetPositionAndRotation(destination, Quaternion.LookRotation(normal));
-                _virtualParent = hit.collider.transform;
-            }
-
-            if (WallRestrictions.Count > 0 && _virtualParent == null)
-            {
-                Vector3 direction = WallRestrictions[0] == RoomBoundaryType.Ceiling ? Vector3.up : WallRestrictions[0] == RoomBoundaryType.Floor ? Vector3.down : Vector3.right;
-                var ray2 = new Ray(Vector3.zero + Vector3.up, direction);
-                if (Physics.Raycast(ray2, out RaycastHit raycastHit2, float.MaxValue, mask))
-                {
-                    SetPosition(raycastHit2);
+                    AttachedTo = parent.gameObject.GetComponent<Selectable>();
+                    parent = parent.parent;
                 }
             }
-            else if (WallRestrictions.Count > 0)
+        }
+    
+        if (!_isRaycastingOnSelectable)
+        {
+            int mask = 1 << LayerMask.NameToLayer("Wall");
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, mask))
             {
-                if (raycastHit.collider.tag == "Wall")
+                void SetPosition(RaycastHit hit)
                 {
-                    SetPosition(raycastHit);
+                    Vector3 destination = hit.point;
+                    Vector3 normal = hit.normal;
+                    if (WallRestrictions[0] == RoomBoundaryType.Ceiling
+                    && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+                    {
+                        destination += RoomBoundary.DefaultWallThickness * Vector3.down;
+                        normal *= -1;
+                    }
+
+                    if (SpecialTypes.Contains(SpecialSelectableType.Door))
+                    {
+                        if (hit.collider.gameObject.TryGetComponent(out RoomBoundary roomBoundary))
+                        {
+                            RoomBoundaryType roomBoundaryType = roomBoundary.RoomBoundaryType;
+
+                            float halfThickness = RoomBoundary.DefaultWallThickness / 2f;
+                            if (roomBoundaryType == RoomBoundaryType.WallNorth)
+                            {
+                                destination.z = hit.collider.transform.position.z - halfThickness;
+                                //normal = -Vector3.forward;
+                            }
+                            else if (roomBoundaryType == RoomBoundaryType.WallSouth)
+                            {
+                                destination.z = hit.collider.transform.position.z + halfThickness;
+                                //normal = Vector3.forward;
+                            }
+                            else if (roomBoundaryType == RoomBoundaryType.WallWest)
+                            {
+                                destination.x = hit.collider.transform.position.x + halfThickness;
+                                //normal = Vector3.right;
+                            }
+                            else if (roomBoundaryType == RoomBoundaryType.WallEast)
+                            {
+                                destination.x = hit.collider.transform.position.x - halfThickness;
+                                //normal = -Vector3.right;
+                            }
+
+                        }
+
+                        destination.y = 0;
+                    }
+
+                    if (UI_ToggleSnapping.SnappingEnabled)
+                    {
+                        float yMag = Mathf.Abs(hit.normal.y);
+                        float xMag = Mathf.Abs(hit.normal.x);
+                        float zMag = Mathf.Abs(hit.normal.z);
+
+                        if (yMag > xMag && yMag > zMag)
+                        {
+                            destination.x = RoundToNearestHalfInch(destination.x);
+                            destination.z = RoundToNearestHalfInch(destination.z);
+                        }
+                        else if (xMag > yMag && xMag > zMag)
+                        {
+                            destination.y = RoundToNearestHalfInch(destination.y);
+                            destination.z = RoundToNearestHalfInch(destination.z);
+                        }
+                        else if (zMag > xMag && zMag > yMag)
+                        {
+                            destination.y = RoundToNearestHalfInch(destination.y);
+                            destination.x = RoundToNearestHalfInch(destination.x);
+                        }
+                    }
+                    transform.SetPositionAndRotation(destination, Quaternion.LookRotation(normal));
+                    _virtualParent = hit.collider.transform;
                 }
-                else
+
+                if (WallRestrictions.Count > 0 && _virtualParent == null)
                 {
-                    var wall = raycastHit.collider.GetComponent<RoomBoundary>();
-                    if (WallRestrictions.Contains(wall.RoomBoundaryType))
+                    Vector3 direction = WallRestrictions[0] == RoomBoundaryType.Ceiling ? Vector3.up : WallRestrictions[0] == RoomBoundaryType.Floor ? Vector3.down : Vector3.right;
+                    var ray2 = new Ray(Vector3.zero + Vector3.up, direction);
+                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, float.MaxValue, mask))
+                    {
+                        SetPosition(raycastHit2);
+                    }
+                }
+                else if (WallRestrictions.Count > 0)
+                {
+                    if (raycastHit.collider.tag == "Wall")
                     {
                         SetPosition(raycastHit);
                     }
+                    else
+                    {
+                        var wall = raycastHit.collider.GetComponent<RoomBoundary>();
+                        if (WallRestrictions.Contains(wall.RoomBoundaryType))
+                        {
+                            SetPosition(raycastHit);
+                        }
+                    }
+                }
+                else
+                {
+                    SetPosition(raycastHit);
                 }
             }
-            else
-            {
-                SetPosition(raycastHit);
-            }
         }
-
+        
         if (Input.GetMouseButtonUp(0))
         {
             _highlightEffect.highlighted = false;
             _hasBeenPlaced = true;
-            //SendMessage("SelectablePositionChanged");
-            //SendMessage("VirtualParentChanged", _virtualParent);
-            if (_virtualParent != null && TryGetComponent<KeepRelativePosition>(out var krp))
+
+            if (_isRaycastingOnSelectable)
             {
-                krp.VirtualParentChanged(_virtualParent);
-                krp.SelectablePositionChanged();
+                transform.parent = AttachedTo.transform;
             }
             else
             {
-                Debug.LogWarning("No virtual parent detected.");
-            }
+                if (_virtualParent != null && TryGetComponent<KeepRelativePosition>(out var krp))
+                {
+                    krp.VirtualParentChanged(_virtualParent);
+                    krp.SelectablePositionChanged();
+                }
+                else
+                {
+                    Debug.LogWarning("No virtual parent detected.");
+                }
 
-            if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
-            {
-                RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = false;
+                if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+                {
+                    RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = false;
+                }
             }
 
             if (transform.CompareTag("Wall"))
@@ -1190,6 +1243,12 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 }
                 collider.enabled = true;
             }
+
+            if (CanPlaceAnywhere)
+            {
+                GetComponentInChildren<Collider>().enabled = true;
+            }
+
 
             await Task.Yield();
             if (!Application.isPlaying) return;

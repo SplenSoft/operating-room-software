@@ -90,6 +90,7 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <CanPlaceAnywhere>k__BackingField: 0
   <RelatedSelectables>k__BackingField:
   - {fileID: 525580441832503489}
   <CurrentScaleLevel>k__BackingField:

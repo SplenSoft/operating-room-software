@@ -631,6 +631,7 @@ MonoBehaviour:
   <Measurables>k__BackingField: []
   <AlignForElevationPhoto>k__BackingField: 1
   <ChangeHeightForElevationPhoto>k__BackingField: 0
+  <CanPlaceAnywhere>k__BackingField: 0
   <RelatedSelectables>k__BackingField:
   - {fileID: 1078374745571109936}
   - {fileID: 356605546129720916}

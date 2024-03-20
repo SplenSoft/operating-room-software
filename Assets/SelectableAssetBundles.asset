@@ -579,6 +579,19 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: Decal_StorzLogo
+    <SaveLoadGuid>k__BackingField: gameobject_409a9b4621dcd74438b93f3a0bcbcf81
+    <AssetBundleName>k__BackingField: gameobject_409a9b4621dcd74438b93f3a0bcbcf81
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Decal_SkorzLogo
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: DellComputer
     <SaveLoadGuid>k__BackingField: gameobject_f689c7e04d6db0f4abe8e0378028291d
     <AssetBundleName>k__BackingField: gameobject_f689c7e04d6db0f4abe8e0378028291d
