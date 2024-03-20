@@ -68,6 +68,19 @@ MonoBehaviour:
           <Guid>k__BackingField: 8d8264e8-f93e-4ee1-b57f-959819532628
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
+  - <PrefabName>k__BackingField: Ambition 1.5
+    <SaveLoadGuid>k__BackingField: gameobject_788b398a4c5301046bf538ce6a12f4b9
+    <AssetBundleName>k__BackingField: gameobject_788b398a4c5301046bf538ce6a12f4b9
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Ambition 1.5
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: ArmDropTube
     <SaveLoadGuid>k__BackingField: gameobject_8d1c540de7b95ef45bd0a0379fd6550c
     <AssetBundleName>k__BackingField: gameobject_8d1c540de7b95ef45bd0a0379fd6550c
@@ -180,6 +193,32 @@ MonoBehaviour:
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: Server Rack
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: Azurion 7B2015 Biplane
+    <SaveLoadGuid>k__BackingField: gameobject_928df500ee59a63419972cb6a6d5bb88
+    <AssetBundleName>k__BackingField: gameobject_928df500ee59a63419972cb6a6d5bb88
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Azurion 7B2015 Biplane
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: Azurion 7C20 FlexArm
+    <SaveLoadGuid>k__BackingField: gameobject_0bc936273bfde614bb55fca0304c1432
+    <AssetBundleName>k__BackingField: gameobject_0bc936273bfde614bb55fca0304c1432
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Azurion 7C20 FlexArm
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
@@ -670,6 +709,19 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: Digital Diagnost C90
+    <SaveLoadGuid>k__BackingField: gameobject_d7dc3df33426639479d0c91e68a629f3
+    <AssetBundleName>k__BackingField: gameobject_d7dc3df33426639479d0c91e68a629f3
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Digital Diagnost C90
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: DigitalWallClock
     <SaveLoadGuid>k__BackingField: gameobject_f14ae3a315bfa98469559e34321255d2
     <AssetBundleName>k__BackingField: gameobject_f14ae3a315bfa98469559e34321255d2
@@ -1056,6 +1108,19 @@ MonoBehaviour:
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: Doors
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: Dura Diagnost 4_1
+    <SaveLoadGuid>k__BackingField: gameobject_f18f7622fc644b84cbe2a73959fb32b8
+    <AssetBundleName>k__BackingField: gameobject_f18f7622fc644b84cbe2a73959fb32b8
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 0
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Dura Diagnost 4_1
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
@@ -1625,6 +1690,106 @@ MonoBehaviour:
       - <Guid>k__BackingField: 92f92412-9f9b-426f-af43-8f9759f24cbe
         <MetaData>k__BackingField:
           <Guid>k__BackingField: 92f92412-9f9b-426f-af43-8f9759f24cbe
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 74932a04-9afc-4d15-ad5d-ec716d88e6d1
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 74932a04-9afc-4d15-ad5d-ec716d88e6d1
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 40bd409f-4467-4c19-be5a-5b442242fd2f
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 40bd409f-4467-4c19-be5a-5b442242fd2f
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 29a03198-c281-4a23-a6c0-3adbf807c37b
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 29a03198-c281-4a23-a6c0-3adbf807c37b
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 1cf621a4-c36b-441f-b641-4e5230795dbb
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 1cf621a4-c36b-441f-b641-4e5230795dbb
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 0e0c2021-1510-4cfe-9379-30b6d17f4216
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 0e0c2021-1510-4cfe-9379-30b6d17f4216
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: c260f068-56a9-4956-8d07-a8ca458bb36b
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: c260f068-56a9-4956-8d07-a8ca458bb36b
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 0b0e2294-9d19-451c-9e3a-e4261573a4e3
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 0b0e2294-9d19-451c-9e3a-e4261573a4e3
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: ea9de9bb-89a3-42b8-b1c2-25c67b14b391
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: ea9de9bb-89a3-42b8-b1c2-25c67b14b391
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 9cb79725-ad47-42f0-864b-689c5794864c
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 9cb79725-ad47-42f0-864b-689c5794864c
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 0ed19fbe-8be8-4c02-8e73-867d31c0c3d3
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 0ed19fbe-8be8-4c02-8e73-867d31c0c3d3
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 6e24b087-f4b6-466c-8ee1-5b7c91744877
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 6e24b087-f4b6-466c-8ee1-5b7c91744877
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: f8b345e2-a381-4601-9dcb-a74de8d62403
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: f8b345e2-a381-4601-9dcb-a74de8d62403
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: c5f0c1e1-d932-4e37-ae38-b47e21c09c37
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: c5f0c1e1-d932-4e37-ae38-b47e21c09c37
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 779bb866-06f4-4e4b-a535-a648563f8daa
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 779bb866-06f4-4e4b-a535-a648563f8daa
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: f6d566df-43a1-42fe-b7c9-e5aed529174e
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: f6d566df-43a1-42fe-b7c9-e5aed529174e
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: cc1afcfd-f5d5-465d-be3b-f82023e561dd
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: cc1afcfd-f5d5-465d-be3b-f82023e561dd
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: e03dc114-5238-45df-8e06-490545f80927
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: e03dc114-5238-45df-8e06-490545f80927
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 7a21e78a-b40a-4c35-a861-a1ff0c8a514e
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 7a21e78a-b40a-4c35-a861-a1ff0c8a514e
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: 08043804-4594-4c7f-90dd-356940326d71
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 08043804-4594-4c7f-90dd-356940326d71
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: ea69b8e8-ff3e-4dc0-a7c8-05618e835754
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: ea69b8e8-ff3e-4dc0-a7c8-05618e835754
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
   - <PrefabName>k__BackingField: OR_Table_0
