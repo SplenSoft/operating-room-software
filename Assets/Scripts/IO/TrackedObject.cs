@@ -15,6 +15,7 @@ public class TrackedObject : MonoBehaviour
         public Quaternion rot;
         public Vector3 scale;
         public string parent;
+        public string attachedTo;
         public Selectable.ScaleLevel scaleLevel;
         public List<string> materialNames;
     }
@@ -110,6 +111,7 @@ public class TrackedObject : MonoBehaviour
         data.pos = d.pos;
         data.rot = d.rot;
         data.scale = d.scale;
+        data.attachedTo = d.attachedTo;
     }
 
     void GetGUIDs()
@@ -127,6 +129,11 @@ public class TrackedObject : MonoBehaviour
             {
                 data.parent = ConfigurationManager.GetGameObjectPath(s.ParentAttachmentPoint.gameObject);
             }
+            else if(s.AttachedTo != null)
+            {
+                data.parent = s.AttachedTo.gameObject.name;
+                data.attachedTo = data.parent;
+            }
             else if (gameObject.transform != gameObject.transform.root)
             {
                 data.parent = ConfigurationManager.GetGameObjectPath(this.gameObject);
@@ -138,6 +145,19 @@ public class TrackedObject : MonoBehaviour
             data.global_guid = ap.GUID;
 
             data.parent = ConfigurationManager.GetGameObjectPath(gameObject);
+        }
+    }
+
+    public bool IsDecal()
+    {
+        if(!string.IsNullOrEmpty(data.attachedTo) || GetComponent<Selectable>().AttachedTo != null)
+        {
+            data.attachedTo = "";
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
