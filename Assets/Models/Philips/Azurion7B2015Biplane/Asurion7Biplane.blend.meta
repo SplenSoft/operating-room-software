@@ -3,7 +3,57 @@ guid: 0f5a3df3752614a49a57866fec563051
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BoomHead_White
+    second: {fileID: 2100000, guid: 31e46d37a3b65db4cb646cc8a91c42fc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BoomLight_White
+    second: {fileID: 2100000, guid: 5d7c86484dfcfcc4b938155568346a5e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CeilingCarm_White
+    second: {fileID: 2100000, guid: 4f05c6a6f91904b48abf897ad156cb0c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CeilingRail_White
+    second: {fileID: 2100000, guid: d04d3c7ee67bce64da7953c9c09e5984, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Logo
+    second: {fileID: 2100000, guid: 7bec4e898352a774b8711af6af5013d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Screen
+    second: {fileID: -4434614731355606910, guid: 17b46e39ed1cb1b48bffff50173bbc7e, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TV_Black
+    second: {fileID: 2100000, guid: 37d2d288568a23b4992edc3d8c74140e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TV_White
+    second: {fileID: 2100000, guid: ebeced2ae88ec4e44b8cbbe489223457, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Table_White
+    second: {fileID: 2100000, guid: 03b0a74c5b21b53458a3a31a0c624212, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: White_FloorCarm
+    second: {fileID: 2100000, guid: f85aa70b38b84e04e962a721dcc3ee64, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

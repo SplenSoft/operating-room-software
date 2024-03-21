@@ -3,7 +3,52 @@ guid: 05d43c703b862c444a6f38d91cf987e5
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BoomArm_White
+    second: {fileID: 2100000, guid: f30d8427666d62d4184f06c895e72eaf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BoomLight_White
+    second: {fileID: 2100000, guid: 9ab9e34d6062dc846ba8b2bf4124baf1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Logo
+    second: {fileID: 2100000, guid: 7bec4e898352a774b8711af6af5013d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RoofCarm_White
+    second: {fileID: 2100000, guid: c525f4fec6af93c45aa70022e6eb359b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: RoofRail_White
+    second: {fileID: 2100000, guid: b30c495efd50f9649b25b5e589d7e45e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Screen
+    second: {fileID: -4434614731355606910, guid: 17b46e39ed1cb1b48bffff50173bbc7e, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TV_Black
+    second: {fileID: 2100000, guid: b2b70ee67f02d53488e2a325ccb10bb9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TV_White
+    second: {fileID: 2100000, guid: 88cc4ede08e62264481b753f158e7dc6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Table_White
+    second: {fileID: 2100000, guid: ed0837d958abedd429cbc23f4eb97c17, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
