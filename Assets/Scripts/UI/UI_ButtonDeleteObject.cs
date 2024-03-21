@@ -41,8 +41,9 @@ public class UI_ButtonDeleteObject : MonoBehaviour
                 Action = () =>
                     {
                         var selectables = Selectable.SelectedSelectables;
-                        Selectable.DeselectAll();
                         Destroy(selectables[0].gameObject);
+                        //Selectable.DeselectAll();
+
                     },
             },
             new ButtonAction
