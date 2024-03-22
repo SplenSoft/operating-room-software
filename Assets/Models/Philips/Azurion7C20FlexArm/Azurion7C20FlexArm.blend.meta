@@ -38,7 +38,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: TV_Black
-    second: {fileID: 2100000, guid: b2b70ee67f02d53488e2a325ccb10bb9, type: 2}
+    second: {fileID: 2100000, guid: 021e23a7fcbc8294c980fb088ac09f8d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -49,6 +49,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Table_White
     second: {fileID: 2100000, guid: ed0837d958abedd429cbc23f4eb97c17, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Transparent
+    second: {fileID: 2100000, guid: 0d733147e86a5cb4da3e278d463963bc, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
