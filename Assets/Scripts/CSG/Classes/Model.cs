@@ -14,8 +14,6 @@ namespace Parabox.CSG
         List<Material> m_Materials;
         List<List<int>> m_Indices;
 
-        private static Material defaultMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-
         public List<Material> materials
         {
             get { return m_Materials; }
@@ -120,7 +118,9 @@ namespace Parabox.CSG
                         m_Vertices[indices[i + 2]]
                     };
 
-                    var material = m_Materials.Count > s ? m_Materials[s] : defaultMaterial;
+                    var material = m_Materials.Count > s ? m_Materials[s] :
+                        m_Materials.Count > 0 && m_Materials[0] != null ? m_Materials[0] :
+                        DefaultMaterialReference.GetDefaultMaterial();
 
                     list.Add(new Polygon(triangle, material));
                 }
