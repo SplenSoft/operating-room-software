@@ -867,13 +867,13 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return imageDatas;
     }
 
-    public void ExportElevationPdf()
+    public void ExportElevationPdf(string title, string subtitle)
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
         {
             if (rootObj != gameObject)
             {
-                rootObj.GetComponent<Selectable>().ExportElevationPdf();
+                rootObj.GetComponent<Selectable>().ExportElevationPdf(title, subtitle);
                 return;
             }
 
@@ -892,7 +892,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             //shut off all selectables in the scene except for the ones in this arm assembly
             ActiveSelectables.Where(x => !_assemblySelectables.Contains(x)).ToList().ForEach(x => x.gameObject.SetActive(false));
 
-            PdfExporter.ExportElevationPdf(GetAssemblyPDFImageData(camera), _assemblySelectables);
+            PdfExporter.ExportElevationPdf(
+                GetAssemblyPDFImageData(camera), 
+                _assemblySelectables, title, subtitle);
 
             for (int i = 0; i < ActiveSelectables.Count; i++) ActiveSelectables[i].gameObject.SetActive(visibilities[i]);
 
@@ -1276,7 +1278,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 return;
             }
 
-            if (!IsDestructible) return;
+            if (FullScreenMenu.IsOpen)
+                return;
+
+            if (!IsDestructible) 
+                return;
 
             Deselect();
 

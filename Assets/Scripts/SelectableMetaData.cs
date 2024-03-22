@@ -50,6 +50,8 @@ public class SelectableMetaData
     [field: SerializeField, ReadOnly]
     public List<AttachmentPointGuidMetaData> 
     AttachmentPointGuidMetaData { get; set; } = new();
+
+    public List<PdfData> PdfData { get; set; } = new();
 }
 
 [Serializable]
@@ -61,4 +63,12 @@ public class AttachmentPointGuidMetaData
     [field: SerializeField] 
     public AttachmentPointMetaData 
     MetaData { get; set; }
+}
+
+[Serializable]
+public class PdfData
+{
+    public string Table { get; set; }
+    public string Key { get; set; }
+    public string Value { get; set; }
 }

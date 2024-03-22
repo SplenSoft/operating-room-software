@@ -15,7 +15,11 @@ public class PdfExporter : MonoBehaviour
         public int Width { get; set; }
     }
 
-    public static async void ExportElevationPdf(List<PdfImageData> imageData, List<Selectable> selectables)
+    public static async void ExportElevationPdf(
+    List<PdfImageData> imageData, 
+    List<Selectable> selectables, 
+    string title, 
+    string subtitle)
     {
         string image1 = "";
         string image2 = "";
@@ -38,6 +42,8 @@ public class PdfExporter : MonoBehaviour
         SimpleJSON.JSONObject node = new();
         node.Add("image1", image1);
         node.Add("image2", image2);
+        node.Add("title", title);
+        node.Add("subtitle", subtitle);
         SimpleJSON.JSONArray selectableArray = new();
 
         //SimpleJSON.JSONObject selectableData = new();
