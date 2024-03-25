@@ -171,6 +171,15 @@ public class GizmoHandler : MonoBehaviour
         bool zEnabled = scaleEnabled && _canUseScaleZ;
         _scaleGizmo.Gizmo.ScaleGizmo._pstvZSlider.SetVisible(zEnabled);
         _scaleGizmo.Gizmo.ScaleGizmo._pstvZSlider.Set3DCapVisible(zEnabled);
+
+        _scaleGizmo.Gizmo.ScaleGizmo._xySlider.SetVisible(xEnabled && yEnabled);
+        _scaleGizmo.Gizmo.ScaleGizmo._xySlider.SetBorderVisible(xEnabled && yEnabled);
+
+        _scaleGizmo.Gizmo.ScaleGizmo._yzSlider.SetVisible(zEnabled && yEnabled);
+        _scaleGizmo.Gizmo.ScaleGizmo._yzSlider.SetBorderVisible(zEnabled && yEnabled);
+
+        _scaleGizmo.Gizmo.ScaleGizmo._zxSlider.SetVisible(xEnabled && zEnabled);
+        _scaleGizmo.Gizmo.ScaleGizmo._zxSlider.SetBorderVisible(xEnabled && zEnabled);
     }
 
     private void UpdateRotationGizmo()
