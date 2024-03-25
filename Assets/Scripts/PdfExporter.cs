@@ -5,6 +5,7 @@ using System;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 public class PdfExporter : MonoBehaviour
 {
@@ -56,10 +57,51 @@ public class PdfExporter : MonoBehaviour
         //selectableData2.Add("Value", "MediLift Spring Arm");
         //selectableArray.Add(selectableData2);
 
-        selectables
+        var orderedSelectables = selectables
         .OrderBy(x => x.transform.GetParentCount())
-        .ToList()
-        .ForEach(item =>
+        .ToList();
+
+        List<string> serviceHeadItems = new List<string>();
+        List<string> usedServiceHeadItems = new List<string>();
+        orderedSelectables.ForEach(item =>
+        {
+            var metaData = item.RelatedSelectables[0].MetaData;
+
+            var matchingItem = ObjectMenu.Instance.ObjectMenuItems
+                .FirstOrDefault(x => item.RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
+
+            if (matchingItem != null)
+            {
+                metaData = matchingItem.SelectableMetaData;
+            }
+
+            string itemName = metaData.Name;
+
+            if (metaData.Categories.Contains("High Voltage Services") ||
+            metaData.Categories.Contains("Low Voltage Services"))
+            {
+                var existing = serviceHeadItems.FirstOrDefault(x => x.StartsWith(itemName));
+
+                if (existing != default) 
+                {
+                    var count = 1;
+                    var match = Regex.Match(existing, @"\((\d+)\)");
+                    if (match.Success)
+                    {
+                        count = int.Parse(match.Groups[1].Value);
+                    }
+
+                    serviceHeadItems.Remove(existing);
+                    serviceHeadItems.Add(itemName + $" ({count + 1})");
+                }
+                else
+                {
+                    serviceHeadItems.Add(itemName);
+                }
+            }
+        });
+
+        orderedSelectables.ForEach(item =>
         {
             var metaData = item.RelatedSelectables[0].MetaData;
 
@@ -87,10 +129,16 @@ public class PdfExporter : MonoBehaviour
             else if (metaData.Categories.Contains("High Voltage Services") ||
             metaData.Categories.Contains("Low Voltage Services"))
             {
-                SimpleJSON.JSONObject selectableData = new();
-                selectableData.Add("Item", "Service Head Attachment");
-                selectableData.Add("Value", itemName);
-                selectableArray.Add(selectableData);
+                bool exists = usedServiceHeadItems.Any(x => x.StartsWith(itemName));
+
+                if (!exists)
+                {
+                    SimpleJSON.JSONObject selectableData = new();
+                    selectableData.Add("Item", "Service Head Attachment");
+                    selectableData.Add("Value", serviceHeadItems.First(x => x.StartsWith(itemName)));
+                    selectableArray.Add(selectableData);
+                    usedServiceHeadItems.Add(itemName);
+                }
             }
             else if (item.RelatedSelectables[0] == item)
             {
@@ -99,7 +147,6 @@ public class PdfExporter : MonoBehaviour
                 selectableData.Add("Value", itemName);
                 selectableArray.Add(selectableData);
             } 
-
             if (item.ScaleLevels.Count > 0) 
             {
                 SimpleJSON.JSONObject selectableData = new();

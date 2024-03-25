@@ -96,6 +96,7 @@ function exportPdf(data) {
                 table.columns.forEach((element) => sectionWidth += element.width);
 
                 // change left margin which will controll x position
+                table.settings.margin.top = maxImageHeight + 130;
                 table.settings.margin.left += sectionWidth + spacing;
 
               } else {
