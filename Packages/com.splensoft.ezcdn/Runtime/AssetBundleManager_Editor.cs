@@ -143,6 +143,30 @@ namespace SplenSoft.AssetBundles
         {
             AssetDatabase.SaveAssets();
 
+            Assembly[] loadedAssemblies = AppDomain
+                .CurrentDomain.GetAssemblies();
+
+            foreach (Assembly assembly in loadedAssemblies)
+            {
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if (typeof(AssetBundleProcessor).IsAssignableFrom(type) && 
+                    type != typeof(AssetBundleProcessor))
+                    {
+                        var obj = Activator.CreateInstance(type);
+                        if (obj is AssetBundleProcessor processor)
+                        {
+                            processor.OnPreprocessAssetBundles();
+                        }
+                        else
+                        {
+                            throw new Exception($"Could not cast " +
+                            $"{type.Name} to {nameof(AssetBundleProcessor)}");
+                        }
+                    }
+                }
+            }
+
             if (!Directory.Exists(AssetBundlePath))
             {
                 Directory.CreateDirectory(AssetBundlePath);
@@ -345,6 +369,7 @@ namespace SplenSoft.AssetBundles
 
                     Log.Write(LogLevel.Log, $"Completed building asset bundles for {buildTargetBucket.BuildTarget}");
                     Log.Write(LogLevel.Log, $"Syncing asset bundles for {buildTargetBucket.BuildTarget} to Unity Cloud CDN");
+
 
                     string bucketId = buildTargetBucket.BucketId;
 

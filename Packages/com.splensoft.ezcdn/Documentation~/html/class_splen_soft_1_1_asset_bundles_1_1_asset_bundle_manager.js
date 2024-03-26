@@ -15,6 +15,12 @@ var class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager =
     [ "TryGetAssetBundleName", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#a9cf54902e626d1ddb9f91671e4e4a2b8", null ],
     [ "TryGetAssetManifestRetrievalResult", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#af0eb2f01679f4366948443d1ad084ab0", null ],
     [ "TryGetAssetRetrievalResult", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#a7e539cce5717b1fc4277b61e0da25cbc", null ],
+    [ "AssetBundleDownloadFinished", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#a20b2a81211cca6e33c3eec86a46fc219", null ],
+    [ "AssetBundleDownloadStarted", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#a7811b565400e8204cade39e08005ed20", null ],
+    [ "AssetLoaded", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#a51a1560f76de211b531f17c46589ce06", null ],
+    [ "AssetRetrievalStarted", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#acee79898b016912dadc649c0fc083202", null ],
     [ "AutoInitialize", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#a3364a8a5e5d54a128abc207ee05eb7fd", null ],
-    [ "IsPackagingAssets", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#aeab957853079fbaa0f52a17f683ed02a", null ]
+    [ "IsPackagingAssets", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#aeab957853079fbaa0f52a17f683ed02a", null ],
+    [ "SceneAssetLoaded", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#a2395e0b8a982132e5f7ecf070bec661d", null ],
+    [ "SceneAssetRetrievalStarted", "class_splen_soft_1_1_asset_bundles_1_1_asset_bundle_manager.html#ae7c67c526bb8ab374c81fedffd524c2b", null ]
 ];

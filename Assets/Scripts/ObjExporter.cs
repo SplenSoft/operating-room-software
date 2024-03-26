@@ -10,6 +10,8 @@ using Debug = UnityEngine.Debug;
 using UnityEngine.Networking;
 using System.Threading.Tasks;
 using RTG;
+using SimpleJSON;
+using Newtonsoft.Json;
 
 public class ObjExporterScript
 {
@@ -24,11 +26,11 @@ public class ObjExporterScript
         StartIndex = 0;
     }
 
-    public static async Task<string> MeshToString(
+    public static async Task<ObjExportData> MeshToString(
     MeshFilter mf, 
     Transform t, 
     List<Material> materials, 
-    StringBuilder mtlStringBuilder, 
+    ObjExportData data, 
     Loading.LoadingToken loadingToken)
     {
         Vector3 s = t.localScale;
@@ -39,35 +41,34 @@ public class ObjExporterScript
         Mesh m = mf.sharedMesh;
         if (!m)
         {
-            Debug.Log("Export error");
-            return "####Error####";
+            string message = "Mesh not found. Fatal error";
+            UI_DialogPrompt.Open(message);
+            throw new Exception(message);
         }
-
-        StringBuilder sb = new StringBuilder();
 
         foreach (Vector3 vv in m.vertices)
         {
             Vector3 v = t.TransformPoint(vv);
             numVertices++;
-            sb.Append(string.Format("v {0} {1} {2}\n", v.x, v.y, -v.z));
+            data.Obj.Append(string.Format("v {0} {1} {2}\n", v.x, v.y, -v.z));
         }
-        sb.Append("\n");
+        data.Obj.Append("\n");
         foreach (Vector3 nn in m.normals)
         {
             Vector3 v = rotation * nn;
-            sb.Append(string.Format("vn {0} {1} {2}\n", -v.x, -v.y, v.z));
+            data.Obj.Append(string.Format("vn {0} {1} {2}\n", -v.x, -v.y, v.z));
         }
-        sb.Append("\n");
+        data.Obj.Append("\n");
         foreach (Vector3 v in m.uv)
         {
-            sb.Append(string.Format("vt {0} {1}\n", v.x, v.y));
+            data.Obj.Append(string.Format("vt {0} {1}\n", v.x, v.y));
         }
         
         //Material[] mats = m.sub
         Debug.Log($"GameObject {t.gameObject.name} has {m.subMeshCount} submeshes");
         for (int subMesh = 0; subMesh < m.subMeshCount; subMesh++)
         {
-            sb.Append("\n");
+            data.Obj.Append("\n");
 
             //Debug.Log($"Submesh {t.name} meshRenderer == null -> {meshRenderer == null}");
 
@@ -76,30 +77,39 @@ public class ObjExporterScript
             if (materials[submeshIndex] != null)
             {
                 string name = materials[submeshIndex].name;
-                sb.Append("usemtl ").Append(materials[submeshIndex].name).Append("\n");
-                mtlStringBuilder.Append($"newmtl {name}").Append("\n");
+                data.Obj.Append("usemtl ").Append(materials[submeshIndex].name).Append("\n");
+                data.Mtl.Append($"newmtl {name}").Append("\n");
                 //sb.Append("usemap ").Append(materials[subMesh].name).Append("\n");
 
                 var color = materials[submeshIndex].color;
-                mtlStringBuilder.Append($"Ka {color.r} {color.g} {color.b}").Append("\n");
-                mtlStringBuilder.Append($"Kd {color.r} {color.g} {color.b}").Append("\n");
+                data.Mtl.Append($"Ka {color.r} {color.g} {color.b}").Append("\n");
+                data.Mtl.Append($"Kd {color.r} {color.g} {color.b}").Append("\n");
+
+                Texture2D ambientTex = (Texture2D)materials[submeshIndex].GetTexture("_BaseMap");
+                if (ambientTex != null)
+                {
+                    string texString = Convert.ToBase64String(ambientTex.EncodeToPNG());
+                    data.Textures.Add(new ObjExportTexture(ambientTex.name, texString));
+                    data.Mtl.Append($"map_Ka {ambientTex.name}.png").Append("\n");
+                    data.Mtl.Append($"map_Kd {ambientTex.name}.png").Append("\n");
+                }
             }
             else
             {
-                sb.Append("usemtl ").Append("Empty").Append("\n");
-                mtlStringBuilder.Append($"newmtl Empty").Append("\n");
+                data.Obj.Append("usemtl ").Append("Empty").Append("\n");
+                data.Mtl.Append($"newmtl Empty").Append("\n");
                 //sb.Append("usemap ").Append(materials[subMesh].name).Append("\n");
 
                 //var color = materials[subMesh].color;
-                mtlStringBuilder.Append($"Ka 1 1 1").Append("\n");
-                mtlStringBuilder.Append($"Kd 1 1 1").Append("\n");
+                data.Mtl.Append($"Ka 1 1 1").Append("\n");
+                data.Mtl.Append($"Kd 1 1 1").Append("\n");
             }
 
             int[] triangles = m.GetTriangles(subMesh);
             //Debug.Log($"Material {mats[material].name} on obj {t.gameObject.name} has {triangles.Length} triangles");
             for (int i = 0; i < triangles.Length; i += 3)
             {
-                sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
+                data.Obj.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n",
                     triangles[i] + 1 + StartIndex, triangles[i + 1] + 1 + StartIndex, triangles[i + 2] + 1 + StartIndex));
             }
 
@@ -108,7 +118,7 @@ public class ObjExporterScript
         }
 
         StartIndex += numVertices;
-        return sb.ToString();
+        return data;
     }
 }
 
@@ -126,13 +136,7 @@ public static class ObjExporter
         try
         {
             string meshName = name;
-            StringBuilder meshString = new StringBuilder();
-
-            meshString.Append("#" + meshName + ".obj"
-                + "\n#" + System.DateTime.Now.ToLongDateString()
-                + "\n#" + System.DateTime.Now.ToLongTimeString()
-                + "\n#-------"
-                + "\n\n");
+            
 
             //Vector3 oldPos = obj.transform.position;
             //obj.transform.position = Vector3.zero;
@@ -175,6 +179,14 @@ public static class ObjExporter
             await Task.Yield();
             //obj.transform.position = oldPos;
 
+            ObjExportData data = new ObjExportData();
+
+            data.Obj.Append("#" + meshName + ".obj"
+                + "\n#" + System.DateTime.Now.ToLongDateString()
+                + "\n#" + System.DateTime.Now.ToLongTimeString()
+                + "\n#-------"
+                + "\n\n");
+
             var obj = new GameObject("Mesh", typeof(MeshFilter)/*, typeof(MeshRenderer)*/);
             obj.GetComponent<MeshFilter>().sharedMesh = mesh;
 
@@ -185,21 +197,19 @@ public static class ObjExporter
 
             if (!makeSubmeshes)
             {
-                meshString.Append("g ").Append(t.name).Append("\n");
+                data.Obj.Append("g ").Append(t.name).Append("\n");
             }
-            StringBuilder mtlStringBuilder = new StringBuilder();
-            var task = ProcessTransform(t, makeSubmeshes, materials, mtlStringBuilder, loadingTokenWriteObj);
+
+            var task = ProcessTransform(t, makeSubmeshes, materials, data, loadingTokenWriteObj);
             await task;
-            meshString.Append(task.Result);
             loadingTokenOverall.SetProgress(0.75f);
             string id = Guid.NewGuid().ToString();
 
-            meshString.Append($"mtllib {id}.mtl");
+            data.Obj.Append($"mtllib {id}.mtl");
 
             Dictionary<string, string> formFields = new()
             {
-                { "objData", meshString.ToString() },
-                { "mtlData", mtlStringBuilder.ToString() },
+                { "json", JsonConvert.SerializeObject(data) },
                 { "app_password", "qweasdv413240897fvhw" },
                 { "id", id }
             };
@@ -363,38 +373,38 @@ public static class ObjExporter
         return true;
     }
 
-    private static async Task<string> ProcessTransform(
+    private static async Task<ObjExportData> ProcessTransform(
     Transform t, 
     bool makeSubmeshes, 
-    List<Material> materials, 
-    StringBuilder mtlStringBuilder, 
+    List<Material> materials,
+    ObjExportData data, 
     Loading.LoadingToken loadingToken)
     {
-        StringBuilder meshString = new StringBuilder();
-
+        data ??= new ObjExportData();
+        
         if (t.TryGetComponent<MeshFilter>(out var mf))
         {
-            meshString.Append("#" + t.name
+            data.Obj.Append("#" + t.name
                 + "\n#-------"
                 + "\n");
 
             if (makeSubmeshes)
             {
-                meshString.Append("g ").Append(t.name).Append("\n");
+                data.Obj.Append("g ").Append(t.name).Append("\n");
             }
-            var task = ObjExporterScript.MeshToString(mf, t, materials, mtlStringBuilder, loadingToken);
+            var task = ObjExporterScript.MeshToString(mf, t, materials, data, loadingToken);
             await task;
-            meshString.Append(task.Result);
+            data.Obj.Append(task.Result);
         }
 
         for (int i = 0; i < t.childCount; i++)
         {
-            var task = ProcessTransform(t.GetChild(i), makeSubmeshes, materials, mtlStringBuilder, loadingToken);
+            var task = ProcessTransform(t.GetChild(i), makeSubmeshes, materials, data, loadingToken);
             await task;
-            meshString.Append(task.Result);
+            data.Obj.Append(task.Result);
         }
 
-        return meshString.ToString();
+        return data;
     }
 
     private static void WriteToFile(string s, string filename)
@@ -402,6 +412,41 @@ public static class ObjExporter
         using StreamWriter sw = new StreamWriter(filename);
         sw.Write(s);
     }
+}
+
+[Serializable]
+public class ObjExportData
+{
+    [JsonIgnore]
+    public StringBuilder Obj { get; set; } = new();
+
+    [JsonIgnore]
+    public StringBuilder Mtl { get; set; } = new();
+
+    public string ObjString { get; set; }
+    public string MtlString { get; set; }
+
+    public void Bake()
+    {
+        ObjString = Obj.ToString();
+        MtlString = Mtl.ToString();
+    }
+
+    public List<ObjExportTexture> Textures 
+    { get; set; } = new();
+}
+
+[Serializable]
+public class ObjExportTexture
+{
+    public ObjExportTexture(string name, string textureBase64)
+    {
+        Name = name;
+        TextureBase64 = textureBase64;
+    }
+
+    public string Name { get; set; }
+    public string TextureBase64 { get; set; }
 }
 
 public class ObjExportOptions
