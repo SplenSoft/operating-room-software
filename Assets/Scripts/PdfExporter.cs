@@ -20,7 +20,8 @@ public class PdfExporter : MonoBehaviour
     List<PdfImageData> imageData, 
     List<Selectable> selectables, 
     string title, 
-    string subtitle)
+    string subtitle,
+    List<AssemblyData> assemblyDatas)
     {
         string image1 = "";
         string image2 = "";
@@ -45,117 +46,100 @@ public class PdfExporter : MonoBehaviour
         node.Add("image2", image2);
         node.Add("title", title);
         node.Add("subtitle", subtitle);
-        SimpleJSON.JSONArray selectableArray = new();
-
-        //SimpleJSON.JSONObject selectableData = new();
-        //selectableData.Add("Item", "Break System");
-        //selectableData.Add("Value", "Electric");
-        //selectableArray.Add(selectableData);
-
-        //SimpleJSON.JSONObject selectableData2 = new();
-        //selectableData2.Add("Item", "Arm Type");
-        //selectableData2.Add("Value", "MediLift Spring Arm");
-        //selectableArray.Add(selectableData2);
-
-        var orderedSelectables = selectables
-        .OrderBy(x => x.transform.GetParentCount())
-        .ToList();
-
-        List<string> serviceHeadItems = new List<string>();
-        List<string> usedServiceHeadItems = new List<string>();
-        orderedSelectables.ForEach(item =>
+        
+        var assemblies = new SimpleJSON.JSONArray();
+        foreach (var assemblyData in assemblyDatas)
         {
-            var metaData = item.RelatedSelectables[0].MetaData;
+            SimpleJSON.JSONObject assembly = new();
+            SimpleJSON.JSONArray selectableArray = new();
+            List<string> serviceHeadItems = new();
+            List<string> usedServiceHeadItems = new();
 
-            var matchingItem = ObjectMenu.Instance.ObjectMenuItems
-                .FirstOrDefault(x => item.RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
+            var ordSelectables = assemblyData.OrderedSelectables;
 
-            if (matchingItem != null)
+            ordSelectables.ForEach(item =>
             {
-                metaData = matchingItem.SelectableMetaData;
-            }
+                var metaData = item.GetMetadata();
 
-            string itemName = metaData.Name;
+                string itemName = metaData.Name;
 
-            if (metaData.Categories.Contains("High Voltage Services") ||
-            metaData.Categories.Contains("Low Voltage Services"))
-            {
-                var existing = serviceHeadItems.FirstOrDefault(x => x.StartsWith(itemName));
-
-                if (existing != default) 
+                if (metaData.Categories.Contains("High Voltage Services") ||
+                metaData.Categories.Contains("Low Voltage Services"))
                 {
-                    var count = 1;
-                    var match = Regex.Match(existing, @"\((\d+)\)");
-                    if (match.Success)
+                    var existing = serviceHeadItems.FirstOrDefault(x => x.StartsWith(itemName));
+
+                    if (existing != default)
                     {
-                        count = int.Parse(match.Groups[1].Value);
+                        var count = 1;
+                        var match = Regex.Match(existing, @"\((\d+)\)");
+                        if (match.Success)
+                        {
+                            count = int.Parse(match.Groups[1].Value);
+                        }
+
+                        serviceHeadItems.Remove(existing);
+                        serviceHeadItems.Add(itemName + $" ({count + 1})");
                     }
-
-                    serviceHeadItems.Remove(existing);
-                    serviceHeadItems.Add(itemName + $" ({count + 1})");
+                    else
+                    {
+                        serviceHeadItems.Add(itemName);
+                    }
                 }
-                else
+            });
+
+            ordSelectables.ForEach(item =>
+            {
+                var metaData = item.GetMetadata();
+
+                string itemName = metaData.Name;
+
+                if (!string.IsNullOrWhiteSpace(item.MetaData.SubPartName))
                 {
-                    serviceHeadItems.Add(itemName);
+                    itemName += " " + item.MetaData.SubPartName;
                 }
-            }
-        });
 
-        orderedSelectables.ForEach(item =>
-        {
-            var metaData = item.RelatedSelectables[0].MetaData;
+                if (metaData.Categories.Contains("Service Head Services") ||
+                metaData.Name.Contains("Blank Plate") ||
+                metaData.Name.Contains("Service Head Rails"))
+                {
+                    return;
+                }
+                else if (metaData.Categories.Contains("High Voltage Services") ||
+                metaData.Categories.Contains("Low Voltage Services"))
+                {
+                    bool exists = usedServiceHeadItems.Any(x => x.StartsWith(itemName));
 
-            var matchingItem = ObjectMenu.Instance.ObjectMenuItems
-                .FirstOrDefault(x => item.RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
-
-            if (matchingItem != null) 
-            {
-                metaData = matchingItem.SelectableMetaData;
-            }
-
-            string itemName = metaData.Name;
-
-            if (!string.IsNullOrWhiteSpace(item.MetaData.SubPartName))
-            {
-                itemName += " " + item.MetaData.SubPartName;
-            }
-
-            if (metaData.Categories.Contains("Service Head Services") || 
-            metaData.Name.Contains("Blank Plate") || 
-            metaData.Name.Contains("Service Head Rails"))
-            {
-                return;
-            }
-            else if (metaData.Categories.Contains("High Voltage Services") ||
-            metaData.Categories.Contains("Low Voltage Services"))
-            {
-                bool exists = usedServiceHeadItems.Any(x => x.StartsWith(itemName));
-
-                if (!exists)
+                    if (!exists)
+                    {
+                        SimpleJSON.JSONObject selectableData = new();
+                        selectableData.Add("Item", "Service Head Attachment");
+                        selectableData.Add("Value", serviceHeadItems.First(x => x.StartsWith(itemName)));
+                        selectableArray.Add(selectableData);
+                        usedServiceHeadItems.Add(itemName);
+                    }
+                }
+                else if (item.RelatedSelectables[0] == item)
                 {
                     SimpleJSON.JSONObject selectableData = new();
-                    selectableData.Add("Item", "Service Head Attachment");
-                    selectableData.Add("Value", serviceHeadItems.First(x => x.StartsWith(itemName)));
+                    selectableData.Add("Item", "Part/Attachment");
+                    selectableData.Add("Value", itemName);
                     selectableArray.Add(selectableData);
-                    usedServiceHeadItems.Add(itemName);
                 }
-            }
-            else if (item.RelatedSelectables[0] == item)
-            {
-                SimpleJSON.JSONObject selectableData = new();
-                selectableData.Add("Item", "Part/Attachment");
-                selectableData.Add("Value", itemName);
-                selectableArray.Add(selectableData);
-            } 
-            if (item.ScaleLevels.Count > 0) 
-            {
-                SimpleJSON.JSONObject selectableData = new();
-                selectableData.Add("Item", itemName + " length");
-                selectableData.Add("Value", item.CurrentScaleLevel.Size * 1000f + "mm");
-                selectableArray.Add(selectableData);
-            }
-        });
-        node.Add("selectableData", selectableArray);
+                if (item.ScaleLevels.Count > 0)
+                {
+                    SimpleJSON.JSONObject selectableData = new();
+                    selectableData.Add("Item", itemName + " length");
+                    selectableData.Add("Value", item.CurrentScaleLevel.Size * 1000f + "mm");
+                    selectableArray.Add(selectableData);
+                }
+            });
+
+            assembly.Add("title", assemblyData.Title);
+            assembly.Add("selectableData", selectableArray);
+            assemblies.Add(assembly);
+        }
+
+        node.Add("assemblies", assemblies);
 
         string id = Guid.NewGuid().ToString();
 

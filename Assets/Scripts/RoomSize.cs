@@ -110,6 +110,9 @@ public class RoomSize : MonoBehaviour
 [Serializable]
 public struct RoomDimension
 {
+    /// <summary>
+    /// Parameters are in feet
+    /// </summary>
     public RoomDimension(float w, float h, float d)
     {
         Width = w;
@@ -117,7 +120,16 @@ public struct RoomDimension
         Depth = d;
     }
 
+    /// <summary>
+    /// Measured in feet
+    /// </summary>
     public float Width;
+    /// <summary>
+    /// Measured in feet
+    /// </summary>
     public float Height;
+    /// <summary>
+    /// Measured in feet
+    /// </summary>
     public float Depth;
 }

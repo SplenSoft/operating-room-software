@@ -654,16 +654,20 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     private bool IsHittingCeiling()
     {
-        RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
+        //RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
 
-        var bounds = ceiling.MeshRenderer.bounds;
+        float width = RoomSize.Instance.CurrentDimensions.Width.ToMeters();
+        float depth = RoomSize.Instance.CurrentDimensions.Depth.ToMeters();
+        float height = RoomSize.Instance.CurrentDimensions.Height.ToMeters();
+        var bounds = new Bounds(RoomSize.Bounds.center, new Vector3(width, height, depth));
         if (!TryGetComponent<MeshFilter>(out var meshFilter)) return false;
 
         var verts = meshFilter.sharedMesh.vertices;
 
         foreach (var vert in verts)
         {
-            if (bounds.Contains(transform.TransformPoint(vert))) return true;
+            var transformedVert = transform.TransformPoint(vert);
+            if (transformedVert.y > bounds.max.y) return true;
         }
 
         return false;
@@ -829,21 +833,28 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
                 if (i == 0)
                 {
-                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue() : gizmoSetting.GetMinValue();
-                    selectable.transform.localEulerAngles = newAngles;
-                    var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
-                    while (childList.FirstOrDefault(x => x.IsHittingCeiling()) != default)
-                    {
-                        float abs = Mathf.Abs(newAngles.y) - 1f;
-                        if (abs < 0f) break;
-                        newAngles.y = abs * Mathf.Sign(newAngles.y);
-                        selectable.transform.localEulerAngles = newAngles;
-                    }
+                    newAngles.y = gizmoSetting.Invert ? 
+                        gizmoSetting.GetMaxValue() : gizmoSetting.GetMinValue();
                 }
                 else
                 {
-                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMinValue() : gizmoSetting.GetMaxValue();
+                    newAngles.y = gizmoSetting.Invert ? 
+                        gizmoSetting.GetMinValue() : gizmoSetting.GetMaxValue();
                 }
+                   
+                selectable.transform.localEulerAngles = newAngles;
+                var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
+                //RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
+                //ceiling.gameObject.SetActive(true);
+
+                while (childList.Any(x => x.IsHittingCeiling()))
+                {
+                    float abs = Mathf.Abs(newAngles.y) - 0.1f;
+                    if (abs < 0f) break;
+                    newAngles.y = abs * Mathf.Sign(newAngles.y);
+                    selectable.transform.localEulerAngles = newAngles;
+                }
+                //ceiling.gameObject.SetActive(false);
 
                 selectable.transform.localEulerAngles = newAngles;
             }
@@ -867,13 +878,33 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return imageDatas;
     }
 
-    public void ExportElevationPdf(string title, string subtitle)
+    /// <summary>
+    /// Gets most recent metadata from database (via Object 
+    /// menu) or seed data from selectable prefab
+    /// </summary>
+    /// <returns></returns>
+    public SelectableMetaData GetMetadata()
+    {
+        var data = RelatedSelectables[0].MetaData;
+
+        var matchingItem = ObjectMenu.Instance.ObjectMenuItems
+                .FirstOrDefault(x => RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
+
+        if (matchingItem != null)
+        {
+            data = matchingItem.SelectableMetaData;
+        }
+
+        return data;
+    }
+
+    public void ExportElevationPdf(string title, string subtitle, List<AssemblyData> assemblyDatas)
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
         {
             if (rootObj != gameObject)
             {
-                rootObj.GetComponent<Selectable>().ExportElevationPdf(title, subtitle);
+                rootObj.GetComponent<Selectable>().ExportElevationPdf(title, subtitle, assemblyDatas);
                 return;
             }
 
@@ -894,7 +925,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
             PdfExporter.ExportElevationPdf(
                 GetAssemblyPDFImageData(camera), 
-                _assemblySelectables, title, subtitle);
+                _assemblySelectables, title, subtitle, assemblyDatas);
 
             for (int i = 0; i < ActiveSelectables.Count; i++) ActiveSelectables[i].gameObject.SetActive(visibilities[i]);
 

@@ -34,7 +34,9 @@ public partial class AttachmentPoint : MonoBehaviour
     /// <summary>
     /// Moves up in transform hierarchy to same parent as first parent attachment point. Used to keep rotations separate for multiple arm assemblies
     /// </summary>
-    [field: SerializeField] private bool MoveUpOnAttach { get; set; }
+    [field: SerializeField] 
+    public bool MoveUpOnAttach { get; private set; }
+
     /// <summary>
     /// Lower transform hierarchy items will use this attachment point as a rotation reference when taking elevation photos (instead of using ceiling mount attachment points). This is used for arm segments having opposite rotation directions in elevation photos.
     /// </summary>
