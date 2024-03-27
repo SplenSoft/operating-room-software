@@ -632,7 +632,7 @@ public class GizmoHandler : MonoBehaviour
 
         if (TryGetComponent(out ScaleGroup group))
         {
-            ScaleGroupManager.OnZScaleChanged?.Invoke(group.id, _selectable.transform.localScale.z);
+            ScaleGroupManager.OnZScaleChanged?.Invoke(group.id, _selectable.transform.lossyScale.z);
         }
     }
 
