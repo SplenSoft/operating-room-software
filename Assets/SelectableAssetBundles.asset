@@ -1535,6 +1535,19 @@ MonoBehaviour:
       - Boom Head Low Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: IsolationPanel
+    <SaveLoadGuid>k__BackingField: gameobject_9abb18b5b63e79c4195660b06861b450
+    <AssetBundleName>k__BackingField: gameobject_9abb18b5b63e79c4195660b06861b450
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Isolation Panel
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: KickBucketEmpty
     <SaveLoadGuid>k__BackingField: gameobject_38e3197bc9f895142866313e7e024079
     <AssetBundleName>k__BackingField: gameobject_38e3197bc9f895142866313e7e024079
@@ -1583,6 +1596,19 @@ MonoBehaviour:
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: MayoStand
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: MedicalCityLogo
+    <SaveLoadGuid>k__BackingField: gameobject_95cb2ad817f586949a293b13875d6747
+    <AssetBundleName>k__BackingField: gameobject_95cb2ad817f586949a293b13875d6747
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Medical City Logo
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
@@ -1802,6 +1828,84 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: PyxisCounterTop
+    <SaveLoadGuid>k__BackingField: gameobject_de92954fac9c46d4f94fd53a6a31507f
+    <AssetBundleName>k__BackingField: gameobject_de92954fac9c46d4f94fd53a6a31507f
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Pyxis Counter Top
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: PyxisDoubleCabinet
+    <SaveLoadGuid>k__BackingField: gameobject_2a68ad0c96ae19b4a875f6c65efa07c8
+    <AssetBundleName>k__BackingField: gameobject_2a68ad0c96ae19b4a875f6c65efa07c8
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Pyxis Double Cabinet
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: PyxisSingleCabinet(Glass)
+    <SaveLoadGuid>k__BackingField: gameobject_3719ab4b948be3a48bbf27eaad4b1ced
+    <AssetBundleName>k__BackingField: gameobject_3719ab4b948be3a48bbf27eaad4b1ced
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Pyxis Single Cabinet (Glass)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: PyxisSingleCabinet(Solid)
+    <SaveLoadGuid>k__BackingField: gameobject_2eb4d41dbe15a3148934e2d2ccc39a21
+    <AssetBundleName>k__BackingField: gameobject_2eb4d41dbe15a3148934e2d2ccc39a21
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Pyxis Single Cabinet(Solid)
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: PyxisSixDrawer
+    <SaveLoadGuid>k__BackingField: gameobject_19f148d34094da442af8f0c30ef51908
+    <AssetBundleName>k__BackingField: gameobject_19f148d34094da442af8f0c30ef51908
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Pyxis Six Drawer
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: PyxisSmallDrawer
+    <SaveLoadGuid>k__BackingField: gameobject_257794061c41c92448be6175f3e6fc1c
+    <AssetBundleName>k__BackingField: gameobject_257794061c41c92448be6175f3e6fc1c
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Pyxis Small drawer
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: RollingLaptopStand
     <SaveLoadGuid>k__BackingField: gameobject_d25f56e329ebb534fb916608def0be88
     <AssetBundleName>k__BackingField: gameobject_d25f56e329ebb534fb916608def0be88
@@ -1933,6 +2037,19 @@ MonoBehaviour:
       <IsStandalone>k__BackingField: 0
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: Simeon_Light_7000
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: SimeonLightPlate
+    <SaveLoadGuid>k__BackingField: gameobject_3c254b739bf7bdd4cbd8df9c73228ef2
+    <AssetBundleName>k__BackingField: gameobject_3c254b739bf7bdd4cbd8df9c73228ef2
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Simeon Light Plate
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
