@@ -36,7 +36,7 @@ public class ObjectMenu : MonoBehaviour
     private static List<string> _activeAssetBundleNames = new();
     private List<GameObject> _instantiatedCategories = new();
 
-    private const int _minFuzzyRatio = 10;
+    private const int _minFuzzyRatio = 20;
 
     [field: SerializeField] 
     private GameObject ItemTemplate { get; set; }

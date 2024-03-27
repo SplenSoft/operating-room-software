@@ -65,7 +65,8 @@ public partial class ClearanceLinesRenderer : MonoBehaviour
     /// <summary>
     /// "Should be \"true\" on heads that can have attachements (i.e. boom head that can have added shelves)"
     /// </summary>
-    [field: SerializeField] private bool IncludeChildrenInMeasurement { get; set; }
+    [field: SerializeField] 
+    private bool IncludeChildrenInMeasurement { get; set; }
 
     /// <summary>
     /// Adds a buffer amount to clearance lines to account for inaccuracies
