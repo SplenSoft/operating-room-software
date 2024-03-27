@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using RTG;
 using SimpleJSON;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
+using UnityEngine.UIElements;
+using SplenSoft.UnityUtilities;
 
 public class ObjExporterScript
 {
@@ -24,6 +27,36 @@ public class ObjExporterScript
     public static void End()
     {
         StartIndex = 0;
+    }
+
+    private static void HandleTexture(
+    string materialPropertyName, 
+    Material mat,
+    string options,
+    ObjExportData data,   
+    params string[] mapNames)
+    {
+        if (!mat.HasProperty(materialPropertyName)) 
+            return;
+
+        Texture2D tex = (Texture2D)mat.GetTexture(materialPropertyName);
+        if (tex != null)
+        {
+            options ??= string.Empty;
+            string texString = Convert.ToBase64String(tex.EncodeToPNG());
+            data.Textures.Add(new ObjExportTexture(tex.name, texString));
+            foreach (var item in mapNames)
+            {
+                Vector2 o = mat.GetTextureOffset(materialPropertyName);
+                Vector2 s = mat.GetTextureScale(materialPropertyName);
+                Add(data.Mtl, $"{item} -o {o.x} {o.y} -s {s.x} {s.y} {options} {tex.name}.png");
+            }
+        }
+    }
+
+    private static void Add(StringBuilder sb, string text)
+    {
+        sb.Append(text).Append("\n");
     }
 
     public static async Task<ObjExportData> MeshToString(
@@ -70,29 +103,55 @@ public class ObjExporterScript
         {
             data.Obj.Append("\n");
 
-            //Debug.Log($"Submesh {t.name} meshRenderer == null -> {meshRenderer == null}");
-
-            //int submeshIndex = subMesh + 1;
             int submeshIndex = subMesh;
             if (materials[submeshIndex] != null)
             {
-                string name = materials[submeshIndex].name;
-                data.Obj.Append("usemtl ").Append(materials[submeshIndex].name).Append("\n");
+                var mat = materials[submeshIndex];
+                string name = mat.name;
+
+                data.Obj.Append("usemtl ").Append(name).Append("\n");
                 data.Mtl.Append($"newmtl {name}").Append("\n");
                 //sb.Append("usemap ").Append(materials[subMesh].name).Append("\n");
 
-                var color = materials[submeshIndex].color;
+                var color = mat.color;
                 data.Mtl.Append($"Ka {color.r} {color.g} {color.b}").Append("\n");
                 data.Mtl.Append($"Kd {color.r} {color.g} {color.b}").Append("\n");
+                data.Mtl.Append($"d {color.a}").Append("\n");
+                data.Mtl.Append($"Tr {1 - color.a}").Append("\n");
 
-                Texture2D ambientTex = (Texture2D)materials[submeshIndex].GetTexture("_BaseMap");
-                if (ambientTex != null)
+                //Ke/map_Ke
+                if (mat.globalIlluminationFlags != 
+                MaterialGlobalIlluminationFlags.EmissiveIsBlack)
                 {
-                    string texString = Convert.ToBase64String(ambientTex.EncodeToPNG());
-                    data.Textures.Add(new ObjExportTexture(ambientTex.name, texString));
-                    data.Mtl.Append($"map_Ka {ambientTex.name}.png").Append("\n");
-                    data.Mtl.Append($"map_Kd {ambientTex.name}.png").Append("\n");
+                    if (mat.HasProperty("_EmissionColor"))
+                    {
+                        Color e = mat.GetColor("_EmissionColor");
+                        Add(data.Mtl, $"Ke {e.r} {e.g} {e.b}");
+                    }
+                    
+                    if (mat.HasProperty("_EmissionMap"))
+                    {
+                        HandleTexture("_EmissionMap", mat, null, data, "map_Ke");
+                    }
                 }
+                
+                if (mat.HasProperty("_Metallic"))
+                {
+                    Add(data.Mtl, $"Pm {mat.GetFloat("_Metallic")}");
+                    
+                }
+                HandleTexture("_MetallicGlossMap", mat, null, data, "map_Pm");
+                HandleTexture("_BaseMap", mat, null, data, "map_Ka", "map_Kd");
+
+                bool hasBumpScale = false;
+                float scale = 0;
+                if (mat.HasProperty("_BumpScale"))
+                {
+                    scale = mat.GetFloat("_BumpScale");
+                    hasBumpScale = true;
+                }
+                string options = hasBumpScale ? $"-bm {scale}" : null;
+                HandleTexture("_BumpMap", mat, options, data, "map_bump", "bump");
             }
             else
             {
@@ -115,6 +174,9 @@ public class ObjExporterScript
 
             loadingToken.SetProgress((float)subMesh / (m.subMeshCount + 1));
             await Task.Yield();
+
+            if (!Application.isPlaying)
+                throw new AppQuitInTaskException();
         }
 
         StartIndex += numVertices;
@@ -207,55 +269,73 @@ public static class ObjExporter
 
             data.Obj.Append($"mtllib {id}.mtl");
 
-            Dictionary<string, string> formFields = new()
-            {
-                { "json", JsonConvert.SerializeObject(data) },
-                { "app_password", "qweasdv413240897fvhw" },
-                { "id", id }
-            };
+            data.Bake();
 
-            using UnityWebRequest request = UnityWebRequest.Post("http://www.splensoft.com/ors/php/export-obj.php", formFields);
-            request.SendWebRequest();
+            var path = Path.Combine(Application.persistentDataPath, "obj", id);
 
-            while (!request.isDone)
+            Directory.CreateDirectory(path);
+
+            File.WriteAllText(Path.Combine(path, $"{id}.obj"), data.ObjString);
+            File.WriteAllText(Path.Combine(path, $"{id}.mtl"), data.MtlString);
+
+            foreach (var item in data.Textures) 
             {
-                loadingTokenUpload.SetProgress(request.uploadProgress / 1.01f);
-                float waitingProgress = Mathf.Min(loadingTokenWaitForResponse.Progress + (0.01f * Time.deltaTime), 0.9f);
-                loadingTokenWaitForResponse.SetProgress(waitingProgress);
-                await Task.Yield();
-                if (!Application.isPlaying) return;
+                byte[] imageByteArray = Convert.FromBase64String(item.TextureBase64);
+
+                File.WriteAllBytes(Path.Combine(path, $"{item.Name}.png"), imageByteArray);
             }
 
-            loadingTokenUpload.SetProgress(1f / 1.01f);
+            Application.OpenURL(path);
 
-            Debug.Log(request.downloadHandler.text);
+            //Dictionary<string, string> formFields = new()
+            //{
+            //    { "json", JsonConvert.SerializeObject(data) },
+            //    { "app_password", "qweasdv413240897fvhw" },
+            //    { "id", id }
+            //};
 
-            if (request.responseCode != 200)
-            {
-                Debug.LogError(request.responseCode);
-            }
+            //using UnityWebRequest request = UnityWebRequest.Post("http://www.splensoft.com/ors/php/export-obj.php", formFields);
+            //request.SendWebRequest();
 
-            if (request.error != null)
-            {
-                Debug.LogError(request.error);
-                return;
-            }
+            //while (!request.isDone)
+            //{
+            //    loadingTokenUpload.SetProgress(request.uploadProgress / 1.01f);
+            //    float waitingProgress = Mathf.Min(loadingTokenWaitForResponse.Progress + (0.01f * Time.deltaTime), 0.9f);
+            //    loadingTokenWaitForResponse.SetProgress(waitingProgress);
+            //    await Task.Yield();
+            //    if (!Application.isPlaying) return;
+            //}
 
-            if (request.downloadHandler.text.StartsWith("bad password"))
-            {
-                Debug.LogError("Bad app password");
-                return;
-            }
+            //loadingTokenUpload.SetProgress(1f / 1.01f);
 
-            if (request.downloadHandler.text == "success")
-            {
-                Application.OpenURL("http://www.splensoft.com/ors/obj.html?id=" + id);
-            }
-            else
-            {
-                Debug.LogError("Something went wrong while getting PDF URL");
-                Debug.LogError(request);
-            }
+            //Debug.Log(request.downloadHandler.text);
+
+            //if (request.responseCode != 200)
+            //{
+            //    Debug.LogError(request.responseCode);
+            //}
+
+            //if (request.error != null)
+            //{
+            //    Debug.LogError(request.error);
+            //    return;
+            //}
+
+            //if (request.downloadHandler.text.StartsWith("bad password"))
+            //{
+            //    Debug.LogError("Bad app password");
+            //    return;
+            //}
+
+            //if (request.downloadHandler.text == "success")
+            //{
+            //    Application.OpenURL("http://www.splensoft.com/ors/obj.html?id=" + id);
+            //}
+            //else
+            //{
+            //    Debug.LogError("Something went wrong while getting PDF URL");
+            //    Debug.LogError(request);
+            //}
 
             Object.Destroy(mesh);
             Object.Destroy(obj);
@@ -426,6 +506,10 @@ public class ObjExportData
     public string ObjString { get; set; }
     public string MtlString { get; set; }
 
+    /// <summary>
+    /// Serializes string builders so class
+    /// can be properly serialized to json
+    /// </summary>
     public void Bake()
     {
         ObjString = Obj.ToString();
