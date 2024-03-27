@@ -130,7 +130,8 @@ public class ObjectMenu : MonoBehaviour
             .OrderBy(x => x)
             .ToList();
 
-        _allCategories.Add("Save Data");
+        if (SceneManager.GetActiveScene().name != "ObjectEditor")
+            _allCategories.Add("Save Data");
 
         _currentCategoryFilters.Clear();
 
@@ -197,7 +198,20 @@ public class ObjectMenu : MonoBehaviour
     {
         if (!onlyShowStandalones)
         {
-            _instantiatedCategories.ForEach(x => x.SetActive(true));
+            _instantiatedCategories.ForEach(x => 
+            {
+                string text = x.GetComponentInChildren<TextMeshProUGUI>().text;
+                bool isFile = text == "Save Data";
+
+                if (isFile)
+                {
+                    x.SetActive(SceneManager.GetActiveScene().name != "ObjectEditor");
+                    return;
+                }
+
+                x.SetActive(true);
+            
+            });
             return;
         }
 
@@ -209,7 +223,20 @@ public class ObjectMenu : MonoBehaviour
             .ToList();
 
         _instantiatedCategories
-            .ForEach(x => x.SetActive(validCats.Contains(x.GetComponentInChildren<TextMeshProUGUI>().text)));
+            .ForEach(x => 
+            {
+                string text = x.GetComponentInChildren<TextMeshProUGUI>().text;
+                bool textIsMatch = validCats.Contains(text);
+                bool isFile = text == "Save Data";
+
+                if (isFile) 
+                {
+                    x.SetActive(SceneManager.GetActiveScene().name != "ObjectEditor");
+                    return;
+                }
+
+                x.SetActive(textIsMatch);
+            });
     }
 
     private void UpdateSearchFilter(string searchText)
@@ -553,7 +580,8 @@ public class ObjectMenu : MonoBehaviour
             if (item.SelectableData == null)
             {
                 item.GameObject.SetActive
-                    (SceneManager.GetActiveScene().name != "ObjectEditor");
+                    (SceneManager.GetActiveScene().name != "ObjectEditor" && 
+                    IsCategoryValid(item));
                 return;
             }
 
@@ -565,7 +593,7 @@ public class ObjectMenu : MonoBehaviour
 
             if (SceneManager.GetActiveScene().name == "ObjectEditor")
             {
-                item.GameObject.SetActive(true);
+                item.GameObject.SetActive(IsCategoryValid(item));
                 return;
             }
 
