@@ -558,8 +558,16 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return false;
     }
 
-    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
+    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected, bool @override = false)
     {
+        Transform oldParent = null;
+
+        if(!@override && TryGetComponent(out ScaleGroup _))
+        {
+            oldParent = transform.parent;
+            transform.SetParent(null);
+        }
+
         CurrentPreviewScaleLevel = scaleLevel;
         OnScaleChange?.Invoke(CurrentPreviewScaleLevel);
 
@@ -572,7 +580,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, scaleLevel.ScaleZ);
             transform.localScale = newScale;
 
-            if (scaleLevel == CurrentScaleLevel)
+            if (scaleLevel == CurrentScaleLevel && !@override)
             {
                 //Debug.Log("Using stored child scales");
                 for (int i = 0; i < transform.childCount; i++)
@@ -596,7 +604,13 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 {
                     var child = transform.GetChild(i);
 
-                    if (child.TryGetComponent(out IgnoreInverseScaling ignore)) continue;
+                    if (child.TryGetComponent(out IgnoreInverseScaling ignore))
+                    {
+                        if (ignore != null)
+                        {
+                            if (ignore.IgnoreX && ignore.IgnoreY && ignore.IgnoreZ) continue;
+                        }
+                    }
 
                     Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
                     // Debug.Log($"{child.name} Current Scale is ({child.transform.localScale.x}, {child.transform.localScale.y}, {child.transform.localScale.z})");
@@ -617,6 +631,13 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                         float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
                         float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
                         float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
+
+                        if(ignore != null)
+                        {
+                            if(ignore.IgnoreX) x = child.transform.localScale.x;
+                            if(ignore.IgnoreY) y = child.transform.localScale.y;
+                            if(ignore.IgnoreZ) z = child.transform.localScale.z;
+                        }
                         // Debug.Log($"Applying new scale of ({x}, {y}, {z})");
                         child.transform.localScale = new Vector3(x, y, z);
                     }
@@ -640,6 +661,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
 
         transform.rotation = storedRotation;
+
+        if(!@override && TryGetComponent(out ScaleGroup _))
+        {
+            transform.SetParent(oldParent);
+        }
     }
 
     private void UpdateZScaling(bool setSelected)

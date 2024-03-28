@@ -322,9 +322,9 @@ public class GizmoHandler : MonoBehaviour
     private void OnGizmoPreDragBegin(Gizmo gizmo, int handleId)
     {
         _translateGizmo.Gizmo.Transform.LocalRotation3D = transform.localRotation;
-        _localScaleBeforeStartDrag = transform.localScale;
+        _localScaleBeforeStartDrag = _selectable.UseLossyScale ? transform.lossyScale : transform.localScale;
         _positionBeforeStartDrag = transform.position;
-        CurrentScaleDrag = transform.localScale;
+        CurrentScaleDrag = _selectable.UseLossyScale ? transform.lossyScale : transform.localScale;
         //_lastCircleIntersectPoint = default;
         IsBeingUsed = true;
 
@@ -615,7 +615,7 @@ public class GizmoHandler : MonoBehaviour
                     _selectable.transform.localScale = oldScale;
                     return;
                 }
-
+                Debug.LogWarning("We returnin'!");
                 return;
             }
         }
@@ -632,10 +632,9 @@ public class GizmoHandler : MonoBehaviour
 
         if (TryGetComponent(out ScaleGroup group))
         {
-            ScaleGroupManager.OnZScaleChanged?.Invoke(group.id, _selectable.transform.localScale.z);
+            ScaleGroupManager.OnZScaleChanged?.Invoke(group.id, _selectable.transform.lossyScale.z);
         }
     }
-
     private float CalculateZScale(Gizmo gizmo)
     {
         float zScale = _localScaleBeforeStartDrag.z;
@@ -643,10 +642,12 @@ public class GizmoHandler : MonoBehaviour
         {
             if (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
             {
+                if(zScale == 0) zScale = 0.1f;
                 zScale *= gizmo.TotalDragScale.z;
 
                 if (_selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting) && !gizmoSetting.Unrestricted)
                 {
+
                     zScale = Mathf.Clamp(zScale, gizmoSetting.GetMinValue(), gizmoSetting.GetMaxValue());
                 }
             }
