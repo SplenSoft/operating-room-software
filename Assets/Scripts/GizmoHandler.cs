@@ -30,13 +30,13 @@ public class GizmoHandler : MonoBehaviour
     //private static readonly Color _colorTransparent = new(0, 0, 0, 0);
     public bool IsDestroyed { get; private set; }
 
-    private bool RotateGizmoEnabled() => GizmoSelector.CurrentGizmoMode == 
+    private bool RotateGizmoEnabled() => GizmoSelector.CurrentGizmoMode ==
         GizmoMode.Rotate && _selectable.IsSelected;
 
-    private bool TranslateEnabled() => GizmoSelector.CurrentGizmoMode == 
+    private bool TranslateEnabled() => GizmoSelector.CurrentGizmoMode ==
         GizmoMode.Translate && _selectable.IsSelected;
 
-    private bool ScaleEnabled() => GizmoSelector.CurrentGizmoMode == 
+    private bool ScaleEnabled() => GizmoSelector.CurrentGizmoMode ==
         GizmoMode.Scale && _selectable.IsSelected;
 
     [SerializeField, ReadOnly] private bool _canUseAnyTranslation;
@@ -273,7 +273,7 @@ public class GizmoHandler : MonoBehaviour
         if (_gizmosInitialized) return;
 
         _translateGizmo = RTGizmosEngine.Get.CreateObjectMoveGizmo();
-        
+
         // if (Selectable.SelectedSelectable.AllowInverseControl)
         //     _translateGizmo.Gizmo.MoveGizmo.Set2DModeEnabled(true);
 
@@ -599,30 +599,23 @@ public class GizmoHandler : MonoBehaviour
 
         if (_selectable.UseLossyScale && _selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting))
         {
-            float newZScale = zScale / _selectable.transform.lossyScale.z;
+            float oldScaleZ = _selectable.transform.localScale.z;
+
             if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())
             {
-                //_selectable.transform.localScale = Vector3.one;
-                Vector3 oldScale = _selectable.transform.localScale;
-
-                _selectable.transform.localScale = new Vector3(
-                    1,
-                    1,
-                    zScale);
+                _selectable.transform.localScale = new Vector3(1, 1, zScale);
 
                 if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())
                 {
-                    //_selectable.transform.localScale = oldScale;
-                    _selectable.transform.localScale = new Vector3(
-                        1,
-                        1,
-                        oldScale.z
-                    );
+                    _selectable.transform.localScale = new Vector3(1, 1, oldScaleZ);
                     return;
                 }
-                Debug.LogWarning("We returnin'!");
+
                 return;
             }
+
+            yScale = 1;
+            xScale = 1;
         }
 
         _selectable.transform.localScale = new Vector3(xScale, yScale, zScale);
@@ -647,7 +640,7 @@ public class GizmoHandler : MonoBehaviour
         {
             if (_selectable.IsGizmoSettingAllowed(GizmoType.Scale, Axis.Z))
             {
-                if(zScale == 0) zScale = 0.1f;
+                if (zScale == 0) zScale = 0.1f;
                 zScale *= gizmo.TotalDragScale.z;
 
                 if (_selectable.TryGetGizmoSetting(GizmoType.Scale, Axis.Z, out GizmoSetting gizmoSetting) && !gizmoSetting.Unrestricted)
