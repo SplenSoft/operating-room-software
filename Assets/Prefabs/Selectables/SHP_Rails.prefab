@@ -97,6 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7341218db4454408a6eeaf67a70a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <IgnoreX>k__BackingField: 1
+  <IgnoreY>k__BackingField: 1
+  <IgnoreZ>k__BackingField: 1
 --- !u!1 &3069915323613935862
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +352,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7341218db4454408a6eeaf67a70a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <IgnoreX>k__BackingField: 1
+  <IgnoreY>k__BackingField: 1
+  <IgnoreZ>k__BackingField: 1
 --- !u!1 &8857502827239561982
 GameObject:
   m_ObjectHideFlags: 0
