@@ -429,15 +429,7 @@ MonoBehaviour:
   <AttachmentPointDatas>k__BackingField: []
   <SpecialTypes>k__BackingField: 
   <WallRestrictions>k__BackingField: 
-  <GizmoSettingsList>k__BackingField:
-  - <Axis>k__BackingField: 1
-    <GizmoType>k__BackingField: 1
-    <Unrestricted>k__BackingField: 0
-    <MaxValue>k__BackingField: 16
-    <MinValue>k__BackingField: -40
-    <IgnoreScale>k__BackingField: 0
-    <OnlyIfRoot>k__BackingField: 0
-    <Invert>k__BackingField: 0
+  <GizmoSettingsList>k__BackingField: []
   <InitialLocalPositionOffset>k__BackingField: {x: 0, y: 0, z: 0}
   <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
