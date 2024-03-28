@@ -3,7 +3,32 @@ guid: 6d3e2d048f694204b88c80cc39312411
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Control_White
+    second: {fileID: 2100000, guid: e26b928159c5d034da4ba50992606dfe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GreenHighlight
+    second: {fileID: 2100000, guid: 96d6a84ee17ab424d8584e3e803e64ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Logo
+    second: {fileID: 2100000, guid: 7bec4e898352a774b8711af6af5013d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Table_White
+    second: {fileID: 2100000, guid: 8c5d0628c2b1bad469bdcc54efbc22c4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Xray_White
+    second: {fileID: 2100000, guid: 6c8399e8defe27a46819bf06bc411d7d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

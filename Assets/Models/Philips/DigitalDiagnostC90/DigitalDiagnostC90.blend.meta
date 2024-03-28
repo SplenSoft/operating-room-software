@@ -3,7 +3,42 @@ guid: 9a073d4ee3286db49a8c78542fe712ae
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Control_White
+    second: {fileID: 2100000, guid: 32c7dd52e7ee12c46ab3da499acc21e6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Frame_White
+    second: {fileID: 2100000, guid: 62e87f575f1e15c4ba0dc93a89d9dd60, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GreenHighlight
+    second: {fileID: 2100000, guid: 96d6a84ee17ab424d8584e3e803e64ee, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Logo
+    second: {fileID: 2100000, guid: 7bec4e898352a774b8711af6af5013d2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Screen
+    second: {fileID: -4434614731355606910, guid: 17b46e39ed1cb1b48bffff50173bbc7e, type: 3}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Table_White
+    second: {fileID: 2100000, guid: 64728121aeade414191827a2026301d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: XrayScan_White
+    second: {fileID: 2100000, guid: 3d9f2fc18fe4ae149acfd9fc45e426e0, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
