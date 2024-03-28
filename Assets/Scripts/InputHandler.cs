@@ -17,11 +17,15 @@ public class InputHandler : MonoBehaviour
 
     private int[] values;
     private KeyState[] keys;
-    private float _timeClickHeldDown;
+    private static float _timeClickHeldDown;
     private bool _isClicking;
     private Vector2 _mousePosLastFrame;
+    private static float _mouseTotalScreenPercentageDistanceWhileClicked;
     
     static int UILayer => LayerMask.NameToLayer("UI");
+
+    public static bool WasProperClick => _timeClickHeldDown < 0.25f && 
+        _mouseTotalScreenPercentageDistanceWhileClicked < 0.1f;
 
     //Returns 'true' if we touched or hovering on Unity UI element.
     public static bool IsPointerOverUIElement()
@@ -81,7 +85,7 @@ public class InputHandler : MonoBehaviour
         {
             _isClicking = true;
             _timeClickHeldDown = 0f;
-
+            _mouseTotalScreenPercentageDistanceWhileClicked = 0f;
             MouseWasDownOverUI = IsPointerOverUIElement();
         }
         else if (Input.GetMouseButtonUp(0))
@@ -90,6 +94,7 @@ public class InputHandler : MonoBehaviour
         }
         else if (Input.GetMouseButton(0))
         {
+            _mouseTotalScreenPercentageDistanceWhileClicked += MouseDeltaScreenPercentage.magnitude;
             _timeClickHeldDown += Time.deltaTime;
         }
 

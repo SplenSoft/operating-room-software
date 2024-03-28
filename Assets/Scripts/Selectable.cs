@@ -316,8 +316,12 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public void OnMouseUpAsButton()
     {
-        Debug.Log($"Mouse up detected over {gameObject.name}");
-        if (InputHandler.IsPointerOverUIElement()) return;
+        //Debug.Log($"Mouse up detected over {gameObject.name}");
+
+        if (InputHandler.IsPointerOverUIElement() || 
+        !InputHandler.WasProperClick) 
+            return;
+
         Select();
     }
 
