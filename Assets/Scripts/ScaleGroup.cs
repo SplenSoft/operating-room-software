@@ -89,7 +89,7 @@ public class ScaleGroup : MonoBehaviour
 
     void ScaleZ(string changedID, float z)
     {
-        if (changedID != id || transform.localScale.z == z || float.IsNaN(z) || GetComponent<Selectable>().ScaleLevels.Count != 0) return;
+        if (changedID != id || transform.localScale.z == z || transform.lossyScale.z == z || float.IsNaN(z) || GetComponent<Selectable>().ScaleLevels.Count != 0) return;
 
         //transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, z);
         transform.SetWorldScale(new Vector3(transform.lossyScale.x, transform.lossyScale.y, z));
