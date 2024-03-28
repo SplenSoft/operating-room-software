@@ -285,7 +285,22 @@ public static class ObjExporter
                 File.WriteAllBytes(Path.Combine(path, $"{item.Name}.png"), imageByteArray);
             }
 
-            Application.OpenURL(path);
+            UI_DialogPrompt.Open(
+                $"Success! OBJ saved to {path}", 
+                new ButtonAction("Copy Path", () => GUIUtility.systemCopyBuffer = path),
+                new ButtonAction("Done"));
+
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+            string location = path;
+            ProcessStartInfo startInfo = new ProcessStartInfo("/System/Library/CoreServices/Finder.app")
+            {
+                WindowStyle = ProcessWindowStyle.Normal,
+                FileName = location.Trim()
+            };
+            Process.Start(startInfo);
+#endif
+
+            Application.OpenURL("file:///" + path);
 
             //Dictionary<string, string> formFields = new()
             //{
