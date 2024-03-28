@@ -612,7 +612,12 @@ public class GizmoHandler : MonoBehaviour
 
                 if (_selectable.transform.lossyScale.z > gizmoSetting.GetMaxValue())
                 {
-                    _selectable.transform.localScale = oldScale;
+                    //_selectable.transform.localScale = oldScale;
+                    _selectable.transform.localScale = new Vector3(
+                        1,
+                        1,
+                        oldScale.z
+                    );
                     return;
                 }
                 Debug.LogWarning("We returnin'!");
