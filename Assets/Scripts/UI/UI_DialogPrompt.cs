@@ -59,7 +59,9 @@ public class UI_DialogPrompt : MonoBehaviour
 
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => buttonAction.Action?.Invoke());
-            button.onClick.AddListener(() => Instance.gameObject.SetActive(false));
+
+            if (buttonAction.Action == null)
+                button.onClick.AddListener(() => Instance.gameObject.SetActive(false));
         }
         Instance.gameObject.SetActive(true);
     }
