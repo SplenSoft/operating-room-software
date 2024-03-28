@@ -39,4 +39,9 @@ public class UI_ButtonOpenObjectMenu : MonoBehaviour
         bool isFreeLookCam = CameraManager.ActiveCamera == FreeLookCam.Instance.VirtualCamera;
         return isFreeLookCam || isOrthoCeilingCam;
     }
+
+    public void OpenObjectMenu()
+    {
+        ObjectMenu.Open();
+    }
 }

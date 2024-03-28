@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="UnityAssetStoreBanner_EZCDN_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Easy Content Delivery Network<span id="projectnumber">&#160;1.1.0</span>
+   <div id="projectname">Easy Content Delivery Network<span id="projectnumber">&#160;1.2.0</span>
    </div>
    <div id="projectbrief">An addressables-free suite that automatically handles the Unity Cloud Content Delivery API and packaging/deploying assetbundles while providing several tools to make asset management easy.</div>
   </td>
@@ -156,6 +156,30 @@ static async void&#160;</td><td class="memItemRight" valign="bottom"><b>Initiali
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="properties" name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:acee79898b016912dadc649c0fc083202" id="r_acee79898b016912dadc649c0fc083202"><td class="memItemLeft" align="right" valign="top"><a id="acee79898b016912dadc649c0fc083202" name="acee79898b016912dadc649c0fc083202"></a>
+static UnityEvent&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AssetRetrievalStarted</b> = new UnityEvent&lt;string&gt;()<code> [get]</code></td></tr>
+<tr class="memdesc:acee79898b016912dadc649c0fc083202"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when GetAsset is called. <br /></td></tr>
+<tr class="separator:acee79898b016912dadc649c0fc083202"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51a1560f76de211b531f17c46589ce06" id="r_a51a1560f76de211b531f17c46589ce06"><td class="memItemLeft" align="right" valign="top"><a id="a51a1560f76de211b531f17c46589ce06" name="a51a1560f76de211b531f17c46589ce06"></a>
+static UnityEvent&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AssetLoaded</b> = new UnityEvent&lt;string&gt;()<code> [get]</code></td></tr>
+<tr class="memdesc:a51a1560f76de211b531f17c46589ce06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when GetAsset is finished and asset is fully loaded, ready to instantiate. <br /></td></tr>
+<tr class="separator:a51a1560f76de211b531f17c46589ce06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7811b565400e8204cade39e08005ed20" id="r_a7811b565400e8204cade39e08005ed20"><td class="memItemLeft" align="right" valign="top"><a id="a7811b565400e8204cade39e08005ed20" name="a7811b565400e8204cade39e08005ed20"></a>
+static UnityEvent&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AssetBundleDownloadStarted</b> = new UnityEvent&lt;string&gt;()<code> [get]</code></td></tr>
+<tr class="memdesc:a7811b565400e8204cade39e08005ed20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when GetAssetBundle is called. <br /></td></tr>
+<tr class="separator:a7811b565400e8204cade39e08005ed20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20b2a81211cca6e33c3eec86a46fc219" id="r_a20b2a81211cca6e33c3eec86a46fc219"><td class="memItemLeft" align="right" valign="top"><a id="a20b2a81211cca6e33c3eec86a46fc219" name="a20b2a81211cca6e33c3eec86a46fc219"></a>
+static UnityEvent&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>AssetBundleDownloadFinished</b> = new UnityEvent&lt;string&gt;()<code> [get]</code></td></tr>
+<tr class="memdesc:a20b2a81211cca6e33c3eec86a46fc219"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when GetAssetBundle is finished and asset bundle has completed downloading. Note that this does not mean the asset has been loaded. Subscribe to AssetLoaded to know when the asset has been loaded. <br /></td></tr>
+<tr class="separator:a20b2a81211cca6e33c3eec86a46fc219"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7c67c526bb8ab374c81fedffd524c2b" id="r_ae7c67c526bb8ab374c81fedffd524c2b"><td class="memItemLeft" align="right" valign="top"><a id="ae7c67c526bb8ab374c81fedffd524c2b" name="ae7c67c526bb8ab374c81fedffd524c2b"></a>
+static UnityEvent&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SceneAssetRetrievalStarted</b> = new UnityEvent&lt;string&gt;()<code> [get]</code></td></tr>
+<tr class="memdesc:ae7c67c526bb8ab374c81fedffd524c2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when LoadSceneAssetBundle is called. <br /></td></tr>
+<tr class="separator:ae7c67c526bb8ab374c81fedffd524c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2395e0b8a982132e5f7ecf070bec661d" id="r_a2395e0b8a982132e5f7ecf070bec661d"><td class="memItemLeft" align="right" valign="top"><a id="a2395e0b8a982132e5f7ecf070bec661d" name="a2395e0b8a982132e5f7ecf070bec661d"></a>
+static UnityEvent&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SceneAssetLoaded</b> = new UnityEvent&lt;string&gt;()<code> [get]</code></td></tr>
+<tr class="memdesc:a2395e0b8a982132e5f7ecf070bec661d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when LoadSceneAssetBundle is finished and scene is fully loaded. <br /></td></tr>
+<tr class="separator:a2395e0b8a982132e5f7ecf070bec661d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3364a8a5e5d54a128abc207ee05eb7fd" id="r_a3364a8a5e5d54a128abc207ee05eb7fd"><td class="memItemLeft" align="right" valign="top"><a id="a3364a8a5e5d54a128abc207ee05eb7fd" name="a3364a8a5e5d54a128abc207ee05eb7fd"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>AutoInitialize</b> = true<code> [get, set]</code></td></tr>
 <tr class="memdesc:a3364a8a5e5d54a128abc207ee05eb7fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to false to disable the auto initialization (retrieval of AssetBundleManifest and caching dependencies). Note: You must set this to false immedately when the app starts to avoid the first initialization attempt. Best practice would be to use a gameobject that calls awake in the inital scene in the game. <br /></td></tr>

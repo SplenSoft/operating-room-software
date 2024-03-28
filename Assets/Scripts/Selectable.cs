@@ -558,8 +558,16 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return false;
     }
 
-    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
+    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected, bool @override = false)
     {
+        Transform oldParent = null;
+
+        if(!@override && TryGetComponent(out ScaleGroup _))
+        {
+            oldParent = transform.parent;
+            transform.SetParent(null);
+        }
+
         CurrentPreviewScaleLevel = scaleLevel;
         OnScaleChange?.Invoke(CurrentPreviewScaleLevel);
 
@@ -572,7 +580,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, scaleLevel.ScaleZ);
             transform.localScale = newScale;
 
-            if (scaleLevel == CurrentScaleLevel)
+            if (scaleLevel == CurrentScaleLevel && !@override)
             {
                 //Debug.Log("Using stored child scales");
                 for (int i = 0; i < transform.childCount; i++)
@@ -596,7 +604,13 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 {
                     var child = transform.GetChild(i);
 
-                    if (child.TryGetComponent(out IgnoreInverseScaling ignore)) continue;
+                    if (child.TryGetComponent(out IgnoreInverseScaling ignore))
+                    {
+                        if (ignore != null)
+                        {
+                            if (ignore.IgnoreX && ignore.IgnoreY && ignore.IgnoreZ) continue;
+                        }
+                    }
 
                     Vector3 localDiff = child.transform.InverseTransformVector(diffVector);
                     // Debug.Log($"{child.name} Current Scale is ({child.transform.localScale.x}, {child.transform.localScale.y}, {child.transform.localScale.z})");
@@ -617,6 +631,13 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                         float x = Mathf.Abs(child.transform.localScale.x * localDiff.x);
                         float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
                         float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
+
+                        if(ignore != null)
+                        {
+                            if(ignore.IgnoreX) x = child.transform.localScale.x;
+                            if(ignore.IgnoreY) y = child.transform.localScale.y;
+                            if(ignore.IgnoreZ) z = child.transform.localScale.z;
+                        }
                         // Debug.Log($"Applying new scale of ({x}, {y}, {z})");
                         child.transform.localScale = new Vector3(x, y, z);
                     }
@@ -640,6 +661,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
 
         transform.rotation = storedRotation;
+
+        if(!@override && TryGetComponent(out ScaleGroup _))
+        {
+            transform.SetParent(oldParent);
+        }
     }
 
     private void UpdateZScaling(bool setSelected)
@@ -654,16 +680,20 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     private bool IsHittingCeiling()
     {
-        RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
+        //RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
 
-        var bounds = ceiling.MeshRenderer.bounds;
+        float width = RoomSize.Instance.CurrentDimensions.Width.ToMeters();
+        float depth = RoomSize.Instance.CurrentDimensions.Depth.ToMeters();
+        float height = RoomSize.Instance.CurrentDimensions.Height.ToMeters();
+        var bounds = new Bounds(RoomSize.Bounds.center, new Vector3(width, height, depth));
         if (!TryGetComponent<MeshFilter>(out var meshFilter)) return false;
 
         var verts = meshFilter.sharedMesh.vertices;
 
         foreach (var vert in verts)
         {
-            if (bounds.Contains(transform.TransformPoint(vert))) return true;
+            var transformedVert = transform.TransformPoint(vert);
+            if (transformedVert.y > bounds.max.y) return true;
         }
 
         return false;
@@ -829,21 +859,28 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
                 if (i == 0)
                 {
-                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMaxValue() : gizmoSetting.GetMinValue();
-                    selectable.transform.localEulerAngles = newAngles;
-                    var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
-                    while (childList.FirstOrDefault(x => x.IsHittingCeiling()) != default)
-                    {
-                        float abs = Mathf.Abs(newAngles.y) - 1f;
-                        if (abs < 0f) break;
-                        newAngles.y = abs * Mathf.Sign(newAngles.y);
-                        selectable.transform.localEulerAngles = newAngles;
-                    }
+                    newAngles.y = gizmoSetting.Invert ? 
+                        gizmoSetting.GetMaxValue() : gizmoSetting.GetMinValue();
                 }
                 else
                 {
-                    newAngles.y = gizmoSetting.Invert ? gizmoSetting.GetMinValue() : gizmoSetting.GetMaxValue();
+                    newAngles.y = gizmoSetting.Invert ? 
+                        gizmoSetting.GetMinValue() : gizmoSetting.GetMaxValue();
                 }
+                   
+                selectable.transform.localEulerAngles = newAngles;
+                var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
+                //RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
+                //ceiling.gameObject.SetActive(true);
+
+                while (childList.Any(x => x.IsHittingCeiling()))
+                {
+                    float abs = Mathf.Abs(newAngles.y) - 0.1f;
+                    if (abs < 0f) break;
+                    newAngles.y = abs * Mathf.Sign(newAngles.y);
+                    selectable.transform.localEulerAngles = newAngles;
+                }
+                //ceiling.gameObject.SetActive(false);
 
                 selectable.transform.localEulerAngles = newAngles;
             }
@@ -867,13 +904,33 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return imageDatas;
     }
 
-    public void ExportElevationPdf()
+    /// <summary>
+    /// Gets most recent metadata from database (via Object 
+    /// menu) or seed data from selectable prefab
+    /// </summary>
+    /// <returns></returns>
+    public SelectableMetaData GetMetadata()
+    {
+        var data = RelatedSelectables[0].MetaData;
+
+        var matchingItem = ObjectMenu.Instance.ObjectMenuItems
+                .FirstOrDefault(x => RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
+
+        if (matchingItem != null)
+        {
+            data = matchingItem.SelectableMetaData;
+        }
+
+        return data;
+    }
+
+    public void ExportElevationPdf(string title, string subtitle, List<AssemblyData> assemblyDatas)
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
         {
             if (rootObj != gameObject)
             {
-                rootObj.GetComponent<Selectable>().ExportElevationPdf();
+                rootObj.GetComponent<Selectable>().ExportElevationPdf(title, subtitle, assemblyDatas);
                 return;
             }
 
@@ -892,7 +949,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             //shut off all selectables in the scene except for the ones in this arm assembly
             ActiveSelectables.Where(x => !_assemblySelectables.Contains(x)).ToList().ForEach(x => x.gameObject.SetActive(false));
 
-            PdfExporter.ExportElevationPdf(GetAssemblyPDFImageData(camera), _assemblySelectables);
+            PdfExporter.ExportElevationPdf(
+                GetAssemblyPDFImageData(camera), 
+                _assemblySelectables, title, subtitle, assemblyDatas);
 
             for (int i = 0; i < ActiveSelectables.Count; i++) ActiveSelectables[i].gameObject.SetActive(visibilities[i]);
 
@@ -1276,7 +1335,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 return;
             }
 
-            if (!IsDestructible) return;
+            if (FullScreenMenu.IsOpen)
+                return;
+
+            if (!IsDestructible) 
+                return;
 
             Deselect();
 

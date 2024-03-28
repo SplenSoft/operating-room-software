@@ -334,7 +334,7 @@ MonoBehaviour:
     <GizmoType>k__BackingField: 2
     <Unrestricted>k__BackingField: 0
     <MaxValue>k__BackingField: 20.62
-    <MinValue>k__BackingField: 0
+    <MinValue>k__BackingField: 0.001
     <IgnoreScale>k__BackingField: 0
     <OnlyIfRoot>k__BackingField: 0
     <Invert>k__BackingField: 0

@@ -5,6 +5,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(FullScreenMenu))]
 public class UI_ObjExportOptions : MonoBehaviour
 {
     private static UI_ObjExportOptions Instance { get; set; }

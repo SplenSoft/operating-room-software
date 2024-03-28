@@ -34,7 +34,11 @@ public class UI_MeasurementButton : MonoBehaviour
         {
             _currentMeasurables = Selectable.SelectedSelectables.SelectMany(x => x.Measurables).ToList();
 
-            _toggle.SetIsOnWithoutNotify(active && _currentMeasurables[0].IsActive);
+            _toggle.SetIsOnWithoutNotify(active && 
+                _currentMeasurables != null && 
+                _currentMeasurables.Count > 0 && 
+                _currentMeasurables[0] != null && 
+                _currentMeasurables[0].IsActive);
         }
         else
         {

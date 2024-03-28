@@ -881,6 +881,7 @@ GameObject:
   - component: {fileID: 4389348297331001095}
   - component: {fileID: 4389348297331001088}
   - component: {fileID: 5130672102856499016}
+  - component: {fileID: 6172207676790916886}
   m_Layer: 5
   m_Name: UI_ObjExportOptions
   m_TagString: Untagged
@@ -1029,6 +1030,18 @@ MonoBehaviour:
   <ToggleIncludeArmAssemblies>k__BackingField: {fileID: 6288504086830760519}
   <ToggleIncludeAssemblyHeads>k__BackingField: {fileID: 5104145561176986390}
   <ButtonExportSelectedObject>k__BackingField: {fileID: 2116209590076054527}
+--- !u!114 &6172207676790916886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4389348297330999549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f99a4fde53871e4384765f3f9ae6866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5003410660428847273
 GameObject:
   m_ObjectHideFlags: 0

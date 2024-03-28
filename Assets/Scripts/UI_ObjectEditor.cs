@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 internal class UI_ObjectEditor : MonoBehaviour
@@ -14,58 +15,67 @@ internal class UI_ObjectEditor : MonoBehaviour
     public static UI_ObjectEditor Instance { get; private set; }
 
     [field: SerializeField]
-    private TextMeshProUGUI Title
-    { get; set; }
+    private TextMeshProUGUI Title { get; set; }
 
     [field: SerializeField]
-    private GameObject AttachmentPointBox
-    { get; set; }
+    private GameObject AttachmentPointBox { get; set; }
  
     [field: SerializeField]
-    private TMP_InputField InputField_ObjectName
-    { get; set; }
+    private TMP_InputField InputField_ObjectName { get; set; }
 
     [field: SerializeField]
-    private Toggle Toggle_IsEnabled
-    { get; set; }
+    private Toggle Toggle_IsEnabled { get; set; }
 
     [field: SerializeField]
-    private TMP_InputField InputField_NewKeyword
-    { get; set; }
+    private TMP_InputField InputField_NewKeyword { get; set; }
 
     [field: SerializeField]
-    private TMP_InputField InputField_NewCategory
-    { get; set; }
+    private TMP_InputField InputField_NewCategory { get; set; }
 
     [field: SerializeField]
     private TMP_InputField
-    InputField_NewCategoryAttachmentPoint
+    InputField_NewCategoryAttachmentPoint { get; set; }
+
+    [field: SerializeField]
+    private TMP_InputField InputField_PdfData_Table
     { get; set; }
 
     [field: SerializeField]
-    private GameObject Template_Keyword
+    private TMP_InputField InputField_PdfData_Key
     { get; set; }
 
     [field: SerializeField]
-    private GameObject Template_Category
+    private TMP_InputField InputField_PdfData_Value
     { get; set; }
 
     [field: SerializeField]
-    private GameObject
-    Template_CategoryAttachmentPoint
+    private GameObject Template_Keyword { get; set; }
+
+    [field: SerializeField]
+    private GameObject Template_Category { get; set; }
+
+    [field: SerializeField]
+    private GameObject Template_CategoryAttachmentPoint 
     { get; set; }
 
     [field: SerializeField]
-    private GameObject
-    Template_CompatibleObject
-    { get; set; }
+    private GameObject Template_CompatibleObject { get; set; }
+
+    [field: SerializeField]
+    private GameObject Template_PdfData { get; set; }
+
+    [field: SerializeField]
+    private Button ButtonAddPdfData { get; set; }
 
     private UnityEventManager _eventManager = new();
     private SelectableMetaData _activeMetaData;
     private List<GameObject> _instantiatedKeywords = new();
     private List<GameObject> _instantiatedCategories = new();
     private List<GameObject> _instantiatedCategoriesAttachmentPoint = new();
-    private List<GameObject> _instantiatedAssetBundleNamesAttachmentPoint = new();
+    private List<GameObject> _instantiatedPdfDatas = new();
+
+    private List<GameObject> 
+    _instantiatedAssetBundleNamesAttachmentPoint = new();
 
     #endregion
 
@@ -80,12 +90,18 @@ internal class UI_ObjectEditor : MonoBehaviour
             (Selectable.ActiveSelectablesInSceneChanged, UpdateState),
             (AttachmentPoint.SelectedAttachmentPointChanged, UpdateState));
 
+        _eventManager.RegisterEvents
+            ((InputField_PdfData_Table.onValueChanged, UpdateAddPdfDataButton), 
+            (InputField_PdfData_Key.onValueChanged, UpdateAddPdfDataButton), 
+            (InputField_PdfData_Value.onValueChanged, UpdateAddPdfDataButton));
+
         _eventManager.AddListeners();
 
         Template_Keyword.SetActive(false);
         Template_Category.SetActive(false);
         Template_CategoryAttachmentPoint.SetActive(false);
         Template_CompatibleObject.SetActive(false);
+        Template_PdfData.SetActive(false);
 
         gameObject.SetActive(false);
 
@@ -99,6 +115,16 @@ internal class UI_ObjectEditor : MonoBehaviour
 
     #endregion
 
+    private void UpdateAddPdfDataButton(string text = null)
+    {
+        bool interactable = 
+            !string.IsNullOrWhiteSpace(InputField_PdfData_Table.text) && 
+            !string.IsNullOrWhiteSpace(InputField_PdfData_Key.text) && 
+            !string.IsNullOrWhiteSpace(InputField_PdfData_Value.text);
+
+        ButtonAddPdfData.interactable = interactable;
+    }
+
     public static async void AddCompatibleObject(string assetBundleName)
     {
         var task = Instance.AddNewAttachmentPointObject(assetBundleName);
@@ -110,7 +136,7 @@ internal class UI_ObjectEditor : MonoBehaviour
         Instance.OpenObjectMenuForAttachmentPointObject();
     }
 
-    private async void UpdateState()
+    private void UpdateState()
     {
         Selectable selectable = ObjectMenu.LastOpenedSelectable;
 
@@ -172,32 +198,45 @@ internal class UI_ObjectEditor : MonoBehaviour
         InputField_ObjectName.text = _activeMetaData.Name;
 
         _instantiatedKeywords
-            .ForEach(item => Destroy(item));
+            .ForEach(x => Destroy(x));
 
         _instantiatedCategories
-            .ForEach(item => Destroy(item));
+            .ForEach(x => Destroy(x));
+
+        _instantiatedPdfDatas
+            .ForEach(x => Destroy(x));
 
         _instantiatedKeywords.Clear();
         _instantiatedCategories.Clear();
+        _instantiatedPdfDatas.Clear();
 
-        _activeMetaData.KeyWords.ForEach(item => AddNewKeyword(item));
-        _activeMetaData.Categories.ForEach(item => AddNewCategory(item));
+        _activeMetaData.KeyWords
+            .ForEach(x => AddNewKeyword(x));
+
+        _activeMetaData.Categories
+            .ForEach(x => AddNewCategory(x));
+
+        _activeMetaData.PdfData
+            .ForEach(x => AddNewPdfData(x.Table, x.Key, x.Value));
 
         Toggle_IsEnabled.SetIsOnWithoutNotify(_activeMetaData.Enabled);
 
         InputField_NewKeyword.text = string.Empty;
         InputField_NewCategory.text = string.Empty;
         InputField_NewCategoryAttachmentPoint.text = string.Empty;
+        InputField_PdfData_Key.text = string.Empty;
+        InputField_PdfData_Value.text = string.Empty;
+        InputField_PdfData_Table.text = string.Empty;
 
         if (AttachmentPoint.SelectedAttachmentPoint != null)
         {
             _instantiatedCategoriesAttachmentPoint
-                .ForEach(item => Destroy(item));
+                .ForEach(x => Destroy(x));
 
             _instantiatedCategoriesAttachmentPoint.Clear();
 
             _instantiatedAssetBundleNamesAttachmentPoint
-                .ForEach(item => Destroy(item));
+                .ForEach(x => Destroy(x));
 
             _instantiatedAssetBundleNamesAttachmentPoint.Clear();
 
@@ -243,6 +282,19 @@ internal class UI_ObjectEditor : MonoBehaviour
         _activeMetaData.Categories = _instantiatedCategories
             .Select(x => x.GetComponentInChildren<TextMeshProUGUI>().text)
             ?.ToList() ?? new List<string>();
+
+        _activeMetaData.PdfData = _instantiatedPdfDatas
+            .Select(x =>
+            {
+                var texts = x.GetComponentsInChildren<TextMeshProUGUI>();
+                return new PdfData
+                {
+                    Table = texts[0].text,
+                    Key = texts[1].text,
+                    Value = texts[2].text
+                };
+            })
+            ?.ToList() ?? new List<PdfData>();
 
         _activeMetaData.Enabled = Toggle_IsEnabled.isOn;
 
@@ -381,6 +433,41 @@ internal class UI_ObjectEditor : MonoBehaviour
             _instantiatedAssetBundleNamesAttachmentPoint, 
             objName, 
             assetBundleName);
+    }
+
+    public void AddNewPdfData()
+    {
+        AddNewPdfData(
+            InputField_PdfData_Table.text, 
+            InputField_PdfData_Key.text, 
+            InputField_PdfData_Value.text);        
+    }
+
+    public void AddNewPdfData(string table, string key, 
+    string value)
+    {
+        Template_PdfData.SetActive(true);
+
+        var newObj = Instantiate(Template_PdfData,
+            Template_PdfData.transform.parent);
+
+        var texts = newObj.GetComponentsInChildren
+            <TextMeshProUGUI>();
+
+        texts[0].text = table;
+        texts[1].text = key;
+        texts[2].text = value;
+
+        newObj.GetComponentInChildren<Button>()
+            .onClick.AddListener(() =>
+            {
+                _instantiatedPdfDatas.Remove(newObj);
+                Destroy(newObj);
+            });
+
+        _instantiatedPdfDatas.Add(newObj);
+
+        Template_PdfData.SetActive(false);
     }
 
     public void AddNewCategoryAttachmentPoint()

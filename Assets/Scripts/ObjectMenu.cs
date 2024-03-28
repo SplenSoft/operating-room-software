@@ -33,9 +33,10 @@ public class ObjectMenu : MonoBehaviour
     public static UnityEvent LastOpenedSelectableChanged { get; } = new();
     private static bool _initialized;
 
-    private static List<string> _activeAssetBundleNames = new List<string>();
+    private static List<string> _activeAssetBundleNames = new();
+    private List<GameObject> _instantiatedCategories = new();
 
-    private const int _minFuzzyRatio = 10;
+    private const int _minFuzzyRatio = 20;
 
     [field: SerializeField] 
     private GameObject ItemTemplate { get; set; }
@@ -44,9 +45,15 @@ public class ObjectMenu : MonoBehaviour
     private TextMeshProUGUI ItemTemplateTextObjectName 
     { get; set; }
 
+    [field:SerializeField] 
+    private GameObject TemplateCategory { get; set; }
+
     [field: SerializeField]
     private TMP_InputField InputField_Search
     { get; set; }
+
+    [field: SerializeField]
+    private GameObject Categories { get; set; }
 
     private AttachmentPoint _attachmentPoint;
 
@@ -62,6 +69,9 @@ public class ObjectMenu : MonoBehaviour
     private bool SearchIsActive => 
         !string.IsNullOrWhiteSpace(InputField_Search.text);
 
+    private List<string> _currentCategoryFilters = new();
+    private List<string> _allCategories = new();
+
     #region Monobehaviour
 
     private void Awake()
@@ -70,6 +80,8 @@ public class ObjectMenu : MonoBehaviour
 
         InputField_Search.onValueChanged
             .AddListener(UpdateSearchFilter);
+
+        DontDestroyOnLoad(gameObject);
     }
 
     private void OnDestroy()
@@ -104,12 +116,127 @@ public class ObjectMenu : MonoBehaviour
         ActiveStateChanged?.Invoke();
     }
 
+    private void GenerateCategories()
+    {
+        _instantiatedCategories
+            .ForEach(x => Destroy(x));
+
+        _instantiatedCategories.Clear();
+
+        _allCategories = ObjectMenuItems
+            .Where(x => x.SelectableMetaData != null)
+            .SelectMany(x => x.SelectableMetaData.Categories)
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+
+        if (SceneManager.GetActiveScene().name != "ObjectEditor")
+            _allCategories.Add("Save Data");
+
+        _currentCategoryFilters.Clear();
+
+        TemplateCategory.SetActive(true);
+
+        _allCategories.ForEach(AddCategory);
+
+        TemplateCategory.SetActive(false);
+    }
+
+    private void AddCategory(string category)
+    {
+        var newObj = Instantiate(TemplateCategory,
+                TemplateCategory.transform.parent);
+
+        var toggle = newObj
+            .GetComponentInChildren<Toggle>();
+
+        toggle.SetIsOnWithoutNotify(false);
+
+        newObj.GetComponentInChildren
+            <TextMeshProUGUI>().text = category;
+
+        _instantiatedCategories.Add(newObj);
+
+        toggle.onValueChanged.AddListener(isOn =>
+        {
+            if (isOn &&
+            !_currentCategoryFilters.Contains(category))
+            {
+                _currentCategoryFilters.Add(category);
+                RefilterItems();
+            }
+            else if (!isOn &&
+            _currentCategoryFilters.Contains(category))
+            {
+                _currentCategoryFilters.Remove(category);
+                RefilterItems();
+            }
+        });
+    }
+
+    private void ResetAllCategoryToggles()
+    {
+        foreach (var item in _instantiatedCategories)
+        {
+            var toggle = item.GetComponentInChildren<Toggle>();
+            if (!toggle.isOn)
+            {
+                toggle.SetIsOnWithoutNotify(false);
+            }
+        }
+    }
+
     #endregion
 
     private void ClearSearchValidity()
     {
         InputField_Search.text = string.Empty;
         ObjectMenuItems.ForEach(x => x.ValidForSearch = true);
+    }
+
+    private void UpdateCategoryVisibility(bool onlyShowStandalones)
+    {
+        if (!onlyShowStandalones)
+        {
+            _instantiatedCategories.ForEach(x => 
+            {
+                string text = x.GetComponentInChildren<TextMeshProUGUI>().text;
+                bool isFile = text == "Save Data";
+
+                if (isFile)
+                {
+                    x.SetActive(SceneManager.GetActiveScene().name != "ObjectEditor");
+                    return;
+                }
+
+                x.SetActive(true);
+            
+            });
+            return;
+        }
+
+        var validCats = ObjectMenuItems
+            .Where(x => x.SelectableMetaData != null &&
+                x.SelectableMetaData.IsStandalone)
+            .SelectMany(x => x.SelectableMetaData.Categories)
+            .Distinct()
+            .ToList();
+
+        _instantiatedCategories
+            .ForEach(x => 
+            {
+                string text = x.GetComponentInChildren<TextMeshProUGUI>().text;
+                bool textIsMatch = validCats.Contains(text);
+                bool isFile = text == "Save Data";
+
+                if (isFile) 
+                {
+                    x.SetActive(SceneManager.GetActiveScene().name != "ObjectEditor");
+                    return;
+                }
+
+                x.SetActive(textIsMatch);
+            });
     }
 
     private void UpdateSearchFilter(string searchText)
@@ -288,6 +415,8 @@ public class ObjectMenu : MonoBehaviour
 
         ItemTemplate.SetActive(false);
 
+        GenerateCategories();
+
         _initialized = true;
 
         loadingToken.Done();
@@ -410,7 +539,8 @@ public class ObjectMenu : MonoBehaviour
         {
             if (item.SelectableData == null || 
             assetBundleNames.Contains(item.SelectableData.AssetBundleName) || 
-            (SearchIsActive && !item.ValidForSearch))
+            (SearchIsActive && !item.ValidForSearch) ||
+            !IsCategoryValid(item))
             {
                 item.GameObject.SetActive(false);
                 return;
@@ -420,6 +550,29 @@ public class ObjectMenu : MonoBehaviour
         });
     }
 
+    private bool IsCategoryValid(ObjectMenuItem item)
+    {
+        if (!Categories.activeSelf || 
+        _currentCategoryFilters.Count == 0) 
+            return true;
+
+        if (!string.IsNullOrEmpty(item.CustomFile))
+        {
+            return _currentCategoryFilters.Contains("Save Data");
+        }
+
+        if (item.SelectableMetaData.Categories.Count == 0) 
+            return false;
+
+        foreach (var category in item.SelectableMetaData.Categories)
+        {
+            if (_currentCategoryFilters.Contains(category))
+                return true;
+        }
+
+        return false;
+    }
+
     private void ClearMenuFilter()
     {
         ObjectMenuItems.ForEach(item =>
@@ -427,7 +580,8 @@ public class ObjectMenu : MonoBehaviour
             if (item.SelectableData == null)
             {
                 item.GameObject.SetActive
-                    (SceneManager.GetActiveScene().name != "ObjectEditor");
+                    (SceneManager.GetActiveScene().name != "ObjectEditor" && 
+                    IsCategoryValid(item));
                 return;
             }
 
@@ -439,13 +593,13 @@ public class ObjectMenu : MonoBehaviour
 
             if (SceneManager.GetActiveScene().name == "ObjectEditor")
             {
-                item.GameObject.SetActive(true);
+                item.GameObject.SetActive(IsCategoryValid(item));
                 return;
             }
 
             item.GameObject.SetActive
-                (item.SelectableData
-                .MetaData.IsStandalone);
+                (item.SelectableData.MetaData.IsStandalone && 
+                IsCategoryValid(item));
         });
     }
 
@@ -453,22 +607,29 @@ public class ObjectMenu : MonoBehaviour
     {
         _activeAssetBundleNames = assetBundleNames;
         _selectCompatibleObjectsMode = true;
+        Instance.ResetAllCategoryToggles();
+        Instance.Categories.SetActive(true);
         Instance.ClearSearchValidity();
         Instance.FilterMenuItems(assetBundleNames);
+        Instance.UpdateCategoryVisibility(false);
         Instance.gameObject.SetActive(true);
     }
 
-    public async void Open()
+    public static async void Open()
     {
         while (!_initialized) 
             await Task.Yield();
 
         if (!Application.isPlaying) return;
-
+        Instance.Categories.SetActive(true);
         Instance.ClearSearchValidity();
-        ClearMenuFilter();
-        _attachmentPoint = null;
-        gameObject.SetActive(true);
+        Instance.ClearMenuFilter();
+        Instance._attachmentPoint = null;
+
+        Instance.UpdateCategoryVisibility
+            (SceneManager.GetActiveScene().name != "ObjectEditor");
+
+        Instance.gameObject.SetActive(true);
     }
 
     public static async void Open(AttachmentPoint attachmentPoint)
@@ -478,6 +639,8 @@ public class ObjectMenu : MonoBehaviour
 
         if (!Application.isPlaying) return;
 
+        Instance.ResetAllCategoryToggles();
+        Instance.Categories.SetActive(false);
         Instance.ClearSearchValidity();
         Instance._attachmentPoint = attachmentPoint;
         Instance.FilterMenuItems(attachmentPoint);

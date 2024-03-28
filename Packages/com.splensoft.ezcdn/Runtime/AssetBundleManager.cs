@@ -547,13 +547,6 @@ namespace SplenSoft.AssetBundles
 
             if (_assetBundleData.TryGetValue(name, out AssetBundleData data))
             {
-                if (data.AssetBundle != null) 
-                {
-                    progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Done, 1));
-                    AssetBundleDownloadFinished?.Invoke(name);
-                    return data.AssetBundle;
-                }
-
                 data.DownloadStarted = true;
             }
 

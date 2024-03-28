@@ -29,7 +29,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="UnityAssetStoreBanner_EZCDN_icon.png"/></td>
   <td id="projectalign">
-   <div id="projectname">Easy Content Delivery Network<span id="projectnumber">&#160;1.1.0</span>
+   <div id="projectname">Easy Content Delivery Network<span id="projectnumber">&#160;1.2.0</span>
    </div>
    <div id="projectbrief">An addressables-free suite that automatically handles the Unity Cloud Content Delivery API and packaging/deploying assetbundles while providing several tools to make asset management easy.</div>
   </td>
@@ -142,6 +142,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Version</b><code> [get
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>KeepLocalCopy</b><code> [get, set]</code></td></tr>
 <tr class="memdesc:a698a3bb92b1be97c20522f9234bb77d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Includes a local copy of the latest assetbundles on Build. Will automatically trigger an assetbundle build before an app build and copy them into Assets/StreamingAssets/AssetBundles. If this is true, the app will use the local copy when there is no internet connection or when the cloud copy of the assetbundle is not available. (Cached assets are still used first) <br /></td></tr>
 <tr class="separator:a698a3bb92b1be97c20522f9234bb77d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a698ce1fce83c6abc05a599c5d18724bd" id="r_a698ce1fce83c6abc05a599c5d18724bd"><td class="memItemLeft" align="right" valign="top"><a id="a698ce1fce83c6abc05a599c5d18724bd" name="a698ce1fce83c6abc05a599c5d18724bd"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxConcurrentDownloads</b> = 3<code> [get, set]</code></td></tr>
+<tr class="memdesc:a698ce1fce83c6abc05a599c5d18724bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unity CCD has a tendency to fail miserably when there is a lot of concurrent downloads from a single IP. See forum posts here:   It is recommended to leave this at default (3), but advanced users can mess around with it. <br /></td></tr>
+<tr class="separator:a698ce1fce83c6abc05a599c5d18724bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Controls the settings for EZ-CDN. </p>

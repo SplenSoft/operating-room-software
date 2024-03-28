@@ -24,13 +24,6 @@ public class UI_ButtonExportPdf : MonoBehaviour
 
     public void ExportPdf()
     {
-        if (Selectable.SelectedSelectables[0].TryGetArmAssemblyRoot(out _))
-        {
-            Selectable.SelectedSelectables[0].ExportElevationPdf();
-        }
-        else
-        {
-            throw new System.Exception("Something went wrong. Couldn't export PDF");
-        }
+        UI_PdfExportOptions.Open(Selectable.SelectedSelectables[0]);
     }
 }
