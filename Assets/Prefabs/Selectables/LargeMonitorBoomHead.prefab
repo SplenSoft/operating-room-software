@@ -141,7 +141,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c4f155df369c5eb4eb3128858478a936, type: 3}
   m_PrefabInstance: {fileID: 751199745082046136}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &137518128619617201
+--- !u!64 &860395353497023603
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,7 +154,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 3313047305866066111, guid: c4f155df369c5eb4eb3128858478a936, type: 3}
+  m_Mesh: {fileID: -7805064829499183021, guid: c4f155df369c5eb4eb3128858478a936, type: 3}
 --- !u!114 &1916251470747355886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,7 +177,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6565122453228016778, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: rmsCount
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GUID>k__BackingField
