@@ -531,12 +531,12 @@ internal static class Database
         if (!Application.isPlaying)
             throw new Exception("App quit while downloading");
 
-        Initialized = true;
-
         if (lastModified == task.Result)
         {
             IsUpToDate = true;
         }
+
+        Initialized = true;
     }
 
     /// <summary>

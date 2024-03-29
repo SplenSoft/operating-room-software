@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 461568477077424548}
   - component: {fileID: 5845676070605507926}
   - component: {fileID: 5361016738248091855}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttachmentPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,11 +401,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4061343125841919366, guid: b1a1e53582bdfff409dee4605fbdddd8, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b1a1e53582bdfff409dee4605fbdddd8, type: 3}
       propertyPath: m_Name
       value: WorkTable2FT
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b1a1e53582bdfff409dee4605fbdddd8, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1738238157481376292, guid: b1a1e53582bdfff409dee4605fbdddd8, type: 3}
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}

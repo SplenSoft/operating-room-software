@@ -19,9 +19,51 @@ public class UI_PdfExportOptions : MonoBehaviour
     [field: SerializeField]
     private TMP_InputField InputfieldSubTitle { get; set; }
 
+    [field: SerializeField]
+    private TMP_InputField InputField_PdfData_Table
+    { get; set; }
+
+    [field: SerializeField]
+    private TMP_InputField InputField_PdfData_Key
+    { get; set; }
+
+    [field: SerializeField]
+    private TMP_InputField InputField_PdfData_Value
+    { get; set; }
+
+    [field: SerializeField]
+    private GameObject Template_PdfData { get; set; }
+
     private Selectable _selectable;
     List<AssemblyData> _assemblyDatas = new();
     private List<GameObject> _instantiatedFieldAssemblyInputs = new();
+    private List<GameObject> _instantiatedPdfDatas = new();
+
+    public static List<AdditionalPdfData> GetAdditionalData()
+    {
+        List<AdditionalPdfData> datas = new();
+        Instance._instantiatedPdfDatas.ForEach(x =>
+        {
+            var texts = x.GetComponentsInChildren
+                <TextMeshProUGUI>();
+
+            string table = texts[0].text;
+            string key = texts[1].text;
+            string value = texts[2].text;
+
+            var existing = datas.FirstOrDefault(x => x.Table == table);
+
+            if (existing == null)
+            {
+                existing = new() { Table = table };
+                datas.Add(existing);
+            }
+
+            existing.Data.Add(key, value);
+        });
+
+        return datas;
+    }
 
     private void Awake()
     {
@@ -29,10 +71,42 @@ public class UI_PdfExportOptions : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         gameObject.SetActive(false);
         InputFieldAssemblyNameTemplate.SetActive(false);
+        Template_PdfData.SetActive(false);
     }
 
-    private void OnDisable()
+    public void AddNewPdfData()
     {
+        AddNewPdfData(
+            InputField_PdfData_Table.text,
+            InputField_PdfData_Key.text,
+            InputField_PdfData_Value.text);
+    }
+
+    public void AddNewPdfData(string table, string key,
+    string value)
+    {
+        Template_PdfData.SetActive(true);
+
+        var newObj = Instantiate(Template_PdfData,
+            Template_PdfData.transform.parent);
+
+        var texts = newObj.GetComponentsInChildren
+            <TextMeshProUGUI>();
+
+        texts[0].text = table;
+        texts[1].text = key;
+        texts[2].text = value;
+
+        newObj.GetComponentInChildren<Button>()
+            .onClick.AddListener(() =>
+            {
+                _instantiatedPdfDatas.Remove(newObj);
+                Destroy(newObj);
+            });
+
+        _instantiatedPdfDatas.Add(newObj);
+
+        Template_PdfData.SetActive(false);
     }
 
     public void ExportPdf()
@@ -168,4 +242,10 @@ public class AssemblyData
 {
     public string Title { get; set; }
     public List<Selectable> OrderedSelectables { get; set; }
+}
+
+public class AdditionalPdfData
+{
+    public string Table { get; set; }
+    public Dictionary<string, string> Data = new();
 }

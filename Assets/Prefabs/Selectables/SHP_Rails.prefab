@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6144708103750211805}
   - component: {fileID: 6891218353400259460}
   - component: {fileID: 6919019504752391177}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ShelfRails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 6606448676518450220}
   - component: {fileID: 7978628871084532933}
   - component: {fileID: 835316726981544701}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AttachmentPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

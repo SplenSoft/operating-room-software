@@ -146,28 +146,41 @@ function exportPdf(data) {
 
             doc.addImage(logoImageData, 'png', lowerRightAreaX, lowerRightAreaYStart, lowerRightAreaWidth, 70, "logo", "none", 0);
             doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
-            doc.text("Account Name: Medical City Plano", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+            doc.text("Account Name: " + String(data.AccountName), textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
 
             lowerRightAreaCurrentY += rectHeight;
             doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
-            doc.text("Account Address: 3901 W. 15th St.", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+            doc.text("Account Adress: " + String(data.AccountAddressLine1), textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
 
             lowerRightAreaCurrentY += rectHeight;
             doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
-            doc.text("                        Plano, TX 75075", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+            doc.text("                        " + String(data.AccountAddressLine2), textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
 
             lowerRightAreaCurrentY += rectHeight;
             doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
-            doc.text("Project Name: OR6 and OR7 Expansion", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+            doc.text("Project Name: " + String(data.ProjectName), textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
 
             lowerRightAreaCurrentY += rectHeight;
             doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
-            doc.text("Project #: IU-10362", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+            doc.text("Project #: " + String(data.ProjectNumber), textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
 
             lowerRightAreaCurrentY += rectHeight;
             doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
-            doc.text("Quote Reference #: 1275", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
+            doc.text("Order Reference #: " + String(data.OrderReferenceNumber), textXStart, lowerRightAreaCurrentY + textCurrentYOffset);
 
+            lowerRightAreaCurrentY += rectHeight;
+            var sigBoxWidth = 300;
+            var sigLineMargin = 10;
+            var sigBoxStart = lowerRightAreaYStart + 70;
+            doc.rect(lowerRightAreaX - sigBoxWidth, sigBoxStart, sigBoxWidth, lowerRightAreaCurrentY - sigBoxStart);
+            doc.text("Customer Acceptance and Configuration Acknowledgement", lowerRightAreaX - sigBoxWidth + 5, sigBoxStart + textCurrentYOffset);
+
+            // sig line
+            doc.rect(lowerRightAreaX - sigBoxWidth + sigLineMargin, lowerRightAreaCurrentY - 13, sigBoxWidth - (sigLineMargin * 2), 1);
+
+            doc.text("Signature", lowerRightAreaX - sigBoxWidth + sigLineMargin, lowerRightAreaCurrentY - 5);
+            doc.text("Date", lowerRightAreaX - 125, lowerRightAreaCurrentY - 5);
+            
             // lowerRightAreaCurrentY += rectHeight;
             // doc.rect(lowerRightAreaX, lowerRightAreaCurrentY, lowerRightAreaWidth, rectHeight);
             // //doc.text("Quote Reference #: 1275", textXStart, lowerRightAreaCurrentY + textCurrentYOffset);

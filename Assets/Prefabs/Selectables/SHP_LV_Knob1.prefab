@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 703230622566811648}
   - component: {fileID: 4498457294086506405}
   - component: {fileID: 1840085875700691823}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Knob
   m_TagString: Untagged
   m_Icon: {fileID: 0}

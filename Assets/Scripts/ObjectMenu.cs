@@ -11,6 +11,7 @@ using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using FuzzySharp;
+using static ObjectMenu;
 
 /// <summary>
 /// Singleton object that displays a menu to instantiate selectables.
@@ -36,7 +37,7 @@ public class ObjectMenu : MonoBehaviour
     private static List<string> _activeAssetBundleNames = new();
     private List<GameObject> _instantiatedCategories = new();
 
-    private const int _minFuzzyRatio = 20;
+    private const int _minFuzzyRatio = 50;
 
     [field: SerializeField] 
     private GameObject ItemTemplate { get; set; }
@@ -190,6 +191,7 @@ public class ObjectMenu : MonoBehaviour
 
     private void ClearSearchValidity()
     {
+        //Debug.Log("Items cleared for search validity");
         InputField_Search.text = string.Empty;
         ObjectMenuItems.ForEach(x => x.ValidForSearch = true);
     }
@@ -245,6 +247,7 @@ public class ObjectMenu : MonoBehaviour
 
         if (string.IsNullOrWhiteSpace(searchText))
         {
+            //Debug.Log("Search filter nullified");
             ObjectMenuItems.ForEach(x => x.ValidForSearch = true);
             RefilterItems();
             return;
@@ -252,21 +255,23 @@ public class ObjectMenu : MonoBehaviour
 
         ObjectMenuItems.ForEach(x =>
         {
-            if (x.SelectableMetaData == null) return;
             // Name
             double ratio = Fuzz.PartialRatio
-                (x.SelectableMetaData.Name, searchText);
+                (x.SelectableMetaData?.Name ?? x.GameObject.GetComponentInChildren<TextMeshProUGUI>().text, searchText);
 
-            // Categories
-            foreach (var category in x.SelectableMetaData.Categories) 
+            if (x.SelectableMetaData != null)
             {
-                ratio = Math.Max(ratio, Fuzz.Ratio(searchText, category));
-            }
+                // Categories
+                foreach (var category in x.SelectableMetaData.Categories)
+                {
+                    ratio = Math.Max(ratio, Fuzz.Ratio(searchText, category));
+                }
 
-            // Keywords
-            foreach (var keyword in x.SelectableMetaData.KeyWords)
-            {
-                ratio = Math.Max(ratio, Fuzz.Ratio(searchText, keyword));
+                // Keywords
+                foreach (var keyword in x.SelectableMetaData.KeyWords)
+                {
+                    ratio = Math.Max(ratio, Fuzz.Ratio(searchText, keyword));
+                }
             }
 
             x.LevenshteinRatio = ratio;
@@ -286,6 +291,7 @@ public class ObjectMenu : MonoBehaviour
 
         for (int i = 0; i < ObjectMenuItems.Count; i++)
         {
+            //Debug.Log(ObjectMenuItems[i].LevenshteinRatio);
             ObjectMenuItems[i].GameObject.transform.SetSiblingIndex(i);
         }
 
@@ -411,6 +417,15 @@ public class ObjectMenu : MonoBehaviour
             });
         });
 
+        ObjectMenuItems = ObjectMenuItems
+            .OrderBy(x => x.GameObject.GetComponentInChildren<TextMeshProUGUI>().text)
+            .ToList();
+
+        for (int i = 0; i < ObjectMenuItems.Count; i++)
+        {
+            ObjectMenuItems[i].GameObject.transform.SetSiblingIndex(i);
+        }
+
         AddSavedRoomConfigs();
 
         ItemTemplate.SetActive(false);
@@ -465,7 +480,8 @@ public class ObjectMenu : MonoBehaviour
     {
         var selectableData = SelectableAssetBundles.GetSelectableData()
             .Where(x => x.MetaData.AttachmentPointGuidMetaData
-            .FirstOrDefault(y => y.Guid == attachmentPoint.MetaData.Guid) != default).First();
+            .FirstOrDefault(y => y.Guid == attachmentPoint.MetaData.Guid) != default)
+            .First();
 
         var task = Database.GetMetaData(
             selectableData.AssetBundleName, 
@@ -575,32 +591,45 @@ public class ObjectMenu : MonoBehaviour
 
     private void ClearMenuFilter()
     {
-        ObjectMenuItems.ForEach(item =>
+        if (!SearchIsActive)
         {
-            if (item.SelectableData == null)
-            {
-                item.GameObject.SetActive
-                    (SceneManager.GetActiveScene().name != "ObjectEditor" && 
-                    IsCategoryValid(item));
-                return;
-            }
+            ObjectMenuItems = ObjectMenuItems
+            .OrderBy(x => x.GameObject.GetComponentInChildren<TextMeshProUGUI>().text)
+            .ToList();
+        }
+
+        for (int i = 0; i < ObjectMenuItems.Count; i++)
+        {
+            var item = ObjectMenuItems[i];
+
+            if (!SearchIsActive)
+                item.GameObject.transform.SetSiblingIndex(i);
 
             if (SearchIsActive && !item.ValidForSearch) 
             {
                 item.GameObject.SetActive(false);
-                return;
+                continue;
+            }
+
+            if (item.SelectableData == null)
+            {
+                item.GameObject.SetActive
+                    (SceneManager.GetActiveScene().name != "ObjectEditor" &&
+                    IsCategoryValid(item));
+
+                continue;
             }
 
             if (SceneManager.GetActiveScene().name == "ObjectEditor")
             {
                 item.GameObject.SetActive(IsCategoryValid(item));
-                return;
+                continue;
             }
 
             item.GameObject.SetActive
                 (item.SelectableData.MetaData.IsStandalone && 
                 IsCategoryValid(item));
-        });
+        }
     }
 
     public static void OpenToSelectCompatibleObjects(List<string> assetBundleNames)

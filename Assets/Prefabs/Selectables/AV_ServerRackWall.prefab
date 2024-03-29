@@ -123,6 +123,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ServerRack
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 374991176a2b5ec4280e0e86d0b47310, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3455284654514325952, guid: 374991176a2b5ec4280e0e86d0b47310, type: 3}
       propertyPath: m_Layer
       value: 6
