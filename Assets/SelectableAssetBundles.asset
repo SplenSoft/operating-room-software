@@ -2059,27 +2059,37 @@ MonoBehaviour:
     <AssetBundleName>k__BackingField: gameobject_4ebba47dd257f5447b6d64c102772c20
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
+      <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 0
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: SimFLEXArm
+      <Name>k__BackingField: SimFlexArm
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
-      <AttachmentPointGuidMetaData>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField:
+      - <Guid>k__BackingField: 221b8880-d381-4735-9d67-00c354e714ca
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 221b8880-d381-4735-9d67-00c354e714ca
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
   - <PrefabName>k__BackingField: SimFlexTube
     <SaveLoadGuid>k__BackingField: gameobject_4d79268645655de4888801a211c27e95
     <AssetBundleName>k__BackingField: gameobject_4d79268645655de4888801a211c27e95
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
+      <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 0
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: SimFlexTube
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
-      <AttachmentPointGuidMetaData>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField:
+      - <Guid>k__BackingField: 86ed6686-e404-42aa-bad7-525c739a8583
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: 86ed6686-e404-42aa-bad7-525c739a8583
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
   - <PrefabName>k__BackingField: SmallCart
     <SaveLoadGuid>k__BackingField: gameobject_4470415feca38344182b5af7ac8d7f41
     <AssetBundleName>k__BackingField: gameobject_4470415feca38344182b5af7ac8d7f41
