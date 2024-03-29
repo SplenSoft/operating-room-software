@@ -691,7 +691,7 @@ GameObject:
   - component: {fileID: 6077603287011231642}
   - component: {fileID: 5146577690571749872}
   - component: {fileID: 5945669826827898844}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DoorParent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2474,7 +2474,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8557543758259689783}
   - component: {fileID: 37446063373373314}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ServerRack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
