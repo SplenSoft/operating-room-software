@@ -243,6 +243,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WhiteGasOutlet
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a45baddd607c42141a5c763c6207e0c1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a45baddd607c42141a5c763c6207e0c1, type: 3}
 --- !u!1 &2721793463272306265 stripped

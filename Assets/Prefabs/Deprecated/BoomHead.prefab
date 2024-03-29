@@ -506,5 +506,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClearanceLinesRenderer
       objectReference: {fileID: 0}
+    - target: {fileID: 2999278789812950873, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ad570450c10887448d4a57354994e6f, type: 3}

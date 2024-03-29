@@ -51,6 +51,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3320656638784792260, guid: 8dfef2d0cba403042a3269f13b2fb21f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -3247612363253714892, guid: 8dfef2d0cba403042a3269f13b2fb21f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8dfef2d0cba403042a3269f13b2fb21f, type: 3}
       propertyPath: m_Name
       value: Sirgocal Robot Station

@@ -230,6 +230,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Robotic Vision System (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 57cf0712ce7ba7b49bda7c8c8616bf92, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1874768989589946816, guid: 57cf0712ce7ba7b49bda7c8c8616bf92, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57cf0712ce7ba7b49bda7c8c8616bf92, type: 3}
 --- !u!1 &4843883538308169612 stripped

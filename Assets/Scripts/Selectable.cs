@@ -316,8 +316,12 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public void OnMouseUpAsButton()
     {
-        Debug.Log($"Mouse up detected over {gameObject.name}");
-        if (InputHandler.IsPointerOverUIElement()) return;
+        //Debug.Log($"Mouse up detected over {gameObject.name}");
+
+        if (InputHandler.IsPointerOverUIElement() || 
+        !InputHandler.WasProperClick) 
+            return;
+
         Select();
     }
 
@@ -401,26 +405,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     }
     #endregion
 
-    public Bounds GetBounds()
-    {
-        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
-
-        if (meshRenderers.Length == 0)
-        {
-            throw new Exception($"Selectable {gameObject.name} had 0 mesh renderers.");
-        }
-
-        Bounds bounds = new Bounds(
-            meshRenderers[0].bounds.center,
-            meshRenderers[0].bounds.size);
-
-        for (int i = 1; i < meshRenderers.Length; i++)
-        {
-            bounds.Encapsulate(meshRenderers[i].bounds);
-        }
-
-        return bounds;
-    }
+    #region Static
 
     public static float RoundToNearestHalfInch(float value)
     {
@@ -472,6 +457,29 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             });
     }
 
+    #endregion
+
+    public Bounds GetBounds()
+    {
+        MeshRenderer[] meshRenderers = GetComponentsInChildren<MeshRenderer>();
+
+        if (meshRenderers.Length == 0)
+        {
+            throw new Exception($"Selectable {gameObject.name} had 0 mesh renderers.");
+        }
+
+        Bounds bounds = new Bounds(
+            meshRenderers[0].bounds.center,
+            meshRenderers[0].bounds.size);
+
+        for (int i = 1; i < meshRenderers.Length; i++)
+        {
+            bounds.Encapsulate(meshRenderers[i].bounds);
+        }
+
+        return bounds;
+    }
+
     private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
     {
         float diff = currentVal - originalVal;
@@ -520,7 +528,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// <returns>True if any rotation happened</returns>
     public bool TryRotateTowardVector(Vector3 directionVector)
     {
-        if (IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) || IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) || IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
+        if (IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) || 
+        IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) || 
+        IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
         {
             Quaternion oldRotation = transform.localRotation;
             transform.LookAt(transform.position + directionVector);
@@ -678,27 +688,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         ScaleUpdated?.Invoke();
     }
 
-    private bool IsHittingCeiling()
-    {
-        //RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
-
-        float width = RoomSize.Instance.CurrentDimensions.Width.ToMeters();
-        float depth = RoomSize.Instance.CurrentDimensions.Depth.ToMeters();
-        float height = RoomSize.Instance.CurrentDimensions.Height.ToMeters();
-        var bounds = new Bounds(RoomSize.Bounds.center, new Vector3(width, height, depth));
-        if (!TryGetComponent<MeshFilter>(out var meshFilter)) return false;
-
-        var verts = meshFilter.sharedMesh.vertices;
-
-        foreach (var vert in verts)
-        {
-            var transformedVert = transform.TransformPoint(vert);
-            if (transformedVert.y > bounds.max.y) return true;
-        }
-
-        return false;
-    }
-
     public void StoreChildScales()
     {
         _childScales.Clear();
@@ -749,102 +738,31 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         else return false;
     }
 
-    private int GetParentCount()
+    #region PDF
+
+    private bool IsHittingCeiling()
     {
-        Transform parent = transform.parent;
-        int count = 0;
-        while (parent != transform.root && parent != null)
+        //RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
+
+        float width = RoomSize.Instance.CurrentDimensions.Width.ToMeters();
+        float depth = RoomSize.Instance.CurrentDimensions.Depth.ToMeters();
+        float height = RoomSize.Instance.CurrentDimensions.Height.ToMeters();
+        var bounds = new Bounds(RoomSize.Bounds.center, new Vector3(width, height, depth));
+
+        if (!TryGetComponent<MeshFilter>(out var meshFilter)) 
+            return false;
+
+        var verts = meshFilter.sharedMesh.vertices;
+
+        foreach (var vert in verts)
         {
-            parent = parent.parent;
-            count++;
+            var transformedVert = transform.TransformPoint(vert);
+
+            if (transformedVert.y > bounds.max.y) 
+                return true;
         }
 
-        return count;
-    }
-
-    private Bounds GetAssemblyBounds()
-    {
-        if (!IsAssemblyRoot)
-        {
-            if (TryGetArmAssemblyRoot(out GameObject rootObj))
-            {
-                return rootObj.GetComponent<Selectable>().GetAssemblyBounds();
-            }
-            else
-            {
-                throw new Exception("Could not get assembly root");
-            }
-        }
-
-        List<MeshRenderer> renderers = GetComponentsInChildren<MeshRenderer>().Where(r => r.enabled).ToList();
-
-        if (renderers.Count == 0)
-        {
-            throw new Exception("Arm assembly has no renderers!");
-        }
-
-        Bounds bounds = renderers[0].bounds;
-        renderers.ForEach(renderer =>
-        {
-            bounds.Encapsulate(renderer.bounds);
-        });
-
-        return bounds;
-    }
-
-    public void SetAssemblyToDefaultRotations()
-    {
-        if (TryGetArmAssemblyRoot(out GameObject rootObj))
-        {
-            if (rootObj == gameObject)
-            {
-                _assemblySelectables = GetComponentsInChildren<Selectable>().ToList();
-                //_assemblySelectables.Add(this);
-                _originalRotations.Clear();
-                Array.ForEach(_assemblySelectables.OrderBy(x => x.GetParentCount()).ToArray(), item =>
-                {
-                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto || item.ZAlwaysFacesGroundElevationOnly)
-                    {
-                        _originalRotations[item] = item.transform.localRotation;
-                        item.transform.localRotation = item._originalRotation2;
-                    }
-                });
-            }
-            else
-            {
-                rootObj.GetComponent<Selectable>().SetAssemblyToDefaultRotations();
-                return;
-            }
-        }
-    }
-
-    private void ToggleMeasurableActiveStates(bool active)
-    {
-        if (active)
-        {
-            _assemblySelectables.ForEach(item =>
-            {
-                if (item.Measurables.Count > 0)
-                {
-                    item.Measurables.ForEach(measurable =>
-                    {
-                        measurable.ArmAssemblyActiveInElevationPhotoMode = true;
-                        _measurableActiveStates[measurable] = measurable.IsActive;
-                        measurable.SetActive(true);
-                    });
-                }
-            });
-        }
-        else
-        {
-            _measurableActiveStates.Keys.ToList().ForEach(item =>
-            {
-                item.ArmAssemblyActiveInElevationPhotoMode = false;
-                item.SetActive(_measurableActiveStates[item]);
-                float _ = 0;
-                item.UpdateMeasurements(ref _);
-            });
-        }
+        return false;
     }
 
     private List<PdfExporter.PdfImageData> GetAssemblyPDFImageData(Camera camera)
@@ -904,26 +822,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return imageDatas;
     }
 
-    /// <summary>
-    /// Gets most recent metadata from database (via Object 
-    /// menu) or seed data from selectable prefab
-    /// </summary>
-    /// <returns></returns>
-    public SelectableMetaData GetMetadata()
-    {
-        var data = RelatedSelectables[0].MetaData;
-
-        var matchingItem = ObjectMenu.Instance.ObjectMenuItems
-                .FirstOrDefault(x => RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
-
-        if (matchingItem != null)
-        {
-            data = matchingItem.SelectableMetaData;
-        }
-
-        return data;
-    }
-
     public void ExportElevationPdf(string title, string subtitle, List<AssemblyData> assemblyDatas)
     {
         if (TryGetArmAssemblyRoot(out GameObject rootObj))
@@ -962,26 +860,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
     }
 
-    public void RestoreArmAssemblyRotations()
-    {
-        if (TryGetArmAssemblyRoot(out GameObject rootObj))
-        {
-            if (rootObj == gameObject)
-            {
-                _assemblySelectables.ForEach(item =>
-                {
-                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto || item.ZAlwaysFacesGroundElevationOnly)
-                        item.transform.localRotation = _originalRotations[item];
-                });
-            }
-            else
-            {
-                rootObj.GetComponent<Selectable>().RestoreArmAssemblyRotations();
-                return;
-            }
-        }
-    }
-
     private string GetElevationPhoto(Camera camera, Bounds bounds, out int imageWidth, out int imageHeight, int fileIndex)
     {
         camera.enabled = true;
@@ -1009,18 +887,20 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                             measurement.Measurer.MeasurementText.UpdateVisibilityAndPosition(camera, force: true);
                             measurement.Measurer.UpdateTransform(camera);
                             bounds.Encapsulate(measurement.Measurer.Renderer.bounds);
-                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.up * 0.3f);
-                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.down * 0.3f);
-                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.right * 0.3f);
-                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.left * 0.3f);
-                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.forward * 0.3f);
-                            bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.back * 0.3f);
+                            var textBounds = new Bounds(measurement.Measurer.TextPosition, Vector3.one * 0.3f);
+                            bounds.Encapsulate(textBounds);
+                            //bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.up * 0.3f);
+                            //bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.down * 0.3f);
+                            //bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.right * 0.3f);
+                            //bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.left * 0.3f);
+                            //bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.forward * 0.3f);
+                            //bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.back * 0.3f);
                         });
                     }
                 });
             }
         });
-        //bounds.Encapsulate(new Vector3(bounds.center.x, -0.1f, bounds.center.z));
+
         camera.transform.position = bounds.center + (outwardDirection.normalized * bounds.extents.magnitude);
         camera.transform.LookAt(bounds.center, Vector3.up);
         camera.orthographicSize = bounds.extents.y;
@@ -1082,18 +962,162 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return filenameImage1;
     }
 
+    public void RestoreArmAssemblyRotations()
+    {
+        if (TryGetArmAssemblyRoot(out GameObject rootObj))
+        {
+            if (rootObj == gameObject)
+            {
+                _assemblySelectables.ForEach(item =>
+                {
+                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto || item.ZAlwaysFacesGroundElevationOnly)
+                        item.transform.localRotation = _originalRotations[item];
+                });
+            }
+            else
+            {
+                rootObj.GetComponent<Selectable>().RestoreArmAssemblyRotations();
+                return;
+            }
+        }
+    }
+
+    public void SetAssemblyToDefaultRotations()
+    {
+        if (TryGetArmAssemblyRoot(out GameObject rootObj))
+        {
+            if (rootObj == gameObject)
+            {
+                _assemblySelectables = GetComponentsInChildren<Selectable>().ToList();
+                //_assemblySelectables.Add(this);
+                _originalRotations.Clear();
+                Array.ForEach(_assemblySelectables.OrderBy(x => x.GetParentCount()).ToArray(), item =>
+                {
+                    if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto || item.ZAlwaysFacesGroundElevationOnly)
+                    {
+                        _originalRotations[item] = item.transform.localRotation;
+                        item.transform.localRotation = item._originalRotation2;
+                    }
+                });
+            }
+            else
+            {
+                rootObj.GetComponent<Selectable>().SetAssemblyToDefaultRotations();
+                return;
+            }
+        }
+    }
+
+    private void ToggleMeasurableActiveStates(bool active)
+    {
+        if (active)
+        {
+            _assemblySelectables.ForEach(item =>
+            {
+                if (item.Measurables.Count > 0)
+                {
+                    item.Measurables.ForEach(measurable =>
+                    {
+                        measurable.ArmAssemblyActiveInElevationPhotoMode = true;
+                        _measurableActiveStates[measurable] = measurable.IsActive;
+                        measurable.SetActive(true);
+                    });
+                }
+            });
+        }
+        else
+        {
+            _measurableActiveStates.Keys.ToList().ForEach(item =>
+            {
+                item.ArmAssemblyActiveInElevationPhotoMode = false;
+                item.SetActive(_measurableActiveStates[item]);
+                float _ = 0;
+                item.UpdateMeasurements(ref _);
+            });
+        }
+    }
+
+    private Bounds GetAssemblyBounds()
+    {
+        if (!IsAssemblyRoot)
+        {
+            if (TryGetArmAssemblyRoot(out GameObject rootObj))
+            {
+                return rootObj.GetComponent<Selectable>().GetAssemblyBounds();
+            }
+            else
+            {
+                throw new Exception("Could not get assembly root");
+            }
+        }
+
+        List<MeshRenderer> renderers = GetComponentsInChildren<MeshRenderer>().Where(r => r.enabled).ToList();
+
+        if (renderers.Count == 0)
+        {
+            throw new Exception("Arm assembly has no renderers!");
+        }
+
+        Bounds bounds = renderers[0].bounds;
+        renderers.ForEach(renderer =>
+        {
+            bounds.Encapsulate(renderer.bounds);
+        });
+
+        return bounds;
+    }
+
+    private int GetParentCount()
+    {
+        Transform parent = transform.parent;
+        int count = 0;
+        while (parent != transform.root && parent != null)
+        {
+            parent = parent.parent;
+            count++;
+        }
+
+        return count;
+    }
+
+    #endregion
+
     private void FaceZTowardGround()
     {
         if (ZAlwaysFacesGround || (ZAlwaysFacesGroundElevationOnly && IsInElevationPhotoMode))
         {
             float oldX = transform.localEulerAngles.x;
-            transform.LookAt(transform.position + Vector3.down, ZAlignUpIsParentForward ? transform.parent.forward : transform.parent.right);
-            //if (!IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
-            //{
+
+            transform.LookAt(
+                transform.position + Vector3.down, 
+                ZAlignUpIsParentForward ? transform.parent.forward : transform.parent.right);
+
+
             transform.localEulerAngles = new Vector3(oldX, transform.localEulerAngles.y, 0);
-            //}
         }
     }
+
+    /// <summary>
+    /// Gets most recent metadata from database (via Object 
+    /// menu) or seed data from selectable prefab
+    /// </summary>
+    /// <returns></returns>
+    public SelectableMetaData GetMetadata()
+    {
+        var data = RelatedSelectables[0].MetaData;
+
+        var matchingItem = ObjectMenu.Instance.ObjectMenuItems
+                .FirstOrDefault(x => RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
+
+        if (matchingItem != null)
+        {
+            data = matchingItem.SelectableMetaData;
+        }
+
+        return data;
+    }
+
+    #region Raycasting
 
     public async void StartRaycastPlacementMode()
     {
@@ -1317,6 +1341,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
     }
 
+    #endregion
+
     private void InputHandler_KeyStateChanged(object sender, KeyStateChangedEventArgs e)
     {
         if (e.KeyCode == KeyCode.Escape && e.KeyState == KeyState.ReleasedThisFrame)
@@ -1426,12 +1452,26 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public void OnPreprocessAssetBundle()
     {
 #if UNITY_EDITOR
+        bool needsDirty = false;
+
+        // Set this and all children layer to "Selectable"
+        var transforms = GetComponentsInChildren<Transform>(true);
+
+        foreach (var transform in transforms)
+        {
+            if (transform.gameObject.layer != LayerMask.NameToLayer("Selectable"))
+            {
+                transform.gameObject.layer = LayerMask.NameToLayer("Selectable");
+                needsDirty = true;
+            }
+        }
+
         AttachmentPoint[] attachPoints =
             GetComponentsInChildren<AttachmentPoint>(true);
 
         var relatedSelectables = GetComponentsInChildren<Selectable>().ToList();
 
-        bool needsDirty = false;
+        
 
         Array.ForEach(GetComponentsInChildren<Collider>(), collider =>
         {

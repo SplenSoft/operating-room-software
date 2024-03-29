@@ -208,6 +208,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClearanceLinesRenderer
       objectReference: {fileID: 0}
+    - target: {fileID: 2999278789812950873, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1ad570450c10887448d4a57354994e6f, type: 3}
 --- !u!1001 &7394686828361568334
@@ -525,9 +529,17 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: 7bec4e898352a774b8711af6af5013d2, type: 2}
+    - target: {fileID: -6158847262685390117, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: -3814263269094680950, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3566099189084836155, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -3566099189084836155, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}
       propertyPath: m_IsActive

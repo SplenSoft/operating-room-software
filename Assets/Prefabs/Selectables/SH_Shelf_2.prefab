@@ -67,6 +67,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomHead_MiddleShelfPull
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f2f03f8a6f632134dae4511186174d74, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f2f03f8a6f632134dae4511186174d74, type: 3}
 --- !u!1001 &8326553988867748111

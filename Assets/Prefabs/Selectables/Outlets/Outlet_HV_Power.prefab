@@ -158,6 +158,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Outlet
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ac8b1b66018f03d48b0581c3a8be5219, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1679886840836866240, guid: ac8b1b66018f03d48b0581c3a8be5219, type: 3}
       propertyPath: m_Layer
       value: 6

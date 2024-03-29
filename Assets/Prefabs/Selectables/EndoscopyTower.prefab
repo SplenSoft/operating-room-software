@@ -390,6 +390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EndoscopyTowerFile
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c9fc6dbb85b1b59488f217be15df70ac, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1137131290451826814, guid: c9fc6dbb85b1b59488f217be15df70ac, type: 3}
       propertyPath: m_Layer
       value: 6
