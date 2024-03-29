@@ -1587,6 +1587,19 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: LeadShield
+    <SaveLoadGuid>k__BackingField: gameobject_fb31acd22b36bea428424f976a77c8ee
+    <AssetBundleName>k__BackingField: gameobject_fb31acd22b36bea428424f976a77c8ee
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 0
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: Lead Shield
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField: []
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: MayoStand
     <SaveLoadGuid>k__BackingField: gameobject_280e7eeaff1f5304492a3d7223887c84
     <AssetBundleName>k__BackingField: gameobject_280e7eeaff1f5304492a3d7223887c84
