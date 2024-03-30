@@ -172,6 +172,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// A forced parent with no attachment point. Only used
     /// by "decal" type attachments
     /// </summary>
+    [field: SerializeField]
     public Selectable AttachedTo { get; set; }
 
     /// <summary>
@@ -480,6 +481,130 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return bounds;
     }
 
+    public bool TryGetArmAssemblyRoot(out GameObject rootObj)
+    {
+        rootObj = null;
+        if (transform.root.TryGetComponent<Selectable>(out var rootSelectable))
+        {
+            rootObj = rootSelectable.gameObject;
+            return rootSelectable.IsAssemblyRoot;
+        }
+        return false;
+    }
+
+    private void FaceZTowardGround()
+    {
+        if (ZAlwaysFacesGround || (ZAlwaysFacesGroundElevationOnly && IsInElevationPhotoMode))
+        {
+            float oldX = transform.localEulerAngles.x;
+
+            transform.LookAt(
+                transform.position + Vector3.down,
+                ZAlignUpIsParentForward ? transform.parent.forward : transform.parent.right);
+
+
+            transform.localEulerAngles = new Vector3(oldX, transform.localEulerAngles.y, 0);
+        }
+    }
+
+    /// <summary>
+    /// Gets most recent metadata from database (via Object 
+    /// menu) or seed data from selectable prefab
+    /// </summary>
+    /// <returns></returns>
+    public SelectableMetaData GetMetadata()
+    {
+        var data = RelatedSelectables[0].MetaData;
+
+        var matchingItem = ObjectMenu.Instance.ObjectMenuItems
+                .FirstOrDefault(x => RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
+
+        if (matchingItem != null)
+        {
+            data = matchingItem.SelectableMetaData;
+        }
+
+        return data;
+    }
+
+    private void Deselect(bool fireEvent = true)
+    {
+        //Debug.Log($"Attempting to deselect {gameObject.name}");
+        if (!IsSelected)
+        {
+            //Debug.Log($"Could not deselect {gameObject.name} because it was not selected");
+            return;
+        }
+
+        List<Selectable> previous = new List<Selectable>(SelectedSelectables);
+        SelectedSelectables.Clear();
+
+        previous.ForEach(x =>
+        {
+            //Debug.Log($"Firing deselect event for {x.gameObject.name}");
+            x._highlightEffect.highlighted = false;
+            x.Deselected?.Invoke();
+        });
+
+        if (fireEvent)
+        {
+            SelectionChanged?.Invoke();
+        }
+    }
+
+    public void Select()
+    {
+        //Debug.Log($"Attempting to select {gameObject.name}");
+
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+        {
+            return;
+        }
+
+        if (IsSelected)
+        {
+            //Debug.Log($"Could not select {gameObject.name} because it was already selected");
+            return;
+        }
+
+        if (_isRaycastPlacementMode)
+        {
+            //Debug.Log($"Could not select {gameObject.name} because it is in raycast placement mode");
+            return;
+        }
+
+        if (GizmoHandler.GizmoBeingUsed)
+        {
+            //Debug.Log($"Could not select {gameObject.name} because a gizmo is being used");
+            return;
+        }
+
+        if (SelectedSelectables.Count > 0)
+        {
+            //Debug.Log($"Deselecting previously selected selectables");
+            SelectedSelectables[0].Deselect(false);
+        }
+
+        //Debug.Log($"Currently selected selectable count is {SelectedSelectables.Count} (should be 0)");
+
+        SelectedSelectables = new List<Selectable>(RelatedSelectables);
+
+        if (!SelectedSelectables.Contains(this))
+        {
+            SelectedSelectables.Add(this);
+        }
+
+        SelectedSelectables.ForEach(x =>
+        {
+            x._highlightEffect.highlighted = true;
+            x._gizmoHandler.SelectableSelected();
+        });
+
+        SelectionChanged?.Invoke();
+    }
+
+    #region Gizmos
+
     private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
     {
         float diff = currentVal - originalVal;
@@ -555,17 +680,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         bool exceedsY = TryGetGizmoSetting(GizmoType.Rotate, Axis.Y, out _) && CheckConstraints(angleY, OriginalLocalRotation.y, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Y), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Y), out totalExcess.y);
         bool exceedsZ = TryGetGizmoSetting(GizmoType.Rotate, Axis.Z, out _) && CheckConstraints(angleZ, OriginalLocalRotation.z, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z), out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
-    }
-
-    public bool TryGetArmAssemblyRoot(out GameObject rootObj)
-    {
-        rootObj = null;
-        if (transform.root.TryGetComponent<Selectable>(out var rootSelectable))
-        {
-            rootObj = rootSelectable.gameObject;
-            return rootSelectable.IsAssemblyRoot;
-        }
-        return false;
     }
 
     public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected, bool @override = false)
@@ -737,6 +851,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
         else return false;
     }
+
+    #endregion
 
     #region PDF
 
@@ -1082,41 +1198,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     #endregion
 
-    private void FaceZTowardGround()
-    {
-        if (ZAlwaysFacesGround || (ZAlwaysFacesGroundElevationOnly && IsInElevationPhotoMode))
-        {
-            float oldX = transform.localEulerAngles.x;
-
-            transform.LookAt(
-                transform.position + Vector3.down, 
-                ZAlignUpIsParentForward ? transform.parent.forward : transform.parent.right);
-
-
-            transform.localEulerAngles = new Vector3(oldX, transform.localEulerAngles.y, 0);
-        }
-    }
-
-    /// <summary>
-    /// Gets most recent metadata from database (via Object 
-    /// menu) or seed data from selectable prefab
-    /// </summary>
-    /// <returns></returns>
-    public SelectableMetaData GetMetadata()
-    {
-        var data = RelatedSelectables[0].MetaData;
-
-        var matchingItem = ObjectMenu.Instance.ObjectMenuItems
-                .FirstOrDefault(x => RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
-
-        if (matchingItem != null)
-        {
-            data = matchingItem.SelectableMetaData;
-        }
-
-        return data;
-    }
-
     #region Raycasting
 
     public async void StartRaycastPlacementMode()
@@ -1371,82 +1452,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
             Destroy(gameObject);
         }
-    }
-
-    private void Deselect(bool fireEvent = true)
-    {
-        //Debug.Log($"Attempting to deselect {gameObject.name}");
-        if (!IsSelected)
-        {
-            //Debug.Log($"Could not deselect {gameObject.name} because it was not selected");
-            return;
-        }
-
-        List<Selectable> previous = new List<Selectable>(SelectedSelectables);
-        SelectedSelectables.Clear();
-
-        previous.ForEach(x =>
-        {
-            //Debug.Log($"Firing deselect event for {x.gameObject.name}");
-            x._highlightEffect.highlighted = false;
-            x.Deselected?.Invoke();
-        });
-
-        if (fireEvent)
-        {
-            SelectionChanged?.Invoke();
-        }
-    }
-
-    public void Select()
-    {
-        //Debug.Log($"Attempting to select {gameObject.name}");
-
-        if (SceneManager.GetActiveScene().name == "ObjectEditor")
-        {
-            return;
-        }
-
-        if (IsSelected)
-        {
-            //Debug.Log($"Could not select {gameObject.name} because it was already selected");
-            return;
-        }
-        
-        if (_isRaycastPlacementMode)
-        {
-            //Debug.Log($"Could not select {gameObject.name} because it is in raycast placement mode");
-            return;
-        }
-        
-        if (GizmoHandler.GizmoBeingUsed)
-        {
-            //Debug.Log($"Could not select {gameObject.name} because a gizmo is being used");
-            return;
-        }
-
-        if (SelectedSelectables.Count > 0)
-        {
-            //Debug.Log($"Deselecting previously selected selectables");
-            SelectedSelectables[0].Deselect(false);
-        }
-
-        //Debug.Log($"Currently selected selectable count is {SelectedSelectables.Count} (should be 0)");
-
-        SelectedSelectables = new List<Selectable>(RelatedSelectables);
-
-        if (!SelectedSelectables.Contains(this))
-        {
-            SelectedSelectables.Add(this);
-        }
-
-        SelectedSelectables.ForEach(x =>
-        {
-            x._highlightEffect.highlighted = true;
-            x._gizmoHandler.SelectableSelected();
-        });
-
-        SelectionChanged?.Invoke();
     }
 
     public void OnPreprocessAssetBundle()
