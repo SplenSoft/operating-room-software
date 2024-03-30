@@ -134,6 +134,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4014627101839371476, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
+      propertyPath: <AttachedTo>k__BackingField
+      value: 
+      objectReference: {fileID: 9187692818169781982}
+    - target: {fileID: 4014627101839371476, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -570,7 +574,7 @@ MonoBehaviour:
   seeThroughTexture: {fileID: 0}
   seeThroughTextureUVSpace: 0
   seeThroughTextureScale: 1
-  rmsCount: 4
+  rmsCount: 7
   hitFxInitialIntensity: 0
   hitFxMode: 0
   hitFxFadeOutDuration: 0.25
@@ -689,6 +693,7 @@ MonoBehaviour:
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
   <CanPlaceAnywhere>k__BackingField: 0
+  <AttachedTo>k__BackingField: {fileID: 0}
   <RelatedSelectables>k__BackingField:
   - {fileID: 3817767745036341489}
   - {fileID: 1337894048385943177}
@@ -805,6 +810,7 @@ MonoBehaviour:
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
   <CanPlaceAnywhere>k__BackingField: 0
+  <AttachedTo>k__BackingField: {fileID: 0}
   <RelatedSelectables>k__BackingField:
   - {fileID: 3817767745036341489}
   - {fileID: 1337894048385943177}
@@ -1017,7 +1023,7 @@ MonoBehaviour:
   seeThroughTexture: {fileID: 0}
   seeThroughTextureUVSpace: 0
   seeThroughTextureScale: 1
-  rmsCount: 4
+  rmsCount: 8
   hitFxInitialIntensity: 0
   hitFxMode: 0
   hitFxFadeOutDuration: 0.25
@@ -1054,7 +1060,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -6565122453228016778, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: rmsCount
-      value: 5
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <GUID>k__BackingField
@@ -1347,6 +1353,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4014627101839371476, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
+      propertyPath: <AttachedTo>k__BackingField
+      value: 
+      objectReference: {fileID: 9187692818169781982}
+    - target: {fileID: 4014627101839371476, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -1479,6 +1489,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <AttachedTo>k__BackingField
+      value: 
+      objectReference: {fileID: 9187692818169781982}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -1610,6 +1624,10 @@ PrefabInstance:
       propertyPath: rmsCount
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 939e7988989ab0e45ab69cc0f02e3f9d, type: 3}
+      propertyPath: <AttachedTo>k__BackingField
+      value: 
+      objectReference: {fileID: 9187692818169781982}
     - target: {fileID: 4014627101839371476, guid: 939e7988989ab0e45ab69cc0f02e3f9d, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 7
