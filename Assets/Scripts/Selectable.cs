@@ -77,7 +77,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public UnityEvent SelectableDestroyed { get; } = new();
     public UnityEvent ScaleUpdated { get; } = new();
     public UnityEvent Deselected { get; } = new();
-    public UnityEvent OnPlaced { get; } = new ();
+    public UnityEvent OnPlaced { get; } = new();
     public Selectable ParentSelectable { get; private set; }
 
     public Vector3 OriginalLocalPosition { get; set; }
@@ -143,10 +143,10 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     "elevation photos for PDF output")]
     private bool ZAlwaysFacesGroundElevationOnly { get; set; }
 
-    [field: SerializeField] 
+    [field: SerializeField]
     private bool ZAlignUpIsParentForward { get; set; }
 
-    [field: SerializeField] 
+    [field: SerializeField]
     public List<Measurable> Measurables { get; private set; }
 
     [field: SerializeField,
@@ -319,8 +319,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     {
         //Debug.Log($"Mouse up detected over {gameObject.name}");
 
-        if (InputHandler.IsPointerOverUIElement() || 
-        !InputHandler.WasProperClick) 
+        if (InputHandler.IsPointerOverUIElement() ||
+        !InputHandler.WasProperClick)
             return;
 
         Select();
@@ -431,10 +431,10 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             foreach (var selectable in SelectedSelectables)
             {
                 if (selectable.GetComponent
-                <GizmoHandler>().GizmoUsedLastFrame) 
+                <GizmoHandler>().GizmoUsedLastFrame)
                     return;
             }
-            
+
             SelectedSelectables[0].Deselect();
             //SelectionChanged?.Invoke(null, null);
         }
@@ -653,8 +653,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// <returns>True if any rotation happened</returns>
     public bool TryRotateTowardVector(Vector3 directionVector)
     {
-        if (IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) || 
-        IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) || 
+        if (IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) ||
+        IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Y) ||
         IsGizmoSettingAllowed(GizmoType.Rotate, Axis.Z))
         {
             Quaternion oldRotation = transform.localRotation;
@@ -686,7 +686,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     {
         Transform oldParent = null;
 
-        if(!@override && TryGetComponent(out ScaleGroup _))
+        if (!@override && TryGetComponent(out ScaleGroup _))
         {
             oldParent = transform.parent;
             transform.SetParent(null);
@@ -756,11 +756,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                         float y = Mathf.Abs(child.transform.localScale.y * localDiff.y);
                         float z = Mathf.Abs(child.transform.localScale.z * localDiff.z);
 
-                        if(ignore != null)
+                        if (ignore != null)
                         {
-                            if(ignore.IgnoreX) x = child.transform.localScale.x;
-                            if(ignore.IgnoreY) y = child.transform.localScale.y;
-                            if(ignore.IgnoreZ) z = child.transform.localScale.z;
+                            if (ignore.IgnoreX) x = child.transform.localScale.x;
+                            if (ignore.IgnoreY) y = child.transform.localScale.y;
+                            if (ignore.IgnoreZ) z = child.transform.localScale.z;
                         }
                         // Debug.Log($"Applying new scale of ({x}, {y}, {z})");
                         child.transform.localScale = new Vector3(x, y, z);
@@ -786,7 +786,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         transform.rotation = storedRotation;
 
-        if(!@override && TryGetComponent(out ScaleGroup _))
+        if (!@override && TryGetComponent(out ScaleGroup _))
         {
             transform.SetParent(oldParent);
         }
@@ -865,7 +865,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         float height = RoomSize.Instance.CurrentDimensions.Height.ToMeters();
         var bounds = new Bounds(RoomSize.Bounds.center, new Vector3(width, height, depth));
 
-        if (!TryGetComponent<MeshFilter>(out var meshFilter)) 
+        if (!TryGetComponent<MeshFilter>(out var meshFilter))
             return false;
 
         var verts = meshFilter.sharedMesh.vertices;
@@ -874,7 +874,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         {
             var transformedVert = transform.TransformPoint(vert);
 
-            if (transformedVert.y > bounds.max.y) 
+            if (transformedVert.y > bounds.max.y)
                 return true;
         }
 
@@ -893,15 +893,15 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
                 if (i == 0)
                 {
-                    newAngles.y = gizmoSetting.Invert ? 
+                    newAngles.y = gizmoSetting.Invert ?
                         gizmoSetting.GetMaxValue() : gizmoSetting.GetMinValue();
                 }
                 else
                 {
-                    newAngles.y = gizmoSetting.Invert ? 
+                    newAngles.y = gizmoSetting.Invert ?
                         gizmoSetting.GetMinValue() : gizmoSetting.GetMaxValue();
                 }
-                   
+
                 selectable.transform.localEulerAngles = newAngles;
                 var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
                 //RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
@@ -964,7 +964,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             ActiveSelectables.Where(x => !_assemblySelectables.Contains(x)).ToList().ForEach(x => x.gameObject.SetActive(false));
 
             PdfExporter.ExportElevationPdf(
-                GetAssemblyPDFImageData(camera), 
+                GetAssemblyPDFImageData(camera),
                 _assemblySelectables, title, subtitle, assemblyDatas);
 
             for (int i = 0; i < ActiveSelectables.Count; i++) ActiveSelectables[i].gameObject.SetActive(visibilities[i]);
@@ -1208,13 +1208,17 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         if (transform.CompareTag("Wall"))
         {
-            var collider = GetComponentInChildren<Collider>();
-            if (collider is MeshCollider mc)
+            var colliders = GetComponentsInChildren<Collider>();
+            foreach (Collider col in colliders)
             {
-                mc.convex = true;
+                if (col is MeshCollider mc)
+                {
+                    mc.convex = true;
+                }
+                col.isTrigger = true;
+                col.enabled = false;
             }
-            collider.isTrigger = true;
-            collider.enabled = false;
+
         }
 
         if (CanPlaceAnywhere)
@@ -1263,7 +1267,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 }
             }
         }
-    
+
         if (!_isRaycastingOnSelectable)
         {
             int mask = 1 << LayerMask.NameToLayer("Wall");
@@ -1369,7 +1373,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 }
             }
         }
-        
+
         if (Input.GetMouseButtonUp(0))
         {
             _highlightEffect.highlighted = false;
@@ -1399,13 +1403,16 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
             if (transform.CompareTag("Wall"))
             {
-                var collider = GetComponentInChildren<Collider>();
-                collider.isTrigger = false;
-                if (collider is MeshCollider mc)
+                var colliders = GetComponentsInChildren<Collider>();
+                foreach (Collider col in colliders)
                 {
-                    mc.convex = false;
+                    if (col is MeshCollider mc)
+                    {
+                        mc.convex = false;
+                    }
+                    col.isTrigger = false;
+                    col.enabled = true;
                 }
-                collider.enabled = true;
             }
 
             if (CanPlaceAnywhere)
@@ -1445,7 +1452,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             if (FullScreenMenu.IsOpen)
                 return;
 
-            if (!IsDestructible) 
+            if (!IsDestructible)
                 return;
 
             Deselect();
@@ -1476,7 +1483,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         var relatedSelectables = GetComponentsInChildren<Selectable>().ToList();
 
-        
+
 
         Array.ForEach(GetComponentsInChildren<Collider>(), collider =>
         {
