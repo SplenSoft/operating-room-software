@@ -459,6 +459,7 @@ MonoBehaviour:
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 1
   <CanPlaceAnywhere>k__BackingField: 0
+  <AttachedTo>k__BackingField: {fileID: 0}
   <RelatedSelectables>k__BackingField:
   - {fileID: 3292082223256734195}
   - {fileID: 6920900863554958560}
@@ -817,6 +818,7 @@ MonoBehaviour:
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
   <CanPlaceAnywhere>k__BackingField: 0
+  <AttachedTo>k__BackingField: {fileID: 0}
   <RelatedSelectables>k__BackingField:
   - {fileID: 3292082223256734195}
   - {fileID: 6920900863554958560}

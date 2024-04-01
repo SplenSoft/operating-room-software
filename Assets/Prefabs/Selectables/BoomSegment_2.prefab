@@ -256,15 +256,15 @@ PrefabInstance:
     - target: {fileID: 4014627101839371476, guid: fdbe9a18e2ecb8742b6752e53ef46387, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7545313951941142185}
     - target: {fileID: 4014627101839371476, guid: fdbe9a18e2ecb8742b6752e53ef46387, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5102702119798078014}
     - target: {fileID: 4014627101839371476, guid: fdbe9a18e2ecb8742b6752e53ef46387, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1634076314307409458}
     - target: {fileID: 4014627101839371476, guid: fdbe9a18e2ecb8742b6752e53ef46387, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[3]
       value: 
@@ -451,7 +451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Name>k__BackingField
@@ -469,6 +469,14 @@ PrefabInstance:
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[2]
       value: 
       objectReference: {fileID: 1634076314307409458}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.data[3]
+      value: 
+      objectReference: {fileID: 3670872908591744703}
+    - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: <RelatedSelectables>k__BackingField.Array.data[4]
+      value: 
+      objectReference: {fileID: 4784455659739168784}
     - target: {fileID: 788891966633474830, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: <MetaData>k__BackingField.<Enabled>k__BackingField
       value: 1
@@ -980,6 +988,8 @@ MonoBehaviour:
   - {fileID: 7545313951941142185}
   - {fileID: 5102702119798078014}
   - {fileID: 1634076314307409458}
+  - {fileID: 3670872908591744703}
+  - {fileID: 4784455659739168784}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -1129,6 +1139,8 @@ MonoBehaviour:
   - {fileID: 7545313951941142185}
   - {fileID: 5102702119798078014}
   - {fileID: 1634076314307409458}
+  - {fileID: 3670872908591744703}
+  - {fileID: 4784455659739168784}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
@@ -1416,15 +1428,15 @@ PrefabInstance:
     - target: {fileID: 4014627101839371476, guid: fdbe9a18e2ecb8742b6752e53ef46387, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7545313951941142185}
     - target: {fileID: 4014627101839371476, guid: fdbe9a18e2ecb8742b6752e53ef46387, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[1]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5102702119798078014}
     - target: {fileID: 4014627101839371476, guid: fdbe9a18e2ecb8742b6752e53ef46387, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[2]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1634076314307409458}
     - target: {fileID: 4014627101839371476, guid: fdbe9a18e2ecb8742b6752e53ef46387, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[3]
       value: 

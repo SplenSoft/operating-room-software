@@ -973,6 +973,7 @@ MonoBehaviour:
   <AlignForElevationPhoto>k__BackingField: 0
   <ChangeHeightForElevationPhoto>k__BackingField: 0
   <CanPlaceAnywhere>k__BackingField: 0
+  <AttachedTo>k__BackingField: {fileID: 0}
   <RelatedSelectables>k__BackingField:
   - {fileID: 7496732482224122020}
   - {fileID: 5146577690571749872}
