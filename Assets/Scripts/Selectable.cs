@@ -20,21 +20,6 @@ using UnityEditor;
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect), typeof(TrackedObject)), Serializable]
 public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 {
-    [Serializable]
-    public class ScaleLevel
-    {
-        [field: SerializeField] public float Size { get; set; }
-        [field: SerializeField] public bool Selected { get; set; }
-        [field: SerializeField] public bool ModelDefault { get; set; }
-        public float ScaleZ { get; set; }
-        [field: SerializeField] public Metadata[] metadata;
-
-        public bool TryGetValue(string key, out string value)
-        {
-            value = metadata.SingleOrDefault(x => x.key == key).value;
-            return value != "";
-        }
-    }
 
     [Serializable]
     public struct Metadata
@@ -47,18 +32,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             key = "";
             value = "";
         }
-    }
-
-    [Serializable]
-    public class AttachmentPointData
-    {
-        [field: SerializeField]
-        public string Guid
-        { get; set; } = System.Guid.NewGuid().ToString();
-
-        [field: SerializeField]
-        public AttachmentPoint AttachmentPoint
-        { get; set; }
     }
 
     #region Fields and Properties
