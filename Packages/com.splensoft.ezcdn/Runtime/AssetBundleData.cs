@@ -59,6 +59,13 @@ namespace SplenSoft.AssetBundles
         public long LastResponseCode { get; set; }
 
         /// <summary>
+        /// True if asset is currently being asynchronously loaded by Unity. 
+        /// Must be checked to ensure an asset is never loaded more 
+        /// than once if it's already loaded
+        /// </summary>
+        public bool IsLoading { get; set; }
+
+        /// <summary>
         /// Removes the <see cref="AssetBundle"/> and 
         /// <see cref="Asset"/> from 
         /// this cache so it can be garbage collected. 

@@ -406,8 +406,7 @@ namespace SplenSoft.AssetBundles
             IProgress<AssetRetrievalProgress> progress = null, 
             Action<T> onSuccess = null, 
             Action<AssetRetrievalResult> onFailure = null, 
-            bool waitForInitialize = true
-        ) 
+            bool waitForInitialize = true) 
             where T : UnityEngine.Object
         {
             if (waitForInitialize)
@@ -484,20 +483,49 @@ namespace SplenSoft.AssetBundles
                 _downloadResponseCodePerAssetBundleName[name] = res;
                 return null;
             }
+            
+            if (data != null) 
+            { 
+                while (data.IsLoading) 
+                {
+                    await Task.Yield();
+                    if (!Application.isPlaying) 
+                        return null;
+                }
+
+                if (data.Loaded && data.Asset != null) 
+                {
+                    Log.Write(
+                        LogLevel.Verbose, 
+                        $"Cancelling load of asset {name} because it is already loaded. Returning loaded asset instead.");
+
+                    progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Done, 1));
+                    Log.Write(LogLevel.Log, $"Loaded asset {data.Asset.name}");
+                    onSuccess?.Invoke((T)data.Asset);
+                    AssetLoaded?.Invoke(name);
+                    return (T)data.Asset;
+                }
+
+                data.IsLoading = true;
+            }
 
             var loadAsset = bundle.LoadAllAssetsAsync<T>();
 
             while (!loadAsset.isDone)
             {
                 progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Loading, 0.4f + loadAsset.progress * 0.5f));
+
                 await Task.Yield();
-                if (!Application.isPlaying) return null;
+                if (!Application.isPlaying) 
+                    return null;
             }
 
             if (data != null)
             {
                 data.Loaded = true;
                 data.Asset = loadAsset.asset;
+                data.IsLoading = false;
+                
                 if (data.Asset != null)
                 {
                     Log.Write(LogLevel.Log, $"Loaded asset {data.Asset.name}");
