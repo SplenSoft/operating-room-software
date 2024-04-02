@@ -41,7 +41,7 @@ public class MatchHeightToWalls : MonoBehaviour
 
     private async void UpdateScale(RoomDimension dimension)
     {
-        while (!_selectable.Started && 
+        while (!_selectable.Started || 
         _moveToRootOnStarts.Any(x => !x.Moved)) 
         { 
             await Task.Yield();
@@ -52,6 +52,11 @@ public class MatchHeightToWalls : MonoBehaviour
         var wall = RoomBoundary.Instances
             .Where(item => item.RoomBoundaryType == RoomBoundaryType.WallWest)
             .First();
+
+        if (wall.transform.localScale.y == 0)
+        {
+            Debug.LogError("Room wall localscale y was 0 when trying to set additional wall height!");
+        }
 
         transform.localScale = new Vector3
             (transform.localScale.x, 

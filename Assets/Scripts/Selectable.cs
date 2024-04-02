@@ -55,6 +55,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public UnityEvent ScaleUpdated { get; } = new();
     public UnityEvent Deselected { get; } = new();
     public UnityEvent OnPlaced { get; } = new();
+    public UnityEvent OnRaycastPositionUpdated { get; } = new();
     public Selectable ParentSelectable { get; private set; }
 
     public Vector3 OriginalLocalPosition { get; set; }
@@ -157,7 +158,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// Used to highlight multiple gizmos instead of just one
     /// </summary>
     [field: SerializeField, ReadOnly]
-    public List<Selectable> RelatedSelectables { get; private set; }
+    public List<Selectable> RelatedSelectables { get; set; }
 
     private List<Selectable> _assemblySelectables = new();
     private Dictionary<Selectable, Quaternion> _originalRotations = new();
@@ -171,6 +172,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
     public static Camera ActiveCameraRenderTextureElevation { get; private set; }
+    private Collider[] RaycastingColliders { get; set; }
 
     /// <summary>
     /// If true, this is probably a ceiling mount
@@ -334,12 +336,17 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             CurrentPreviewScaleLevel = CurrentScaleLevel;
             CurrentScaleLevel.ScaleZ = transform.localScale.z;
 
+            Debug.Log($"Model default scale level is {CurrentScaleLevel.ScaleZ}");
+
             StoreChildScales();
 
             ScaleLevels.ForEach(item =>
             {
                 if (!item.ModelDefault)
                 {
+                    Debug.Log($"Item size for scale level {ScaleLevels.IndexOf(item)} is {item.Size}");
+                    Debug.Log($"Current scale level size is {CurrentScaleLevel.Size}");
+
                     float perc = item.Size / CurrentScaleLevel.Size;
                     item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;
                 }
@@ -659,15 +666,15 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return exceedsX || exceedsY || exceedsZ;
     }
 
-    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected, bool @override = false)
+    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
     {
         Transform oldParent = null;
 
-        if (!@override && TryGetComponent(out ScaleGroup _))
-        {
-            oldParent = transform.parent;
-            transform.SetParent(null);
-        }
+        //if (TryGetComponent(out ScaleGroup _))
+        //{
+        //    oldParent = transform.parent;
+        //    transform.SetParent(null);
+        //}
 
         CurrentPreviewScaleLevel = scaleLevel;
         OnScaleChange?.Invoke(CurrentPreviewScaleLevel);
@@ -681,7 +688,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             Vector3 newScale = new Vector3(transform.localScale.x, transform.localScale.y, scaleLevel.ScaleZ);
             transform.localScale = newScale;
 
-            if (scaleLevel == CurrentScaleLevel && !@override)
+            if (scaleLevel == CurrentScaleLevel)
             {
                 //Debug.Log("Using stored child scales");
                 for (int i = 0; i < transform.childCount; i++)
@@ -753,20 +760,20 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             CurrentScaleLevel = scaleLevel;
             OnScaleChange?.Invoke(CurrentScaleLevel);
 
-            if (TryGetComponent(out ScaleGroup group))
-            {
-                ScaleGroupManager.OnScaleLevelChanged?.Invoke(group.id, CurrentScaleLevel);
-            }
+            //if (TryGetComponent(out ScaleGroup group))
+            //{
+            //    ScaleGroupManager.OnScaleLevelChanged?.Invoke(group.id, CurrentScaleLevel);
+            //}
 
             StoreChildScales();
         }
 
         transform.rotation = storedRotation;
 
-        if (!@override && TryGetComponent(out ScaleGroup _))
-        {
-            transform.SetParent(oldParent);
-        }
+        //if (TryGetComponent(out ScaleGroup _))
+        //{
+        //    transform.SetParent(oldParent);
+        //}
     }
 
     private void UpdateZScaling(bool setSelected)
@@ -1185,8 +1192,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         if (transform.CompareTag("Wall"))
         {
-            var colliders = GetComponentsInChildren<Collider>();
-            foreach (Collider col in colliders)
+            RaycastingColliders = GetComponentsInChildren<Collider>();
+            foreach (Collider col in RaycastingColliders)
             {
                 if (col is MeshCollider mc)
                 {
@@ -1318,6 +1325,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                     }
                     transform.SetPositionAndRotation(destination, Quaternion.LookRotation(normal));
                     _virtualParent = hit.collider.transform;
+                    OnRaycastPositionUpdated?.Invoke();
                 }
 
                 if (WallRestrictions.Count > 0 && _virtualParent == null)
@@ -1380,8 +1388,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
             if (transform.CompareTag("Wall"))
             {
-                var colliders = GetComponentsInChildren<Collider>();
-                foreach (Collider col in colliders)
+                foreach (Collider col in RaycastingColliders)
                 {
                     if (col is MeshCollider mc)
                     {
@@ -1396,7 +1403,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             {
                 GetComponentInChildren<Collider>().enabled = true;
             }
-
 
             await Task.Yield();
             if (!Application.isPlaying) return;

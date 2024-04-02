@@ -171,7 +171,6 @@ GameObject:
   - component: {fileID: 1180260682032393074}
   - component: {fileID: 8369786192166557419}
   - component: {fileID: 575744590}
-  - component: {fileID: 8406298688095421773}
   - component: {fileID: 1356437975153308320}
   m_Layer: 6
   m_Name: Baseboard
@@ -189,7 +188,7 @@ Transform:
   m_GameObject: {fileID: 7434035695294010010}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0.1778}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7049358103098651744}
@@ -237,23 +236,28 @@ MonoBehaviour:
   <ScaleLevels>k__BackingField:
   - <Size>k__BackingField: 0.0762
     <Selected>k__BackingField: 0
-    <ModelDefault>k__BackingField: 1
+    <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 0.1016
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 0.127
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 0.1524
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 0.1778
     <Selected>k__BackingField: 1
-    <ModelDefault>k__BackingField: 0
+    <ModelDefault>k__BackingField: 1
+    <ScaleZ>k__BackingField: 0
     metadata: []
   <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
@@ -270,11 +274,13 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
 --- !u!114 &2201210435872393541
 MonoBehaviour:
@@ -507,19 +513,6 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 208da722be131604ebe6085ca6bc3a53, type: 2}
     - {fileID: 2100000, guid: d50d4a6b91f677e42a2d0f6a3b6b2cd3, type: 2}
   <meshRenderer>k__BackingField: {fileID: 4802474435887622643}
---- !u!114 &8406298688095421773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7434035695294010010}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 086f805cfbf23de4d80dd5e05fd488d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <id>k__BackingField: 51654811
 --- !u!114 &1356437975153308320
 MonoBehaviour:
   m_ObjectHideFlags: 0

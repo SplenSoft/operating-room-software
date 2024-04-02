@@ -10,6 +10,8 @@ public partial class Selectable
         [field: SerializeField] public float Size { get; set; }
         [field: SerializeField] public bool Selected { get; set; }
         [field: SerializeField] public bool ModelDefault { get; set; }
+
+        [field: SerializeField, ReadOnly]
         public float ScaleZ { get; set; }
         [field: SerializeField] public Metadata[] metadata;
 

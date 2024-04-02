@@ -60,7 +60,9 @@ public class MatchTransform : MonoBehaviour
 
         _eventManager.RegisterEvents
             ((_gizmoHandler.GizmoDragPostUpdate, UpdateTransform),
-            (_gizmoHandler.GizmoDragEnded, UpdateTransform));
+            (_gizmoHandler.GizmoDragEnded, UpdateTransform),
+            (SelectableToMatch.OnRaycastPositionUpdated, UpdateTransform), 
+            (SelectableToMatch.OnPlaced, UpdateTransform));
 
         if (_roomBoundary != null)
         {

@@ -424,8 +424,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <SelectableToMatch>k__BackingField: {fileID: 3304083570917657035}
-  <ScaleAxes>k__BackingField: 
-  <AdditionalScale>k__BackingField: {x: 0.00635, y: 0.00635, z: 0}
+  <ScaleAxes>k__BackingField: 0000000001000000
+  <AdditionalScale>k__BackingField: {x: 0.0127, y: 0.0127, z: 0}
 --- !u!114 &7806509437581315144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,18 +609,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.9144
-      objectReference: {fileID: 0}
-    - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.9144
-      objectReference: {fileID: 0}
-    - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -659,6 +647,10 @@ PrefabInstance:
     - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6720701881900560553, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
       propertyPath: m_Name
@@ -764,18 +756,6 @@ PrefabInstance:
     - target: {fileID: 652718131152363141, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 652718131152363141, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 652718131152363141, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 652718131152363141, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 652718131152363141, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -946,7 +926,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <SelectableToMatch>k__BackingField: {fileID: 3304083570917657035}
   <ScaleAxes>k__BackingField: 0000000001000000
-  <AdditionalScale>k__BackingField: {x: 0.0127, y: 0.0127, z: 0}
+  <AdditionalScale>k__BackingField: {x: 0.0254, y: 0.0254, z: 0}
 --- !u!114 &5257211015655574719
 MonoBehaviour:
   m_ObjectHideFlags: 0

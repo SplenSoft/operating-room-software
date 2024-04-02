@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1083473751118365321}
   - component: {fileID: 2351289834564255223}
   - component: {fileID: 4729662144338879655}
+  - component: {fileID: 8987019400871730557}
   m_Layer: 6
   m_Name: MeshAndCollider
   m_TagString: Untagged
@@ -143,6 +144,19 @@ MonoBehaviour:
   <IgnoreX>k__BackingField: 1
   <IgnoreY>k__BackingField: 1
   <IgnoreZ>k__BackingField: 1
+--- !u!114 &8987019400871730557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3745827760353300528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d13a952dd356a94492b01c9bd024acc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Target>k__BackingField: {fileID: 5027095395808206750}
 --- !u!1 &5027095395808206750
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,7 +171,6 @@ GameObject:
   - component: {fileID: 1206166765427326515}
   - component: {fileID: 4959457182467615618}
   - component: {fileID: 1962702187273059565}
-  - component: {fileID: 2986876753167899299}
   m_Layer: 6
   m_Name: WallProtector
   m_TagString: Untagged
@@ -447,11 +460,13 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
 --- !u!114 &1962702187273059565
 MonoBehaviour:
@@ -472,16 +487,3 @@ MonoBehaviour:
     - {fileID: 2100000, guid: cc7eefe28fc3e1e45b68af3d8fe19822, type: 2}
     - {fileID: 2100000, guid: d50d4a6b91f677e42a2d0f6a3b6b2cd3, type: 2}
   <meshRenderer>k__BackingField: {fileID: 3862223686045118932}
---- !u!114 &2986876753167899299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5027095395808206750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 086f805cfbf23de4d80dd5e05fd488d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <id>k__BackingField: 879875454

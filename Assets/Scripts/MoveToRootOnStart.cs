@@ -16,10 +16,28 @@ public class MoveToRootOnStart : MonoBehaviour
 
     public bool Moved { get; private set; }
 
+    private Selectable _selectable;
+
+    private void Awake()
+    {
+        _selectable = GetComponent<Selectable>();
+    }
+
     private void Start()
     {
+        Selectable.ActiveSelectables.ForEach(x =>
+        {
+            if (x.RelatedSelectables.Contains(_selectable))
+            {
+                x.RelatedSelectables.Remove(_selectable);
+            }
+        });
+
+        _selectable.RelatedSelectables = new() { _selectable };
+
         transform.parent = null;
         Moved = true;
+        Debug.Log($"Set {gameObject.name} as root obj");
         OnMoved?.Invoke();
     }
 }
