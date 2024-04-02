@@ -676,6 +676,16 @@ namespace SplenSoft.AssetBundles
 
             if (request.result == UnityWebRequest.Result.Success)
             {
+                if (data != null && data.AssetBundle != null)
+                {
+                    Log.Write(
+                        LogLevel.Verbose, 
+                        $"AssetBundle {name} was already downloaded and cached. Returning that asset bundle instead.");
+
+                    onSuccess?.Invoke(data.AssetBundle);
+                    return data.AssetBundle;
+                }
+
                 AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);
                 onSuccess?.Invoke(bundle);
                 if (data != null)

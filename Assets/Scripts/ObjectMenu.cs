@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using FuzzySharp;
 using static ObjectMenu;
+using SplenSoft.UnityUtilities;
 
 /// <summary>
 /// Singleton object that displays a menu to instantiate selectables.
@@ -117,6 +118,8 @@ public class ObjectMenu : MonoBehaviour
         ActiveStateChanged?.Invoke();
     }
 
+    #endregion
+
     private void GenerateCategories()
     {
         _instantiatedCategories
@@ -130,6 +133,8 @@ public class ObjectMenu : MonoBehaviour
             .Distinct()
             .OrderBy(x => x)
             .ToList();
+
+        Debug.Log($"Found {_allCategories.Count} object menu categories");
 
         if (SceneManager.GetActiveScene().name != "ObjectEditor")
             _allCategories.Add("Save Data");
@@ -186,8 +191,6 @@ public class ObjectMenu : MonoBehaviour
             }
         }
     }
-
-    #endregion
 
     private void ClearSearchValidity()
     {
@@ -335,9 +338,13 @@ public class ObjectMenu : MonoBehaviour
             if (!Application.isPlaying) return;
         }
 
+        int _activeTasks = 0;
+
         SelectableAssetBundles.GetSelectableData()
         .ToList().ForEach(async data =>
         {
+            _activeTasks++;
+
             // if we still need this, we can add it to SelectableData
             //if (prefab.TryGetComponent(out ObjectMenuIgnore ignore))
             //{
@@ -351,7 +358,7 @@ public class ObjectMenu : MonoBehaviour
             await task;
 
             if (!Application.isPlaying)
-                throw new Exception($"App quit while downloading");
+                throw new AppQuitInTaskException();
 
             SelectableMetaData metadata = data.MetaData;
 
@@ -415,7 +422,16 @@ public class ObjectMenu : MonoBehaviour
                 GameObject = newMenuItem,
                 SelectableMetaData = metadata
             });
+
+            _activeTasks--;
         });
+
+        while (_activeTasks > 0)
+        {
+            await Task.Yield();
+            if (!Application.isPlaying)
+                throw new AppQuitInTaskException();
+        }
 
         ObjectMenuItems = ObjectMenuItems
             .OrderBy(x => x.GameObject.GetComponentInChildren<TextMeshProUGUI>().text)
@@ -452,7 +468,7 @@ public class ObjectMenu : MonoBehaviour
         AddCustomMenuItem(Application.streamingAssetsPath + "/Sample_Arm_Config.json");
     }
 
-    public async void AddCustomMenuItem(string f)
+    public void AddCustomMenuItem(string f)
     {
         ItemTemplate.SetActive(true);
         string configName = Path.GetFileName(f).Replace(".json", "").Replace("_", " ");
