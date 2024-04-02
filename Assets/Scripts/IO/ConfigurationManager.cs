@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using SplenSoft.UnityUtilities;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class ConfigurationManager : MonoBehaviour
 
     private readonly string _lastNukedSavesPlayerPrefsKey = "lastNukedSaves";
 
-    private readonly string _nukeBelowVersion = "0.0.46";
+    private readonly string _nukeBelowVersion = "1.0.0";
 
     private void Awake()
     {
@@ -61,7 +62,7 @@ public class ConfigurationManager : MonoBehaviour
             string lastNukedString = PlayerPrefs.GetString(_lastNukedSavesPlayerPrefsKey);
             Version lastNukedVersion = Version.Parse(lastNukedString);
 
-            if (lastNukedVersion.Revision < nukeBelowVersion.Revision)
+            if (lastNukedVersion.Major < nukeBelowVersion.Major)
             {
                 DeleteAllSaves();
             }
@@ -232,18 +233,25 @@ public class ConfigurationManager : MonoBehaviour
         await Task.Delay(1000);
         token.SetProgress(0.33f);
 
-        foreach (TrackedObject obj in foundObjects) // We need to go through each object
+        // We need to go through each object
+        foreach (TrackedObject obj in foundObjects) 
         {
             if (obj.transform == obj.transform.root)
             {
-                CreateTracker(); // creating trackers as we go
-                TrackedObject[] temps = obj.transform.GetComponentsInChildren<TrackedObject>(); // and finding all embedded/attached selectables along with attachment points
+                // creating trackers as we go
+                CreateTracker(); 
+
+                // and finding all embedded/attached selectables along with attachment points
+                TrackedObject[] temps = obj.transform.GetComponentsInChildren<TrackedObject>(); 
+
                 foreach (TrackedObject to in temps)
                 {
-                    _tracker.objects.Add(to.GetData()); // add them to their respective tracker
+                    // add them to their respective tracker
+                    _tracker.objects.Add(to.GetData()); 
                 }
 
-                _roomConfiguration.collections.Add(_tracker); // and add them to the room tracker collection
+                // and add them to the room tracker collection
+                _roomConfiguration.collections.Add(_tracker); 
             }
         }
 
@@ -398,25 +406,29 @@ public class ConfigurationManager : MonoBehaviour
 
             if (to.parent != null)
             {
-                if (to.global_guid == null || to.global_guid == "") // embedded selectable component
+                if (to.global_guid == null || to.global_guid == "") 
                 {
+                    // embedded selectable component
                     go = ProcessEmbeddedSelectable(to);
                     _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
-                else if (to.global_guid == _attachPointGUID) // attachment point component
+                else if (to.global_guid == _attachPointGUID) 
                 {
+                    // attachment point component
                     ProcessAttachmentPoint(to);
                 }
-                else // selectable attached to an attachment point
+                else 
                 {
+                    // selectable attached to an attachment point
                     ProcessAttachedSelectable(go, to);
                     _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
             }
             else
             {
-                if (to.global_guid == null || to.global_guid == "") // embedded selectable component
+                if (to.global_guid == null || to.global_guid == "") 
                 {
+                    // embedded selectable component
                     go = ProcessEmbeddedSelectable(to);
                     _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
@@ -438,13 +450,16 @@ public class ConfigurationManager : MonoBehaviour
         }
 
         var task = data.GetPrefab();
+
         await task;
         if (!Application.isPlaying)
-        {
-            throw new Exception($"Application quit while asset bundle was being downloaded/loaded");
-        }
+            throw new AppQuitInTaskException();
 
         GameObject go = Instantiate(task.Result);
+
+        // Check for DestroyOnLoad components
+        var dolComps = go.GetComponentsInChildren<DestroyOnLoad>();
+        Array.ForEach(dolComps, comp => Destroy(comp.gameObject));
 
         go.transform.SetPositionAndRotation(trackedObject.pos, trackedObject.rot);
 

@@ -9,6 +9,10 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.SceneManagement;
+using UnityEditor.Build;
+using Unity.VisualScripting;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,7 +21,7 @@ using UnityEditor;
 /// <summary>
 /// Add basic selectable - <see href="https://youtu.be/qEaRrGC_MX8?si=kCXNSVa11KxLKRNG"/> 
 /// </summary>
-[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect), typeof(TrackedObject)), Serializable]
+[RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect)), Serializable]
 public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 {
 
@@ -1188,7 +1192,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 {
                     mc.convex = true;
                 }
-                col.isTrigger = true;
+                //col.isTrigger = true;
                 col.enabled = false;
             }
 
@@ -1383,7 +1387,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                     {
                         mc.convex = false;
                     }
-                    col.isTrigger = false;
+                    //col.isTrigger = false;
                     col.enabled = true;
                 }
             }
@@ -1456,8 +1460,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         var relatedSelectables = GetComponentsInChildren<Selectable>().ToList();
 
-
-
         Array.ForEach(GetComponentsInChildren<Collider>(), collider =>
         {
             // Default layer
@@ -1475,6 +1477,20 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             if (relatedSelectables != x.RelatedSelectables)
             {
                 x.RelatedSelectables = new List<Selectable>(relatedSelectables);
+                needsDirty = true;
+            }
+
+            bool hasTrackedObject = x.TryGetComponent<TrackedObject>(out var trackedObj);
+            bool hasRemoveTrackedObject = x.TryGetComponent<RemoveTrackedObject>(out _);
+
+            if (hasTrackedObject && hasRemoveTrackedObject)
+            {
+                DestroyImmediate(trackedObj);
+                needsDirty = true;
+            }
+            else if (!hasTrackedObject && !hasRemoveTrackedObject)
+            {
+                x.AddComponent<TrackedObject>();
                 needsDirty = true;
             }
         });

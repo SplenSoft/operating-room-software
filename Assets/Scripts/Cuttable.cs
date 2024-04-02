@@ -31,9 +31,14 @@ public class Cuttable : MonoBehaviour
         _collider = GetComponentInChildren<Collider>();
         _filter = GetComponentInChildren<MeshFilter>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
-        _gizmoHandler = GetComponent<GizmoHandler>();
+        
         _originalMesh = _filter.sharedMesh;
-        _selectable = GetComponent<Selectable>();
+
+        if (!TryGetComponent(out _selectable))
+            _selectable = GetComponentInParent<Selectable>();
+
+        if (!TryGetComponent(out _gizmoHandler))
+            _gizmoHandler = GetComponentInParent<GizmoHandler>();
 
         if (_gizmoHandler != null)
         {
