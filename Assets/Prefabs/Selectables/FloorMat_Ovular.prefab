@@ -268,6 +268,8 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 36fbc9a6e107d9948861edf5029e8de8, type: 2}
     - {fileID: 2100000, guid: 398c6a3dc98d8054e8b82d1b36132285, type: 2}
   <meshRenderer>k__BackingField: {fileID: 8890139777362772215}
+  <MaterialGroup>k__BackingField: 0
+  <CanBeReadByGroup>k__BackingField: 0
 --- !u!114 &3893228204834539773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +285,12 @@ MonoBehaviour:
   DriveToAllChildren: 0
   PreserveColor: 0
   IncludeRotation: 0
+  <GizmoHandlers>k__BackingField: []
+  <RoomBoundaries>k__BackingField: []
+  <MatchHeightToWalls>k__BackingField: []
+  <Cuttables>k__BackingField: []
+  <MatchScales>k__BackingField: []
+  <MeshInstanceManager>k__BackingField: {fileID: 0}
 --- !u!4 &4892177113673217164 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}

@@ -2368,6 +2368,7 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   <GameObjectsDisabledOnRuntime>k__BackingField:
   - {fileID: 3344642094823400798}

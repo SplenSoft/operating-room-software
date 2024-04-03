@@ -2132,9 +2132,9 @@ MonoBehaviour:
       <Categories>k__BackingField: []
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField:
-      - <Guid>k__BackingField: 221b8880-d381-4735-9d67-00c354e714ca
+      - <Guid>k__BackingField: 39a0f036-0263-4c96-9678-05c33031dbcd
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: 221b8880-d381-4735-9d67-00c354e714ca
+          <Guid>k__BackingField: 39a0f036-0263-4c96-9678-05c33031dbcd
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
   - <PrefabName>k__BackingField: SimFlexTube
@@ -2331,8 +2331,8 @@ MonoBehaviour:
     <AssetBundleName>k__BackingField: gameobject_1788bf0396377974595d582c73627187
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
-      <IsStandalone>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: StorzCamera
       <SubPartName>k__BackingField: 
