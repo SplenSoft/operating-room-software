@@ -4,56 +4,154 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class MaterialPalette : MonoBehaviour
 {
-    [field: SerializeField] public MaterialElement[] elements { get; private set; }
-    [field: SerializeField] public MeshRenderer meshRenderer { get; private set; }
+    public static UnityEvent<MaterialUpdateEvent> 
+    OnMaterialChanged { get; } = new();
 
-    void Awake()
+    /// <summary>
+    /// Maximum time, in seconds, that the instance will wait 
+    /// for a master to retrieve materials before putting a 
+    /// warning in console.
+    /// </summary>
+    private const float _maximumWaitTime = 10;
+
+    private static List<MaterialPalette> _instances = new();
+
+    [field: SerializeField] 
+    public MaterialElement[] elements { get; private set; }
+
+    [field: SerializeField] 
+    public MeshRenderer meshRenderer { get; private set; }
+
+    [field: SerializeField]
+    public MaterialGroup MaterialGroup { get; private set; }
+
+    /// <summary>
+    /// Determines if this instance can be read by other 
+    /// members of the group on <see cref="Start"/>. 
+    /// Read by Additional Walls being added to a scene in 
+    /// progress (but should be false for Additional Walls)
+    /// </summary>
+    [field: SerializeField, 
+    Tooltip("Should be false for Additional Wall selectable (and its children) " +
+    "and true for permanent scene objects (room walls, room " +
+    "baseboards, room wall protectors)")]
+    public bool CanBeReadByGroup { get; private set; }
+
+    private Material[] _currentMaterials;
+
+    private void Awake()
     {
+        _instances.Add(this);
+
         if (meshRenderer == null)
         {
             meshRenderer = GetComponent<MeshRenderer>();
         }
+
+        OnMaterialChanged.AddListener(UpdateMaterials);
     }
 
-    void Start()
+    private void UpdateMaterials(MaterialUpdateEvent updateEvent)
     {
-        for (int i = 0; i < elements.Count(); i++)
+        if (updateEvent.Sender == this) 
+            return;
+
+        if (updateEvent.Group == MaterialGroup.None) 
+            return;
+
+        if (updateEvent.Group != MaterialGroup)
+            return;
+
+        Assign(updateEvent.Material, updateEvent.Index, fireEvent: false);
+    }
+
+    private IEnumerator Start()
+    {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
         {
-            if (elements[i]._zeroStart)
+            yield break;
+        }
+
+        yield return new WaitUntil(() => 
+            !ConfigurationManager.IsLoadingRoom);
+
+        if (MaterialGroup != MaterialGroup.None && !CanBeReadByGroup)
+        {
+            float timer = 0;
+            int times = 1;
+            while (true)
             {
-                Assign(elements[i].materials[0], i);
+                var master = _instances
+                    .FirstOrDefault(x => x.MaterialGroup == MaterialGroup && x.CanBeReadByGroup);
+
+                if (master != default)
+                {
+                    meshRenderer.sharedMaterials = master._currentMaterials;
+                    break;
+                }
+                
+                timer += Time.deltaTime;
+
+                if (timer > _maximumWaitTime)
+                {
+                    timer -= _maximumWaitTime;
+                    Debug.LogWarning($"MaterialPalette on {gameObject.name} has been waiting {_maximumWaitTime * times++} seconds for a group master. It's likely that some scene object (wall, baseboard, wallprotector) is missing its group assignment");
+                }
+
+                yield return null;
+            }
+        }
+
+        if (CanBeReadByGroup || MaterialGroup == MaterialGroup.None)
+        {
+            for (int i = 0; i < elements.Count(); i++)
+            {
+                if (elements[i]._zeroStart)
+                {
+                    Assign(elements[i].materials[0], i);
+                }
             }
         }
     }
 
-    public void Assign(Material material, int i)
+    private void OnDestroy()
     {
-        Material[] mats = meshRenderer.materials;
-        mats[i] = material;
-        meshRenderer.materials = mats;
+        _instances.Remove(this);
+        OnMaterialChanged.RemoveListener(UpdateMaterials);
+    }
 
-        if (TryGetComponent(out ScaleMaterialTextureWithTransform s))
+    public void Assign(Material material, int i, bool fireEvent = true)
+    {
+        Material[] mats = meshRenderer.sharedMaterials;
+        mats[i] = material;
+        _currentMaterials = mats;
+        meshRenderer.sharedMaterials = mats;
+
+        if (fireEvent)
         {
-            s.Scale();
+            OnMaterialChanged?.Invoke
+                (new MaterialUpdateEvent(material, MaterialGroup, i, this));
         }
     }
 
     public void Assign(string material, int i)
     {
-        Material[] mats = meshRenderer.materials;
+        Material[] mats = meshRenderer.sharedMaterials;
 
         try
         {
-            mats[i] = elements[i].materials.Single(x => x.name == material);
-            meshRenderer.materials = mats;
+            var mat = elements[i].materials.Single(x => x.name == material);
+            mats[i] = mat;
+            meshRenderer.sharedMaterials = mats;
+            _currentMaterials = mats;
 
-            if (TryGetComponent(out ScaleMaterialTextureWithTransform s))
-            {
-                s.Scale();
-            }
+            OnMaterialChanged?.Invoke
+                (new MaterialUpdateEvent(mat, MaterialGroup, i, this));
         }
         catch (InvalidOperationException)
         {
@@ -68,4 +166,22 @@ public class MaterialElement
 {
     [field: SerializeField] public bool _zeroStart { get; private set; }
     [field: SerializeField] public Material[] materials;
+}
+
+public class MaterialUpdateEvent
+{
+    public MaterialUpdateEvent(
+    Material material, MaterialGroup group, 
+    int index, MaterialPalette sender)
+    {
+        Material = material;
+        Group = group;
+        Index = index;
+        Sender = sender;
+    }
+
+    public MaterialPalette Sender { get; }
+    public Material Material { get; }
+    public MaterialGroup Group { get; }
+    public int Index { get; }
 }

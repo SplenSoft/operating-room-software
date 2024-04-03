@@ -320,6 +320,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1461861102042877555}
     m_Modifications:
+    - target: {fileID: 1083473751118365321, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <GizmoHandlers>k__BackingField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083473751118365321, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <GizmoHandlers>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 947543270460210052}
+    - target: {fileID: 1083473751118365321, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <MatchHeightToWalls>k__BackingField.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1083473751118365321, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <MatchHeightToWalls>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 1165342630076357617}
+    - target: {fileID: 1962702187273059565, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <MaterialGroup>k__BackingField
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4768966199755527768, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -666,6 +686,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+--- !u!114 &947543270460210052 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3030528946883987777, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
+  m_PrefabInstance: {fileID: 2821720193508094661}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8821559155327484524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f03a8b09e5a0824ba0691c9ff093a08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1461861102042877555 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
@@ -706,6 +737,8 @@ MonoBehaviour:
     - {fileID: 2100000, guid: 355eeea3ec9b41044820ac1ccd2773cc, type: 2}
     - {fileID: 2100000, guid: e26fb82eb654e1145be5d2673baf3045, type: 2}
   <meshRenderer>k__BackingField: {fileID: 3123351360766199621}
+  <MaterialGroup>k__BackingField: 1
+  <CanBeReadByGroup>k__BackingField: 0
 --- !u!114 &1165342630076357617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -733,6 +766,11 @@ MonoBehaviour:
   DriveToAllChildren: 0
   PreserveColor: 0
   IncludeRotation: 1
+  <GizmoHandlers>k__BackingField:
+  - {fileID: 947543270460210052}
+  <RoomBoundaries>k__BackingField: []
+  <MatchHeightToWalls>k__BackingField:
+  - {fileID: 1165342630076357617}
 --- !u!114 &6978683276829698579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -753,6 +791,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1461861102042877555}
     m_Modifications:
+    - target: {fileID: 575744590, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
+      propertyPath: <MaterialGroup>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 652718131152363141, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -797,6 +839,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1755979279152194000, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
+      propertyPath: <GizmoHandlers>k__BackingField.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755979279152194000, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
+      propertyPath: <GizmoHandlers>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 947543270460210052}
+    - target: {fileID: 1755979279152194000, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
+      propertyPath: <MatchHeightToWalls>k__BackingField.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1755979279152194000, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
+      propertyPath: <MatchHeightToWalls>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 1165342630076357617}
     - target: {fileID: 3502973416618678589, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
       propertyPath: <GUID>k__BackingField
       value: 

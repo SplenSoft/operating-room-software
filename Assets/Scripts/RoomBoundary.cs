@@ -24,16 +24,18 @@ public class RoomBoundary : MonoBehaviour
     [field: SerializeField] public GameObject baseboard { get; private set; }
     private CinemachineTransposer _transposer;
     private static Dictionary<RoomBoundaryType, RoomBoundary> RoomBoundariesByType { get; set; } = new();
-    Vector3 baseboardPosition;
-    Quaternion baseboardRotation;
+
+    public float Height { get; private set; }
+    public float Width { get; private set; }
+    public float Depth { get; private set; }
 
     private void Awake()
     {
         Instances.Add(this);
         RoomBoundariesByType[RoomBoundaryType] = this;
 
-        MeshRenderer = GetComponent<MeshRenderer>();
-        Collider = GetComponent<Collider>();
+        MeshRenderer = GetComponentInChildren<MeshRenderer>();
+        Collider = GetComponentInChildren<Collider>();
 
         if (VirtualCamera != null)
         {
@@ -41,98 +43,52 @@ public class RoomBoundary : MonoBehaviour
             _transposer = VirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         }
 
-        if (baseboard != null)
-        {
-            baseboard.transform.SetParent(this.transform);
-            baseboardPosition = baseboard.transform.localPosition;
-            baseboardRotation = baseboard.transform.localRotation;
-            baseboard.transform.SetParent(null);
-        }
-
         RoomSize.RoomSizeChanged.AddListener(SetSize);
     }
 
     private void OnDestroy()
     {
+        Instances.Remove(this);
         RoomSize.RoomSizeChanged.RemoveListener(SetSize);
     }
 
     void SetSize(RoomDimension dimension)
     {
-        float height = dimension.Height.ToMeters();
-        float width = dimension.Width.ToMeters();
-        float depth = dimension.Depth.ToMeters();
+        Height = dimension.Height.ToMeters();
+        Width = dimension.Width.ToMeters();
+        Depth = dimension.Depth.ToMeters();
 
         switch (RoomBoundaryType)
         {
             case RoomBoundaryType.Ceiling:
-                transform.localScale = new Vector3(width, DefaultWallThickness, depth);
-                transform.position = new Vector3(0, height + (transform.localScale.y / 2), 0);
+                transform.localScale = new Vector3(Width, DefaultWallThickness, Depth);
+                transform.position = new Vector3(0, Height + (transform.localScale.y / 2), 0);
                 break;
             case RoomBoundaryType.Floor:
-                transform.localScale = new Vector3(width, DefaultWallThickness, depth);
+                transform.localScale = new Vector3(Width, DefaultWallThickness, Depth);
                 transform.position = new Vector3(0, 0 - (transform.localScale.y / 2), 0);
                 break;
             case RoomBoundaryType.WallSouth:
-                transform.localScale = new Vector3(width, height, DefaultWallThickness);
-                transform.position = new Vector3(0, height / 2f, 0 - (depth / 2f) - (transform.localScale.z / 2));
+                transform.localScale = new Vector3(Width, DefaultWallThickness, Height);
+                transform.position = new Vector3(0, 0, 0 - (Depth / 2f) - (DefaultWallThickness / 2));
                 break;
             case RoomBoundaryType.WallWest:
-                transform.localScale = new Vector3(DefaultWallThickness, height, depth);
-                transform.position = new Vector3(0 - (width / 2f) - (transform.localScale.x / 2f), height / 2f, 0);
+                transform.localScale = new Vector3(DefaultWallThickness, Depth, Height);
+                transform.position = new Vector3(0 - (Width / 2f) - (DefaultWallThickness / 2f), 0, 0);
                 break;
             case RoomBoundaryType.WallEast:
-                transform.localScale = new Vector3(DefaultWallThickness, height, depth);
-                transform.position = new Vector3(0 + (width / 2f) + (transform.localScale.x / 2f), height / 2f, 0);
+                transform.localScale = new Vector3(DefaultWallThickness, Depth, Height);
+                transform.position = new Vector3(0 + (Width / 2f) + (DefaultWallThickness / 2f), 0, 0);
                 break;
             case RoomBoundaryType.WallNorth:
-                transform.localScale = new Vector3(width, height, DefaultWallThickness);
-                transform.position = new Vector3(0, height / 2f, 0 + (depth / 2f) + (transform.localScale.z / 2));
+                transform.localScale = new Vector3(Width, DefaultWallThickness, Height);
+                transform.position = new Vector3(0, 0, 0 + (Depth / 2f) + (DefaultWallThickness / 2));
                 break;
-        }
-
-        if(ReferenceEquals(baseboard, null) ? false : (baseboard ? false : true))
-        {
-            baseboard = null;
-            CheckReferenceToBaseboard();
-        }
-
-        if (baseboard != null)
-        {
-            baseboard.transform.SetParent(this.transform);
-            baseboard.transform.SetLocalPositionAndRotation(baseboardPosition, baseboardRotation);
-
-            float highest = Math.Max(depth, width);
-
-            baseboard.transform.localScale = new Vector3(
-                baseboard.transform.localScale.x,
-                0.24f,
-                baseboard.transform.localScale.z);
-
-            baseboard.transform.SetParent(null);
         }
 
         SizeSet?.Invoke();
     }
 
-    void CheckReferenceToBaseboard()
-    {
-        if(baseboard != null || RoomBoundaryType == RoomBoundaryType.Ceiling || RoomBoundaryType == RoomBoundaryType.Floor) return;
-
-        Collider[] hitColliders = Physics.OverlapSphere(baseboardPosition, 5);
-        Collider[] orderedColliders = hitColliders.OrderBy(x => (baseboardPosition - x.transform.position).sqrMagnitude).ToArray();
-        foreach (Collider hit in orderedColliders)
-        {
-            if (hit.TryGetComponent(out Selectable selectable))
-            {
-                if (selectable.gameObject.CompareTag("Baseboard"))
-                {
-                    baseboard = hit.gameObject;
-                    break;
-                }
-            }
-        }
-    }
 
     public void OnCameraLive()
     {
@@ -197,7 +153,7 @@ public class RoomBoundary : MonoBehaviour
 
     public void SetColor(Color c)
     {
-        GetComponent<MeshRenderer>().material.color = c;
+        MeshRenderer.material.color = c;
     }
 
     /// <summary>

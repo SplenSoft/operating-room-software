@@ -1,4 +1,5 @@
 using RTG;
+using SplenSoft.UnityUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,8 +14,12 @@ using Color = UnityEngine.Color;
 //[RequireComponent(typeof(Selectable))]
 public class GizmoHandler : MonoBehaviour
 {
-    [field: SerializeField, HideInInspector] public ObjectTransformGizmo _translateGizmo { get; private set; }
-    [field: SerializeField, HideInInspector] public ObjectTransformGizmo _rotateGizmo { get; private set; }
+    [field: SerializeField, HideInInspector] 
+    public ObjectTransformGizmo _translateGizmo { get; private set; }
+
+    [field: SerializeField, HideInInspector] 
+    public ObjectTransformGizmo _rotateGizmo { get; private set; }
+
     private ObjectTransformGizmo _scaleGizmo;
     private ObjectTransformGizmo _universalGizmo;
     private bool _gizmosInitialized;
@@ -349,10 +354,18 @@ public class GizmoHandler : MonoBehaviour
         GizmoBeingUsed = false;
         IsBeingUsed = false;
         GizmoDragEnded?.Invoke();
+
         await Task.Yield();
+        if (!Application.isPlaying)
+            throw new AppQuitInTaskException();
+
         GizmoUsedLastFrame = false;
-        _translateGizmo.Gizmo.Transform.Position3D = transform.position;
-        _translateGizmo.Gizmo.Transform.LocalRotation3D = transform.localRotation;
+
+        _translateGizmo.Gizmo.Transform
+            .Position3D = transform.position;
+
+        _translateGizmo.Gizmo.Transform
+            .LocalRotation3D = transform.localRotation;
 
         if (TryGetComponent(out CCDIK ik))
         {
@@ -633,6 +646,7 @@ public class GizmoHandler : MonoBehaviour
         //    ScaleGroupManager.OnZScaleChanged?.Invoke(group.id, _selectable.transform.lossyScale.z);
         //}
     }
+
     private float CalculateZScale(Gizmo gizmo)
     {
         float zScale = _localScaleBeforeStartDrag.z;

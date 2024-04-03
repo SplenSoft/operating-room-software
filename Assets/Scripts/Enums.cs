@@ -49,3 +49,17 @@ public enum SpecialSelectableType
     [Obsolete]
     Tabletop
 }
+
+public enum MaterialGroup
+{
+    None,
+    Walls,
+    Baseboards,
+    WallProtectors
+}
+
+public enum ScaleGroup
+{
+    Baseboards,
+    WallProtectors
+}

@@ -115,6 +115,10 @@ MonoBehaviour:
   DriveToAllChildren: 0
   PreserveColor: 0
   IncludeRotation: 1
+  <GizmoHandlers>k__BackingField:
+  - {fileID: 8990215944026428100}
+  <RoomBoundaries>k__BackingField: []
+  <MatchHeightToWalls>k__BackingField: []
 --- !u!64 &2351289834564255223
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -171,6 +175,7 @@ GameObject:
   - component: {fileID: 1206166765427326515}
   - component: {fileID: 4959457182467615618}
   - component: {fileID: 1962702187273059565}
+  - component: {fileID: 738074879479461384}
   m_Layer: 6
   m_Name: WallProtector
   m_TagString: Untagged
@@ -445,7 +450,7 @@ MonoBehaviour:
   <IsDestructible>k__BackingField: 1
   <AllowInverseControl>k__BackingField: 0
   <ScaleLevels>k__BackingField: []
-  <UseLossyScale>k__BackingField: 1
+  <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
   <ZAlignUpIsParentForward>k__BackingField: 0
@@ -487,3 +492,19 @@ MonoBehaviour:
     - {fileID: 2100000, guid: cc7eefe28fc3e1e45b68af3d8fe19822, type: 2}
     - {fileID: 2100000, guid: d50d4a6b91f677e42a2d0f6a3b6b2cd3, type: 2}
   <meshRenderer>k__BackingField: {fileID: 3862223686045118932}
+  <MaterialGroup>k__BackingField: 0
+  <CanBeReadByGroup>k__BackingField: 0
+--- !u!114 &738074879479461384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5027095395808206750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 086f805cfbf23de4d80dd5e05fd488d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <ScaleGroup>k__BackingField: 1
+  <CanBeReadByGroup>k__BackingField: 0

@@ -11,6 +11,8 @@ using UnityEngine.Serialization;
 using UnityEngine.SceneManagement;
 using UnityEditor.Build;
 using Unity.VisualScripting;
+using UnityEngine.UI;
+
 
 
 
@@ -324,6 +326,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         if (GUID != "" &&
         !ConfigurationManager.IsRoomBoundary(GUID) &&
         !ConfigurationManager.IsBaseboard(GUID) &&
+        !ConfigurationManager.IsWallProtector(GUID) &&
         transform.parent == null)
         {
             guid = Guid.NewGuid().ToString();
@@ -378,7 +381,12 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         _originalRotation2 = transform.localRotation;
         OriginalLocalPosition = transform.localPosition;
         //OriginalLocalRotation = transform.localEulerAngles;
-        Vector3 adjustedOffsetVector = new Vector3(InitialLocalPositionOffset.x * transform.localScale.x, InitialLocalPositionOffset.y * transform.localScale.y, InitialLocalPositionOffset.z * transform.localScale.z);
+
+        Vector3 adjustedOffsetVector = new Vector3
+            (InitialLocalPositionOffset.x * transform.localScale.x, 
+            InitialLocalPositionOffset.y * transform.localScale.y, 
+            InitialLocalPositionOffset.z * transform.localScale.z);
+
         transform.localPosition += adjustedOffsetVector;
         Started = true;
     }
@@ -666,7 +674,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         return exceedsX || exceedsY || exceedsZ;
     }
 
-    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected)
+    public void SetScaleLevel(ScaleLevel scaleLevel, bool setSelected, bool fireEvent = true)
     {
         Transform oldParent = null;
 
@@ -677,8 +685,12 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         //}
 
         CurrentPreviewScaleLevel = scaleLevel;
-        OnScaleChange?.Invoke(CurrentPreviewScaleLevel);
 
+        if (fireEvent)
+        {
+            OnScaleChange?.Invoke(CurrentPreviewScaleLevel);
+        }
+        
         Quaternion storedRotation = transform.rotation;
         transform.rotation = _originalRotation;
 
@@ -758,7 +770,11 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             ScaleLevels.ForEach((item) => item.Selected = false);
             scaleLevel.Selected = true;
             CurrentScaleLevel = scaleLevel;
-            OnScaleChange?.Invoke(CurrentScaleLevel);
+
+            if (fireEvent)
+            {
+                OnScaleChange?.Invoke(CurrentScaleLevel);
+            }
 
             //if (TryGetComponent(out ScaleGroup group))
             //{
@@ -781,7 +797,10 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         if (ScaleLevels.Count == 0) return;
         //get closest scale in list
         ScaleLevel closest = ScaleLevels.OrderBy(item => Math.Abs(_gizmoHandler.CurrentScaleDrag.z - item.ScaleZ)).First();
-        if (closest == CurrentPreviewScaleLevel && !setSelected) return;
+
+        if (closest == CurrentPreviewScaleLevel && !setSelected) 
+            return;
+
         SetScaleLevel(closest, setSelected);
         ScaleUpdated?.Invoke();
     }
@@ -1254,8 +1273,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         if (!_isRaycastingOnSelectable)
         {
-            int mask = 1 << LayerMask.NameToLayer("Wall");
-            if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, mask))
+            //int mask = 1 << LayerMask.NameToLayer("Wall");
+            var hits = Physics.RaycastAll(ray, float.MaxValue);
+            foreach(var hit in hits)
             {
                 void SetPosition(RaycastHit hit)
                 {
@@ -1328,33 +1348,47 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                     OnRaycastPositionUpdated?.Invoke();
                 }
 
-                if (WallRestrictions.Count > 0 && _virtualParent == null)
+                if (_virtualParent == null)
                 {
-                    Vector3 direction = WallRestrictions[0] == RoomBoundaryType.Ceiling ? Vector3.up : WallRestrictions[0] == RoomBoundaryType.Floor ? Vector3.down : Vector3.right;
+                    Vector3 direction = WallRestrictions[0] == RoomBoundaryType.Ceiling ? Vector3.up : 
+                        WallRestrictions[0] == RoomBoundaryType.Floor ? Vector3.down : 
+                        Vector3.right;
+
                     var ray2 = new Ray(Vector3.zero + Vector3.up, direction);
-                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, float.MaxValue, mask))
+                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, float.MaxValue, 1 << LayerMask.NameToLayer("Wall")))
                     {
                         SetPosition(raycastHit2);
+                        break;
                     }
                 }
                 else if (WallRestrictions.Count > 0)
                 {
-                    if (raycastHit.collider.tag == "Wall")
+                    if (hit.collider.CompareTag("Wall") && 
+                    WallRestrictions.Any(x => (int)x > 1))
                     {
-                        SetPosition(raycastHit);
+                        // Additional Wall
+                        SetPosition(hit);
+                        break;
                     }
-                    else
+                    else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Wall"))
                     {
-                        var wall = raycastHit.collider.GetComponent<RoomBoundary>();
+                        var wall = hit.collider.GetComponentInParent<RoomBoundary>();
+
+                        if (wall == null)
+                        {
+                            wall = hit.collider.GetComponent<RoomBoundary>();
+                        }
+
                         if (WallRestrictions.Contains(wall.RoomBoundaryType))
                         {
-                            SetPosition(raycastHit);
+                            SetPosition(hit);
+                            break;
                         }
                     }
                 }
                 else
                 {
-                    SetPosition(raycastHit);
+                    SetPosition(hit);
                 }
             }
         }

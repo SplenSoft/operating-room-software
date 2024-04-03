@@ -6,10 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using SplenSoft.UnityUtilities;
+using UnityEngine.Events;
 
 public class ConfigurationManager : MonoBehaviour
 {
     public static ConfigurationManager Instance { get; private set; }
+
+    public static UnityEvent OnRoomLoadComplete { get; } = new();
 
     [Tooltip("Contextual display of GUIDs in hierarchy for easier debugging")]
     public bool isDebug = false;
@@ -17,6 +20,8 @@ public class ConfigurationManager : MonoBehaviour
     private List<TrackedObject> _newObjects;
 
     private List<AttachmentPoint> _newPoints;
+
+    public static bool IsLoadingRoom { get; private set; }
 
     /// <summary>
     /// This is the prefab GUID for ALL attachment points. DO NOT CHANGE.
@@ -309,8 +314,8 @@ public class ConfigurationManager : MonoBehaviour
             _newPoints = new List<AttachmentPoint>();
             _newObjects = new List<TrackedObject>();
 
-            ProcessTrackedObjects(_tracker.objects);
-            await ResetObjectPositions(_newObjects);
+            await ProcessTrackedObjects(_tracker.objects);
+            await SetObjectProperties(_newObjects);
             RandomizeInstanceGUIDs();
 
             return GetRoot();
@@ -351,40 +356,52 @@ public class ConfigurationManager : MonoBehaviour
 
     private async void GenerateRoomConfig()
     {
+        IsLoadingRoom = true;
         var token = Loading.GetLoadingToken();
 
-        // apply the saved room dimensions from the json to the RoomSize
-        //RoomSize.RoomSizeChanged?.Invoke(_roomConfiguration.roomDimension); 
-        RoomSize.SetDimensions(_roomConfiguration.roomDimension);
-
-        float progressionTicks = 1f / _roomConfiguration.collections.Count;
-        float progression = 0;
-        foreach (Tracker t in _roomConfiguration.collections) // iterate though each tracker in the collection creating new objects. 
+        try
         {
-            _newPoints = new List<AttachmentPoint>();
-            _newObjects = new List<TrackedObject>();
+            // apply the saved room dimensions from the json to the RoomSize
+            //RoomSize.RoomSizeChanged?.Invoke(_roomConfiguration.roomDimension); 
+            RoomSize.SetDimensions(_roomConfiguration.roomDimension);
 
-            ProcessTrackedObjects(t.objects);
-            await ResetObjectPositions(_newObjects);
-            RandomizeInstanceGUIDs();
-            progression += progressionTicks;
-            token.SetProgress(progression);
+            float progressionTicks = 1f / _roomConfiguration.collections.Count;
+            float progression = 0;
+            foreach (Tracker t in _roomConfiguration.collections) // iterate though each tracker in the collection creating new objects. 
+            {
+                _newPoints = new List<AttachmentPoint>();
+                _newObjects = new List<TrackedObject>();
+
+                await ProcessTrackedObjects(t.objects);
+                await Task.Yield();
+                await SetObjectProperties(_newObjects);
+                await Task.Yield();
+                RandomizeInstanceGUIDs();
+                progression += progressionTicks;
+                token.SetProgress(progression);
+            }
+
+            OnRoomLoadComplete?.Invoke();
         }
-
-        token.SetProgress(1f);
+        catch { throw; }
+        finally 
+        { 
+            IsLoadingRoom = false;
+            token.SetProgress(1f);
+        }
     }
 
-    private async void ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
+    private async Task ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
     {
         foreach (TrackedObject.Data to in trackedObjects)
         {
             GameObject go = null;
 
-            if (IsRoomBoundary(to) || IsBaseboard(to))
+            if (IsRoomBoundary(to) || IsBaseboard(to) || IsWallProtector(to))
             {
                 go = IsRoomBoundary(to) ?
                     GetRoomBoundary(to) :
-                    GetBaseboard(to);
+                    GetGameObjectWithGuidName(to);
 
                 LogData(go.GetComponent<Selectable>(), to);
                 ResetMaterialPalettes(go.GetComponent<TrackedObject>());
@@ -395,11 +412,11 @@ public class ConfigurationManager : MonoBehaviour
             if (to.global_guid != _attachPointGUID && !string.IsNullOrEmpty(to.global_guid))
             {
                 var task = InstantiateObject(to);
+
                 await task;
                 if (!Application.isPlaying)
-                {
-                    throw new Exception($"Application quit while asset was being loaded/downloaded");
-                }
+                    throw new AppQuitInTaskException();
+
                 go = task.Result;
                 _newObjects.Add(go.GetComponent<TrackedObject>());
             }
@@ -532,7 +549,7 @@ public class ConfigurationManager : MonoBehaviour
     /// Resets the objects position and rotation to match with the JSON strucutre, after a frame to allow other logic to process the correct information
     /// </summary>
     /// <param name="newObjects">The tracked list of new objects that have been created during loading</param>
-    private async Task ResetObjectPositions(List<TrackedObject> newObjects)
+    private async Task SetObjectProperties(List<TrackedObject> newObjects)
     {
         newObjects.Reverse(); // The list needs to be reversed so that the hierarchy is root downwards. 
         foreach (TrackedObject obj in newObjects)
@@ -627,7 +644,7 @@ public class ConfigurationManager : MonoBehaviour
     {
         if (obj == null)
         {
-            Debug.LogWarning("Attempted to reset local position of a missing TrackedObject reference.");
+            Debug.LogWarning("Attempted to reset materials of a missing TrackedObject reference.");
             return;
         }
 
@@ -642,7 +659,7 @@ public class ConfigurationManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Logs the JSON structure of the object scale to be applied at a later point in execution by ResetScaleLevels()
+    /// Logs the JSON structure of the object scale to be applied at a later point in execution by <see cref="ResetScaleLevels"/>
     /// </summary>
     /// <param name="s">The object's selectable component</param>
     /// <param name="to">The JSON structure of this object</param>
@@ -671,30 +688,29 @@ public class ConfigurationManager : MonoBehaviour
             guid == "Floor";
     }
 
-    public static bool IsBaseboard(string guid)
-    {
-        return guid.StartsWith("Baseboard");
-    }
+    public static bool IsBaseboard(string guid) 
+        => guid.StartsWith("Baseboard");
 
-    private static bool IsBaseboard(TrackedObject.Data to)
-    {
-        return IsBaseboard(to.global_guid);
-    }
+    public static bool IsWallProtector(string guid) 
+        => guid.StartsWith("WallProtector");
 
-    public static bool IsRoomBoundary(TrackedObject.Data to)
-    {
-        return IsRoomBoundary(to.global_guid);
-    }
+    private static bool IsBaseboard(TrackedObject.Data to) 
+        => IsBaseboard(to.global_guid);
 
-    private static GameObject GetRoomBoundary(TrackedObject.Data to)
-    {
-        return GameObject.Find("RoomBoundary_" + to.global_guid);
-    }
+    public static bool IsWallProtector(TrackedObject.Data to) 
+        => IsWallProtector(to.global_guid);
 
-    private static GameObject GetBaseboard(TrackedObject.Data to)
-    {
-        return GameObject.Find(to.global_guid);
-    }
+    public static bool IsRoomBoundary(TrackedObject.Data to) 
+        => IsRoomBoundary(to.global_guid);
+
+    private static GameObject GetRoomBoundary(TrackedObject.Data to) 
+        => GameObject.Find("RoomBoundary_" + to.global_guid);
+
+    /// <returns>A permanent scene <see cref="GameObject"/> with 
+    /// <see cref="UnityEngine.Object.name"/> == 
+    /// <see cref="TrackedObject.Data.global_guid"/></returns>
+    private static GameObject GetGameObjectWithGuidName(TrackedObject.Data to) 
+        => GameObject.Find(to.global_guid);
 
     /// <summary>
     /// Gets the hierachy PATH for a GameObject

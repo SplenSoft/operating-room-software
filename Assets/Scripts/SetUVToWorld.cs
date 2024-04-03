@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 public class SetUVToWorld : MonoBehaviour
 {
 	// set this if you are putting it on a parent object, otherwise
@@ -15,64 +16,50 @@ public class SetUVToWorld : MonoBehaviour
 	public bool IncludeRotation;
 	//private MeshRenderer _meshRenderer;
     private MeshFilter _meshFilter;
-    private GizmoHandler _gizmoHandler;
-    private RoomBoundary _roomBoundary;
 
-    //private void Reset()
-    //{
-    //	IncludeRotation = true;
-    //	MaterialToUse = null;
-    //}
+    /// <summary>
+    /// Will listen to events from these items to reset the scale
+    /// </summary>
+    [field: SerializeField]
+    private List<GizmoHandler> GizmoHandlers { get; set; } = new();
 
-    //public static void AddToAllMeshRenderersWithMeshFilters(
-    //	GameObject go,
-    //	bool _PreserveColor = false,
-    //	Material _MaterialToUse = null)
-    //{
-    //	MeshRenderer[] rndrrs = go.GetComponentsInChildren<MeshRenderer> ();
-    //	foreach( var mr in rndrrs)
-    //	{
-    //		MeshFilter mf = mr.GetComponent<MeshFilter> ();
-    //		if (mf != null)
-    //		{
-    //			var uvsetter = mr.gameObject.AddComponent<SetUVToWorld> ();
-    //			uvsetter.PreserveColor = _PreserveColor;
-    //			uvsetter.MaterialToUse = _MaterialToUse;
-    //		}
-    //	}
-    //}
+    /// <summary>
+    /// Will listen to events from these items to reset the scale
+    /// </summary>
+    [field: SerializeField]
+    private List<RoomBoundary> RoomBoundaries { get; set; } = new();
+
+    /// <summary>
+    /// Will listen to events from these items to reset the scale
+    /// </summary>
+    [field: SerializeField]
+    private List<MatchHeightToWalls> MatchHeightToWalls { get; set; } = new();
+
+    [field: SerializeField]
+    private List<Cuttable> Cuttables { get; set; } = new();
+
+    [field: SerializeField]
+    private MeshInstanceManager MeshInstanceManager { get; set; }
+
+    private UnityEventManager _eventManager = new();
 
     private void Awake()
     {
         //_meshRenderer = GetComponentInChildren<MeshRenderer>();
         _meshFilter = GetComponentInChildren<MeshFilter>();
-        _gizmoHandler = GetComponentInChildren<GizmoHandler>();
-        _roomBoundary = GetComponentInChildren<RoomBoundary>();
+        MeshInstanceManager.RegisterMesh(_meshFilter.sharedMesh);
 
-        if (_gizmoHandler != null)
-        {
-            _gizmoHandler.GizmoDragEnded.AddListener(UpdateMaterials);
-        }
+        GizmoHandlers.ForEach(x => _eventManager.RegisterEvent(x.GizmoDragEnded, UpdateMaterials));
+        MatchHeightToWalls.ForEach(x => _eventManager.RegisterEvent(x.HeightSet, UpdateMaterials));
+        RoomBoundaries.ForEach(x => _eventManager.RegisterEvent(x.SizeSet, UpdateMaterials));
+        Cuttables.ForEach(x => _eventManager.RegisterEvent(x.OnCutComplete, UpdateMaterials));
 
-        if (_roomBoundary != null)
-        {
-            _roomBoundary.SizeSet.AddListener(UpdateMaterials);
-        }
+        _eventManager.AddListeners();
     }
-
-    private void UpdateMaterials(RoomDimension arg0) => UpdateMaterials();
 
     private void OnDestroy()
     {
-        if (_gizmoHandler != null)
-        {
-            _gizmoHandler.GizmoDragEnded.RemoveListener(UpdateMaterials);
-        }
-
-        if (_roomBoundary != null)
-        {
-            _roomBoundary.SizeSet.RemoveListener(UpdateMaterials);
-        }
+        _eventManager.RemoveListeners();
     }
 
     private void Start()
@@ -82,11 +69,14 @@ public class SetUVToWorld : MonoBehaviour
 
 	private void UpdateMaterials()
 	{
+        //Debug.Log($"Updating UVs for game object {gameObject.name}");
+
         if (_meshFilter)
         {
-            Vector2[] uvs = _meshFilter.mesh.uv;
-            Vector3[] verts = _meshFilter.mesh.vertices;
-            int[] tris = _meshFilter.mesh.triangles;
+            var mesh = MeshInstanceManager.InstancedMesh;
+            Vector2[] uvs = mesh.uv;
+            Vector3[] verts = mesh.vertices;
+            int[] tris = mesh.triangles;
 
             if (uvs.Length != verts.Length)
             {
@@ -138,7 +128,7 @@ public class SetUVToWorld : MonoBehaviour
                 }
             }
 
-            _meshFilter.mesh.uv = uvs;
+            mesh.uv = uvs;
 
             //var MaterialToUse = _meshRenderer.materials[0];
             //if (MaterialToUse)

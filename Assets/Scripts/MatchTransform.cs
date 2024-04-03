@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Meant to be added to a root object in the scene and will
@@ -50,6 +51,9 @@ public class MatchTransform : MonoBehaviour
 
     private void Awake()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+            return;
+
         _gizmoHandler = SelectableToMatch.gameObject
             .GetComponent<GizmoHandler>();
 
@@ -62,7 +66,8 @@ public class MatchTransform : MonoBehaviour
             ((_gizmoHandler.GizmoDragPostUpdate, UpdateTransform),
             (_gizmoHandler.GizmoDragEnded, UpdateTransform),
             (SelectableToMatch.OnRaycastPositionUpdated, UpdateTransform), 
-            (SelectableToMatch.OnPlaced, UpdateTransform));
+            (SelectableToMatch.OnPlaced, UpdateTransform),
+            (ConfigurationManager.OnRoomLoadComplete, UpdateTransform));
 
         if (_roomBoundary != null)
         {
@@ -79,8 +84,14 @@ public class MatchTransform : MonoBehaviour
         _eventManager.AddListeners();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+            yield break;
+
+        yield return new WaitUntil(() => 
+            !ConfigurationManager.IsLoadingRoom);
+
         UpdateTransform();
     }
 

@@ -13,16 +13,17 @@ using UnityEngine.Events;
 /// </summary>
 public class Cuttable : MonoBehaviour
 {
-    public UnityEvent OnCut { get; } = new();
+    public UnityEvent OnCutComplete { get; } = new();
     private static List<Cuttable> ActiveCuttables { get; } = new();
 
-    private Mesh _originalMesh;
     private MeshFilter _filter;
     private MeshRenderer _meshRenderer;
-    private Mesh _currentMesh;
     private GizmoHandler _gizmoHandler;
     private Selectable _selectable;
     private Collider _collider;
+
+    [field: SerializeField]
+    private MeshInstanceManager MeshInstanceManager { get; set; }
 
     private void Awake()
     {
@@ -31,8 +32,8 @@ public class Cuttable : MonoBehaviour
         _collider = GetComponentInChildren<Collider>();
         _filter = GetComponentInChildren<MeshFilter>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
-        
-        _originalMesh = _filter.sharedMesh;
+
+        MeshInstanceManager.RegisterMesh(_filter.sharedMesh);
 
         if (!TryGetComponent(out _selectable))
             _selectable = GetComponentInParent<Selectable>();
@@ -95,7 +96,7 @@ public class Cuttable : MonoBehaviour
     public void Cut()
     {
         // Set back to original mesh
-        _filter.sharedMesh = _originalMesh;
+        _filter.sharedMesh = MeshInstanceManager.OriginalMesh;
         ((MeshCollider)_collider).sharedMesh = _filter.sharedMesh;
 
         MeshCollider meshCollider = null;
@@ -144,15 +145,9 @@ public class Cuttable : MonoBehaviour
             mesh.RecalculateBounds();
             mesh.RecalculateNormals();
 
+            MeshInstanceManager.UpdateMesh(mesh);
+
             _filter.sharedMesh = mesh;
-
-            if (_currentMesh != null)
-            {
-                // Stop memory leaks
-                Destroy(_currentMesh);
-            }
-
-            _currentMesh = mesh;
         }
 
         ((MeshCollider)_collider).sharedMesh = _filter.sharedMesh;
@@ -162,6 +157,6 @@ public class Cuttable : MonoBehaviour
             meshCollider.convex = false;
         }
 
-        OnCut?.Invoke();
+        OnCutComplete?.Invoke();
     }
 }

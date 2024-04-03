@@ -3,6 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using SplenSoft.UnityUtilities;
+using UnityEngine.Events;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Used by Additional Wall (extra wall) selectable 
@@ -11,6 +14,8 @@ using SplenSoft.UnityUtilities;
 public class MatchHeightToWalls : MonoBehaviour
 {
     private Selectable _selectable;
+
+    public UnityEvent HeightSet { get; } = new();
 
     /// <summary>
     /// Populated on awake. Scale will not be updated until all 
@@ -34,12 +39,18 @@ public class MatchHeightToWalls : MonoBehaviour
         RoomSize.RoomSizeChanged.RemoveListener(UpdateScale);
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        UpdateScale(new RoomDimension());
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+            yield break;
+
+        yield return new WaitUntil(() =>
+            !ConfigurationManager.IsLoadingRoom);
+
+        UpdateScale();
     }
 
-    private async void UpdateScale(RoomDimension dimension)
+    private async void UpdateScale(RoomDimension dimension = default)
     {
         while (!_selectable.Started || 
         _moveToRootOnStarts.Any(x => !x.Moved)) 
@@ -49,18 +60,13 @@ public class MatchHeightToWalls : MonoBehaviour
                 throw new AppQuitInTaskException();
         }
 
-        var wall = RoomBoundary.Instances
-            .Where(item => item.RoomBoundaryType == RoomBoundaryType.WallWest)
-            .First();
-
-        if (wall.transform.localScale.y == 0)
-        {
-            Debug.LogError("Room wall localscale y was 0 when trying to set additional wall height!");
-        }
-
         transform.localScale = new Vector3
             (transform.localScale.x, 
             transform.localScale.y, 
-            wall.transform.localScale.y);
+            RoomSize.Instance.CurrentDimensions.Height.ToMeters());
+
+        HeightSet?.Invoke();
+
+        //Debug.Log("Updated additional wall scale");
     }
 }

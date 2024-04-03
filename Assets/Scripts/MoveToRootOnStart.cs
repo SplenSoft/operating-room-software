@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Makes this <see cref="GameObject"/> a scene root object 
@@ -25,6 +26,9 @@ public class MoveToRootOnStart : MonoBehaviour
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().name == "ObjectEditor")
+            return;
+
         Selectable.ActiveSelectables.ForEach(x =>
         {
             if (x.RelatedSelectables.Contains(_selectable))
