@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System;
 using SplenSoft.UnityUtilities;
 using UnityEngine.Events;
+using RTG;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -144,7 +145,8 @@ public class ConfigurationManager : MonoBehaviour
     {
         _roomConfiguration = new RoomConfiguration()
         {
-            collections = new List<Tracker>()
+            collections = new List<Tracker>(),
+            version = Application.version
         };
         return _roomConfiguration;
     }
@@ -403,8 +405,11 @@ public class ConfigurationManager : MonoBehaviour
                     GetRoomBoundary(to) :
                     GetGameObjectWithGuidName(to);
 
+
                 LogData(go.GetComponent<Selectable>(), to);
-                ResetMaterialPalettes(go.GetComponent<TrackedObject>());
+                var existingTrackedObj = go.GetComponent<TrackedObject>();
+                ResetScaleLevels(existingTrackedObj);
+                ResetMaterialPalettes(existingTrackedObj);
                 continue;
             }
 
@@ -558,7 +563,10 @@ public class ConfigurationManager : MonoBehaviour
             ResetScaleLevels(obj);
         }
 
-        await Task.Yield(); // allow time for scaling values to be applied in Selectable
+        // Allow time for scaling values to be applied in Selectable
+        await Task.Yield(); 
+        if (!Application.isPlaying)
+            throw new AppQuitInTaskException();
 
         foreach (TrackedObject obj in newObjects)
         {
@@ -611,7 +619,7 @@ public class ConfigurationManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"No scale level found for {obj.name}, applying default scale.");
+            Debug.Log($"No scale level found for {obj.name}, applying default scale of {obj.GetScale()}.");
             obj.transform.localScale = obj.GetScale();
         }
     }

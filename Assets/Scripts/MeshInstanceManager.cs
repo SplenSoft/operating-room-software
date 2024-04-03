@@ -12,6 +12,7 @@ using UnityEngine;
 public class MeshInstanceManager : MonoBehaviour
 {
     public Mesh OriginalMesh { get; private set; }
+
     /// <summary>
     /// Guaranteed to be a safe instance that can be modified.
     /// Should be shared mesh of all relevant mesh filters.
@@ -34,6 +35,16 @@ public class MeshInstanceManager : MonoBehaviour
             OriginalMesh = mesh;
             InstancedMesh = CloneMesh(mesh);
         }
+    }
+
+    /// <summary>
+    /// Regenerates the <see cref="InstancedMesh"/> as a clone 
+    /// of the <see cref="OriginalMesh"/>
+    /// </summary>
+    public void ResetMesh()
+    {
+        CleanUp();
+        InstancedMesh = CloneMesh(OriginalMesh);
     }
 
     /// <summary>
@@ -62,6 +73,7 @@ public class MeshInstanceManager : MonoBehaviour
 
     /// <summary>
     /// Creates a clone of a Mesh. Will cause memory leaks if not properly destroyed
+    /// Source: <see href="https://forum.unity.com/threads/how-do-i-duplicate-a-mesh-asset.35639/#post-9236958"/>
     /// </summary>
     private static Mesh CloneMesh(Mesh source)
     {

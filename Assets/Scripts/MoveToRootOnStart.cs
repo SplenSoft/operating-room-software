@@ -18,10 +18,28 @@ public class MoveToRootOnStart : MonoBehaviour
     public bool Moved { get; private set; }
 
     private Selectable _selectable;
+    private Selectable _formerParent;
 
     private void Awake()
     {
+        _formerParent = transform.root.GetComponent<Selectable>();
+        _formerParent.SelectableDestroyed.AddListener(DestroyThis);
         _selectable = GetComponent<Selectable>();
+    }
+
+    private void OnDestroy()
+    {
+        transform.root.GetComponent<Selectable>().SelectableDestroyed.RemoveListener(DestroyThis);
+
+        if (!_formerParent.IsDestroyed)
+        {
+            Destroy(_formerParent.gameObject);
+        }
+    }
+
+    private void DestroyThis()
+    {
+        Destroy(gameObject);   
     }
 
     private void Start()

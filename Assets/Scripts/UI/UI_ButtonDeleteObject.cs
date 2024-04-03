@@ -42,8 +42,7 @@ public class UI_ButtonDeleteObject : MonoBehaviour
                     {
                         var selectables = Selectable.SelectedSelectables;
                         Destroy(selectables[0].gameObject);
-                        //Selectable.DeselectAll();
-
+                        UI_DialogPrompt.Close();
                     },
             },
             new ButtonAction

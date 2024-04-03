@@ -840,24 +840,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7434035695294010010, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
   m_PrefabInstance: {fileID: 2039450404}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &572758618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 572758605}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DriveToAllChildren: 0
-  PreserveColor: 0
-  IncludeRotation: 0
-  <GizmoHandlers>k__BackingField: []
-  <RoomBoundaries>k__BackingField: []
-  <MatchHeightToWalls>k__BackingField: []
 --- !u!114 &572758619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,14 +966,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeshAndCollider
       objectReference: {fileID: 0}
-    - target: {fileID: 3344760194966280889, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
-      propertyPath: <RoomBoundaries>k__BackingField.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3344760194966280889, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
-      propertyPath: <RoomBoundaries>k__BackingField.Array.data[0]
-      value: 
-      objectReference: {fileID: 1747873179}
     - target: {fileID: 3594979577079493143, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -1870,25 +1844,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &866518836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430364296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DriveToAllChildren: 0
-  PreserveColor: 0
-  IncludeRotation: 0
-  <GizmoHandlers>k__BackingField: []
-  <RoomBoundaries>k__BackingField:
-  - {fileID: 866518809}
-  <MatchHeightToWalls>k__BackingField: []
 --- !u!20 &963194227 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 2892640959702383075, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
@@ -2141,6 +2096,10 @@ PrefabInstance:
     - target: {fileID: 1249555379781275023, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
       propertyPath: m_Transitions.m_OnCameraLive.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2177705836275678375, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
+      propertyPath: <Cuttables>k__BackingField.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2737079972269664056, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2984,25 +2943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96ecab8b3abe5c342960b84000c38872, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1619817550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1619817529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DriveToAllChildren: 0
-  PreserveColor: 0
-  IncludeRotation: 0
-  <GizmoHandlers>k__BackingField: []
-  <RoomBoundaries>k__BackingField:
-  - {fileID: 711887791}
-  <MatchHeightToWalls>k__BackingField: []
 --- !u!1 &1633508577
 GameObject:
   m_ObjectHideFlags: 0
@@ -3041,7 +2981,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633508577}
-  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3227,24 +3167,6 @@ MonoBehaviour:
   <SelectableToMatch>k__BackingField: {fileID: 551388408}
   <ScaleAxes>k__BackingField: 0000000001000000
   <AdditionalScale>k__BackingField: {x: 0.0254, y: 0.0254, z: 0}
---- !u!114 &1833982165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1833982163}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DriveToAllChildren: 0
-  PreserveColor: 0
-  IncludeRotation: 0
-  <GizmoHandlers>k__BackingField: []
-  <RoomBoundaries>k__BackingField: []
-  <MatchHeightToWalls>k__BackingField: []
 --- !u!1 &1854728897
 GameObject:
   m_ObjectHideFlags: 0
@@ -3678,24 +3600,6 @@ MonoBehaviour:
   <SelectableToMatch>k__BackingField: {fileID: 573594306}
   <ScaleAxes>k__BackingField: 0000000001000000
   <AdditionalScale>k__BackingField: {x: 0.0254, y: 0.0254, z: 0}
---- !u!114 &2006812778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2006812776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DriveToAllChildren: 0
-  PreserveColor: 0
-  IncludeRotation: 0
-  <GizmoHandlers>k__BackingField: []
-  <RoomBoundaries>k__BackingField: []
-  <MatchHeightToWalls>k__BackingField: []
 --- !u!1001 &2039450404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4197,6 +4101,10 @@ PrefabInstance:
       propertyPath: m_Transitions.m_OnCameraLive.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 2177705836275678375, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
+      propertyPath: <Cuttables>k__BackingField.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2737079972269664056, guid: a2d2cb841103e844aa45c221a941300f, type: 3}
       propertyPath: m_LocalPosition.y
       value: -10
@@ -4391,19 +4299,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071069
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 1e-45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710677
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1e-45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

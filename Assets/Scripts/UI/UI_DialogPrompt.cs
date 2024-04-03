@@ -65,6 +65,11 @@ public class UI_DialogPrompt : MonoBehaviour
         }
         Instance.gameObject.SetActive(true);
     }
+
+    public static void Close()
+    {
+        Instance.gameObject.SetActive(false);
+    }
 }
 
 public class ButtonAction

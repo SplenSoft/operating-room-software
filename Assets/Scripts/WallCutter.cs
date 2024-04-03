@@ -9,7 +9,7 @@ using UnityEngine;
 public class WallCutter : MonoBehaviour
 {
     private UnityEventManager _eventManager = new();
-    private Selectable _selectable;
+    public Selectable Selectable { get; private set; }
     private GizmoHandler _gizmoHandler;
     private MeshRenderer _meshRenderer;
     private WallCutter[] _wallCuttersOnSelectable;
@@ -22,13 +22,13 @@ public class WallCutter : MonoBehaviour
     private void Awake()
     {
         Collider = CutArea.GetComponent<Collider>();
-        _selectable = transform.root.GetComponent<Selectable>();
-        _wallCuttersOnSelectable = _selectable.GetComponentsInChildren<WallCutter>();
+        Selectable = transform.root.GetComponent<Selectable>();
+        _wallCuttersOnSelectable = Selectable.GetComponentsInChildren<WallCutter>();
         _gizmoHandler = transform.root.GetComponent<GizmoHandler>();
         _meshRenderer = CutArea.GetComponent<MeshRenderer>();
 
         _eventManager.RegisterEvents(
-            (_selectable.OnPlaced, UpdateCuts),
+            (Selectable.OnPlaced, UpdateCuts),
             (_gizmoHandler.GizmoDragEnded, UpdateCuts),
             (_gizmoHandler.GizmoDragPostUpdate, UpdateCuts));
 

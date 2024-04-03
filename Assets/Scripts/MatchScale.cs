@@ -55,13 +55,11 @@ public class MatchScale : MonoBehaviour
 
         _eventManager.RegisterEvents
             ((_gizmoHandler.GizmoDragPostUpdate, InvokeEvent),
-            (_gizmoHandler.GizmoDragEnded, InvokeEvent));
+            (_gizmoHandler.GizmoDragEnded, InvokeEvent), 
+            (_selectable.ScaleUpdated, InvokeEvent));
         
         _eventManager.RegisterEvents<ScaleChangedEvent>
             ((OnScaleProvidersUpdated, UpdateScale));
-
-        //_eventManager.RegisterEvents<Selectable.ScaleLevel>
-        //    ((_selectable.OnScaleChange, InvokeEvent));
 
         _eventManager.AddListeners();
     }
@@ -113,6 +111,10 @@ public class MatchScale : MonoBehaviour
         OnScaleProvidersUpdated?.Invoke(new(this));
     }
 
+    private void InvokeEvent
+    (Selectable.ScaleLevel scaleLevel) 
+        => InvokeEvent();
+
     private void UpdateScale(ScaleChangedEvent eventArgs)
     {
         if (eventArgs.Sender == this) 
@@ -128,11 +130,13 @@ public class MatchScale : MonoBehaviour
                 eventArgs.Sender._selectable.CurrentPreviewScaleLevel :
                 eventArgs.Sender._selectable.CurrentScaleLevel;
 
+            Debug.Log($"Matching {masterScaleLevel.Size} from game object {eventArgs.Sender.name} to game object {gameObject.name}");
             var localScaleLevel = _selectable.ScaleLevels
                 .First(x => x.Size == masterScaleLevel.Size);
 
             _selectable.SetScaleLevel(localScaleLevel, true);
 
+            OnScaleUpdated?.Invoke();
             return;
         }
 
@@ -140,6 +144,8 @@ public class MatchScale : MonoBehaviour
         Vector3 localScale = transform.localScale;
         localScale.z = eventArgs.Sender.transform.localScale.z;
         transform.localScale = localScale;
+
+        OnScaleUpdated?.Invoke();
     }
 
     public class ScaleChangedEvent

@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 7157633925201568350}
   - component: {fileID: 4087454470110563666}
   - component: {fileID: 6115795198019323899}
+  - component: {fileID: 2177705836275678375}
+  - component: {fileID: 3922963333951557427}
   m_Layer: 7
   m_Name: RoomBoundary
   m_TagString: Untagged
@@ -126,6 +128,41 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c0af82fbc0767e489021023046ab54c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MeshInstanceManager>k__BackingField: {fileID: 3922963333951557427}
+--- !u!114 &2177705836275678375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169857843208681756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DriveToAllChildren: 0
+  PreserveColor: 0
+  IncludeRotation: 0
+  <GizmoHandlers>k__BackingField: []
+  <RoomBoundaries>k__BackingField:
+  - {fileID: 7157633925201568350}
+  <MatchHeightToWalls>k__BackingField: []
+  <Cuttables>k__BackingField:
+  - {fileID: 6115795198019323899}
+  <MeshInstanceManager>k__BackingField: {fileID: 3922963333951557427}
+--- !u!114 &3922963333951557427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169857843208681756}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5662d52efa20354b832f9a57294778c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2183912130177328532

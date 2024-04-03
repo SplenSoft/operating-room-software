@@ -3,8 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class SetUVToWorld : MonoBehaviour
 {
+#if UNITY_EDITOR
+    [CustomEditor(typeof(SetUVToWorld))]
+    private class SetUVToWorld_Inspector : Editor
+    {
+        private SetUVToWorld _instance;
+
+        public override void OnInspectorGUI()
+        {
+            if (_instance == null)
+            {
+                _instance = target as SetUVToWorld;
+            }
+
+            DrawDefaultInspector();
+
+            if (Application.isPlaying)
+            {
+                if (GUILayout.Button("Update UVs"))
+                {
+                    _instance.UpdateMaterials();
+                }
+            }
+        }
+    }
+#endif
 	// set this if you are putting it on a parent object, otherwise
 	// this script operates only on the current GameObject.
 	public bool DriveToAllChildren;
@@ -39,22 +68,57 @@ public class SetUVToWorld : MonoBehaviour
     private List<Cuttable> Cuttables { get; set; } = new();
 
     [field: SerializeField]
+    private List<MatchScale> MatchScales { get; set; } = new();
+
+    [field: SerializeField]
     private MeshInstanceManager MeshInstanceManager { get; set; }
 
     private UnityEventManager _eventManager = new();
+
+    private Selectable _selectable;
+    private MatchTransform _matchTransform;
 
     private void Awake()
     {
         //_meshRenderer = GetComponentInChildren<MeshRenderer>();
         _meshFilter = GetComponentInChildren<MeshFilter>();
+        GetSelectable();
         MeshInstanceManager.RegisterMesh(_meshFilter.sharedMesh);
+
+        if (_matchTransform != null)
+        {
+            _eventManager.RegisterEvent(_matchTransform.OnTransformUpdated, UpdateMaterials);
+        }
+
+        _eventManager.RegisterEvent
+            (_selectable.OnScaleChange, UpdateMaterials);
+
+        _eventManager.RegisterEvent
+            (FullScreenMenu.OnAllMenusClosed, UpdateMaterials);
 
         GizmoHandlers.ForEach(x => _eventManager.RegisterEvent(x.GizmoDragEnded, UpdateMaterials));
         MatchHeightToWalls.ForEach(x => _eventManager.RegisterEvent(x.HeightSet, UpdateMaterials));
         RoomBoundaries.ForEach(x => _eventManager.RegisterEvent(x.SizeSet, UpdateMaterials));
         Cuttables.ForEach(x => _eventManager.RegisterEvent(x.OnCutComplete, UpdateMaterials));
+        MatchScales.ForEach(x => _eventManager.RegisterEvent(x.OnScaleUpdated, UpdateMaterials));
 
         _eventManager.AddListeners();
+    }
+
+    private void GetSelectable()
+    {
+        if (!TryGetComponent(out _selectable))
+        {
+            _selectable = GetComponentInParent<Selectable>();
+        }
+    }
+
+    private void GetMatchTransform()
+    {
+        if (!TryGetComponent(out _matchTransform))
+        {
+            _matchTransform = GetComponentInParent<MatchTransform>();
+        }
     }
 
     private void OnDestroy()
@@ -62,10 +126,21 @@ public class SetUVToWorld : MonoBehaviour
         _eventManager.RemoveListeners();
     }
 
-    private void Start()
+    private IEnumerator Start()
 	{
+        yield return new WaitUntil(() => _selectable.Started);
+        yield return new WaitForSeconds(5);
         UpdateMaterials();
     }
+
+    private void OnBecameVisible()
+    {
+        UpdateMaterials();
+    }
+
+    private void UpdateMaterials
+    (Selectable.ScaleLevel scaleLevel) 
+        => UpdateMaterials();
 
 	private void UpdateMaterials()
 	{
@@ -173,6 +248,8 @@ public class SetUVToWorld : MonoBehaviour
             //        rndrr.materials = allNewMaterials;
             //    }
             //}
+
+            _meshFilter.sharedMesh = mesh;
         }
         else
         {

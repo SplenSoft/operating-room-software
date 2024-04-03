@@ -37,6 +37,7 @@ public class RoomConfigLoader : MonoBehaviour
         go.GetComponent<Button>().onClick.AddListener(() =>
         {
             ConfigurationManager.Instance.LoadRoom(f);
+            Instance.gameObject.SetActive(false);
             transform.root.gameObject.SetActive(false);
         });
         go.transform.localScale = new Vector3(1,1,1);

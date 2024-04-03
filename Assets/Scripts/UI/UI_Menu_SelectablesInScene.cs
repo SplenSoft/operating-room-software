@@ -28,6 +28,10 @@ public class UI_Menu_SelectablesInScene : MonoBehaviour
         Instance.ItemTemplate.SetActive(true);
         foreach (var item in Selectable.ActiveSelectables)
         {
+            if (item.RelatedSelectables.Count == 0 || 
+            item.RelatedSelectables[0] != item) 
+                continue;
+
             int parents = 0;
             Transform parent = item.transform.parent;
             while (parent != null) 
@@ -42,11 +46,12 @@ public class UI_Menu_SelectablesInScene : MonoBehaviour
             {
                 title += " ";
             }
-            title += item.MetaData.Name;
-            if (item.MetaData.IsSubSelectable) 
+            var metaData = item.GetMetadata();
+            title += metaData.Name;
+            if (metaData.IsSubSelectable) 
             {
-                title += !string.IsNullOrWhiteSpace(item.MetaData.SubPartName) ? 
-                    $" ({item.MetaData.SubPartName})" : $" (Unnamed Subpart)";
+                title += !string.IsNullOrWhiteSpace(metaData.SubPartName) ? 
+                    $" ({metaData.SubPartName})" : $" (Unnamed Subpart)";
             }
             newItem.GetComponentInChildren<TextMeshProUGUI>().text = title;
             newItem.GetComponentInChildren<Button>().onClick.AddListener(() =>

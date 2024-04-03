@@ -1,10 +1,16 @@
 using Parabox.CSG;
+using SplenSoft.UnityUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 /// <summary>
 /// Can be attached to wall objects to define that they can be
@@ -13,6 +19,32 @@ using UnityEngine.Events;
 /// </summary>
 public class Cuttable : MonoBehaviour
 {
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Cuttable))]
+    private class Cuttable_Inspector : Editor
+    {
+        private Cuttable _instance;
+
+        public override void OnInspectorGUI()
+        {
+            if (_instance == null)
+            {
+                _instance = target as Cuttable;
+            }
+
+            DrawDefaultInspector();
+
+            if (Application.isPlaying)
+            {
+                if (GUILayout.Button("Update Cuts"))
+                {
+                    _instance.Cut();
+                }
+            }
+        }
+    }
+#endif
+
     public UnityEvent OnCutComplete { get; } = new();
     private static List<Cuttable> ActiveCuttables { get; } = new();
 
@@ -21,9 +53,12 @@ public class Cuttable : MonoBehaviour
     private GizmoHandler _gizmoHandler;
     private Selectable _selectable;
     private Collider _collider;
+    private MatchScale _matchScale;
 
     [field: SerializeField]
     private MeshInstanceManager MeshInstanceManager { get; set; }
+
+    private UnityEventManager _eventManager = new();
 
     private void Awake()
     {
@@ -32,7 +67,7 @@ public class Cuttable : MonoBehaviour
         _collider = GetComponentInChildren<Collider>();
         _filter = GetComponentInChildren<MeshFilter>();
         _meshRenderer = GetComponentInChildren<MeshRenderer>();
-
+        GetMatchScale();
         MeshInstanceManager.RegisterMesh(_filter.sharedMesh);
 
         if (!TryGetComponent(out _selectable))
@@ -41,32 +76,39 @@ public class Cuttable : MonoBehaviour
         if (!TryGetComponent(out _gizmoHandler))
             _gizmoHandler = GetComponentInParent<GizmoHandler>();
 
+        if (_matchScale != null)
+        {
+            _eventManager.RegisterEvents
+                ((_matchScale.OnScaleUpdated, Cut));
+        }
+
         if (_gizmoHandler != null)
         {
-            _gizmoHandler.GizmoDragEnded.AddListener(Cut);
-            _gizmoHandler.GizmoDragPostUpdate.AddListener(Cut);
+            _eventManager.RegisterEvents
+                ((_gizmoHandler.GizmoDragEnded, Cut),
+                (_gizmoHandler.GizmoDragPostUpdate, Cut));
         }
 
         if (_selectable != null)
         {
-            _selectable.OnPlaced.AddListener(Cut);
+            _eventManager.RegisterEvents
+                ((_selectable.OnPlaced, Cut));
         }
+
+        _eventManager.AddListeners();
+    }
+
+    private void GetMatchScale()
+    {
+        if (!TryGetComponent(out _matchScale))
+            _matchScale = GetComponentInParent<MatchScale>();
     }
 
     private void OnDestroy()
     {
         ActiveCuttables.Remove(this);
 
-        if (_gizmoHandler != null)
-        {
-            _gizmoHandler.GizmoDragEnded.RemoveListener(Cut);
-            _gizmoHandler.GizmoDragPostUpdate.RemoveListener(Cut);
-        }
-
-        if (_selectable != null)
-        {
-            _selectable.OnPlaced.RemoveListener(Cut);
-        }
+        _eventManager.RemoveListeners();
     }
 
     private void Start()
@@ -98,6 +140,7 @@ public class Cuttable : MonoBehaviour
         // Set back to original mesh
         _filter.sharedMesh = MeshInstanceManager.OriginalMesh;
         ((MeshCollider)_collider).sharedMesh = _filter.sharedMesh;
+        MeshInstanceManager.ResetMesh();
 
         MeshCollider meshCollider = null;
         if (_collider is MeshCollider mc && !mc.convex)
@@ -119,6 +162,11 @@ public class Cuttable : MonoBehaviour
             // If we don't do this, we're going to generate and
             // dump more meshes than we need to, so for now I
             // think it's worth it
+            if (wallCutter.Collider == null || 
+            wallCutter.Selectable == null || 
+            wallCutter.Selectable.IsDestroyed) 
+                continue;
+
             bool collides = Physics.ComputePenetration(
                 _collider,
                 _collider.gameObject.transform.position,

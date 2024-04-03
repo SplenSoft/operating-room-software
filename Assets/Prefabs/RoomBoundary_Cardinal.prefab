@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4759421719140782099}
   - component: {fileID: 3344760194966280889}
   - component: {fileID: 3344760194966280888}
+  - component: {fileID: 8535125925247709909}
   m_Layer: 7
   m_Name: RoomBoundary_Wall_W (1)
   m_TagString: Untagged
@@ -113,6 +114,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0af82fbc0767e489021023046ab54c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <MeshInstanceManager>k__BackingField: {fileID: 8535125925247709909}
 --- !u!114 &3344760194966280889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +130,13 @@ MonoBehaviour:
   DriveToAllChildren: 0
   PreserveColor: 0
   IncludeRotation: 0
+  <GizmoHandlers>k__BackingField: []
+  <RoomBoundaries>k__BackingField:
+  - {fileID: 4133111699715016229}
+  <MatchHeightToWalls>k__BackingField: []
+  <Cuttables>k__BackingField:
+  - {fileID: 4759421719140782099}
+  <MeshInstanceManager>k__BackingField: {fileID: 8535125925247709909}
 --- !u!114 &3344760194966280888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +150,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Target>k__BackingField: {fileID: 6365189217406852455}
+--- !u!114 &8535125925247709909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1479436106160500468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5662d52efa20354b832f9a57294778c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2099120148203260774
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,6 +664,8 @@ MonoBehaviour:
     - {fileID: 2100000, guid: e26fb82eb654e1145be5d2673baf3045, type: 2}
     - {fileID: 2100000, guid: 355eeea3ec9b41044820ac1ccd2773cc, type: 2}
   <meshRenderer>k__BackingField: {fileID: 4895277826207927144}
+  <MaterialGroup>k__BackingField: 0
+  <CanBeReadByGroup>k__BackingField: 0
 --- !u!114 &6489340789016149689
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -61,6 +61,8 @@ GameObject:
   - component: {fileID: 1048063755412966520}
   - component: {fileID: 5032524600323807482}
   - component: {fileID: 1807172860889089618}
+  - component: {fileID: 5773718822298266655}
+  - component: {fileID: 3701859857300132082}
   m_Layer: 6
   m_Name: Cube
   m_TagString: Wall
@@ -172,6 +174,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0af82fbc0767e489021023046ab54c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <MeshInstanceManager>k__BackingField: {fileID: 5773718822298266655}
+--- !u!114 &5773718822298266655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272388761358011080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5662d52efa20354b832f9a57294778c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3701859857300132082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272388761358011080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DriveToAllChildren: 0
+  PreserveColor: 0
+  IncludeRotation: 0
+  <GizmoHandlers>k__BackingField:
+  - {fileID: 947543270460210052}
+  <RoomBoundaries>k__BackingField: []
+  <MatchHeightToWalls>k__BackingField:
+  - {fileID: 1165342630076357617}
+  <Cuttables>k__BackingField:
+  - {fileID: 1807172860889089618}
+  <MatchScales>k__BackingField: []
+  <MeshInstanceManager>k__BackingField: {fileID: 5773718822298266655}
 --- !u!1 &1595867736146379199
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,26 +790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ebc892f4e4cd49418d88e47fd8f903d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1886035769955000643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8821559155327484524}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adfab55af70bbd64fa03a19142f44275, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DriveToAllChildren: 0
-  PreserveColor: 0
-  IncludeRotation: 1
-  <GizmoHandlers>k__BackingField:
-  - {fileID: 947543270460210052}
-  <RoomBoundaries>k__BackingField: []
-  <MatchHeightToWalls>k__BackingField:
-  - {fileID: 1165342630076357617}
 --- !u!114 &6978683276829698579
 MonoBehaviour:
   m_ObjectHideFlags: 0

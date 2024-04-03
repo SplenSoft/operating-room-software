@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -11,6 +12,8 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class MatchTransform : MonoBehaviour
 {
+    public UnityEvent OnTransformUpdated { get; } = new();
+
     [field: SerializeField] 
     public Selectable SelectableToMatch { get; set; }
 
@@ -49,6 +52,8 @@ public class MatchTransform : MonoBehaviour
 
     private UnityEventManager _eventManager = new();
 
+    private Selectable _selectable;
+
     private void Awake()
     {
         if (SceneManager.GetActiveScene().name == "ObjectEditor")
@@ -60,11 +65,18 @@ public class MatchTransform : MonoBehaviour
         _roomBoundary = SelectableToMatch
             .GetComponent<RoomBoundary>();
 
+        if (!TryGetComponent(out _selectable))
+        {
+            _selectable = GetComponentInParent<Selectable>();
+        }
+
         _moveToRootOnStart = GetComponent<MoveToRootOnStart>();
 
         _eventManager.RegisterEvents
             ((_gizmoHandler.GizmoDragPostUpdate, UpdateTransform),
             (_gizmoHandler.GizmoDragEnded, UpdateTransform),
+            (_selectable.ScaleUpdated, UpdateTransform),
+            //(_selectable.OnScaleChange
             (SelectableToMatch.OnRaycastPositionUpdated, UpdateTransform), 
             (SelectableToMatch.OnPlaced, UpdateTransform),
             (ConfigurationManager.OnRoomLoadComplete, UpdateTransform));
@@ -109,6 +121,8 @@ public class MatchTransform : MonoBehaviour
             (transToMatch.position, transToMatch.rotation);
 
         MatchScale();
+
+        OnTransformUpdated?.Invoke();
     }
 
     private void MatchScale()
@@ -130,5 +144,7 @@ public class MatchTransform : MonoBehaviour
             transform.localScale.z;
 
         transform.localScale = newScale;
+
+        Debug.Log($"Matched transform for object {gameObject.name}");
     }
 }

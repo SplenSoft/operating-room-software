@@ -408,6 +408,7 @@ GameObject:
   - component: {fileID: 4311094612895123835}
   - component: {fileID: 4311094612895123836}
   - component: {fileID: 1635238889263815147}
+  - component: {fileID: 2118841848577535349}
   m_Layer: 5
   m_Name: UI_LoadingScreen
   m_TagString: Untagged
@@ -548,3 +549,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <LoadingBar>k__BackingField: {fileID: 3280219739647361806}
+--- !u!114 &2118841848577535349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4311094612895125121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f99a4fde53871e4384765f3f9ae6866, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

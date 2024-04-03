@@ -509,7 +509,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         var data = RelatedSelectables[0].MetaData;
 
         var matchingItem = ObjectMenu.Instance.ObjectMenuItems
-                .FirstOrDefault(x => RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
+                .FirstOrDefault(x => x.SelectableData != null && 
+                    RelatedSelectables[0].GUID == x.SelectableData.AssetBundleName);
 
         if (matchingItem != null)
         {

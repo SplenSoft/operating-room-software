@@ -6,6 +6,8 @@ using TMPro;
 
 public class Save : MonoBehaviour
 {
+    private static Save Instance { get; set; }
+
     [Header("Constant UI")]
     public GameObject savePanel;
     public Button b_Save;
@@ -15,6 +17,21 @@ public class Save : MonoBehaviour
 
     [Header("Dynamic UI")]
     public TMP_Text header;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        
+    }
+
+    public static void Close()
+    {
+        Instance.savePanel.SetActive(false);
+    }
 
     void Start()
     {

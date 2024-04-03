@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1755979279152194000}
   - component: {fileID: 1223016558583351928}
   - component: {fileID: 6235043491731965772}
+  - component: {fileID: 8901466834640781387}
   m_Layer: 6
   m_Name: MeshAndCollider
   m_TagString: Baseboard
@@ -100,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0af82fbc0767e489021023046ab54c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <MeshInstanceManager>k__BackingField: {fileID: 8901466834640781387}
 --- !u!114 &2676205037079273880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,6 +134,11 @@ MonoBehaviour:
   - {fileID: 1180260682032393074}
   <RoomBoundaries>k__BackingField: []
   <MatchHeightToWalls>k__BackingField: []
+  <Cuttables>k__BackingField:
+  - {fileID: 4863854891550447812}
+  <MatchScales>k__BackingField:
+  - {fileID: 2705470612733449368}
+  <MeshInstanceManager>k__BackingField: {fileID: 8901466834640781387}
 --- !u!64 &1223016558583351928
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -161,6 +168,18 @@ MonoBehaviour:
   <IgnoreX>k__BackingField: 1
   <IgnoreY>k__BackingField: 1
   <IgnoreZ>k__BackingField: 1
+--- !u!114 &8901466834640781387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4683146973178528308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5662d52efa20354b832f9a57294778c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7434035695294010010
 GameObject:
   m_ObjectHideFlags: 0
