@@ -994,11 +994,13 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
 --- !u!114 &5232814838239893113
 MonoBehaviour:
@@ -1145,11 +1147,13 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
 --- !u!114 &7511422527843455098
 MonoBehaviour:

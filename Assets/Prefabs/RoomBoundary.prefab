@@ -152,6 +152,7 @@ MonoBehaviour:
   <MatchHeightToWalls>k__BackingField: []
   <Cuttables>k__BackingField:
   - {fileID: 6115795198019323899}
+  <MatchScales>k__BackingField: []
   <MeshInstanceManager>k__BackingField: {fileID: 3922963333951557427}
 --- !u!114 &3922963333951557427
 MonoBehaviour:

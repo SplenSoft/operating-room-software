@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3344760194966280889}
   - component: {fileID: 3344760194966280888}
   - component: {fileID: 8535125925247709909}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: RoomBoundary_Wall_W (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,6 +136,7 @@ MonoBehaviour:
   <MatchHeightToWalls>k__BackingField: []
   <Cuttables>k__BackingField:
   - {fileID: 4759421719140782099}
+  <MatchScales>k__BackingField: []
   <MeshInstanceManager>k__BackingField: {fileID: 8535125925247709909}
 --- !u!114 &3344760194966280888
 MonoBehaviour:
@@ -173,7 +174,7 @@ GameObject:
   - component: {fileID: 9219654223733637955}
   - component: {fileID: 5429523588537412084}
   - component: {fileID: 5007139332428620235}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: CM vcam1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -282,7 +283,7 @@ GameObject:
   - component: {fileID: 211565486253672637}
   - component: {fileID: 7324042001491072042}
   - component: {fileID: 3082207901846664730}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -353,7 +354,7 @@ GameObject:
   - component: {fileID: 6489340789016149681}
   - component: {fileID: 6489340789016149685}
   - component: {fileID: 6489340789016149689}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: RoomBoundary_Cardinal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,13 +405,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ccc1c21eb92b2d43903fee16c414d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <GUID>k__BackingField: Wall_W
+  <GUID>k__BackingField: gameobject_1b78c14021aea83438cf07a8ec426282
   <MetaData>k__BackingField:
     <IsSubSelectable>k__BackingField: 0
     <Enabled>k__BackingField: 0
     <IsStandalone>k__BackingField: 0
     <ThumbnailBase64>k__BackingField: 
-    <Name>k__BackingField: 
+    <Name>k__BackingField: RoomBoundary_Cardinal
     <SubPartName>k__BackingField: 
     <Categories>k__BackingField: []
     <KeyWords>k__BackingField: []
@@ -432,7 +433,8 @@ MonoBehaviour:
   <ChangeHeightForElevationPhoto>k__BackingField: 0
   <CanPlaceAnywhere>k__BackingField: 0
   <AttachedTo>k__BackingField: {fileID: 0}
-  <RelatedSelectables>k__BackingField: []
+  <RelatedSelectables>k__BackingField:
+  - {fileID: 6489340789016149683}
   <CurrentScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0

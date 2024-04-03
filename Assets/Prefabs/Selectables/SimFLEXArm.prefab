@@ -516,62 +516,77 @@ MonoBehaviour:
   - <Size>k__BackingField: 0.6
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 0.7
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 0.8
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 0.9
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1
     <Selected>k__BackingField: 1
     <ModelDefault>k__BackingField: 1
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.1
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.2
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.3
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.4
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.5
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.6
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.7
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.8
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 1.9
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   - <Size>k__BackingField: 2
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
@@ -589,11 +604,13 @@ MonoBehaviour:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
   <CurrentPreviewScaleLevel>k__BackingField:
     <Size>k__BackingField: 0
     <Selected>k__BackingField: 0
     <ModelDefault>k__BackingField: 0
+    <ScaleZ>k__BackingField: 0
     metadata: []
 --- !u!1 &1285647699513630983 stripped
 GameObject:

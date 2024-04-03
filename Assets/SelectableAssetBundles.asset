@@ -1605,8 +1605,8 @@ MonoBehaviour:
     <AssetBundleName>k__BackingField: gameobject_fdbe9a18e2ecb8742b6752e53ef46387
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
-      <IsStandalone>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: U_Logo
       <SubPartName>k__BackingField: 
@@ -1618,8 +1618,8 @@ MonoBehaviour:
     <AssetBundleName>k__BackingField: gameobject_939e7988989ab0e45ab69cc0f02e3f9d
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
-      <IsStandalone>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: U001_Logo
       <SubPartName>k__BackingField: 
@@ -1631,8 +1631,8 @@ MonoBehaviour:
     <AssetBundleName>k__BackingField: gameobject_4ff4a3a21c91871479ff85ba2ac3ba57
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
-      <IsStandalone>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: U_WholeLogo
       <SubPartName>k__BackingField: 
@@ -1644,8 +1644,8 @@ MonoBehaviour:
     <AssetBundleName>k__BackingField: gameobject_56ebd06235e253d47955aa0adeca06f9
     <MetaData>k__BackingField:
       <IsSubSelectable>k__BackingField: 0
-      <Enabled>k__BackingField: 0
-      <IsStandalone>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
       <Name>k__BackingField: UONE_Logo
       <SubPartName>k__BackingField: 
