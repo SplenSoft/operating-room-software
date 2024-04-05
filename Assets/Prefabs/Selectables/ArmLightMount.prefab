@@ -201,7 +201,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8290187815966565122, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
 --- !u!114 &4227256961895281056 stripped
 MonoBehaviour:
@@ -1441,7 +1442,8 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8290187815966565122, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
 --- !u!1 &2669858426426254842 stripped
 GameObject:
@@ -1730,7 +1732,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: U001_Logo
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8290187815966565122, guid: 939e7988989ab0e45ab69cc0f02e3f9d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 939e7988989ab0e45ab69cc0f02e3f9d, type: 3}
 --- !u!1 &424247217180065040 stripped
 GameObject:

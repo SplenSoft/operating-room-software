@@ -576,7 +576,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: UImagine_WholeLogo
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8290187815966565122, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
 --- !u!1 &4106813111820186987 stripped
 GameObject:

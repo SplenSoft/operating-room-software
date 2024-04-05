@@ -449,6 +449,8 @@ MonoBehaviour:
     materials:
     - {fileID: 2100000, guid: 208da722be131604ebe6085ca6bc3a53, type: 2}
   <meshRenderer>k__BackingField: {fileID: 8373920158672719143}
+  <MaterialGroup>k__BackingField: 0
+  <CanBeReadByGroup>k__BackingField: 0
 --- !u!4 &6196501189365001464 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
@@ -577,27 +579,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dda6857756f3b14e9c1a81d0206e58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6754294041719366307 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -6158847262685390117, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}
-  m_PrefabInstance: {fileID: 8591587907464624248}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1424660302895094640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6754294041719366307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61f9744ed3b0b7542868350fd5a288c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _meshRenderer: {fileID: 8373920158672719143}
-  _useX: 0
-  _useY: 0
-  _useZ: 0
 --- !u!33 &6795847191154242788 stripped
 MeshFilter:
   m_CorrespondingSourceObject: {fileID: -6236147733926916964, guid: 77db83fa370c30a4d970e18063cf6947, type: 3}

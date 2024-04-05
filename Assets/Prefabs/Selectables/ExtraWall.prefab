@@ -451,7 +451,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: WallProtector
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1206166765427326515, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
 --- !u!1 &7268922116924950835 stripped
 GameObject:
@@ -970,7 +971,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Baseboard (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8369786192166557419, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d4c54a4ad1f67144db29628f39fd23f5, type: 3}
 --- !u!1 &3587676223017417328 stripped
 GameObject:

@@ -1522,7 +1522,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
             if (hasTrackedObject && hasRemoveTrackedObject)
             {
-                DestroyImmediate(trackedObj);
+                DestroyImmediate(trackedObj, true);
                 needsDirty = true;
             }
             else if (!hasTrackedObject && !hasRemoveTrackedObject)
