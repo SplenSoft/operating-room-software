@@ -101,6 +101,18 @@ namespace SplenSoft.AssetBundles
             GUIUtility.systemCopyBuffer = bundleName;
         }
 
+        [MenuItem("Tools/Easy CDN/Debug/Print AssetBundle Data")]
+        private static void PrintAssetBundleData()
+        {
+            Array.ForEach(AssetDatabase.GetAllAssetBundleNames(), name =>
+            {
+                Array.ForEach(AssetDatabase.GetAssetPathsFromAssetBundle(name), path => 
+                {
+                    Debug.Log($"AssetBundle: {name}, Asset: {path}");
+                });
+            });
+        }
+
         [MenuItem("Tools/Easy CDN/Open Documentation", priority = 1)]
         private static void OpenDocumentation()
         {
