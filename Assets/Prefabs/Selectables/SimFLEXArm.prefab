@@ -164,7 +164,6 @@ MonoBehaviour:
     <ModelDefault>k__BackingField: 0
     <ScaleZ>k__BackingField: 0
     metadata: []
-  <TransformToIncludeWithScale>k__BackingField: []
   <UseLossyScale>k__BackingField: 0
   <ZAlwaysFacesGround>k__BackingField: 0
   <ZAlwaysFacesGroundElevationOnly>k__BackingField: 0
