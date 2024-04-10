@@ -102,7 +102,7 @@ public class MatchTransform : MonoBehaviour
             yield break;
 
         yield return new WaitUntil(() => 
-            !ConfigurationManager.IsLoadingRoom);
+            !ConfigurationManager.IsLoading);
 
         UpdateTransform();
     }
@@ -145,6 +145,6 @@ public class MatchTransform : MonoBehaviour
 
         transform.localScale = newScale;
 
-        Debug.Log($"Matched transform for object {gameObject.name}");
+        //Debug.Log($"Matched transform for object {gameObject.name}");
     }
 }

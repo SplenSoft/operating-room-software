@@ -78,7 +78,7 @@ public class MaterialPalette : MonoBehaviour
         }
 
         yield return new WaitUntil(() => 
-            !ConfigurationManager.IsLoadingRoom);
+            !ConfigurationManager.IsLoading);
 
         if (MaterialGroup != MaterialGroup.None && !CanBeReadByGroup)
         {

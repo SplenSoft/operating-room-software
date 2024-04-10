@@ -45,7 +45,7 @@ public class MatchHeightToWalls : MonoBehaviour
             yield break;
 
         yield return new WaitUntil(() =>
-            !ConfigurationManager.IsLoadingRoom);
+            !ConfigurationManager.IsLoading);
 
         UpdateScale();
     }

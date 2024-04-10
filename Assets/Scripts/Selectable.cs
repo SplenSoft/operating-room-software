@@ -11,6 +11,8 @@ using UnityEngine.Serialization;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
 using UnityEngine.UI;
+using SplenSoft.UnityUtilities;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -317,6 +319,18 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         MouseOverStateChanged?.Invoke(this, null);
     }
 
+    private async void GenerateGuidName()
+    {
+        while (ConfigurationManager.IsLoading)
+        {
+            await Task.Yield();
+            if (!Application.isPlaying)
+                throw new AppQuitInTaskException();
+        }
+        guid = Guid.NewGuid().ToString();
+        gameObject.name = guid.ToString();
+    }
+
     private void Start()
     {
         if (GUID != "" &&
@@ -325,8 +339,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         !ConfigurationManager.IsWallProtector(GUID) &&
         transform.parent == null)
         {
-            guid = Guid.NewGuid().ToString();
-            gameObject.name = guid.ToString();
+            GenerateGuidName();
         }
 
         if (ScaleLevels.Count > 0)
@@ -335,7 +348,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             CurrentPreviewScaleLevel = CurrentScaleLevel;
             CurrentScaleLevel.ScaleZ = transform.localScale.z;
 
-            Debug.Log($"Model default scale level is {CurrentScaleLevel.ScaleZ}");
+            //Debug.Log($"Model default scale level is {CurrentScaleLevel.ScaleZ}");
 
             StoreChildScales();
 
@@ -343,8 +356,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             {
                 if (!item.ModelDefault)
                 {
-                    Debug.Log($"Item size for scale level {ScaleLevels.IndexOf(item)} is {item.Size}");
-                    Debug.Log($"Current scale level size is {CurrentScaleLevel.Size}");
+                    //Debug.Log($"Item size for scale level {ScaleLevels.IndexOf(item)} is {item.Size}");
+                    //Debug.Log($"Current scale level size is {CurrentScaleLevel.Size}");
 
                     float perc = item.Size / CurrentScaleLevel.Size;
                     item.ScaleZ = CurrentScaleLevel.ScaleZ * perc;

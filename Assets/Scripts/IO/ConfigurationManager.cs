@@ -22,7 +22,7 @@ public class ConfigurationManager : MonoBehaviour
 
     private List<AttachmentPoint> _newPoints;
 
-    public static bool IsLoadingRoom { get; private set; }
+    public static bool IsLoading { get; private set; }
 
     /// <summary>
     /// This is the prefab GUID for ALL attachment points. DO NOT CHANGE.
@@ -303,26 +303,40 @@ public class ConfigurationManager : MonoBehaviour
         }
     }
 
-    public async Task<GameObject> LoadConfig(string file)
+    public async Task<GameObject> LoadArmAssembly(string file)
     {
         Debug.Log($"Loading config file at {file}");
+        IsLoading = true;
 
-        if (File.Exists(file))
+        try
         {
-            CreateTracker();
-            string json = File.ReadAllText(file);
-            _tracker = JsonConvert.DeserializeObject<Tracker>(json);
+            if (File.Exists(file))
+            {
+                CreateTracker();
+                string json = File.ReadAllText(file);
+                _tracker = JsonConvert.DeserializeObject<Tracker>(json);
 
-            _newPoints = new List<AttachmentPoint>();
-            _newObjects = new List<TrackedObject>();
+                _newPoints = new List<AttachmentPoint>();
+                _newObjects = new List<TrackedObject>();
 
-            await ProcessTrackedObjects(_tracker.objects);
-            await SetObjectProperties(_newObjects);
-            RandomizeInstanceGUIDs();
-
-            return GetRoot();
+                await ProcessTrackedObjects(_tracker.objects);
+                await Task.Yield();
+                await SetObjectProperties(_newObjects);
+                await Task.Yield();
+                RandomizeInstanceGUIDs();
+                return GetRoot();
+            }
+            else
+            {
+                UI_DialogPrompt.Open("File no longer exists.");
+                Debug.LogError($"File at {file} no longer exists");
+                return null;
+            }
         }
-        else return null;
+        finally 
+        { 
+            IsLoading = false;
+        }
     }
 
     public void LoadRoom(string file)
@@ -352,13 +366,13 @@ public class ConfigurationManager : MonoBehaviour
             _roomConfiguration = JsonConvert
                 .DeserializeObject<RoomConfiguration>(json);
 
-            GenerateRoomConfig();
+            LoadRoom();
         }
     }
 
-    private async void GenerateRoomConfig()
+    private async void LoadRoom()
     {
-        IsLoadingRoom = true;
+        IsLoading = true;
         var token = Loading.GetLoadingToken();
 
         try
@@ -388,7 +402,7 @@ public class ConfigurationManager : MonoBehaviour
         catch { throw; }
         finally 
         { 
-            IsLoadingRoom = false;
+            IsLoading = false;
             token.SetProgress(1f);
         }
     }
@@ -405,7 +419,6 @@ public class ConfigurationManager : MonoBehaviour
                     GetRoomBoundary(to) :
                     GetGameObjectWithGuidName(to);
 
-
                 LogData(go.GetComponent<Selectable>(), to);
                 var existingTrackedObj = go.GetComponent<TrackedObject>();
                 ResetScaleLevels(existingTrackedObj);
@@ -414,7 +427,8 @@ public class ConfigurationManager : MonoBehaviour
             }
 
             // if it is not an AttachPoint, we need to place the Selectable
-            if (to.global_guid != _attachPointGUID && !string.IsNullOrEmpty(to.global_guid))
+            if (to.global_guid != _attachPointGUID && 
+            !string.IsNullOrEmpty(to.global_guid))
             {
                 var task = InstantiateObject(to);
 
@@ -500,8 +514,23 @@ public class ConfigurationManager : MonoBehaviour
     private void ProcessAttachmentPoint(TrackedObject.Data to)
     {
         GameObject myself = GameObject.Find(to.parent);
-        myself.GetComponent<TrackedObject>().StoreValues(to);
-        _newPoints.Add(myself.GetComponent<AttachmentPoint>());
+        //Debug.Log($"Logging attachment point path - {to.parent}");
+
+        if (myself == null)
+        {
+            Debug.LogError($"Could not find game object at {to.parent}");
+            return;
+        }
+
+        if (!myself.TryGetComponent<TrackedObject>(out var trackedObject))
+        {
+            Debug.LogError($"GameObject at {to.parent} did not have TrackedObject component");
+            return;
+        }
+        trackedObject.StoreValues(to);
+        var attPoint = myself.GetComponent<AttachmentPoint>();
+        //Debug.Log($"AP actual path is {GetGameObjectPath(attPoint.gameObject)}");
+        _newPoints.Add(attPoint);
     }
 
     /// <summary>
@@ -542,7 +571,10 @@ public class ConfigurationManager : MonoBehaviour
         }
         else
         {
-            AttachmentPoint ap = _newPoints.Single(s => ConfigurationManager.GetGameObjectPath(s.gameObject) == to.parent);
+            //Debug.Log($"Attachment point parent - to.parent = {to.parent}");
+            AttachmentPoint ap = _newPoints
+                .Single(s => GetGameObjectPath(s.gameObject) == to.parent);
+
             ap.SetAttachedSelectable(go.GetComponent<Selectable>());
             go.transform.SetParent(ap.gameObject.transform);
             go.GetComponent<Selectable>().ParentAttachmentPoint = ap;
@@ -619,7 +651,7 @@ public class ConfigurationManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"No scale level found for {obj.name}, applying default scale of {obj.GetScale()}.");
+            //Debug.Log($"No scale level found for {obj.name}, applying default scale of {obj.GetScale()}.");
             obj.transform.localScale = obj.GetScale();
         }
     }

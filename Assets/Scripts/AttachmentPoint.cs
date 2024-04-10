@@ -1,8 +1,10 @@
 using HighlightPlus;
+using SplenSoft.UnityUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -178,8 +180,15 @@ public partial class AttachmentPoint : MonoBehaviour
         }
     }
 
-    public void SetToProperParent()
+    public async void SetToProperParent()
     {
+        while (ConfigurationManager.IsLoading) 
+        {
+            await Task.Yield();
+            if (!Application.isPlaying)
+                throw new AppQuitInTaskException();
+        }
+
         if (MoveUpOnAttach)
         {
             Transform parent = transform.parent;

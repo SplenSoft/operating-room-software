@@ -76,7 +76,7 @@ public class MatchScale : MonoBehaviour
             yield break;
 
         yield return new WaitUntil(() =>
-            !ConfigurationManager.IsLoadingRoom);
+            !ConfigurationManager.IsLoading);
 
         if (!CanBeReadByGroup)
         {
