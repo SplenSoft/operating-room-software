@@ -735,6 +735,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeshAndCollider
       objectReference: {fileID: 0}
+    - target: {fileID: 1479436106160500468, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099120148203260774, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3344760194966280889, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: <RoomBoundaries>k__BackingField.Array.size
       value: 1
@@ -795,9 +803,17 @@ PrefabInstance:
       propertyPath: <RoomBoundaryType>k__BackingField
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 4917954511819506159, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6365189217406852455, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: m_Name
       value: RoomBoundary_Wall_E
+      objectReference: {fileID: 0}
+    - target: {fileID: 6365189217406852455, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6489340789016149683, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: <GUID>k__BackingField
@@ -866,6 +882,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeshAndCollider
       objectReference: {fileID: 0}
+    - target: {fileID: 1479436106160500468, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099120148203260774, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3344760194966280889, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: <RoomBoundaries>k__BackingField.Array.size
       value: 1
@@ -926,9 +950,17 @@ PrefabInstance:
       propertyPath: <RoomBoundaryType>k__BackingField
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4917954511819506159, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6365189217406852455, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: m_Name
       value: RoomBoundary_Wall_S
+      objectReference: {fileID: 0}
+    - target: {fileID: 6365189217406852455, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6489340789016149683, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: <GUID>k__BackingField
@@ -965,6 +997,14 @@ PrefabInstance:
     - target: {fileID: 1479436106160500468, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: m_Name
       value: MeshAndCollider
+      objectReference: {fileID: 0}
+    - target: {fileID: 1479436106160500468, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099120148203260774, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 3594979577079493143, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: m_RootOrder
@@ -1018,9 +1058,17 @@ PrefabInstance:
       propertyPath: <RoomBoundaryType>k__BackingField
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4917954511819506159, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6365189217406852455, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: m_Name
       value: RoomBoundary_Wall_N
+      objectReference: {fileID: 0}
+    - target: {fileID: 6365189217406852455, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6489340789016149683, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: <GUID>k__BackingField
@@ -2981,7 +3029,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633508577}
-  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4299,19 +4347,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071069
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 1e-45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.70710677
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 1e-45
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -6045,6 +6093,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: MeshAndCollider
       objectReference: {fileID: 0}
+    - target: {fileID: 1479436106160500468, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2099120148203260774, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 3344760194966280889, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: <RoomBoundaries>k__BackingField.Array.size
       value: 1
@@ -6101,9 +6157,17 @@ PrefabInstance:
       propertyPath: <baseboard>k__BackingField
       value: 
       objectReference: {fileID: 1351818855}
+    - target: {fileID: 4917954511819506159, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 6365189217406852455, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: m_Name
       value: RoomBoundary_Wall_W
+      objectReference: {fileID: 0}
+    - target: {fileID: 6365189217406852455, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6489340789016149683, guid: 1b78c14021aea83438cf07a8ec426282, type: 3}
       propertyPath: <GUID>k__BackingField
