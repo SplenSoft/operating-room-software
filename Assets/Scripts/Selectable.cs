@@ -1352,7 +1352,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                         Vector3.right;
 
                     var ray2 = new Ray(Vector3.zero + Vector3.up, direction);
-                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, float.MaxValue, 1 << LayerMask.NameToLayer("Wall")))
+                    if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 
+                    float.MaxValue, 1 << LayerMask.NameToLayer("Wall")))
                     {
                         SetPosition(raycastHit2);
                         break;
@@ -1411,7 +1412,8 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                     Debug.LogWarning("No virtual parent detected.");
                 }
 
-                if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+                if (WallRestrictions[0] == RoomBoundaryType.Ceiling && 
+                OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
                 {
                     RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = false;
                 }
