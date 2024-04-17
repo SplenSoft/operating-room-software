@@ -280,6 +280,18 @@ MonoBehaviour:
   <meshRenderer>k__BackingField: {fileID: 5865377515761541453}
   <MaterialGroup>k__BackingField: 0
   <CanBeReadByGroup>k__BackingField: 0
+--- !u!114 &1945323362140681393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3297033600168392851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5662d52efa20354b832f9a57294778c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3893228204834539773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,7 +312,7 @@ MonoBehaviour:
   <MatchHeightToWalls>k__BackingField: []
   <Cuttables>k__BackingField: []
   <MatchScales>k__BackingField: []
-  <MeshInstanceManager>k__BackingField: {fileID: 0}
+  <MeshInstanceManager>k__BackingField: {fileID: 1945323362140681393}
 --- !u!4 &4892177113673217164 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}

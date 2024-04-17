@@ -392,7 +392,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <RoomBoundaryType>k__BackingField: 5
   <VirtualCamera>k__BackingField: {fileID: 5429523588537412084}
-  <baseboard>k__BackingField: {fileID: 0}
+  <AdditionalObjectsToHide>k__BackingField: []
 --- !u!114 &6489340789016149683
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -205,7 +205,7 @@ public class ObjectMenu : MonoBehaviour
         {
             _instantiatedCategories.ForEach(x => 
             {
-                string text = x.GetComponentInChildren<TextMeshProUGUI>().text;
+                string text = x.GetComponentInChildren<TextMeshProUGUI>(true).text;
                 bool isFile = text == "Save Data";
 
                 if (isFile)
@@ -222,15 +222,18 @@ public class ObjectMenu : MonoBehaviour
 
         var validCats = ObjectMenuItems
             .Where(x => x.SelectableMetaData != null &&
-                x.SelectableMetaData.IsStandalone)
+                x.SelectableData.MetaData.IsStandalone)
             .SelectMany(x => x.SelectableMetaData.Categories)
             .Distinct()
             .ToList();
 
+        Debug.Log("Valid categories:");
+        validCats.ForEach(x => Debug.Log(x));
+
         _instantiatedCategories
             .ForEach(x => 
             {
-                string text = x.GetComponentInChildren<TextMeshProUGUI>().text;
+                string text = x.GetComponentInChildren<TextMeshProUGUI>(true).text;
                 bool textIsMatch = validCats.Contains(text);
                 bool isFile = text == "Save Data";
 

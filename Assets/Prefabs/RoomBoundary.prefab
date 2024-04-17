@@ -103,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <RoomBoundaryType>k__BackingField: 0
   <VirtualCamera>k__BackingField: {fileID: 0}
-  <baseboard>k__BackingField: {fileID: 0}
+  <AdditionalObjectsToHide>k__BackingField: []
 --- !u!64 &4087454470110563666
 MeshCollider:
   m_ObjectHideFlags: 0

@@ -21,7 +21,11 @@ public class RoomBoundary : MonoBehaviour
     private bool VirtualCameraActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
     public MeshRenderer MeshRenderer { get; private set; }
     public Collider Collider { get; private set; }
-    [field: SerializeField] public GameObject baseboard { get; private set; }
+
+    [field: SerializeField]
+    public List<GameObject> AdditionalObjectsToHide 
+    { get; private set; }
+
     private CinemachineTransposer _transposer;
     private static Dictionary<RoomBoundaryType, RoomBoundary> RoomBoundariesByType { get; set; } = new();
 
@@ -172,7 +176,7 @@ public class RoomBoundary : MonoBehaviour
         c.a = toggle ? 1 : 0;
         MeshRenderer.material.color = c;
 
-        ToggleBaseboardRenderer(toggle);
+        HandleAdditionalObjectVisibility(toggle);
     }
 
     private void OnMouseUpAsButton()
@@ -192,20 +196,21 @@ public class RoomBoundary : MonoBehaviour
             VisibilityStatusChanged?.Invoke();
         }
 
-        ToggleBaseboardRenderer(toggle);
+        HandleAdditionalObjectVisibility(toggle);
     }
 
-    private void ToggleBaseboardRenderer(bool toggle)
+    private void HandleAdditionalObjectVisibility(bool toggle)
     {
-        if (baseboard == null) return;
-
-        MeshRenderer[] baseRender = baseboard.GetComponentsInChildren<MeshRenderer>();
-        foreach (MeshRenderer mesh in baseRender)
+        AdditionalObjectsToHide.ForEach(x =>
         {
-            if (MeshRenderer.enabled != toggle) continue;
+            x.GetComponentsInChildren<MeshRenderer>()
+                .ToList()
+                .ForEach(y => y.enabled = toggle);
 
-            mesh.enabled = toggle;
-        }
+            x.GetComponentsInChildren<Collider>()
+                .ToList()
+                .ForEach(y => y.enabled = toggle);
+        });
     }
 
     public static RoomBoundary GetRoomBoundary(RoomBoundaryType roomBoundaryType)
