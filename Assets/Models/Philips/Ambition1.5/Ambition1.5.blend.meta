@@ -58,7 +58,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Screen
-    second: {fileID: -4434614731355606910, guid: 17b46e39ed1cb1b48bffff50173bbc7e, type: 3}
+    second: {fileID: 2100000, guid: 01698fc72fe894f44916933caeec23bb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
