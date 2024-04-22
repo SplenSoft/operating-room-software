@@ -24,8 +24,9 @@ public class EnforceZScale : MonoBehaviour
         _selectable = GetComponent<Selectable>();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
+        yield return new WaitUntil(() => !ConfigurationManager.IsLoading);
         List<Selectable> upperSelectables = new List<Selectable>();
 
         if (!_selectable.TryGetArmAssemblyRoot(out GameObject rootObj))

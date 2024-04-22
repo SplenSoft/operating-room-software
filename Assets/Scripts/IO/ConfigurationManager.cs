@@ -8,6 +8,7 @@ using System;
 using SplenSoft.UnityUtilities;
 using UnityEngine.Events;
 using RTG;
+using SplenSoft.AssetBundles;
 
 public class ConfigurationManager : MonoBehaviour
 {
@@ -318,7 +319,8 @@ public class ConfigurationManager : MonoBehaviour
 
                 _newPoints = new List<AttachmentPoint>();
                 _newObjects = new List<TrackedObject>();
-
+                await LoadAllObjectsIntoCache(_tracker.objects);
+                await Task.Yield();
                 await ProcessTrackedObjects(_tracker.objects);
                 await Task.Yield();
                 await SetObjectProperties(_newObjects);
@@ -387,7 +389,8 @@ public class ConfigurationManager : MonoBehaviour
             {
                 _newPoints = new List<AttachmentPoint>();
                 _newObjects = new List<TrackedObject>();
-
+                await LoadAllObjectsIntoCache(t.objects);
+                await Task.Yield();
                 await ProcessTrackedObjects(t.objects);
                 await Task.Yield();
                 await SetObjectProperties(_newObjects);
@@ -468,6 +471,36 @@ public class ConfigurationManager : MonoBehaviour
                     go = ProcessEmbeddedSelectable(to);
                     _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Loads all objects into cache so they are easily handled by the loading process
+    /// </summary>
+    private async Task LoadAllObjectsIntoCache(List<TrackedObject.Data> trackedObjects)
+    {
+        foreach (TrackedObject.Data to in trackedObjects)
+        {
+            if (IsRoomBoundary(to) || IsBaseboard(to) || 
+            IsWallProtector(to))
+            {
+                continue;
+            }
+
+            // if it is not an AttachPoint, we need to place the Selectable
+            if (to.global_guid != _attachPointGUID &&
+            !string.IsNullOrEmpty(to.global_guid))
+            {
+                if (!SelectableAssetBundles.TryGetSelectableData
+                (to.global_guid, out SelectableData data))
+                {
+                    Debug.LogError($"Could not find selectable data for {to.objectName} with guid {to.global_guid}");
+                    return;
+                }
+
+                await AssetBundleManager.GetAsset
+                    <GameObject>(data.AssetBundleName);
             }
         }
     }
@@ -638,16 +671,19 @@ public class ConfigurationManager : MonoBehaviour
     /// <param name="obj">The JSON structure of the object</param>
     private void ResetScaleLevels(TrackedObject obj)
     {
-        if (obj.GetScaleLevel() != null)
+        var storedScaleLevel = obj.GetScaleLevel();
+        if (storedScaleLevel != null)
         {
-            obj.GetComponent<Selectable>().ScaleLevels.ForEach((item) => item.Selected = false);
-            obj.GetScaleLevel().Selected = true;
-
+            var selectable = obj.GetComponent<Selectable>();
+            //selectable.ScaleLevels.ForEach((item) => item.Selected = false);
+            //storedScaleLevel.Selected = true;
+            
             obj.transform.localScale = new Vector3(
                 obj.GetScale().x,
                 obj.GetScale().y,
                 obj.transform.localScale.z
             );
+            selectable.SetScaleLevel(storedScaleLevel, true);
         }
         else
         {
