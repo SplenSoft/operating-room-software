@@ -44,6 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b67f5fe895c61e74eb3dc37f1257544a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <OnRetrievalStarted>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
   <OnProgressUpdated>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
