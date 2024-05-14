@@ -202,4 +202,4 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}
   m_PrefabInstance: {fileID: 4424503219764829792}
-  m_PrefabAsset: {fileID: 102900000, guid: d0fe194b3c9a2a84399c6dfb63d0d54e}
+  m_PrefabAsset: {fileID: 0}
