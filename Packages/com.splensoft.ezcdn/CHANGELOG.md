@@ -1,6 +1,30 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [1.3.2] - 2024-05-06
+
+### Added
+- PrefabAutoUnloader and SceneAutoUnloader. These will automatically handle tracking and unloading asset bundles/master assets when an asset is no longer being used in the app. NOTE: This feature has not been extensively tested and is still in beta. There is no official documentation at this time, but if you want to test, please feel free! Do not ship any project to live with these features without understanding the risk. I will properly document them when they are tested properly and stable, and I will announce this in the changelog
+
+- OnRetrievalStarted event in Prefab/Scene Requester. Useful for starting up progress bars (Thanks Sky!)
+
+- Removed HTML documentation
+
+### Fixes
+
+- Fix null reference exception when an AssetImporter is null (not natively supported Unity asset) (Thanks Fayçal!)
+
+## [1.3.1] - 2024-04-01
+
+### Fixes
+
+- Fix race condition when multiple dependency operations attempt to load the same asset bundle
+
+## [1.3.0] - 2024-03-26
+
+### Added
+- Abstract class AssetBundleProcessor added. Can create inheriting classes that implement OnPreprocessAssetBundles for more editor scripting control 
+
 ## [1.2.0] - 2024-03-07
 
 ### Added

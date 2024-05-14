@@ -11,6 +11,13 @@ namespace SplenSoft.AssetBundles
     /// </summary>
     public class AssetBundleData
     {
+        public AssetBundleData(string assetBundleName)
+        {
+            AssetBundleName = assetBundleName;
+        }
+
+        public string AssetBundleName { get; }
+
         /// <summary>
         /// List of asset bundle names that this asset 
         /// bundle depends on. These should be loaded 
@@ -42,14 +49,17 @@ namespace SplenSoft.AssetBundles
         /// Check this value to ensure the <see cref="Asset"/> is not null
         /// </summary>
         public bool Loaded { get; set; }
+
         /// <summary>
         /// True if at least one attempt has been made to retrieve this asset
         /// </summary>
         public bool DownloadStarted { get; set; }
+
         /// <summary>
         /// Used for caching
         /// </summary>
         public Hash128 Hash { get; set; }
+
         /// <summary>
         /// The last response code from a 
         /// download attempt. Returns 0 if no 
@@ -68,8 +78,12 @@ namespace SplenSoft.AssetBundles
         /// <summary>
         /// Removes the <see cref="AssetBundle"/> and 
         /// <see cref="Asset"/> from 
-        /// this cache so it can be garbage collected. 
-        /// Unloads the asset bundle from memory
+        /// this cache so it can be garbage collected. Destroys Asset.
+        /// Unloads the asset bundle from memory. 
+        /// <para />
+        /// If you're looking to save memory without 
+        /// unloading the <see cref="Asset"/>, try 
+        /// <see cref="AssetBundle.Unload"/> instead.
         /// </summary>
         /// <param name="unloadAllLoadedObjects">If true, 
         /// all objects loaded from this 
@@ -78,12 +92,23 @@ namespace SplenSoft.AssetBundles
         /// asset bundle's assets are in the scene</param>
         public void Flush(bool unloadAllLoadedObjects = false)
         {
-            Asset = null;
-            if (AssetBundle != null) 
+            Log.Write(LogLevel.Verbose, 
+                $"EZ-CDN: Flushing asset {AssetBundleName}");
+
+            if (Asset != null) 
             {
-                AssetBundle.Unload(unloadAllLoadedObjects);
+                Object.Destroy(Asset);
+                Asset = null;
             }
             
+            if (AssetBundle != null)
+            {
+                Log.Write(LogLevel.Verbose, 
+                    $"EZ-CDN: Unloading AssetBundle {AssetBundleName} (unloadAllLoadedObjects = {unloadAllLoadedObjects})");
+
+                AssetBundle.Unload(unloadAllLoadedObjects);
+            }
+
             Loaded = false;
         }
     }

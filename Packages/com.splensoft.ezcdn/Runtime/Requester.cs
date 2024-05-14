@@ -16,12 +16,21 @@ namespace SplenSoft.AssetBundles
         public T Asset { get; private set; }
 
         /// <summary>
+        /// Fires when retrieval starts. Useful for starting 
+        /// up a loading bar.
+        /// </summary>
+        [field: SerializeField]
+        public UnityEvent OnRetrievalStarted 
+        { get; private set; } = new UnityEvent();
+
+        /// <summary>
         /// Fires when download / load progress changes. 
         /// Includes a float between 0 and 1 representing
         /// progress
         /// </summary>
         [field: SerializeField]
-        public UnityEvent<float> OnProgressUpdated { get; private set; } = new();
+        public UnityEvent<float> OnProgressUpdated 
+        { get; private set; } = new UnityEvent<float>();
 
         /// <summary>
         /// Fires when an asset retrieval attempt did not work. 
@@ -30,13 +39,15 @@ namespace SplenSoft.AssetBundles
         /// http status code </see>
         /// </summary>
         [field: SerializeField]
-        public UnityEvent<long> OnRetrievalFailed { get; private set; } = new();
+        public UnityEvent<long> OnRetrievalFailed 
+        { get; private set; } = new UnityEvent<long>();
 
         /// <summary>
         /// Fires when an asset retrieval attempt succeeded
         /// </summary>
         [field: SerializeField]
-        public UnityEvent OnRetrievalSuccess { get; private set; } = new();
+        public UnityEvent OnRetrievalSuccess 
+        { get; private set; } = new UnityEvent();
 
         /// <summary>
         /// Gets status of last download attempt for an asset. 
@@ -100,6 +111,8 @@ namespace SplenSoft.AssetBundles
 
             progress.ProgressChanged += ProgressChanged;
 
+            OnRetrievalStarted?.Invoke();
+
             var task = AssetBundleManager.GetAssetBundle(AssetBundleName, progress);
 
             while (!task.IsCompleted)
@@ -144,6 +157,8 @@ namespace SplenSoft.AssetBundles
             }
 
             progress.ProgressChanged += ProgressChanged;
+
+            OnRetrievalStarted?.Invoke();
 
             var task = AssetBundleManager.GetAsset<T>(
                 AssetBundleName,

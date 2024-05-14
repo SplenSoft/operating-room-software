@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace SplenSoft.AssetBundles
 {
+    [AddComponentMenu("EZ-CDN/Prefab Requester")]
     public class PrefabRequester : Requester<GameObject>
     {
         [field: SerializeField, 
