@@ -15,6 +15,7 @@ namespace SplenSoft.AssetBundles
     /// request a scene asset from the CDN. Accepts any 
     /// <see cref="UnityEditor.SceneAsset"/> as an asset.
     /// </summary>
+    [AddComponentMenu("EZ-CDN/Scene Requester")]
     public class SceneRequester : Requester<UnityEngine.Object>
     {
         [field: SerializeField

@@ -533,6 +533,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 356605546129720916}
     - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 3
       objectReference: {fileID: 0}

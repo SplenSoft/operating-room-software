@@ -48,7 +48,7 @@ PROJECT_NAME           = "Easy Content Delivery Network"
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = 1.2.0
+PROJECT_NUMBER         = 1.3.2
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -61,20 +61,20 @@ PROJECT_BRIEF          = "An addressables-free suite that automatically handles 
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = F:/SplenSoft/UnityAssetStoreBanner_EZCDN_icon.png
+PROJECT_LOGO           = D:/SplenSoft/UnityAssetStoreBanner_EZCDN_icon.png
 
 # With the PROJECT_ICON tag one can specify an icon that is included in the tabs
 # when the HTML document is shown. Doxygen will copy the logo to the output
 # directory.
 
-PROJECT_ICON           = F:/SplenSoft/UnityAssetStoreBanner_EZCDN_icon.png
+PROJECT_ICON           = D:/SplenSoft/UnityAssetStoreBanner_EZCDN_icon.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = "C:/Development Projects/for-the-birds/Packages/com.splensoft.ezcdn/Documentation~"
+OUTPUT_DIRECTORY       = C:/Dev/for-the-birds/Packages/com.splensoft.ezcdn/Documentation~
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create up to 4096
 # sub-directories (in 2 levels) under the output directory of each output format
@@ -949,7 +949,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = "C:/Development Projects/for-the-birds/Packages/com.splensoft.ezcdn/Runtime" \
+INPUT                  = C:/Dev/for-the-birds/Packages/com.splensoft.ezcdn/Runtime \
                          ../README.md
 
 # This tag can be used to specify the character encoding of the source files

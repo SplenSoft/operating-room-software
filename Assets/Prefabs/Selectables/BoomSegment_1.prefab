@@ -123,6 +123,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7863460070493357287}
     - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -142,6 +146,294 @@ PrefabInstance:
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[3]
       value: 
       objectReference: {fileID: 1401955292755039548}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[4].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[5].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[6].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[7].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[8].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[9].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[10].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[11].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[12].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[13].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[14].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[15].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[16].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[17].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[18].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[19].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[20].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[21].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[22].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[23].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[24].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[25].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[26].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[27].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[28].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[29].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[30].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[31].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[32].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[33].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[34].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[35].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[36].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[37].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[38].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[39].<Axis>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[4].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[5].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[6].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[7].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[8].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[9].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[10].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[11].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[12].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[13].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[14].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[15].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[16].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[17].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[18].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[19].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[20].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[21].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[22].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[23].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[24].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[25].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[26].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[27].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[28].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[29].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[30].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[31].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[32].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[33].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[34].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[35].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[36].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[37].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[38].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[39].<GizmoType>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4297370789474308351, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.10999999
@@ -281,6 +573,10 @@ PrefabInstance:
       propertyPath: <AttachedTo>k__BackingField
       value: 
       objectReference: {fileID: 7863460070493357287}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 4

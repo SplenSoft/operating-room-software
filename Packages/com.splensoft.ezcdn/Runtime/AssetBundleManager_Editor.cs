@@ -101,12 +101,13 @@ namespace SplenSoft.AssetBundles
             GUIUtility.systemCopyBuffer = bundleName;
         }
 
-        [MenuItem("Tools/Easy CDN/Debug/Print AssetBundle Data")]
+        [MenuItem("Tools/Easy CDN/Debug/Print AssetBundle Data"), 
+        Tooltip("Prints all AssetBundle names and the paths associated with them in the console.")]
         private static void PrintAssetBundleData()
         {
             Array.ForEach(AssetDatabase.GetAllAssetBundleNames(), name =>
             {
-                Array.ForEach(AssetDatabase.GetAssetPathsFromAssetBundle(name), path => 
+                Array.ForEach(AssetDatabase.GetAssetPathsFromAssetBundle(name), path =>
                 {
                     Debug.Log($"AssetBundle: {name}, Asset: {path}");
                 });
@@ -264,6 +265,12 @@ namespace SplenSoft.AssetBundles
             string prefix = null;
             assetBundleName = null;
             if (obj == null) return false;
+
+            if (importer == null)
+            {
+                Log.Write(LogLevel.Warning, $"Importer was null for asset {obj.name}.");
+                return false;
+            }
 
             if (string.IsNullOrWhiteSpace(guid))
             {

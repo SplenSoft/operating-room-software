@@ -39,20 +39,25 @@ namespace SplenSoft.AssetBundles
         /// <summary>
         /// Fires when <see cref="GetAsset"/> is called 
         /// </summary>
-        public static UnityEvent<string> AssetRetrievalStarted 
+        public static UnityEvent<string> AssetRetrievalStarted
         { get; } = new UnityEvent<string>();
 
         /// <summary>
         /// Fires when <see cref="GetAsset"/> is finished 
-        /// and asset is fully loaded, ready to instantiate
+        /// and asset is fully loaded, ready to instantiate. 
+        /// Note: Only fires if the asset is not already loaded. 
+        /// Subsequent <see cref="GetAsset"> calls will not 
+        /// trigger this event unless 
+        /// <see cref="AssetBundleData.Flush(bool)"/> is called 
+        /// on the data
         /// </summary>
-        public static UnityEvent<string> AssetLoaded 
+        public static UnityEvent<string> AssetLoaded
         { get; } = new UnityEvent<string>();
 
         /// <summary>
         /// Fires when <see cref="GetAssetBundle"/> is called
         /// </summary>
-        public static UnityEvent<string> AssetBundleDownloadStarted 
+        public static UnityEvent<string> AssetBundleDownloadStarted
         { get; } = new UnityEvent<string>();
 
         /// <summary>
@@ -62,21 +67,21 @@ namespace SplenSoft.AssetBundles
         /// Subscribe to <see cref="AssetLoaded"/> 
         /// to know when the asset has been loaded
         /// </summary>
-        public static UnityEvent<string> AssetBundleDownloadFinished 
+        public static UnityEvent<string> AssetBundleDownloadFinished
         { get; } = new UnityEvent<string>();
 
         /// <summary>
         /// Fires when <see cref="LoadSceneAssetBundle"/> 
         /// is called
         /// </summary>
-        public static UnityEvent<string> SceneAssetRetrievalStarted 
+        public static UnityEvent<string> SceneAssetRetrievalStarted
         { get; } = new UnityEvent<string>();
 
         /// <summary>
         /// Fires when <see cref="LoadSceneAssetBundle"/> 
         /// is finished and scene is fully loaded
         /// </summary>
-        public static UnityEvent<string> SceneAssetLoaded 
+        public static UnityEvent<string> SceneAssetLoaded
         { get; } = new UnityEvent<string>();
 
         private const string _quitWhileRetrievingMessage = "Application quit while retrieving asset";
@@ -84,10 +89,10 @@ namespace SplenSoft.AssetBundles
         public static bool Initialized { get; private set; }
         public static bool IsInitializing { get; private set; }
 
-        private static Dictionary<string, AssetBundleData> 
+        private static Dictionary<string, AssetBundleData>
             _assetBundleData = new Dictionary<string, AssetBundleData>();
 
-        private static Dictionary<string, AssetRetrievalResult> 
+        private static Dictionary<string, AssetRetrievalResult>
             _downloadResponseCodePerAssetBundleName = new Dictionary<string, AssetRetrievalResult>();
 
         private static float _selfInitializerTimeout = 5f;
@@ -222,7 +227,7 @@ namespace SplenSoft.AssetBundles
         /// <param name="timeInSeconds">Should be a value >= 1</param>
         public static void SetSelfInitializerTimeout(float timeInSeconds)
         {
-            if (timeInSeconds < 1) 
+            if (timeInSeconds < 1)
             {
                 timeInSeconds = 1;
                 Log.Write(LogLevel.Warning, "Do not try to set " +
@@ -269,7 +274,7 @@ namespace SplenSoft.AssetBundles
                 IsInitializing = false;
                 return;
             }
-            
+
             if (!settings.BuildTargetsByPlatform.TryGetValue(Application.platform, out int buildtarget))
             {
                 Debug.LogError($"Platform {Application.platform} was " +
@@ -290,7 +295,7 @@ namespace SplenSoft.AssetBundles
 
             foreach (string assetBundleName in assetBundleNames)
             {
-                var assetBundleData = new AssetBundleData()
+                var assetBundleData = new AssetBundleData(assetBundleName)
                 {
                     Dependencies = masterManifest
                                    .GetDirectDependencies(assetBundleName)
@@ -355,16 +360,16 @@ namespace SplenSoft.AssetBundles
                 AssetBundleManagerSettings.Get().UseEditorAssetsIfAble)
             {
                 return AssetDatabase.GetAllAssetBundleNames()
-                                    .Where(x => Regex.IsMatch(x, regexPattern))
-                                    .ToArray();
+                    .Where(x => Regex.IsMatch(x, regexPattern))
+                    .ToArray();
             }
 #endif
             while (!Initialized) await Task.Yield();
             if (!Application.isPlaying) return null;
 
             return _assetBundleData.Keys
-                                   .Where(x => Regex.IsMatch(x, regexPattern))
-                                   .ToArray();
+                .Where(x => Regex.IsMatch(x, regexPattern))
+                .ToArray();
         }
 
         /// <summary>
@@ -402,11 +407,11 @@ namespace SplenSoft.AssetBundles
         /// <param name="onFailure">Action which is invoked on failed retrieval</param>
         /// <returns>A <see cref="Task"/> object with a result of type T</returns>
         public static async Task<T> GetAsset<T>(
-            string name, 
-            IProgress<AssetRetrievalProgress> progress = null, 
-            Action<T> onSuccess = null, 
-            Action<AssetRetrievalResult> onFailure = null, 
-            bool waitForInitialize = true) 
+            string name,
+            IProgress<AssetRetrievalProgress> progress = null,
+            Action<T> onSuccess = null,
+            Action<AssetRetrievalResult> onFailure = null,
+            bool waitForInitialize = true)
             where T : UnityEngine.Object
         {
             if (waitForInitialize)
@@ -483,26 +488,26 @@ namespace SplenSoft.AssetBundles
                 _downloadResponseCodePerAssetBundleName[name] = res;
                 return null;
             }
-            
-            if (data != null) 
-            { 
-                while (data.IsLoading) 
+
+            if (data != null)
+            {
+                while (data.IsLoading)
                 {
                     await Task.Yield();
-                    if (!Application.isPlaying) 
+                    if (!Application.isPlaying)
                         return null;
                 }
 
-                if (data.Loaded && data.Asset != null) 
+                if (data.Loaded && data.Asset != null)
                 {
                     Log.Write(
-                        LogLevel.Verbose, 
+                        LogLevel.Verbose,
                         $"Cancelling load of asset {name} because it is already loaded. Returning loaded asset instead.");
 
                     progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Done, 1));
                     Log.Write(LogLevel.Log, $"Loaded asset {data.Asset.name}");
                     onSuccess?.Invoke((T)data.Asset);
-                    AssetLoaded?.Invoke(name);
+                    //AssetLoaded?.Invoke(name);
                     return (T)data.Asset;
                 }
 
@@ -516,7 +521,7 @@ namespace SplenSoft.AssetBundles
                 progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Loading, 0.4f + loadAsset.progress * 0.5f));
 
                 await Task.Yield();
-                if (!Application.isPlaying) 
+                if (!Application.isPlaying)
                     return null;
             }
 
@@ -525,7 +530,7 @@ namespace SplenSoft.AssetBundles
                 data.Loaded = true;
                 data.Asset = loadAsset.asset;
                 data.IsLoading = false;
-                
+
                 if (data.Asset != null)
                 {
                     Log.Write(LogLevel.Log, $"Loaded asset {data.Asset.name}");
@@ -551,10 +556,10 @@ namespace SplenSoft.AssetBundles
         /// <param name="onFailure">Action which is invoked on failed retrieval</param>
         /// <returns>A <see cref="Task"/> object with an <see cref="AssetBundle"/> result</returns>
         public static async Task<AssetBundle> GetAssetBundle(
-            string name, 
-            IProgress<AssetRetrievalProgress> progress = null, 
-            Action<AssetBundle> onSuccess = null, 
-            Action<AssetRetrievalResult> onFailure = null,  
+            string name,
+            IProgress<AssetRetrievalProgress> progress = null,
+            Action<AssetBundle> onSuccess = null,
+            Action<AssetRetrievalResult> onFailure = null,
             bool waitForInitialize = true
         )
         {
@@ -587,13 +592,13 @@ namespace SplenSoft.AssetBundles
             void Progress2_ProgressChanged(object sender, AssetRetrievalProgress e)
             {
                 progress?.Report(new AssetRetrievalProgress(
-                    AssetRetrievalStatus.Downloading, 
+                    AssetRetrievalStatus.Downloading,
                     e.Progress * 0.4f
                 ));
             }
 
             progress2.ProgressChanged += Progress2_ProgressChanged;
-            await GetDependencies(name, progress2);
+            await DownloadAndCacheDependencies(name, progress2);
 
             bool useHash = data != null && data.Hash != default;
             var settings = AssetBundleManagerSettings.Get();
@@ -615,8 +620,8 @@ namespace SplenSoft.AssetBundles
                     throw new Exception(_quitWhileRetrievingMessage);
             }
 
-            using UnityWebRequest request = useHash ? 
-                UnityWebRequestAssetBundle.GetAssetBundle(uri, data.Hash) : 
+            using UnityWebRequest request = useHash ?
+                UnityWebRequestAssetBundle.GetAssetBundle(uri, data.Hash) :
                 UnityWebRequestAssetBundle.GetAssetBundle(uri);
 
             _currentDownloads++;
@@ -663,11 +668,11 @@ namespace SplenSoft.AssetBundles
             }
 
             progress?.Report(new AssetRetrievalProgress(
-                AssetRetrievalStatus.Done, 
+                AssetRetrievalStatus.Done,
                 1
             ));
 
-            if (data != null) 
+            if (data != null)
             {
                 data.LastResponseCode = request.responseCode;
             }
@@ -679,7 +684,7 @@ namespace SplenSoft.AssetBundles
                 if (data != null && data.AssetBundle != null)
                 {
                     Log.Write(
-                        LogLevel.Verbose, 
+                        LogLevel.Verbose,
                         $"AssetBundle {name} was already downloaded and cached. Returning that asset bundle instead.");
 
                     onSuccess?.Invoke(data.AssetBundle);
@@ -710,7 +715,7 @@ namespace SplenSoft.AssetBundles
 
             var settings = AssetBundleManagerSettings.Get();
 
-            if (!settings.KeepLocalCopy) 
+            if (!settings.KeepLocalCopy)
                 return new StreamingAssetBundleRequestResult(false, null);
 
             if (string.IsNullOrWhiteSpace(name))
@@ -720,23 +725,23 @@ namespace SplenSoft.AssetBundles
             }
 
             var assetPath = Path.Combine(
-                Application.streamingAssetsPath, 
+                Application.streamingAssetsPath,
                 "AssetBundles",
                 name
             );
 
-            if (Application.platform == RuntimePlatform.WebGLPlayer || 
-                Application.platform == RuntimePlatform.Android) 
+            if (Application.platform == RuntimePlatform.WebGLPlayer ||
+                Application.platform == RuntimePlatform.Android)
             {
                 using var request = UnityWebRequestAssetBundle.GetAssetBundle(assetPath);
 
-                while (!request.isDone) 
+                while (!request.isDone)
                 {
                     await Task.Yield();
                     if (!Application.isPlaying) return null;
                 }
 
-                if (request.result == UnityWebRequest.Result.Success) 
+                if (request.result == UnityWebRequest.Result.Success)
                 {
                     AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);
                     return new StreamingAssetBundleRequestResult(true, bundle);
@@ -749,7 +754,7 @@ namespace SplenSoft.AssetBundles
             }
             else
             {
-                if (!File.Exists(assetPath)) 
+                if (!File.Exists(assetPath))
                 {
                     Debug.LogError($"Could not retrieve asset {name} from StreamingAssets - file does not exist");
                     return new StreamingAssetBundleRequestResult(false, null);
@@ -775,10 +780,10 @@ namespace SplenSoft.AssetBundles
         /// <param name="onFailure">Action which is invoked on failed retrieval</param>
         /// <returns>A <see cref="Task"/> object</returns>
         public static async Task LoadSceneAsssetBundle(
-            string name, 
-            IProgress<AssetRetrievalProgress> progress = null, 
+            string name,
+            IProgress<AssetRetrievalProgress> progress = null,
             Action onSuccess = null,
-            Action<AssetRetrievalResult> onFailure = null, 
+            Action<AssetRetrievalResult> onFailure = null,
             bool waitForInitialize = true
         )
         {
@@ -793,7 +798,7 @@ namespace SplenSoft.AssetBundles
             if (_assetBundleData.TryGetValue(name, out AssetBundleData data))
             {
                 data.DownloadStarted = true;
-            }      
+            }
 
 #if UNITY_EDITOR
             if (AssetBundleManagerSettings.Get().UseEditorAssetsIfAble)
@@ -852,7 +857,7 @@ namespace SplenSoft.AssetBundles
                 throw new Exception($"No scenes in asset bundle");
             }
 
-            try 
+            try
             {
                 AsyncOperation operation = SceneManager.LoadSceneAsync(paths[0]);
 
@@ -887,12 +892,11 @@ namespace SplenSoft.AssetBundles
         /// <param name="assetBundleName">The name of the AssetBundle</param>
         /// <param name="progress">Trackable progress reporter</param>
         /// <returns>A <see cref="Task"/> object</returns>
-        public static async Task GetDependencies(string assetBundleName, IProgress<AssetRetrievalProgress> progress = null)
+        public static async Task DownloadAndCacheDependencies(string assetBundleName, IProgress<AssetRetrievalProgress> progress = null)
         {
             var tasks = new List<Task<AssetBundleManifest>>();
             if (_assetBundleData.TryGetValue(assetBundleName, out AssetBundleData data) && data.Dependencies.Count > 0)
             {
-                //foreach (var dependency in data.Dependencies)
                 for (int i = 0; i < data.Dependencies.Count; i++)
                 {
                     var dependency = data.Dependencies[i];
@@ -900,7 +904,7 @@ namespace SplenSoft.AssetBundles
                     {
                         dependencyData.DownloadStarted = true;
                         var progress2 = new Progress<AssetRetrievalProgress>();
-                        void progressChanged(object s, AssetRetrievalProgress e) 
+                        void progressChanged(object s, AssetRetrievalProgress e)
                         {
                             float prog = (i + e.Progress) / data.Dependencies.Count;
                             progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Downloading, prog));
@@ -918,6 +922,91 @@ namespace SplenSoft.AssetBundles
                 if (!Application.isPlaying) return;
             }
             progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Done, 1));
+        }
+
+        /// <summary>
+        /// Returns all of an asset's dependencies. 
+        /// Does not check <see cref="Initialized"/>.
+        /// </summary>
+        /// <param name="assetBundleName"></param>
+        /// <returns>A list of AssetBundle names as strings</returns>
+        public static async Task<List<string>> GetDependencies(string assetBundleName)
+        {
+            while (!Initialized) 
+                await Task.Yield();
+
+            if (!Application.isPlaying)
+                throw new Exception("App quit during task");
+
+            var result = new List<string>();
+
+            if (_assetBundleData.TryGetValue(assetBundleName, 
+            out AssetBundleData data) && data.Dependencies.Count > 0)
+            {
+                for (int i = 0; i < data.Dependencies.Count; i++)
+                {
+                    var dependency = data.Dependencies[i];
+                    result.Add(dependency);
+
+                    var task2 = GetDependencies(dependency);
+                    await task2;
+
+                    result.Concat(task2.Result);
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets all <see cref="ScriptableObject"/> assets of a 
+        /// certain type from the CDN.
+        /// </summary>
+        /// <typeparam name="T">A class deriving from <see cref="ScriptableObject"/></typeparam>
+        /// <returns>A list of ScriptableObjects of the specified type</returns>
+        public static async Task<List<T>> GetAllAssetsOfType<T>(IProgress<AssetRetrievalProgress> progress = null) where T : ScriptableObject 
+        {
+            // get the scriptable objects
+            var task = GetAssetBundleNames(typeof(T));
+
+            await task;
+            if (!Application.isPlaying)
+                throw new Exception("App quit during task");
+
+            if (task.Result.Length == 0) 
+            {
+                progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Done, 1));
+                return new List<T>();
+            }
+                
+            var tasks = new List<Task<T>>();
+
+            for (int i = 0; i < task.Result.Length; i++)
+            {
+                string assetBundleName = task.Result[i];
+
+                var assetProgress = new Progress<AssetRetrievalProgress>();
+                void progressChanged(object s, AssetRetrievalProgress e)
+                {
+                    float prog = (i + e.Progress) / task.Result.Length;
+                    progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Downloading, prog));
+                }
+                assetProgress.ProgressChanged += progressChanged;
+                var assetTask = GetAsset<T>(assetBundleName, assetProgress);
+
+                tasks.Add(assetTask);
+            }
+
+            while (tasks.Any(x => !x.IsCompleted))
+            {
+                await Task.Yield();
+
+                if (!Application.isPlaying)
+                    throw new Exception("App quit during task");
+            }
+
+            progress?.Report(new AssetRetrievalProgress(AssetRetrievalStatus.Done, 1));
+            return tasks.Select(x => x.Result).ToList();
         }
     }
 }

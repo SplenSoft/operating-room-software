@@ -138,6 +138,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9187692818169781982}
     - target: {fileID: 4014627101839371476, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -1377,6 +1381,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9187692818169781982}
     - target: {fileID: 4014627101839371476, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4014627101839371476, guid: 56ebd06235e253d47955aa0adeca06f9, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -1538,6 +1546,10 @@ PrefabInstance:
       propertyPath: <AttachedTo>k__BackingField
       value: 
       objectReference: {fileID: 9187692818169781982}
+    - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4014627101839371476, guid: 4ff4a3a21c91871479ff85ba2ac3ba57, type: 3}
       propertyPath: <RelatedSelectables>k__BackingField.Array.size
       value: 6
