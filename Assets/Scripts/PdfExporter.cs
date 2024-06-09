@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SimpleJSON;
-using static UnityEngine.Rendering.DebugUI;
+using System.IO;
 
 public class PdfExporter : MonoBehaviour
 {
@@ -222,17 +222,50 @@ public class PdfExporter : MonoBehaviour
 
         string id = Guid.NewGuid().ToString();
 
-        Dictionary<string, string> formFields = new()
+        //Dictionary<string, string> formFields = new()
+        //{
+        //    { "data", node.ToString() },
+        //    { "app_password", "qweasdv413240897fvhw" },
+        //    { "id", id }
+        //};
+
+        Debug.Log(node.ToString());
+        byte[] dataString = System.Text.Encoding.UTF8.GetBytes(node.ToString());
+
+        //UnityWebRequest request = UnityWebRequest.Post(
+        //    "https://m6lkctsk83.execute-api.us-east-2.amazonaws.com/production/ors_pdf",
+        //    base64);
+
+        using UnityWebRequest request = new("https://m6lkctsk83.execute-api.us-east-2.amazonaws.com/production/ors_pdf")
         {
-            { "data", node.ToString() },
-            { "app_password", "qweasdv413240897fvhw" },
-            { "id", id }
+            method = "POST",
+            uploadHandler = new UploadHandlerRaw(dataString),
+            downloadHandler = new DownloadHandlerBuffer()
         };
 
-        using UnityWebRequest request = UnityWebRequest.Post("http://www.splensoft.com/ors/php/export-pdf-elevation.php", formFields);
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        var token = Loading.GetLoadingToken();
+
         request.SendWebRequest();
 
-        while (!request.isDone)
+        while (request.uploadHandler.progress < 1)
+        {
+            token.SetProgress(request.uploadHandler.progress * 0.5f);
+
+            await Task.Yield();
+            if (!Application.isPlaying) return;
+        }
+
+        while (request.downloadProgress < 1)
+        {
+            token.SetProgress(Mathf.Min(request.downloadProgress * 0.5f + 0.5f, 0.99f));
+
+            await Task.Yield();
+            if (!Application.isPlaying) return;
+        }
+
+        while (!request.isDone) 
         {
             await Task.Yield();
             if (!Application.isPlaying) return;
@@ -257,15 +290,45 @@ public class PdfExporter : MonoBehaviour
             return;
         }
 
-        if (request.downloadHandler.text == "success")
+        var path = Path.Combine(Application.persistentDataPath, "pdf");
+
+        if (!Directory.Exists(path))
         {
-            Application.OpenURL("http://www.splensoft.com/ors/pdf.html?id=" + id);
+            Directory.CreateDirectory(path);
         }
-        else
+        string cleaned = request.downloadHandler.text
+            .Replace("data:application/pdf;filename=generated.pdf;base64,", "");
+
+        byte[] data = Convert.FromBase64String(cleaned);
+
+        FileStream stream = new(
+            Path.Combine(path, $"{id}.pdf"), 
+            FileMode.CreateNew);
+
+        BinaryWriter writer = new(stream);
+
+        writer.Write(data, 0, data.Length);
+        writer.Close();
+
+        UI_DialogPrompt.Open(
+            $"Success! PDF saved to {path}",
+            new ButtonAction("Copy Path", () => GUIUtility.systemCopyBuffer = path),
+            new ButtonAction("Done"));
+
+#if UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+        // Hack fix for macOS not liking Application.OpenURL
+        string location = path;
+        ProcessStartInfo startInfo = new ProcessStartInfo("/System/Library/CoreServices/Finder.app")
         {
-            Debug.LogError("Something went wrong while getting PDF URL");
-            Debug.LogError(request);
-        }
+            WindowStyle = ProcessWindowStyle.Normal,
+            FileName = location.Trim()
+        };
+        Process.Start(startInfo);
+#endif
+
+        Application.OpenURL("file:///" + path);
+
+        token.Done();
     }
 }
 
