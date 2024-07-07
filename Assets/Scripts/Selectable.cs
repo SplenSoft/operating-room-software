@@ -59,7 +59,6 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public Selectable ParentSelectable { get; private set; }
 
     public Vector3 OriginalLocalPosition { get; set; }
-    public Vector3 OriginalLocalRotation { get; private set; }
 
     public string guid { get; set; }
 
@@ -165,11 +164,12 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     private Dictionary<Measurable, bool> _measurableActiveStates = new();
     private List<Vector3> _childScales = new();
     private Quaternion _originalRotation;
+    private Quaternion _originalLocalRotation;
     private Transform _virtualParent;
     private HighlightEffect _highlightEffect;
     private HighlightProfile _highlightProfileSelected;
     private GizmoHandler _gizmoHandler;
-    private Quaternion _originalRotation2;
+    //private Quaternion _originalRotation2;
     private Camera _cameraRenderTextureElevation;
     public static Camera ActiveCameraRenderTextureElevation { get; private set; }
     private Collider[] RaycastingColliders { get; set; }
@@ -235,6 +235,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
 
         _originalRotation = transform.rotation;
+        _originalLocalRotation = transform.localRotation;
 
         _highlightEffect = GetComponent<HighlightEffect>();
 
@@ -247,6 +248,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         }
 
         _gizmoHandler = GetComponent<GizmoHandler>();
+
         InputHandler.KeyStateChanged += InputHandler_KeyStateChanged;
 
         GizmoSettingsList.ForEach(item =>
@@ -387,8 +389,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             }
         }
 
-        _originalRotation2 = transform.localRotation;
+        //_originalRotation2 = transform.localRotation;
         OriginalLocalPosition = transform.localPosition;
+        
         //OriginalLocalRotation = transform.localEulerAngles;
 
         Vector3 adjustedOffsetVector = new Vector3
@@ -678,9 +681,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         float angleY = transform.localEulerAngles.y > 180 ? transform.localEulerAngles.y - 360f : transform.localEulerAngles.y;
         float angleZ = transform.localEulerAngles.z > 180 ? transform.localEulerAngles.z - 360f : transform.localEulerAngles.z;
         totalExcess = default;
-        bool exceedsX = IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) && CheckConstraints(angleX, OriginalLocalRotation.x, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.X), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.X), out totalExcess.x);
-        bool exceedsY = TryGetGizmoSetting(GizmoType.Rotate, Axis.Y, out _) && CheckConstraints(angleY, OriginalLocalRotation.y, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Y), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Y), out totalExcess.y);
-        bool exceedsZ = TryGetGizmoSetting(GizmoType.Rotate, Axis.Z, out _) && CheckConstraints(angleZ, OriginalLocalRotation.z, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z), out totalExcess.z);
+        bool exceedsX = IsGizmoSettingAllowed(GizmoType.Rotate, Axis.X) && CheckConstraints(angleX, 0, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.X), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.X), out totalExcess.x);
+        bool exceedsY = TryGetGizmoSetting(GizmoType.Rotate, Axis.Y, out _) && CheckConstraints(angleY, 0, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Y), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Y), out totalExcess.y);
+        bool exceedsZ = TryGetGizmoSetting(GizmoType.Rotate, Axis.Z, out _) && CheckConstraints(angleZ, 0, GetGizmoSettingMaxValue(GizmoType.Rotate, Axis.Z), GetGizmoSettingMinValue(GizmoType.Rotate, Axis.Z), out totalExcess.z);
         return exceedsX || exceedsY || exceedsZ;
     }
 
@@ -899,6 +902,17 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         var imageDatas = new List<PdfExporter.PdfImageData>();
         for (int i = 0; i < 2; i++)
         {
+            void FaceAllTowardGround()
+            {
+                _assemblySelectables
+                    .Where(x => x.ZAlwaysFacesGround || x.ZAlwaysFacesGroundElevationOnly)
+                    .ToList()
+                    .ForEach(item =>
+                    {
+                        item.FaceZTowardGround();
+                    });
+            }
+
             foreach (Selectable selectable in _assemblySelectables.Where(x => x.ChangeHeightForElevationPhoto))
             {
                 var newAngles = selectable.transform.localEulerAngles;
@@ -919,6 +933,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 var childList = selectable.GetComponentsInChildren<Selectable>().ToList();
                 //RoomBoundary ceiling = RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling);
                 //ceiling.gameObject.SetActive(true);
+                FaceAllTowardGround();
 
                 while (childList.Any(x => x.IsHittingCeiling()))
                 {
@@ -926,16 +941,14 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                     if (abs < 0f) break;
                     newAngles.y = abs * Mathf.Sign(newAngles.y);
                     selectable.transform.localEulerAngles = newAngles;
+                    FaceAllTowardGround();
                 }
                 //ceiling.gameObject.SetActive(false);
 
                 selectable.transform.localEulerAngles = newAngles;
             }
 
-            _assemblySelectables.Where(x => x.ZAlwaysFacesGround || x.ZAlwaysFacesGroundElevationOnly).ToList().ForEach(item =>
-            {
-                item.FaceZTowardGround();
-            });
+            FaceAllTowardGround();
 
             var bounds = GetAssemblyBounds();
 
@@ -974,13 +987,17 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             List<bool> visibilities = ActiveSelectables.ConvertAll(x => x.gameObject.activeSelf);
 
             //shut off all selectables in the scene except for the ones in this arm assembly
-            ActiveSelectables.Where(x => !_assemblySelectables.Contains(x)).ToList().ForEach(x => x.gameObject.SetActive(false));
+            ActiveSelectables
+                .Where(x => !_assemblySelectables.Contains(x))
+                .ToList()
+                .ForEach(x => x.gameObject.SetActive(false));
 
             PdfExporter.ExportElevationPdf(
                 GetAssemblyPDFImageData(camera),
                 _assemblySelectables, title, subtitle, assemblyDatas);
 
-            for (int i = 0; i < ActiveSelectables.Count; i++) ActiveSelectables[i].gameObject.SetActive(visibilities[i]);
+            for (int i = 0; i < ActiveSelectables.Count; i++) 
+                ActiveSelectables[i].gameObject.SetActive(visibilities[i]);
 
             RestoreArmAssemblyRotations();
             _assemblySelectables.ForEach(x => x.FaceZTowardGround());
@@ -1016,7 +1033,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                             measurement.Measurer.MeasurementText.UpdateVisibilityAndPosition(camera, force: true);
                             measurement.Measurer.UpdateTransform(camera);
                             bounds.Encapsulate(measurement.Measurer.Renderer.bounds);
-                            var textBounds = new Bounds(measurement.Measurer.TextPosition, Vector3.one * 0.3f);
+                            var textBounds = new Bounds(measurement.Measurer.TextPosition, Vector3.one * 1f);
                             bounds.Encapsulate(textBounds);
                             //bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.up * 0.3f);
                             //bounds.Encapsulate(measurement.Measurer.TextPosition + Vector3.down * 0.3f);
@@ -1041,7 +1058,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
         bool IsPointInShot(Vector2 screenPoint)
         {
-            return screenPoint.x > 0 && screenPoint.y > 0 && screenPoint.x < renderTexture.width && screenPoint.y < renderTexture.height;
+            return screenPoint.x > 0 && screenPoint.y > 0 
+                && screenPoint.x < renderTexture.width 
+                && screenPoint.y < renderTexture.height;
         }
 
         while (--safetyCounter > 0)
@@ -1125,7 +1144,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                     if (item.AlignForElevationPhoto || item.ChangeHeightForElevationPhoto || item.ZAlwaysFacesGroundElevationOnly)
                     {
                         _originalRotations[item] = item.transform.localRotation;
-                        item.transform.localRotation = item._originalRotation2;
+                        item.transform.localRotation = item._originalLocalRotation;
                     }
                 });
             }

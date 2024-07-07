@@ -43,17 +43,22 @@ public partial class AttachmentPoint : MonoBehaviour
     /// Lower transform hierarchy items will use this attachment point as a rotation reference when taking elevation photos (instead of using ceiling mount attachment points). This is used for arm segments having opposite rotation directions in elevation photos.
     /// </summary>
     [field: SerializeField] public bool TreatAsTopMost { get; private set; }
+
     /// <summary>
     /// Allows the attachment point to have multiple attached selectables, otherwise attachpoint will disable once an attachment is selected
     /// </summary>
     [field: SerializeField] private bool MultiAttach { get; set; }
+
     /// <summary>
     /// Sets the maximum number of attachments for a attachment points with MultiAttach set to True
     /// </summary>
     [field: SerializeField] private int MultiLimit { get; set; } = 3;
 
     public List<Selectable> ParentSelectables { get; } = new();
-    [field: SerializeField, ReadOnly] public Transform _originalParent { get; private set; }
+
+    [field: SerializeField, ReadOnly] 
+    public Transform _originalParent { get; private set; }
+
     [field: SerializeField] private MeshRenderer Renderer { get; set; }
     private Collider _collider; 
     private bool _isDestroyed;

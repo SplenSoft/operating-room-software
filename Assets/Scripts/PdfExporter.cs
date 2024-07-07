@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using SimpleJSON;
 using System.IO;
+using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 public class PdfExporter : MonoBehaviour
 {
