@@ -589,7 +589,9 @@ public class ConfigurationManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Finds and applies the tracked AttachedSelectable (root selectable of a prefab attached to another Selectable) and sets it's parent transform
+    /// Finds and applies the tracked AttachedSelectable (root
+    /// selectable of a prefab attached to another Selectable 
+    /// without attachment points [decals]) and sets it's parent transform
     /// </summary>
     /// <param name="go">Reference to the gameObject being applied data</param>
     /// <param name="to">The JSON structure of this object</param>
@@ -735,7 +737,8 @@ public class ConfigurationManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Logs the JSON structure of the object scale to be applied at a later point in execution by <see cref="ResetScaleLevels"/>
+    /// Logs the JSON structure of the object scale to be applied 
+    /// at a later point in execution by <see cref="ResetScaleLevels"/>
     /// </summary>
     /// <param name="s">The object's selectable component</param>
     /// <param name="to">The JSON structure of this object</param>
