@@ -185,6 +185,7 @@ public class ConfigurationManager : MonoBehaviour
         });
         string folder = Application.persistentDataPath + $"/Saved/Configs/";
         string configName = title.Replace(" ", "_") + ".json"; // remove spaces and replace with underscores
+        configName = ReplaceInvalidChars(configName);
 
         if (!Directory.Exists(folder))
         {
@@ -219,6 +220,11 @@ public class ConfigurationManager : MonoBehaviour
                 attachmentPoint.SetToProperParent(); // for multi-arm configurations
             }
         }
+    }
+
+    public string ReplaceInvalidChars(string filename)
+    {
+        return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
     }
 
     public async void SaveRoom(string title)
@@ -274,6 +280,7 @@ public class ConfigurationManager : MonoBehaviour
         });
         string folder = Application.persistentDataPath + $"/Saved/";
         string configName = title.Replace(" ", "_") + ".json";
+        configName = ReplaceInvalidChars(configName);
 
         if (!Directory.Exists(folder))
         {
