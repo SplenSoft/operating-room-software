@@ -153,6 +153,10 @@ public class MaterialPalette : MonoBehaviour
             OnMaterialChanged?.Invoke
                 (new MaterialUpdateEvent(mat, MaterialGroup, i, this));
         }
+        catch (IndexOutOfRangeException)
+        {
+            Debug.LogWarning("An IndexOutOfRangeException occurred. Materials configuration or the amount of materials on this object may have changed since this save was created.");
+        }
         catch (InvalidOperationException)
         {
             Debug.LogError($"Failed to find material \"{material}\" within element array {i}");
