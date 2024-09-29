@@ -15,6 +15,7 @@ public class ConfigurationManager : MonoBehaviour
     public static ConfigurationManager Instance { get; private set; }
 
     public static UnityEvent OnRoomLoadComplete { get; } = new();
+    public static UnityEvent<GameObject> OnConfigurationLoadComplete { get; } = new();
 
     [Tooltip("Contextual display of GUIDs in hierarchy for easier debugging")]
     public bool isDebug = false;
@@ -326,7 +327,9 @@ public class ConfigurationManager : MonoBehaviour
                 await SetObjectProperties(_newObjects);
                 await Task.Yield();
                 RandomizeInstanceGUIDs();
-                return GetRoot();
+                var gameObject = GetRoot();
+                OnConfigurationLoadComplete?.Invoke(gameObject);
+                return gameObject;
             }
             else
             {
@@ -531,6 +534,11 @@ public class ConfigurationManager : MonoBehaviour
         Array.ForEach(dolComps, comp => Destroy(comp.gameObject));
 
         go.transform.SetPositionAndRotation(trackedObject.pos, trackedObject.rot);
+
+        if (go.TryGetComponent<RestorePositionOnLoad>(out var comp))
+        {
+            comp.PositionToRestore = trackedObject.pos;
+        }
 
         if (!string.IsNullOrEmpty(trackedObject.instance_guid))
             go.name = trackedObject.instance_guid;
