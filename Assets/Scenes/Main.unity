@@ -429,6 +429,10 @@ PrefabInstance:
       propertyPath: <IsDestructible>k__BackingField
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4959457182467615618, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<MinValue>k__BackingField
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 5027095395808206750, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: m_Name
       value: WallProtector_W
@@ -533,6 +537,10 @@ PrefabInstance:
     - target: {fileID: 4959457182467615618, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: <IsDestructible>k__BackingField
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959457182467615618, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<MinValue>k__BackingField
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5027095395808206750, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: m_Name
@@ -1382,6 +1390,10 @@ PrefabInstance:
     - target: {fileID: 4959457182467615618, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: <IsDestructible>k__BackingField
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959457182467615618, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<MinValue>k__BackingField
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5027095395808206750, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: m_Name
@@ -3177,7 +3189,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633508577}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 1e-45, y: -0.70710677, z: 1e-45, w: 0.7071069}
   m_LocalPosition: {x: 11.608928, y: 2.1298838, z: 2.6128864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3490,6 +3502,10 @@ PrefabInstance:
     - target: {fileID: 4959457182467615618, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: <IsDestructible>k__BackingField
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4959457182467615618, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<MinValue>k__BackingField
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5027095395808206750, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: m_Name
@@ -4495,19 +4511,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.7071069
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 1e-45
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.7071068
+      value: -0.70710677
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 1e-45
       objectReference: {fileID: 0}
     - target: {fileID: 2892640959702383076, guid: dc746bb8e85c84544999b86a05d97727, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -447,6 +447,10 @@ PrefabInstance:
       propertyPath: <RelatedSelectables>k__BackingField.Array.data[2]
       value: 
       objectReference: {fileID: 7345435315413286191}
+    - target: {fileID: 4959457182467615618, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
+      propertyPath: <GizmoSettingsList>k__BackingField.Array.data[0].<MinValue>k__BackingField
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 5027095395808206750, guid: 094374157e4498542a29e5fec80a51f0, type: 3}
       propertyPath: m_Name
       value: WallProtector
