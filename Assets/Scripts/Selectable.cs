@@ -13,7 +13,6 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 using SplenSoft.UnityUtilities;
 
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -24,7 +23,6 @@ using UnityEditor;
 [RequireComponent(typeof(GizmoHandler), typeof(HighlightEffect)), Serializable]
 public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 {
-
     [Serializable]
     public struct Metadata
     {
@@ -178,7 +176,10 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     /// If true, this is probably a ceiling mount
     /// </summary>
     private bool IsAssemblyRoot => SpecialTypes.Contains(SpecialSelectableType.Mount);
-    public bool IsArmAssembly => transform.root.TryGetComponent(out Selectable rootSelectable) && rootSelectable.IsAssemblyRoot;
+
+    public bool IsArmAssembly => transform.root.TryGetComponent(out Selectable rootSelectable) && 
+        rootSelectable.IsAssemblyRoot;
+
     public bool IsSelected => SelectedSelectables.Contains(this);
 
     [field: SerializeField, ReadOnly] public ScaleLevel CurrentScaleLevel { get; private set; }
