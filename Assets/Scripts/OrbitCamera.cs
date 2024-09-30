@@ -5,16 +5,29 @@ using Cinemachine;
 
 public class OrbitCamera : MonoBehaviour
 {
-    [field: SerializeField] public CinemachineVirtualCamera VirtualCamera { get; private set; }
-    [field: SerializeField] public float minFOV { get; private set; }
-    [field: SerializeField] public float maxFOV { get; private set; }
-    [field: SerializeField] public OrbitMode orbitMode { get; private set; } = OrbitMode.FreeMove;
-    [field: SerializeField] public GameObject orbitTarget { get; private set; }
+    public static OrbitCamera Instance { get; private set; }
+
+    [field: SerializeField] 
+    public CinemachineVirtualCamera VirtualCamera { get; private set; }
+
+    [field: SerializeField] 
+    public float minFOV { get; private set; }
+
+    [field: SerializeField] 
+    public float maxFOV { get; private set; }
+
+    [field: SerializeField] 
+    public OrbitMode orbitMode { get; private set; } = OrbitMode.FreeMove;
+
+    [field: SerializeField] 
+    public GameObject orbitTarget { get; private set; }
+
     private Rigidbody orbitRigidBody;
     private Vector3 previousPosition;
 
     public void Awake()
     {
+        Instance = this;
         orbitTarget.transform.position = new Vector3(0, 0, 0);
         orbitRigidBody = orbitTarget.GetComponent<Rigidbody>();
         VirtualCamera.LookAt = orbitTarget.transform;
@@ -48,9 +61,11 @@ public class OrbitCamera : MonoBehaviour
     private void FixedUpdate()
     {
         if (CameraManager.ActiveCamera != VirtualCamera 
-        || GizmoHandler.GizmoBeingUsed) 
+            || GizmoHandler.GizmoBeingUsed) 
+        {
             return;
-
+        }
+            
         float h = Input.GetAxis("Mouse X");
         float v = Input.GetAxis("Mouse Y");
 
@@ -67,7 +82,7 @@ public class OrbitCamera : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             if (orbitMode == OrbitMode.SelectableLocked 
-            && Selectable.SelectedSelectables.Count > 0) 
+                && Selectable.SelectedSelectables.Count > 0) 
                 return;
 
             orbitRigidBody.AddRelativeForce(new Vector3(h, 0, v), ForceMode.Impulse);
@@ -86,11 +101,13 @@ public class OrbitCamera : MonoBehaviour
 
     private void UpdateTarget()
     {
-        if (orbitMode != OrbitMode.SelectableLocked) return;
+        if (orbitMode != OrbitMode.SelectableLocked) 
+            return;
 
         if (Selectable.SelectedSelectables.Count == 0)
         {
-            if (previousPosition == null) previousPosition = new Vector3(0, 0, 0);
+            if (previousPosition == null) 
+                previousPosition = Vector3.zero;
 
             orbitTarget.transform.position = previousPosition;
         }
@@ -106,13 +123,23 @@ public class OrbitCamera : MonoBehaviour
     {
         if (angle < 90 || angle > 270) // critic zone
         {
-            if(angle > 180) angle -= 360; // convert all angles to -180 to +180
-            if(max > 180) max -= 360;
-            if(min > 180) min -= 360;
+            // convert all angles to -180 to +180
+            if (angle > 180) 
+                angle -= 360; 
+
+            if (max > 180) 
+                max -= 360;
+
+            if (min > 180) 
+                min -= 360;
         }
 
         angle = Mathf.Clamp(angle, min, max);
-        if(angle < 0) angle += 360; // if angle is negative, convert to 0 to 360
+
+        // if angle is negative, convert to 0 to 360
+        if (angle < 0) 
+            angle += 360; 
+
         return angle;
     }
 }

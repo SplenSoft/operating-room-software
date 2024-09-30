@@ -37,7 +37,9 @@ public class UI_ButtonOpenObjectMenu : MonoBehaviour
 
         bool isOrthoCeilingCam = CameraManager.ActiveCamera.GetComponent<OperatingRoomCamera>().CameraType == OperatingRoomCameraType.OrthoCeiling;
         bool isFreeLookCam = CameraManager.ActiveCamera == FreeLookCam.Instance.VirtualCamera;
-        return isFreeLookCam || isOrthoCeilingCam;
+        bool isOrbitalCam = CameraManager.ActiveCamera.GetComponent<OperatingRoomCamera>().CameraType == OperatingRoomCameraType.Orbital;
+
+        return isFreeLookCam || isOrthoCeilingCam || isOrbitalCam;
     }
 
     public void OpenObjectMenu()

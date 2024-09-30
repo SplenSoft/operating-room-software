@@ -610,10 +610,14 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     #region Gizmos
 
-    private bool CheckConstraints(float currentVal, float originalVal, float maxVal, float minVal, out float excess)
+    private bool CheckConstraints(float currentVal, float originalVal, 
+        float maxVal, float minVal, out float excess)
     {
         float diff = currentVal - originalVal;
-        excess = diff > maxVal ? diff - maxVal : diff < minVal ? diff - minVal : 0f;
+
+        excess = diff > maxVal ? diff - maxVal : 
+            diff < minVal ? diff - minVal : 0f;
+
         return excess != 0;
     }
 
@@ -1234,7 +1238,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     public async void StartRaycastPlacementMode()
     {
-        if (ParentAttachmentPoint != null) return;
+        if (ParentAttachmentPoint != null) 
+            return;
+
         DeselectAll();
         _highlightEffect.highlighted = true;
 
@@ -1262,13 +1268,22 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         if (!Application.isPlaying) return;
 
         _isRaycastPlacementMode = true;
+        Debug.Log($"Selectable: Raycast placement mode = true");
     }
 
     private async void UpdateRaycastPlacementMode()
     {
-        if (!_isRaycastPlacementMode || _hasBeenPlaced) return;
+        if (!_isRaycastPlacementMode || _hasBeenPlaced) 
+            return;
 
-        if (WallRestrictions[0] == RoomBoundaryType.Ceiling && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+        bool isCeilingCam = OperatingRoomCamera.LiveCamera
+            .CameraType == OperatingRoomCameraType.OrthoCeiling;
+
+        bool isOrbitalCam = OperatingRoomCamera.LiveCamera
+            .CameraType == OperatingRoomCameraType.Orbital;
+
+        if (WallRestrictions[0] == RoomBoundaryType.Ceiling && 
+            (isCeilingCam || isOrbitalCam))
         {
             RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = true;
         }
@@ -1276,16 +1291,20 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
         var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         _isRaycastingOnSelectable = false;
+
         if (CanPlaceAnywhere)
         {
             int maskSelectable = 1 << LayerMask.NameToLayer("Selectable");
-            if (Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, maskSelectable))
+
+            if (Physics.Raycast(ray, out RaycastHit hit, 
+                float.MaxValue, maskSelectable))
             {
                 transform.position = hit.point;
                 transform.LookAt(transform.position + hit.normal, Vector3.up);
                 _isRaycastingOnSelectable = true;
                 AttachedTo = null;
                 Transform parent = hit.transform;
+
                 while (AttachedTo == null)
                 {
                     if (parent == null)
@@ -1310,8 +1329,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 {
                     Vector3 destination = hit.point;
                     Vector3 normal = hit.normal;
+
                     if (WallRestrictions[0] == RoomBoundaryType.Ceiling
-                    && OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+                        && (isCeilingCam || isOrbitalCam))
                     {
                         destination += RoomBoundary.DefaultWallThickness * Vector3.down;
                         normal *= -1;
@@ -1372,6 +1392,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                             destination.x = RoundToNearestHalfInch(destination.x);
                         }
                     }
+
                     transform.SetPositionAndRotation(destination, Quaternion.LookRotation(normal));
                     _virtualParent = hit.collider.transform;
                     OnRaycastPositionUpdated?.Invoke();
@@ -1384,8 +1405,9 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                         Vector3.right;
 
                     var ray2 = new Ray(Vector3.zero + Vector3.up, direction);
+
                     if (Physics.Raycast(ray2, out RaycastHit raycastHit2, 
-                    float.MaxValue, 1 << LayerMask.NameToLayer("Wall")))
+                        float.MaxValue, 1 << LayerMask.NameToLayer("Wall")))
                     {
                         SetPosition(raycastHit2);
                         break;
@@ -1394,7 +1416,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 else if (WallRestrictions.Count > 0)
                 {
                     if (hit.collider.CompareTag("Wall") && 
-                    WallRestrictions.Any(x => (int)x > 1))
+                        WallRestrictions.Any(x => (int)x > 1))
                     {
                         // Additional Wall
                         SetPosition(hit);
@@ -1445,7 +1467,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
                 }
 
                 if (WallRestrictions[0] == RoomBoundaryType.Ceiling && 
-                OperatingRoomCamera.LiveCamera.CameraType == OperatingRoomCameraType.OrthoCeiling)
+                    (isCeilingCam || isOrbitalCam))
                 {
                     RoomBoundary.GetRoomBoundary(RoomBoundaryType.Ceiling).Collider.enabled = false;
                 }
@@ -1472,6 +1494,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             await Task.Yield();
             if (!Application.isPlaying) return;
 
+            Debug.Log($"Selectable: Raycast placement mode = false");
             _isRaycastPlacementMode = false;
             OnPlaced?.Invoke();
         }

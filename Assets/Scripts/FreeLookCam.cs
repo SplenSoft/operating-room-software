@@ -65,7 +65,9 @@ public class FreeLookCam : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!IsActive || FullScreenMenu.IsOpen || isLocked) return;
+        if (!IsActive || FullScreenMenu.IsOpen || isLocked) 
+            return;
+
         HandleMovement();
     }
 

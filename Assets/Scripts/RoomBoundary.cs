@@ -18,7 +18,10 @@ public class RoomBoundary : MonoBehaviour
     public static readonly float DefaultWallThickness = 0.375f.ToMeters(); //4.5 inches
     [field: SerializeField] public RoomBoundaryType RoomBoundaryType { get; private set; }
     [field: SerializeField] private CinemachineVirtualCamera VirtualCamera { get; set; }
-    private bool VirtualCameraActive => (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
+
+    private bool VirtualCameraActive => (CinemachineVirtualCamera)
+        CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera == VirtualCamera;
+
     public MeshRenderer MeshRenderer { get; private set; }
     public Collider Collider { get; private set; }
 
@@ -93,20 +96,21 @@ public class RoomBoundary : MonoBehaviour
         SizeSet?.Invoke();
     }
 
-
     public void OnCameraLive()
     {
         EnableAllMeshRenderersAndColliders();
         ToggleMeshRendererAndCollider(false);
 
-        if (RoomBoundaryType == RoomBoundaryType.Ceiling || RoomBoundaryType == RoomBoundaryType.Floor)
+        if (RoomBoundaryType == RoomBoundaryType.Ceiling || 
+            RoomBoundaryType == RoomBoundaryType.Floor)
         {
             float dim = Mathf.Max(transform.localScale.x, transform.localScale.z);
             VirtualCamera.m_Lens.OrthographicSize = (dim / 2f) + (dim / 10f);
         }
         else
         {
-            VirtualCamera.m_Lens.OrthographicSize = (transform.localScale.y / 2f) + (transform.localScale.y / 10f);
+            VirtualCamera.m_Lens.OrthographicSize = (transform.localScale.y / 2f) 
+                + (transform.localScale.y / 10f);
         }
     }
 
@@ -114,7 +118,6 @@ public class RoomBoundary : MonoBehaviour
     {
         if (VirtualCamera != null && VirtualCameraActive)
         {
-
             HandleCameraMovement();
         }
     }
@@ -171,7 +174,10 @@ public class RoomBoundary : MonoBehaviour
 
     private void ToggleWallOpaque(bool toggle)
     {
-        if (RoomBoundaryType == RoomBoundaryType.Floor || RoomBoundaryType == RoomBoundaryType.Ceiling) return;
+        if (RoomBoundaryType == RoomBoundaryType.Floor || 
+            RoomBoundaryType == RoomBoundaryType.Ceiling) 
+            return;
+
         Color c = MeshRenderer.material.color;
         c.a = toggle ? 1 : 0;
         MeshRenderer.material.color = c;
@@ -181,7 +187,9 @@ public class RoomBoundary : MonoBehaviour
 
     private void OnMouseUpAsButton()
     {
-        if (InputHandler.IsPointerOverUIElement()) return;
+        if (InputHandler.IsPointerOverUIElement()) 
+            return;
+
         Selectable.DeselectAll();
     }
 

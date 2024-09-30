@@ -7,7 +7,7 @@ using UnityEngine.Events;
 public class CameraManager : MonoBehaviour
 {
     public static UnityEvent CameraChanged = new();
-    private static List<CinemachineVirtualCamera> _cameras = new List<CinemachineVirtualCamera>();
+    private static List<CinemachineVirtualCamera> _cameras = new();
     public static CinemachineVirtualCamera ActiveCamera { get; private set; }
 
     public static void Register(CinemachineVirtualCamera cam)
@@ -22,12 +22,16 @@ public class CameraManager : MonoBehaviour
 
     public static void CycleCam()
     {
-        var activeCam = (CinemachineVirtualCamera)CinemachineCore.Instance.GetActiveBrain(0).ActiveVirtualCamera;
+        var activeCam = (CinemachineVirtualCamera)CinemachineCore
+            .Instance.GetActiveBrain(0).ActiveVirtualCamera;
+
         activeCam.Priority = 0;
         int indexOfActiveCam = _cameras.IndexOf(activeCam);
         int nextCam = indexOfActiveCam + 1;
 
-        if (nextCam >= _cameras.Count) nextCam = 0;
+        if (nextCam >= _cameras.Count) 
+            nextCam = 0;
+
         _cameras[nextCam].Priority = 11;
         ActiveCamera = _cameras[nextCam];
         CameraChanged?.Invoke();
