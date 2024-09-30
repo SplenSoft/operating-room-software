@@ -76,7 +76,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2879729556504930783}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.005, z: -0}
+  m_LocalPosition: {x: 0, y: -0.005, z: 0.0385}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -355,7 +355,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4012165859919355181}
   m_LocalRotation: {x: -0.00000014106499, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.1171, z: 0.0385}
+  m_LocalPosition: {x: 0, y: -0.1171, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -378,7 +378,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4012165859919355181}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -464,9 +464,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7341218db4454408a6eeaf67a70a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IgnoreX>k__BackingField: 1
-  <IgnoreY>k__BackingField: 1
-  <IgnoreZ>k__BackingField: 1
+  <IgnoreX>k__BackingField: 0
+  <IgnoreY>k__BackingField: 0
+  <IgnoreZ>k__BackingField: 0
 --- !u!1 &5934085052052777932
 GameObject:
   m_ObjectHideFlags: 0
