@@ -1028,7 +1028,12 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
             {
                 item.Measurables.ForEach(measurable =>
                 {
-                    var validMeasurements = measurable.Measurements.Where(measurement => measurement.Measurable.ShowInElevationPhoto).ToList();
+                    if (measurable.Disabled) 
+                        return;
+
+                    var validMeasurements = measurable.Measurements
+                        .Where(measurement => measurement.Measurable.ShowInElevationPhoto)
+                        .ToList();
                     if (validMeasurements.Count > 0)
                     {
                         measurable.SetActive(true);

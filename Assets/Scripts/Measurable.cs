@@ -47,6 +47,9 @@ public class Measurable : MonoBehaviour
     public bool ArmAssemblyActiveInElevationPhotoMode { get; set; }
     public bool IsActive { get; private set; }
 
+    [field: SerializeField] 
+    public bool Disabled { get; set; }
+
     private void Awake()
     {
         if (SceneManager.GetActiveScene().name == "ObjectEditor")
@@ -143,7 +146,7 @@ public class Measurable : MonoBehaviour
 
     public void SetActive(bool active)
     {
-        IsActive = active;
+        IsActive = active && !Disabled;
 
         Measurements.ToList().ForEach(item =>
         {
