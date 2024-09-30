@@ -17,13 +17,28 @@ public partial class AttachmentPoint : MonoBehaviour
     public static UnityEvent SelectedAttachmentPointChanged { get; } = new();
     public static EventHandler AttachmentPointHoverStateChanged;
     public static EventHandler AttachmentPointClicked;
+
+    /// <summary>
+    /// Passes a bool which, if true, indicates that this attachment point
+    /// has a selectable attached to it
+    /// </summary>
+    [field: SerializeField]
+    public UnityEvent<bool> StatusUpdated { get; private set; }
+
     /// <summary>
     /// Global GUID
     /// </summary>
-    [field: SerializeField] public string GUID { get; private set; } = "_AP";
-    [field: SerializeField] public List<Selectable> AttachedSelectable { get; private set; } = new(0);
-    [SerializeField, ReadOnly] private bool _attachmentPointHovered;
-    [field: SerializeField] private HighlightEffect HighlightHovered { get; set; }
+    [field: SerializeField] 
+    public string GUID { get; private set; } = "_AP";
+
+    [field: SerializeField] 
+    public List<Selectable> AttachedSelectable { get; private set; } = new(0);
+
+    [SerializeField, ReadOnly] 
+    private bool _attachmentPointHovered;
+
+    [field: SerializeField] 
+    private HighlightEffect HighlightHovered { get; set; }
 
     /// <summary>
     /// Should be considered "seed" or backup data. 
@@ -42,12 +57,14 @@ public partial class AttachmentPoint : MonoBehaviour
     /// <summary>
     /// Lower transform hierarchy items will use this attachment point as a rotation reference when taking elevation photos (instead of using ceiling mount attachment points). This is used for arm segments having opposite rotation directions in elevation photos.
     /// </summary>
-    [field: SerializeField] public bool TreatAsTopMost { get; private set; }
+    [field: SerializeField] 
+    public bool TreatAsTopMost { get; private set; }
 
     /// <summary>
     /// Allows the attachment point to have multiple attached selectables, otherwise attachpoint will disable once an attachment is selected
     /// </summary>
-    [field: SerializeField] private bool MultiAttach { get; set; }
+    [field: SerializeField] 
+    private bool MultiAttach { get; set; }
 
     /// <summary>
     /// Sets the maximum number of attachments for a attachment points with MultiAttach set to True
@@ -250,6 +267,8 @@ public partial class AttachmentPoint : MonoBehaviour
         Renderer.enabled = (isMouseOverAnyParentSelectable || _attachmentPointHovered) && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
         HighlightHovered.highlighted = _attachmentPointHovered && !areAnyParentSelectablesSelected && AttachedSelectable.Count <= multiAllowed;
         _collider.enabled = AttachedSelectable.Count <= multiAllowed && !areAnyParentSelectablesSelected;
+
+        StatusUpdated?.Invoke(AttachedSelectable.Count > 0);
     }
 
     private void EmptyNullList()

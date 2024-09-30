@@ -45,8 +45,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     public static UnityEvent ActiveSelectablesInSceneChanged { get; } = new();
 
     public Dictionary<GizmoType, Dictionary<Axis, GizmoSetting>>
-    GizmoSettings
-    { get; } = new();
+        GizmoSettings { get; } = new();
 
     public EventHandler MouseOverStateChanged;
     public UnityEvent SelectableDestroyed { get; } = new();
@@ -73,8 +72,7 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
 
     [field: SerializeField, HideInInspector]
     public List<AttachmentPointData>
-    AttachmentPointDatas
-    { get; set; } = new();
+        AttachmentPointDatas { get; set; } = new();
 
     [field: SerializeField,
     FormerlySerializedAs("<Types>k__BackingField")]
@@ -83,22 +81,22 @@ public partial class Selectable : MonoBehaviour, IPreprocessAssetBundle
     { get; set; } = new();
 
     [field: SerializeField]
-    public List<RoomBoundaryType> WallRestrictions
-    { get; set; } = new();
+    public List<RoomBoundaryType> WallRestrictions { get; set; } = new();
 
     [field: SerializeField]
-    public List<GizmoSetting> GizmoSettingsList
-    { get; set; } = new();
+    public List<GizmoSetting> GizmoSettingsList { get; set; } = new();
 
     [field: SerializeField]
-    private Vector3 InitialLocalPositionOffset
-    { get; set; }
+    private Vector3 InitialLocalPositionOffset { get; set; }
 
     [field: SerializeField]
     public bool IsDestructible { get; private set; } = true;
 
-    [field: SerializeField] public bool AllowInverseControl { get; private set; } = false;
-    [field: SerializeField] public List<ScaleLevel> ScaleLevels { get; private set; } = new();
+    [field: SerializeField] 
+    public bool AllowInverseControl { get; private set; } = false;
+
+    [field: SerializeField] 
+    public List<ScaleLevel> ScaleLevels { get; private set; } = new();
 
     [field: SerializeField, FormerlySerializedAs("<useLossyScale>k__BackingField")]
     public bool UseLossyScale { get; private set; }
