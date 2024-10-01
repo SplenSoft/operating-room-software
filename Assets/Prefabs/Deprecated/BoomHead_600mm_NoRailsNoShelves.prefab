@@ -47,6 +47,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 01000000
   <ForwardOnly>k__BackingField: 1
   <ShowInElevationPhoto>k__BackingField: 1
+  <Disabled>k__BackingField: 0
 --- !u!1 &8329357055790936828
 GameObject:
   m_ObjectHideFlags: 0

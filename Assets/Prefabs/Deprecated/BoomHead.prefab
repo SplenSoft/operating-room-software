@@ -78,6 +78,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 01000000
   <ForwardOnly>k__BackingField: 1
   <ShowInElevationPhoto>k__BackingField: 1
+  <Disabled>k__BackingField: 0
 --- !u!1001 &853657124292016918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -304,6 +305,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 
   <ForwardOnly>k__BackingField: 0
   <ShowInElevationPhoto>k__BackingField: 0
+  <Disabled>k__BackingField: 0
 --- !u!114 &4116486577176717010
 MonoBehaviour:
   m_ObjectHideFlags: 0

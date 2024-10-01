@@ -47,6 +47,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 01000000
   <ForwardOnly>k__BackingField: 1
   <ShowInElevationPhoto>k__BackingField: 1
+  <Disabled>k__BackingField: 0
 --- !u!1 &7850870076332335239
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +95,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 03000000
   <ForwardOnly>k__BackingField: 0
   <ShowInElevationPhoto>k__BackingField: 1
+  <Disabled>k__BackingField: 0
 --- !u!1001 &168660712225662621
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -601,6 +603,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 
   <ForwardOnly>k__BackingField: 0
   <ShowInElevationPhoto>k__BackingField: 0
+  <Disabled>k__BackingField: 0
 --- !u!4 &5847277044198170897 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}

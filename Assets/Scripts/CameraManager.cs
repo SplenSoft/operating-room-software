@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager
 {
     public static UnityEvent CameraChanged = new();
     private static List<CinemachineVirtualCamera> _cameras = new();
@@ -13,6 +13,11 @@ public class CameraManager : MonoBehaviour
     public static void Register(CinemachineVirtualCamera cam)
     {
         _cameras.Add(cam);
+    }
+
+    public static void Unregister(CinemachineVirtualCamera cam) 
+    { 
+        _cameras.Remove(cam);
     }
 
     public static void SetActiveCamera(CinemachineVirtualCamera cam)

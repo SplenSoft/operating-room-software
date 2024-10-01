@@ -31,6 +31,11 @@ public class FreeLookCam : MonoBehaviour
         });
     }
 
+    private void OnDestroy()
+    {
+        CameraManager.Unregister(VirtualCamera);
+    }
+
     private void Update()
     {
         if (!IsActive || FullScreenMenu.IsOpen) return;

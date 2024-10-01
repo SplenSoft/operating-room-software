@@ -47,6 +47,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 01000000
   <ForwardOnly>k__BackingField: 1
   <ShowInElevationPhoto>k__BackingField: 1
+  <Disabled>k__BackingField: 0
 --- !u!1001 &2028536270868664389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1333,6 +1334,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 0100000003000000
   <ForwardOnly>k__BackingField: 0
   <ShowInElevationPhoto>k__BackingField: 0
+  <Disabled>k__BackingField: 0
 --- !u!4 &6859058702094304871 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3702329968397827254, guid: 85d8679646b1a2140b71e2dbe4709489, type: 3}

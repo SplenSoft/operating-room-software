@@ -42,6 +42,7 @@ public class OrbitCamera : MonoBehaviour
     {
         RoomSize.RoomSizeChanged.RemoveListener(ResetPosition);
         Selectable.SelectionChanged -= UpdateTarget;
+        CameraManager.Unregister(VirtualCamera);
     }
 
     private void ResetPosition(RoomDimension roomDimension)

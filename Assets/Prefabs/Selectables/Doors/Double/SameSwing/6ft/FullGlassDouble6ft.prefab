@@ -109,6 +109,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 00000000
   <ForwardOnly>k__BackingField: 1
   <ShowInElevationPhoto>k__BackingField: 0
+  <Disabled>k__BackingField: 0
 --- !u!1 &5975259529744374933
 GameObject:
   m_ObjectHideFlags: 0
@@ -156,6 +157,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 02000000
   <ForwardOnly>k__BackingField: 1
   <ShowInElevationPhoto>k__BackingField: 0
+  <Disabled>k__BackingField: 0
 --- !u!1 &6845131091077555914
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,6 +236,7 @@ MonoBehaviour:
   <MeasurementTypes>k__BackingField: 00000000
   <ForwardOnly>k__BackingField: 1
   <ShowInElevationPhoto>k__BackingField: 0
+  <Disabled>k__BackingField: 0
 --- !u!1001 &2866533127200821579
 PrefabInstance:
   m_ObjectHideFlags: 0

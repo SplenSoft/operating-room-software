@@ -57,6 +57,7 @@ public class RoomBoundary : MonoBehaviour
     {
         Instances.Remove(this);
         RoomSize.RoomSizeChanged.RemoveListener(SetSize);
+        CameraManager.Unregister(VirtualCamera);
     }
 
     void SetSize(RoomDimension dimension)
