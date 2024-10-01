@@ -4,14 +4,16 @@ using System.Linq;
 using UnityEngine;
 
 /// <summary>
-/// Will enforce that the scale of this selectable is always less than that of another selectable on the same arm assembly that shares this component's id
+/// Will enforce that the scale of this selectable is always 
+/// less than that of another selectable on the same arm assembly 
+/// that shares this component's id
 /// </summary>
 [RequireComponent(typeof(Selectable))]
 public class EnforceZScale : MonoBehaviour
 {
     [field: SerializeField] public string Id { get; private set; }
     private Selectable _selectable;
-    private List<Selectable> _upperSelectables = new List<Selectable>();
+    private List<Selectable> _upperSelectables = new();
     private Selectable _directParent;
     /// <summary>
     /// Used to prevent stack overflow
