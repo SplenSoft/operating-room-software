@@ -13,7 +13,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: White_Shaft
-    second: {fileID: 2100000, guid: 5f2be561da41e774b8952dec90e3a7c4, type: 2}
+    second: {fileID: 2100000, guid: fe8fe446f6ef7dc44a08cc64bcf86e85, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
