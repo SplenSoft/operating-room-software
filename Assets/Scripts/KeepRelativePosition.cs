@@ -6,52 +6,101 @@ using UnityEngine;
 
 public class KeepRelativePosition : MonoBehaviour
 {
-    [field: SerializeField] private Transform VirtualParent { get; set; }
-    [field: SerializeField] private bool HideIfSurfaceIsHidden { get; set; }
+    [field: SerializeField] 
+    private Transform VirtualParent { get; set; }
+
+    [field: SerializeField] 
+    private bool HideIfSurfaceIsHidden { get; set; }
+
+    /// <summary>
+    /// Populated when an object is loaded by the 
+    /// <see cref="ConfigurationManager"/>
+    /// </summary>
+    public string ParentName { get; set; }
+
     private Vector3 _relativePosition;
     private RoomBoundary _roomBoundary;
     private InGameLight _light;
     private Transform _originalLightParent;
-    private bool _subscribed;
+    private bool _subscribedRoomSizeChange;
+    private bool _subscribedVisibilityChanged;
     private bool _isDestroyed;
-
 
     private void Awake()
     {
-        
-        
         RecalculateRelativePosition();
-        if (VirtualParent != null) 
-        {
-            _subscribed = true;
-            RoomSize.RoomSizeChanged.AddListener(RoomSizeChanged);
-            _roomBoundary = VirtualParent.GetComponent<RoomBoundary>();
-            if (_roomBoundary != null && HideIfSurfaceIsHidden)
-            {
-                _roomBoundary.VisibilityStatusChanged.AddListener(CheckHideStatus);
-                UI_ToggleShowCeilingObjects.CeilingObjectVisibilityToggled.AddListener(CheckHideStatus);
-            }
-        }
+        SubscribeRoomSizeChange();
+        SubscribeVisibility();
 
         _light = GetComponentInChildren<InGameLight>();
+
         if (_light != null) 
         {
             _originalLightParent = _light.transform.parent;
         }
     }
 
-    private void OnDestroy()
+    private void SubscribeRoomSizeChange()
     {
-        // todo: this doesn't unsubscribe fast enough when loading a room, clearing pre-existing objects1
-        _isDestroyed = true;
-        if (!_subscribed) return;
+        if (_subscribedRoomSizeChange) 
+            return;
 
-        RoomSize.RoomSizeChanged.RemoveListener(RoomSizeChanged);
+        _subscribedRoomSizeChange = true;
+        ConfigurationManager.OnRoomLoadComplete.AddListener(TryGetParent);
+        RoomSize.RoomSizeChanged.AddListener(RoomSizeChanged);
+    }
+
+    private void SubscribeVisibility()
+    {
+        if (VirtualParent == null || _subscribedVisibilityChanged) 
+            return;
+
+        _roomBoundary = VirtualParent.GetComponent<RoomBoundary>();
+
         if (_roomBoundary != null && HideIfSurfaceIsHidden)
         {
-            _roomBoundary.VisibilityStatusChanged.RemoveListener(CheckHideStatus);
-            UI_ToggleShowCeilingObjects.CeilingObjectVisibilityToggled.RemoveListener(CheckHideStatus);
+            _roomBoundary.VisibilityStatusChanged
+                .AddListener(CheckHideStatus);
+
+            UI_ToggleShowCeilingObjects
+                .CeilingObjectVisibilityToggled
+                .AddListener(CheckHideStatus);
+
+            _subscribedVisibilityChanged = true;
         }
+    }
+
+    private void OnDestroy()
+    {
+        _isDestroyed = true;
+
+        if (_subscribedRoomSizeChange) 
+        {
+            RoomSize.RoomSizeChanged.RemoveListener(RoomSizeChanged);
+        }
+
+        if (_subscribedVisibilityChanged)
+        {
+            _roomBoundary.VisibilityStatusChanged
+                .RemoveListener(CheckHideStatus);
+
+            UI_ToggleShowCeilingObjects
+                .CeilingObjectVisibilityToggled
+                .RemoveListener(CheckHideStatus);
+        }
+    }
+
+    private void TryGetParent()
+    {
+        if (string.IsNullOrEmpty(ParentName)) 
+            return;
+
+        var rootObj = GameObject.Find(ParentName);
+
+        if (rootObj == null) 
+            return;
+
+        VirtualParent = rootObj.transform;
     }
 
     private void RecalculateRelativePosition()
@@ -65,12 +114,7 @@ public class KeepRelativePosition : MonoBehaviour
     public void VirtualParentChanged(Transform virtualParent)
     {
         VirtualParent = virtualParent;
-        _roomBoundary = VirtualParent.GetComponent<RoomBoundary>();
-        if (_roomBoundary != null && HideIfSurfaceIsHidden)
-        {
-            _roomBoundary.VisibilityStatusChanged.AddListener(CheckHideStatus);
-            UI_ToggleShowCeilingObjects.CeilingObjectVisibilityToggled.AddListener(CheckHideStatus);
-        }
+        SubscribeVisibility();
     }
 
     public void CheckHideStatus()
@@ -93,21 +137,22 @@ public class KeepRelativePosition : MonoBehaviour
 
     private void GoToRelativePosition()
     {
-        
         transform.position = VirtualParent.position + _relativePosition;
         RecalculateRelativePosition();
     }
 
     private async void RoomSizeChanged(RoomDimension dimension)
     {
-        if (VirtualParent == null) return;
+        if (VirtualParent == null) 
+            return;
 
         await Task.Yield();
 
         if (!Application.isPlaying) 
             throw new Exception("App quit during async");
 
-        if (_isDestroyed) return;
+        if (_isDestroyed) 
+            return;
 
         GoToRelativePosition();
     }
