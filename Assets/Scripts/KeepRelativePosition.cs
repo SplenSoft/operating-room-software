@@ -110,6 +110,7 @@ public class KeepRelativePosition : MonoBehaviour
             return;
 
         VirtualParent = rootObj.transform;
+        RecalculateRelativePosition();
         SubscribeVisibility();
     }
 
