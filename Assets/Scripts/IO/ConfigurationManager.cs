@@ -422,17 +422,17 @@ public class ConfigurationManager : MonoBehaviour
 
     private async Task ProcessTrackedObjects(List<TrackedObject.Data> trackedObjects)
     {
-        foreach (TrackedObject.Data to in trackedObjects)
+        foreach (TrackedObject.Data data in trackedObjects)
         {
             GameObject go = null;
 
-            if (IsRoomBoundary(to) || IsBaseboard(to) || IsWallProtector(to))
+            if (IsRoomBoundary(data) || IsBaseboard(data) || IsWallProtector(data))
             {
-                go = IsRoomBoundary(to) ?
-                    GetRoomBoundary(to) :
-                    GetGameObjectWithGuidName(to);
+                go = IsRoomBoundary(data) ?
+                    GetRoomBoundary(data) :
+                    GetGameObjectWithGuidName(data);
 
-                LogData(go.GetComponent<Selectable>(), to);
+                LogData(go.GetComponent<Selectable>(), data);
                 var existingTrackedObj = go.GetComponent<TrackedObject>();
                 ResetScaleLevels(existingTrackedObj);
                 ResetMaterialPalettes(existingTrackedObj);
@@ -440,45 +440,52 @@ public class ConfigurationManager : MonoBehaviour
             }
 
             // if it is not an AttachPoint, we need to place the Selectable
-            if (to.global_guid != _attachPointGUID && 
-            !string.IsNullOrEmpty(to.global_guid))
+            if (data.global_guid != _attachPointGUID && 
+                !string.IsNullOrEmpty(data.global_guid))
             {
-                var task = InstantiateObject(to);
+                var task = InstantiateObject(data);
 
                 await task;
                 if (!Application.isPlaying)
                     throw new AppQuitInTaskException();
 
                 go = task.Result;
+                if (!string.IsNullOrEmpty(data.keepRelativePositionParentName))
+                {
+                    if (go.TryGetComponent<KeepRelativePosition>(out var comp))
+                    {
+                        comp.ParentName = data.keepRelativePositionParentName;
+                    }
+                }
                 _newObjects.Add(go.GetComponent<TrackedObject>());
             }
 
-            if (to.parent != null)
+            if (data.parent != null)
             {
-                if (to.global_guid == null || to.global_guid == "") 
+                if (data.global_guid == null || data.global_guid == "") 
                 {
                     // embedded selectable component
-                    go = ProcessEmbeddedSelectable(to);
+                    go = ProcessEmbeddedSelectable(data);
                     _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
-                else if (to.global_guid == _attachPointGUID) 
+                else if (data.global_guid == _attachPointGUID) 
                 {
                     // attachment point component
-                    ProcessAttachmentPoint(to);
+                    ProcessAttachmentPoint(data);
                 }
                 else 
                 {
                     // selectable attached to an attachment point
-                    ProcessAttachedSelectable(go, to);
+                    ProcessAttachedSelectable(go, data);
                     _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
             }
             else
             {
-                if (to.global_guid == null || to.global_guid == "") 
+                if (data.global_guid == null || data.global_guid == "") 
                 {
                     // embedded selectable component
-                    go = ProcessEmbeddedSelectable(to);
+                    go = ProcessEmbeddedSelectable(data);
                     _newObjects.Add(go.GetComponent<TrackedObject>());
                 }
             }
@@ -493,7 +500,7 @@ public class ConfigurationManager : MonoBehaviour
         foreach (TrackedObject.Data to in trackedObjects)
         {
             if (IsRoomBoundary(to) || IsBaseboard(to) || 
-            IsWallProtector(to))
+                IsWallProtector(to))
             {
                 continue;
             }

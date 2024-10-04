@@ -2137,6 +2137,11 @@ MonoBehaviour:
           <Guid>k__BackingField: 39a0f036-0263-4c96-9678-05c33031dbcd
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
+      - <Guid>k__BackingField: bc51dfe2-62f9-43b3-8d84-423b29b0a626
+        <MetaData>k__BackingField:
+          <Guid>k__BackingField: bc51dfe2-62f9-43b3-8d84-423b29b0a626
+          <AllowedSelectableCategories>k__BackingField: []
+          <AllowedSelectableAssetBundleNames>k__BackingField: []
   - <PrefabName>k__BackingField: SimFlexTube
     <SaveLoadGuid>k__BackingField: gameobject_4d79268645655de4888801a211c27e95
     <AssetBundleName>k__BackingField: gameobject_4d79268645655de4888801a211c27e95

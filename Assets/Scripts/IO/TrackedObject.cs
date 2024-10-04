@@ -18,6 +18,7 @@ public class TrackedObject : MonoBehaviour
         public string attachedTo;
         public Selectable.ScaleLevel scaleLevel;
         public List<string> materialNames;
+        public string keepRelativePositionParentName;
     }
 
     private void Awake()
@@ -37,8 +38,12 @@ public class TrackedObject : MonoBehaviour
         }
     }
 
-    private Data data;
+    [NonSerialized]
+    public Data data;
 
+    /// <summary>
+    /// Used when saving
+    /// </summary>
     public Data GetData()
     {
         data.objectName = gameObject.name;
@@ -114,6 +119,9 @@ public class TrackedObject : MonoBehaviour
         data.attachedTo = d.attachedTo;
     }
 
+    /// <summary>
+    /// Used when saving
+    /// </summary>
     void GetGUIDs()
     {
         if (gameObject.TryGetComponent(out Selectable s))
@@ -129,7 +137,7 @@ public class TrackedObject : MonoBehaviour
             {
                 data.parent = ConfigurationManager.GetGameObjectPath(s.ParentAttachmentPoint.gameObject);
             }
-            else if(s.AttachedTo != null)
+            else if (s.AttachedTo != null)
             {
                 data.parent = s.AttachedTo.gameObject.name;
                 data.attachedTo = data.parent;
@@ -137,6 +145,12 @@ public class TrackedObject : MonoBehaviour
             else if (gameObject.transform != gameObject.transform.root)
             {
                 data.parent = ConfigurationManager.GetGameObjectPath(this.gameObject);
+            }
+
+            if (gameObject.TryGetComponent<KeepRelativePosition>(out var krp) && 
+                krp.VirtualParent != null)
+            {
+                data.keepRelativePositionParentName = krp.VirtualParent.name;
             }
         }
         else

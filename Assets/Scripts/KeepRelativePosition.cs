@@ -7,7 +7,7 @@ using UnityEngine;
 public class KeepRelativePosition : MonoBehaviour
 {
     [field: SerializeField] 
-    private Transform VirtualParent { get; set; }
+    public Transform VirtualParent { get; private set; }
 
     [field: SerializeField] 
     private bool HideIfSurfaceIsHidden { get; set; }
@@ -26,9 +26,14 @@ public class KeepRelativePosition : MonoBehaviour
     private bool _subscribedVisibilityChanged;
     private bool _isDestroyed;
 
+    #region Monobehaviour
     private void Awake()
     {
         RecalculateRelativePosition();
+
+        ConfigurationManager.OnRoomLoadComplete
+            .AddListener(TryGetParent);
+
         SubscribeRoomSizeChange();
         SubscribeVisibility();
 
@@ -39,6 +44,30 @@ public class KeepRelativePosition : MonoBehaviour
             _originalLightParent = _light.transform.parent;
         }
     }
+
+    private void OnDestroy()
+    {
+        _isDestroyed = true;
+
+        ConfigurationManager.OnRoomLoadComplete
+            .RemoveListener(TryGetParent);
+
+        if (_subscribedRoomSizeChange)
+        {
+            RoomSize.RoomSizeChanged.RemoveListener(RoomSizeChanged);
+        }
+
+        if (_subscribedVisibilityChanged)
+        {
+            _roomBoundary.VisibilityStatusChanged
+                .RemoveListener(CheckHideStatus);
+
+            UI_ToggleShowCeilingObjects
+                .CeilingObjectVisibilityToggled
+                .RemoveListener(CheckHideStatus);
+        }
+    }
+    #endregion
 
     private void SubscribeRoomSizeChange()
     {
@@ -70,26 +99,6 @@ public class KeepRelativePosition : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        _isDestroyed = true;
-
-        if (_subscribedRoomSizeChange) 
-        {
-            RoomSize.RoomSizeChanged.RemoveListener(RoomSizeChanged);
-        }
-
-        if (_subscribedVisibilityChanged)
-        {
-            _roomBoundary.VisibilityStatusChanged
-                .RemoveListener(CheckHideStatus);
-
-            UI_ToggleShowCeilingObjects
-                .CeilingObjectVisibilityToggled
-                .RemoveListener(CheckHideStatus);
-        }
-    }
-
     private void TryGetParent()
     {
         if (string.IsNullOrEmpty(ParentName)) 
@@ -101,6 +110,7 @@ public class KeepRelativePosition : MonoBehaviour
             return;
 
         VirtualParent = rootObj.transform;
+        SubscribeVisibility();
     }
 
     private void RecalculateRelativePosition()
