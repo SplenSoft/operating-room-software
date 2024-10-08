@@ -1860,10 +1860,24 @@ MonoBehaviour:
       <Enabled>k__BackingField: 1
       <IsStandalone>k__BackingField: 1
       <ThumbnailBase64>k__BackingField: 
-      <Name>k__BackingField: Power Outlet
+      <Name>k__BackingField: HV Power Outlet
       <SubPartName>k__BackingField: 
       <Categories>k__BackingField:
       - Boom Head High Voltage
+      <KeyWords>k__BackingField: []
+      <AttachmentPointGuidMetaData>k__BackingField: []
+  - <PrefabName>k__BackingField: Outlet_LV_Power
+    <SaveLoadGuid>k__BackingField: gameobject_5e07c647ea9ca964282446690424c288
+    <AssetBundleName>k__BackingField: gameobject_5e07c647ea9ca964282446690424c288
+    <MetaData>k__BackingField:
+      <IsSubSelectable>k__BackingField: 0
+      <Enabled>k__BackingField: 1
+      <IsStandalone>k__BackingField: 1
+      <ThumbnailBase64>k__BackingField: 
+      <Name>k__BackingField: LV Power Outlet
+      <SubPartName>k__BackingField: 
+      <Categories>k__BackingField:
+      - Boom Head Low Voltage
       <KeyWords>k__BackingField: []
       <AttachmentPointGuidMetaData>k__BackingField: []
   - <PrefabName>k__BackingField: StorzAVOutlet
@@ -2137,9 +2151,9 @@ MonoBehaviour:
           <Guid>k__BackingField: 39a0f036-0263-4c96-9678-05c33031dbcd
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
-      - <Guid>k__BackingField: bc51dfe2-62f9-43b3-8d84-423b29b0a626
+      - <Guid>k__BackingField: 7aaaa3c0-175b-47ad-bd42-848dc99f110e
         <MetaData>k__BackingField:
-          <Guid>k__BackingField: bc51dfe2-62f9-43b3-8d84-423b29b0a626
+          <Guid>k__BackingField: 7aaaa3c0-175b-47ad-bd42-848dc99f110e
           <AllowedSelectableCategories>k__BackingField: []
           <AllowedSelectableAssetBundleNames>k__BackingField: []
   - <PrefabName>k__BackingField: SimFlexTube

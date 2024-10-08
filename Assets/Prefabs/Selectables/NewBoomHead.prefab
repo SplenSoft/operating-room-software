@@ -1194,6 +1194,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoomHeadBottomPosts
       objectReference: {fileID: 0}
+    - target: {fileID: 7126403934356442674, guid: c9f6aee74b8a5974f9da9db7dbcc7a49, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8287565106208851723, guid: c9f6aee74b8a5974f9da9db7dbcc7a49, type: 3}
       propertyPath: m_RootOrder
       value: 23
