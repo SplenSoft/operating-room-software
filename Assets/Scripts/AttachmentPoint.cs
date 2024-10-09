@@ -148,6 +148,12 @@ public partial class AttachmentPoint : MonoBehaviour
             item.MouseOverStateChanged -= MouseOverStateChanged;
         });
         Selectable.SelectionChanged -= SelectionChanged;
+
+        if (HoveredAttachmentPoint == this) 
+        {
+            HoveredAttachmentPoint = null;
+            AttachmentPointHoverStateChanged?.Invoke(this,null);
+        }
     }
 
     private void OnMouseEnter()

@@ -12,17 +12,14 @@ public class UI_Prompt_AddAttachment : MonoBehaviour
 
     private void Awake()
     {
+        ConfigurationManager.OnRoomLoadComplete.AddListener(UpdateState);
         _rectTransform = GetComponent<RectTransform>();
         AttachmentPoint.AttachmentPointHoverStateChanged += AttachmentPointHoverStateChanged;
         gameObject.SetActive(false);
+
     }
 
-    private void OnDestroy()
-    {
-        AttachmentPoint.AttachmentPointHoverStateChanged -= AttachmentPointHoverStateChanged;
-    }
-
-    private void AttachmentPointHoverStateChanged(object sender, EventArgs e)
+    private void UpdateState() 
     {
         bool active = AttachmentPoint.HoveredAttachmentPoint != null;
         gameObject.SetActive(active);
@@ -30,6 +27,19 @@ public class UI_Prompt_AddAttachment : MonoBehaviour
         {
             SetPosition();
         }
+
+
+    }
+
+    private void OnDestroy()
+    {
+        AttachmentPoint.AttachmentPointHoverStateChanged -= AttachmentPointHoverStateChanged;
+        ConfigurationManager.OnRoomLoadComplete.RemoveListener(UpdateState);
+    }
+
+    private void AttachmentPointHoverStateChanged(object sender, EventArgs e)
+    {
+        UpdateState();
     }
 
     private void SetPosition()
