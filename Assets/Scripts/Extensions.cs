@@ -11,6 +11,12 @@ using UnityEditor;
 
 public static partial class Extensions
 {
+
+    public static Quaternion GetNormalized(this Quaternion q)
+    {
+        float f = 1f / Mathf.Sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+        return new Quaternion(q.x * f, q.y * f, q.z * f, q.w * f);
+    }
     public static bool Contains(this string str, string substring,
                             StringComparison comp)
     {

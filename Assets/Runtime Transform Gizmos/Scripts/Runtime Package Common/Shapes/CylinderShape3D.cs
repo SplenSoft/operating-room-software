@@ -37,6 +37,7 @@ namespace RTG
 
         public override void RenderSolid()
         {
+            _rotation = _rotation.GetNormalized();
             Graphics.DrawMeshNow(MeshPool.Get.UnitCylinder, Matrix4x4.TRS(_baseCenter, _rotation, new Vector3(_radius, _height, _radius)));
         }
 
