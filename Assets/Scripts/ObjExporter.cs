@@ -51,7 +51,8 @@ public static class ObjExporter
                 {
                     Material mat = sharedMaterials[j];
                     if (!materials.Contains(mat))
-                    {
+                    {                     
+                        mat.name = GenerateMaterialName(mat);
                         materials.Add(mat);
                         combineInstancesByMaterial.Add(new List<CombineInstance>());
                     }
@@ -270,9 +271,9 @@ public static class ObjExporter
     {
         // Generate material name using the specified convention
         string materialName = GenerateMaterialName(material);
-
+        data.Mtl.Clear();
         data.Mtl.Append($"newmtl {materialName}\n");
-
+        Debug.Log(data.Mtl.ToString());
         // Shininess
         if (material.HasProperty("_Glossiness"))
             data.Mtl.Append($"Ns {material.GetFloat("_Glossiness") * 100.0f}\n");
@@ -437,6 +438,7 @@ public class ObjExporterScript
             if (materials[submeshIndex] != null)
             {
                 var mat = materials[submeshIndex];
+                
                 string name = mat.name;
 
                 data.Obj.Append("usemtl ").Append(name).Append("\n");
@@ -526,6 +528,7 @@ public class ObjExportData
     {
         ObjString = Obj.ToString();
         MtlString = Mtl.ToString();
+        Debug.Log("data bake "+ MtlString);
     }
 
     /// <summary>
