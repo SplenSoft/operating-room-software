@@ -8,6 +8,7 @@ using Debug = UnityEngine.Debug;
 using System.Threading.Tasks;
 using UnityEngine.Events;
 using System.Linq;
+using RTG;
 public static class ObjExporter
 {
     public static UnityEvent<string> ExportFinishedSuccessfully { get; } = new();
@@ -27,17 +28,17 @@ public static class ObjExporter
         {
             string meshName = name;
             Debug.Log($"Found {meshFilters.Length} mesh filters");
-           
+
             Dictionary<MeshRenderer, MeshFilter> rendererFilterMap = new();
             foreach (var filter in meshFilters)
             {
                 var meshRenderer = filter.GetComponent<MeshRenderer>();
-                
+
                 if (meshRenderer != null)
                     rendererFilterMap[meshRenderer] = filter;
             }
 
-           
+
             List<Material> materials = new();
             List<List<CombineInstance>> combineInstancesByMaterial = new();
 
@@ -46,26 +47,7 @@ public static class ObjExporter
                 var renderer = kvp.Key;
                 var filter = kvp.Value;
 
-                var sharedMaterials = renderer.sharedMaterials;
-                for (int j = 0; j < sharedMaterials.Length; j++)
-                {
-                    Material mat = sharedMaterials[j];
-                    if (!materials.Contains(mat))
-                    {                     
-                        mat.name = GenerateMaterialName(mat);
-                        materials.Add(mat);
-                        combineInstancesByMaterial.Add(new List<CombineInstance>());
-                    }
-
-                    int materialIndex = materials.IndexOf(mat);
-                    CombineInstance instance = new()
-                    {
-                        mesh = filter.sharedMesh,
-                        transform = filter.transform.localToWorldMatrix,
-                        subMeshIndex = j
-                    };
-                    combineInstancesByMaterial[materialIndex].Add(instance);
-                }
+                ProcessMaterials(renderer, filter, materials, combineInstancesByMaterial);
 
                 OnMeshCombiningUpdate?.Invoke((float)rendererFilterMap.Count / (meshFilters.Length + 1));
                 await Task.Yield();
@@ -86,7 +68,7 @@ public static class ObjExporter
                     subMeshIndex = 0,
                     transform = Matrix4x4.identity
                 };
-;
+                ;
                 finalCombiners.Add(
                 EnsureOutwardFacingNormals(ci));
             }
@@ -119,7 +101,7 @@ public static class ObjExporter
             obj.GetComponent<MeshFilter>().sharedMesh = finalMesh;
 
 
-          
+
 
             Transform t = obj.transform;
             t.position = Vector3.zero;
@@ -140,7 +122,7 @@ public static class ObjExporter
             File.WriteAllText(Path.Combine(path, $"{id}.mtl"), data.MtlString);
 
 
-         
+
 
             foreach (var item in data.Textures)
             {
@@ -161,6 +143,56 @@ public static class ObjExporter
         {
             OnExportFinished?.Invoke();
             ObjExporterScript.End();
+        }
+    }
+
+
+    private static Dictionary<Material, Material> materialInstanceMap = new Dictionary<Material, Material>();
+
+    public static void ProcessMaterials(MeshRenderer renderer, MeshFilter filter, List<Material> materials, List<List<CombineInstance>> combineInstancesByMaterial)
+    {
+        Material[] sharedMaterials = renderer.sharedMaterials;
+
+        for (int j = 0; j < sharedMaterials.Length; j++)
+        {
+            Material sharedMat = sharedMaterials[j];
+
+            // Check if a new instance already exists for this shared material
+            if (!materialInstanceMap.TryGetValue(sharedMat, out Material mat))
+            {
+                mat = new Material(sharedMat);
+                string newName = GenerateMaterialName(mat);
+                mat.name = newName;
+
+                materialInstanceMap[sharedMat] = mat;
+
+                if (materials.Contains(mat))
+                {
+                    Debug.LogWarning($"Material already exists but adding again: {mat.name}");
+                }
+                else
+                {
+                    Debug.Log($"Adding new material: {mat.name}");
+                    materials.Add(mat);
+                    combineInstancesByMaterial.Add(new List<CombineInstance>());
+                }
+            }
+            else
+            {
+                Debug.Log($"Material already exists: {mat.name}, ID: {mat.GetInstanceID()}");
+            }
+
+            // Get the index of the material in the materials list
+            int materialIndex = materials.IndexOf(mat);
+
+            // Create a CombineInstance and assign it to the appropriate list
+            CombineInstance instance = new()
+            {
+                mesh = filter.sharedMesh,
+                transform = filter.transform.localToWorldMatrix,
+                subMeshIndex = j
+            };
+            combineInstancesByMaterial[materialIndex].Add(instance);
         }
     }
     private static CombineInstance EnsureOutwardFacingNormals(CombineInstance combineInstance)
@@ -196,7 +228,7 @@ public static class ObjExporter
         // Assign updated triangle array back to the mesh
         mesh.triangles = triangles;
 
-       // Recalculate normals, tangents, and bounds
+        // Recalculate normals, tangents, and bounds
         mesh.RecalculateNormals();
         mesh.RecalculateTangents();
         mesh.RecalculateBounds();
@@ -270,8 +302,8 @@ public static class ObjExporter
     private static void AddMaterialToMtl(ObjExportData data, Material material)
     {
         // Generate material name using the specified convention
-        string materialName = GenerateMaterialName(material);
-        data.Mtl.Clear();
+        string materialName = material.name;
+        // data.Mtl.Clear();
         data.Mtl.Append($"newmtl {materialName}\n");
         Debug.Log(data.Mtl.ToString());
         // Shininess
@@ -362,13 +394,13 @@ public class ObjExporterScript
     }
 
     private static void HandleTexture(
-    string materialPropertyName, 
+    string materialPropertyName,
     Material mat,
     string options,
-    ObjExportData data,   
+    ObjExportData data,
     params string[] mapNames)
     {
-        if (!mat.HasProperty(materialPropertyName)) 
+        if (!mat.HasProperty(materialPropertyName))
             return;
 
         Texture2D tex = (Texture2D)mat.GetTexture(materialPropertyName);
@@ -392,9 +424,9 @@ public class ObjExporterScript
     }
 
     public static async Task<ObjExportData> MeshToString(
-    MeshFilter mf, 
-    Transform t, 
-    List<Material> materials, 
+    MeshFilter mf,
+    Transform t,
+    List<Material> materials,
     ObjExportData data)
     {
         Quaternion rotation = t.localRotation;
@@ -429,7 +461,7 @@ public class ObjExporterScript
         {
             data.Obj.Append(string.Format("vt {0} {1}\n", v.x, v.y));
         }
-        
+
         for (int subMesh = 0; subMesh < m.subMeshCount; subMesh++)
         {
             data.Obj.Append("\n");
@@ -438,7 +470,7 @@ public class ObjExporterScript
             if (materials[submeshIndex] != null)
             {
                 var mat = materials[submeshIndex];
-                
+
                 string name = mat.name;
 
                 data.Obj.Append("usemtl ").Append(name).Append("\n");
@@ -459,17 +491,17 @@ public class ObjExporterScript
                 //        Color e = mat.GetColor("_EmissionColor");
                 //        Add(data.Mtl, $"Ke {e.r} {e.g} {e.b}");
                 //    }
-                    
+
                 //    if (mat.HasProperty("_EmissionMap"))
                 //    {
                 //        HandleTexture("_EmissionMap", mat, null, data, "map_Ke");
                 //    }
                 //}
-                
+
                 if (mat.HasProperty("_Metallic"))
                 {
                     Add(data.Mtl, $"Pm {mat.GetFloat("_Metallic")}");
-                    
+
                 }
                 HandleTexture("_MetallicGlossMap", mat, null, data, "map_Pm");
                 HandleTexture("_BaseMap", mat, null, data, "map_Ka", "map_Kd");
@@ -528,7 +560,7 @@ public class ObjExportData
     {
         ObjString = Obj.ToString();
         MtlString = Mtl.ToString();
-        Debug.Log("data bake "+ MtlString);
+        Debug.Log("data bake " + MtlString);
     }
 
     /// <summary>
