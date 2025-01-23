@@ -24,6 +24,16 @@ public class UI_ButtonExportPdf : MonoBehaviour
 
     public void ExportPdf()
     {
-        UI_PdfExportOptions.Open(Selectable.SelectedSelectables[0]);
+        if (string.IsNullOrEmpty(FullRoomSave.GetRoomPath()))
+        {
+            UI_DialogPrompt.Open(
+              $"Please Export Room First",
+              new ButtonAction("OK"));
+        }
+        else
+        {
+            UI_PdfExportOptions.Open(Selectable.SelectedSelectables[0]);
+
+        }
     }
 }

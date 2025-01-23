@@ -183,7 +183,8 @@ public class ConfigurationManager : MonoBehaviour
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore // allows Newtonsoft to go through the loop to serialize entire Position and Quaternion Rotation
         });
-        string folder = Application.persistentDataPath + $"/Saved/Configs/";
+        //  string folder = Application.persistentDataPath + $"/Saved/Configs/";
+        string folder = Path.Combine(FullRoomSave.GetRoomPath() , $"Saved/Configs");
         string configName = title.Replace(" ", "_") + ".json"; // remove spaces and replace with underscores
         configName = ReplaceInvalidChars(configName);
 
@@ -278,7 +279,7 @@ public class ConfigurationManager : MonoBehaviour
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         });
-        string folder = Application.persistentDataPath + $"/Saved/";
+        string folder = Path.Combine(FullRoomSave.GetRoomPath(), $"Saved");
         string configName = title.Replace(" ", "_") + ".json";
         configName = ReplaceInvalidChars(configName);
 

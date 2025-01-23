@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -47,6 +48,15 @@ public class UI_ButtonExportObj : MonoBehaviour
         //    //        "No", 
         //    //        () => ObjExporter.DoExport(true, Selectable.ActiveSelectables, true)));
         //}
-        UI_ObjExportOptions.Open();
+        if (string.IsNullOrEmpty(FullRoomSave.GetRoomPath()))
+        {
+            UI_DialogPrompt.Open(
+             $"Please Export Room First",
+             new ButtonAction("OK"));
+          
+        }
+        else {
+            UI_ObjExportOptions.Open();
+        }
     }
 }

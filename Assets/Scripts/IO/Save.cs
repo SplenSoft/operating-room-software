@@ -25,7 +25,7 @@ public class Save : MonoBehaviour
 
     private void OnDestroy()
     {
-        
+
     }
 
     public static void Close()
@@ -37,17 +37,27 @@ public class Save : MonoBehaviour
     {
         b_Save.onClick.AddListener(() =>
         {
-            if (Selectable.SelectedSelectables.Count == 0)
+            if (string.IsNullOrEmpty(FullRoomSave.GetRoomPath()))
             {
-                header.text = "Save Room";
+                UI_DialogPrompt.Open(
+                         $"Please Export Room First",
+                          new ButtonAction("OK"));
             }
             else
             {
-                header.text = "Save Configuration";
+                if (Selectable.SelectedSelectables.Count == 0)
+                {
+                    header.text = "Save Room";
+                }
+                else
+                {
+                    header.text = "Save Configuration";
+                }
+
+                FreeLookCam.Instance.isLocked = true;
+                savePanel.SetActive(true);
             }
 
-            FreeLookCam.Instance.isLocked = true;
-            savePanel.SetActive(true);
         });
 
         b_Confirm.onClick.AddListener(() =>

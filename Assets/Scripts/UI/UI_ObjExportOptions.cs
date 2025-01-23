@@ -234,7 +234,7 @@ public class UI_ObjExportOptions : MonoBehaviour
             .ConvertAll(x => x.gameObject.GetComponent<MeshFilter>())
             .ToArray();
 
-        ObjExporter.DoExport(makeSubmeshes, meshFilters, "Room export");
+        ObjExporter.DoExport(makeSubmeshes, meshFilters, "Scene");
     }
 
     private static bool FilterMeshRenderers(MeshRenderer meshRenderer, ObjExportOptions options)

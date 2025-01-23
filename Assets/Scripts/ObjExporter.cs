@@ -18,7 +18,7 @@ public static class ObjExporter
     public static UnityEvent OnMeshCombineSuccess { get; } = new();
     public static UnityEvent OnMeshDataWritten { get; } = new();
     public static UnityEvent OnExportFinished { get; } = new();
-
+    public static int count =1;
     public static async void DoExport(bool makeSubmeshes, MeshFilter[] meshFilters, string name)
     {
         ObjExporterScript.Start();
@@ -41,13 +41,15 @@ public static class ObjExporter
 
             List<Material> materials = new();
             List<List<CombineInstance>> combineInstancesByMaterial = new();
+            Dictionary<Material, Material> materialInstanceMap = new ();
 
             foreach (var kvp in rendererFilterMap)
             {
                 var renderer = kvp.Key;
                 var filter = kvp.Value;
-
-                ProcessMaterials(renderer, filter, materials, combineInstancesByMaterial);
+   
+    
+                ProcessMaterials(renderer, filter, materials, combineInstancesByMaterial,materialInstanceMap);
 
                 OnMeshCombiningUpdate?.Invoke((float)rendererFilterMap.Count / (meshFilters.Length + 1));
                 await Task.Yield();
@@ -93,6 +95,7 @@ public static class ObjExporter
             await Task.Yield();
 
             ObjExportData data = new();
+           
             data.Obj.Append($"#{meshName}.obj\n# {System.DateTime.Now.ToLongDateString()}\n# {System.DateTime.Now.ToLongTimeString()}\n#-------\n\n");
             string id = Guid.NewGuid().ToString();
             data.Obj.Append($"mtllib {id}.mtl\n\n");
@@ -115,14 +118,21 @@ public static class ObjExporter
             }
 
             data.Bake();
+            string path = "";
+            //string path = Path.Combine(Application.persistentDataPath , "obj", id);
+            if (meshName.Equals("Scene")) { 
+             path = Path.Combine(FullRoomSave.GetRoomPath(), "ObjFile");
+            }
+            else
+            {
+                path = Path.Combine(FullRoomSave.GetRoomPath(), "ObjFile",meshName);
 
-            string path = Path.Combine(Application.persistentDataPath, "obj", id);
+            }
             Directory.CreateDirectory(path);
-            File.WriteAllText(Path.Combine(path, $"{id}.obj"), data.ObjString);
-            File.WriteAllText(Path.Combine(path, $"{id}.mtl"), data.MtlString);
+            File.WriteAllText(Path.Combine(path, $"{meshName}.obj"), data.ObjString);
+            File.WriteAllText(Path.Combine(path, $"{meshName}.mtl"), data.MtlString);
 
-
-
+            count++;
 
             foreach (var item in data.Textures)
             {
@@ -147,10 +157,12 @@ public static class ObjExporter
     }
 
 
-    private static Dictionary<Material, Material> materialInstanceMap = new Dictionary<Material, Material>();
+  
 
-    public static void ProcessMaterials(MeshRenderer renderer, MeshFilter filter, List<Material> materials, List<List<CombineInstance>> combineInstancesByMaterial)
+    public static void ProcessMaterials(MeshRenderer renderer, MeshFilter filter, List<Material> materials, List<List<CombineInstance>> combineInstancesByMaterial, Dictionary<Material, Material> materialInstanceMap)
     {
+
+     
         Material[] sharedMaterials = renderer.sharedMaterials;
 
         for (int j = 0; j < sharedMaterials.Length; j++)
@@ -197,6 +209,7 @@ public static class ObjExporter
     }
     private static CombineInstance EnsureOutwardFacingNormals(CombineInstance combineInstance)
     {
+
         // Create a copy of the mesh to avoid modifying shared instances
         Mesh mesh = Object.Instantiate(combineInstance.mesh);
 
@@ -551,6 +564,7 @@ public class ObjExportData
     public StringBuilder Mtl { get; set; } = new();
     public string ObjString { get; set; }
     public string MtlString { get; set; }
+    public string RoomName { get; set; }
     public List<ObjExportTexture> Textures { get; set; } = new();
 
     /// <summary>
