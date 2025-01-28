@@ -97,6 +97,7 @@ public class ObjectMenu : MonoBehaviour
 
     private IEnumerator Start()
     {
+      
         var loadingToken = Loading.GetLoadingToken();
 
         yield return new WaitUntil

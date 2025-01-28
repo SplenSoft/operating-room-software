@@ -8,7 +8,7 @@ public class VersionInfo : MonoBehaviour
 {
     private void Start()
     {
-        string versionText = "Version " + Application.version;
+        string versionText = "OR Software V " + Application.version;
 
         if (TryGetComponent(out Text text))
         {

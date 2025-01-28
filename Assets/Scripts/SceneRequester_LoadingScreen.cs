@@ -30,6 +30,7 @@ public class SceneRequester_LoadingScreen : MonoBehaviour
             .AddListener(OnProgressUpdated);
     }
 
+
     private void OnDestroy()
     {
         AssetBundleManager

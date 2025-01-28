@@ -7,6 +7,7 @@ using TMPro;
 public class UI_MaterialPalleteSwatch : MonoBehaviour
 {
     private Image image;
+    private RawImage img;
     private TMP_Text m_name;
     private Button b_ApplySwatch;
     private int element = 0;
@@ -16,6 +17,7 @@ public class UI_MaterialPalleteSwatch : MonoBehaviour
         b_ApplySwatch = GetComponent<Button>();
         image = GetComponent<Image>();
         m_name = GetComponentInChildren<TMP_Text>();
+        img = GetComponentInChildren<RawImage>();
 
         b_ApplySwatch.onClick.AddListener(() => AssignSwatchToSelectable());
     }
@@ -25,6 +27,7 @@ public class UI_MaterialPalleteSwatch : MonoBehaviour
         image.material = m;
         m_name.text = m.name;
         element = zone;
+        img.texture = m.mainTexture;
     }
 
     private void AssignSwatchToSelectable()
