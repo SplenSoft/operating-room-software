@@ -26,8 +26,11 @@ public class MainMenu : MonoBehaviour
     private void Start()
     {
         UpdateStates();
+        
+       
     }
 
+   
     private void UpdateStates()
     {
         ButtonLogOut.SetActive(!Database.MustEnterPassword);

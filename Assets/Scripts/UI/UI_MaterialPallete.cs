@@ -23,8 +23,8 @@ public class UI_MaterialPallete : MonoBehaviour
     {
         foreach(UI_MaterialPalleteSwatch swatch in pallete)
         {
-           swatch.gameObject.SetActive(false);
-      
+          // swatch.gameObject.SetActive(false);
+            Destroy(swatch.gameObject);
         }
 
         pallete.Clear();

@@ -28,6 +28,7 @@ public class UI_MaterialPalleteSwatch : MonoBehaviour
         m_name.text = m.name;
         element = zone;
         img.texture = m.mainTexture;
+        img.color = m.color;
     }
 
     private void AssignSwatchToSelectable()

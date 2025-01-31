@@ -24,11 +24,6 @@ public class FullRoomSave : MonoBehaviour
         Instance = this;
     }
 
-    private void OnDestroy()
-    {
-
-    }
-
     public static void Close()
     {
         Instance.savePanel.SetActive(false);
@@ -36,6 +31,7 @@ public class FullRoomSave : MonoBehaviour
 
     void Start()
     {
+
         b_Save.onClick.AddListener(() =>
         {
             header.text = "Please Enter Room Name";

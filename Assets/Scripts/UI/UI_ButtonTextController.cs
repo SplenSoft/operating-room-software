@@ -15,9 +15,7 @@ public class UI_ButtonTextController : MonoBehaviour, IPointerEnterHandler, IPoi
     public float normalTextSize = 14f;
     public float hoverTextSize = 16f;
 
-    [Header("Cursor Settings")]
-    public Texture2D hoverCursor;
-    public Vector2 cursorHotspot = Vector2.zero;
+
 
     private TextMeshProUGUI buttonText;
     private bool isSelected = false;
@@ -46,11 +44,7 @@ public class UI_ButtonTextController : MonoBehaviour, IPointerEnterHandler, IPoi
             buttonText.color = hoverColor;
             buttonText.fontSize = Mathf.RoundToInt(hoverTextSize);
 
-            // Change the cursor if a hover cursor texture is provided
-            if (hoverCursor != null)
-            {
-                Cursor.SetCursor(hoverCursor, cursorHotspot, CursorMode.Auto);
-            }
+
         }
     }
 

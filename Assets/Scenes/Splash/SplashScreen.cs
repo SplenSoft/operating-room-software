@@ -99,6 +99,7 @@ public class SplashScreen : MonoBehaviour
 
     private void OnGUI()
     {
+     
         GUI.depth = guiDepth;
 
         if (splashLogo != null)

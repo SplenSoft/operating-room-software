@@ -5,6 +5,8 @@ using System;
 using UnityEngine.Events;
 using System.Threading.Tasks;
 using System.Linq;
+using UnityEngine.SceneManagement;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -114,9 +116,10 @@ namespace SplenSoft.AssetBundles
         private List<string> AssetBundleNames
         { get; set; } = new List<string>();
 
-        [RuntimeInitializeOnLoadMethod]
-        private static async void OnAppStart()
+    
+        public static async void OnAppStart()
         {
+
             // get the scriptable objects
             var task = AssetBundleManager
                 .GetAssetBundleNames(typeof(AutoInstantiator));

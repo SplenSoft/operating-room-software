@@ -1,15 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UI_LoadingScreen : MonoBehaviour
 {
     private static UI_LoadingScreen _instance;
-
+   
     [field: SerializeField] private Image LoadingBar { get; set; }
     [SerializeField] private TextMeshProUGUI progress;
+    [SerializeField] private TextMeshProUGUI progress1;
 
     private void Awake()
     {
@@ -21,8 +24,10 @@ public class UI_LoadingScreen : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
         Loading.LoadingTokensChanged.AddListener(UpdateState);
+     
 
     }
+
 
     private void Start()
     {
@@ -34,6 +39,7 @@ public class UI_LoadingScreen : MonoBehaviour
     {
         LoadingBar.fillAmount = Loading.GetTotalProgress01();
         progress.text = "Please wait ...: " + Loading.GetTotalProgress01()*100 +"%";
+        progress1.text = "Please wait ...: " + Loading.GetTotalProgress01() * 100 + "%";
     }
 
     private void OnDestroy()

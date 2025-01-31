@@ -35,6 +35,10 @@ public class Save : MonoBehaviour
 
     void Start()
     {
+        UI_LoadingScreensSwitcher LoadingScreen = FindObjectOfType<UI_LoadingScreensSwitcher>(true);
+        LoadingScreen.itemLoadingScreen.SetActive(true);
+        LoadingScreen.mainLoadingScreen.SetActive(false);
+
         b_Save.onClick.AddListener(() =>
         {
             if (string.IsNullOrEmpty(FullRoomSave.GetRoomPath()))
